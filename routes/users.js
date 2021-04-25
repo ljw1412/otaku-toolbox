@@ -1,8 +1,8 @@
-const { services } = global
+const { controllers } = global
 
 module.exports = {
   prefix: '/users',
   routes: {
-    'GET /': services.users.index
+    'GET /': controllers.users.index
   }
 }

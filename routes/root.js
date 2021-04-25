@@ -1,5 +1,5 @@
-const { services } = global
+const { controllers } = global
 
 module.exports = {
-  routes: { 'GET /': services.root.index }
+  routes: { 'GET /': controllers.root.index }
 }

@@ -1,0 +1,21 @@
+{
+  "id": "zorebyz",
+  "name": "zore搬运站",
+  "origin": "https://www.zerobyweva.com",
+  "type": "comic",
+  "rule": {
+    "common-item": {},
+    "list": {
+      "type": "html",
+      "url": "/plugin.php?id=jameson_manhua&c=index&a=ku&&page={{page}}"
+    },
+    "search": {
+      "type": "html",
+      "url": "/plugin.php?id=jameson_manhua&a=search&c=index&keyword={{keyword}}"
+    },
+    "detail": {
+      "type": "html",
+      "url": "/plugin.php?id=jameson_manhua&c=index&a=bofang&kuid={{id}}"
+    }
+  }
+}

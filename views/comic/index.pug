@@ -1,0 +1,8 @@
+extends ../layout
+
+block content
+  h1= title
+  p 请选择站点
+  .picker
+    each item in websites || []
+      a.picker-item(href='/comic/'+item.id)= item.name

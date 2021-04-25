@@ -6,11 +6,16 @@ const onerror = require('koa-onerror')
 const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
 
+// 注册 superagent 的代理功能
+require('superagent-proxy')(require('superagent'))
+
 // 加载路由
 const loadRoutes = require('./routes')
 
 // 加载服务
 require('./services')()
+// 加载控制器
+require('./controllers')()
 
 // error handler
 onerror(app)
