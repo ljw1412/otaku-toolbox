@@ -1,18 +1,22 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
-  <HelloWorld msg="Hello Vue 3 + TypeScript + Vite" />
+  <img
+    alt="Vue logo"
+    src="../assets/logo.svg"
+    width="300"
+  >
+  <app-navigation />
+  <router-view />
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
-import HelloWorld from './components/HelloWorld.vue'
-
+import {defineComponent} from 'vue';
+import AppNavigation from '/@/components/AppNavigation.vue';
 export default defineComponent({
   name: 'App',
   components: {
-    HelloWorld
-  }
-})
+    AppNavigation,
+  },
+});
 </script>
 
 <style>
