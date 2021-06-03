@@ -1,31 +1,30 @@
+
 <template>
-  <img
-    alt="Vue logo"
-    src="../assets/logo.svg"
-    width="300"
-  >
-  <app-navigation />
-  <router-view />
+  <title-bar></title-bar>
+  <action-bar></action-bar>
+  <main id="app-main"
+    class="app-main">
+    <router-view />
+  </main>
 </template>
 
 <script lang="ts">
-import {defineComponent} from 'vue';
-import AppNavigation from '/@/components/AppNavigation.vue';
+import { defineComponent } from 'vue'
+import TitleBar from './components/TitleBar.vue'
+import ActionBar from './components/ActionBar.vue'
+
 export default defineComponent({
   name: 'App',
   components: {
-    AppNavigation,
-  },
-});
+    TitleBar,
+    ActionBar
+  }
+})
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+body {
+  color: var(--text-color);
+  background-color: var(--bg-color);
 }
 </style>

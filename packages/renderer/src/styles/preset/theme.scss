@@ -1,0 +1,15 @@
+:root {
+  --theme-color: red;
+  --title-bar-color: red;
+  --action-bar-color: #f5f6f7;
+  --bg-color: #ffffff;
+  --text-color: #333333;
+}
+
+:root[data-theme='dark'] {
+  --theme-color: #1b1b1b;
+  --title-bar-color: #1b1b1b;
+  --action-bar-color: #3c3c3c;
+  --bg-color: #212121;
+  --text-color: #cccccc;
+}
