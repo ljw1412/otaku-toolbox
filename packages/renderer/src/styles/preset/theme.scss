@@ -1,5 +1,6 @@
 :root {
   --theme-color: red;
+  --theme-sub-color: #ff4040;
   --title-bar-color: red;
   --action-bar-color: #f5f6f7;
   --bg-color: #ffffff;
@@ -8,6 +9,7 @@
 
 :root[data-theme='dark'] {
   --theme-color: #1b1b1b;
+  --theme-sub-color: #333333;
   --title-bar-color: #1b1b1b;
   --action-bar-color: #3c3c3c;
   --bg-color: #212121;
