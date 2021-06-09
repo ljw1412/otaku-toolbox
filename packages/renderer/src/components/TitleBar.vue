@@ -1,6 +1,9 @@
 <template>
   <div class="app-title-bar">
-    <div class="content"></div>
+    <div class="title-bar-left">
+      <span>二次元工具箱</span>
+    </div>
+    <div class="title-bar-right"></div>
   </div>
 </template>
 
@@ -14,14 +17,26 @@ export default defineComponent({
 
 <style lang="scss">
 .app-title-bar {
+  position: absolute;
+  top: 0;
+  right: 0;
   width: 100%;
   height: var(--title-bar-height);
   max-height: var(--title-bar-height);
   min-height: var(--title-bar-height);
-  background-color: var(--theme-color);
+  color: var(--title-text-color);
+  background-color: var(--theme-sub-color);
   -webkit-app-region: drag;
 
-  .content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .title-bar-left {
+    margin-left: 16px;
+  }
+
+  .title-bar-right {
     -webkit-app-region: no-drag;
   }
 }

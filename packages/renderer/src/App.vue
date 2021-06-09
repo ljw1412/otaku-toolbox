@@ -1,25 +1,27 @@
 
 <template>
-  <title-bar></title-bar>
   <div class="app-container">
-    <navigation-bar></navigation-bar>
-    <main id="app-main"
-      class="app-main">
-      <router-view />
-    </main>
+    <side-bar></side-bar>
+    <div class="app-body">
+      <title-bar></title-bar>
+      <main id="app-main"
+        class="app-main">
+        <router-view />
+      </main>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
 import TitleBar from './components/TitleBar.vue'
-import NavigationBar from './components/NavigationBar.vue'
+import SideBar from './components/SideBar.vue'
 
 export default defineComponent({
   name: 'App',
   components: {
     TitleBar,
-    NavigationBar
+    SideBar
   }
 })
 </script>
@@ -32,10 +34,23 @@ body {
 
 .app-container {
   display: flex;
-  height: calc(100% - var(--title-bar-height));
+  height: 100%;
+  user-select: none;
+  overflow: hidden;
+}
+
+.app-body {
+  position: relative;
+  height: 100%;
+  flex-grow: 1;
+  padding-top: var(--title-bar-height);
+  box-sizing: border-box;
 }
 
 .app-main {
-  width: 100%;
+  /* height: calc(100%- var(--title-bar-height)); */
+  height: 100%;
+  user-select: auto;
+  overflow-y: auto;
 }
 </style>

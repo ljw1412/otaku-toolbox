@@ -1,6 +1,12 @@
 <template>
   <div class="app-home">
     首页
+    <button @click="themeChange('')">
+默认主题
+</button>
+    <button @click="themeChange('dark')">
+黑暗主题
+</button>
   </div>
 </template>
 
@@ -8,9 +14,18 @@
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-  name: 'AppHome'
+  name: 'AppHome',
+
+  methods: {
+    themeChange(theme: string) {
+      window.$theme.set(theme)
+    }
+  }
 })
 </script>
 
 <style lang="scss">
+.app-home {
+  height: 5000px;
+}
 </style>
