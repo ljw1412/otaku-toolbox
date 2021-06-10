@@ -22,6 +22,5 @@ export default defineComponent({
 .app-navigation-bar {
   width: var(--navigation-bar-width);
   flex-shrink: 0;
-  background-color: var(--theme-sub-color);
 }
 </style>

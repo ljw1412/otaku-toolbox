@@ -7,6 +7,12 @@
     <button @click="themeChange('dark')">
 黑暗主题
 </button>
+    <button @click="themeChange('red')">
+红色主题
+</button>
+    <button @click="themeChange('pink')">
+粉色主题
+</button>
   </div>
 </template>
 

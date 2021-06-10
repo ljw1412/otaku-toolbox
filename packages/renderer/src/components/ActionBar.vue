@@ -22,6 +22,5 @@ export default defineComponent({
   height: var(--action-bar-height);
   max-height: var(--action-bar-height);
   min-height: var(--action-bar-height);
-  background-color: var(--action-bar-color);
 }
 </style>

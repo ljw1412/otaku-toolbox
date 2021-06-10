@@ -8,3 +8,16 @@ body,
 #app {
   height: 100%;
 }
+
+::-webkit-scrollbar {
+  width: var(--scroll-bar-width);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb-bg);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover-bg);
+}
