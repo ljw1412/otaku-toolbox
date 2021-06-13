@@ -10,6 +10,9 @@
   },
 
   "include": [
+    "UI/**/*.vue",
+    "UI/**/*.ts",
+    "UI/**/*.tsx",
     "src/**/*.vue",
     "src/**/*.ts",
     "src/**/*.tsx",

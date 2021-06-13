@@ -1,11 +1,7 @@
 <template>
   <div class="app-action-bar">
-    <router-link :to="{name:'AppHome'}">
-      Home
-    </router-link>
-    <router-link :to="{name:'AppSetting'}">
-      Setting
-    </router-link>
+    <acg-icon name="menu"
+      :size="28"></acg-icon>
   </div>
 </template>
 
@@ -19,8 +15,11 @@ export default defineComponent({
 
 <style lang="scss">
 .app-action-bar {
-  height: var(--action-bar-height);
-  max-height: var(--action-bar-height);
-  min-height: var(--action-bar-height);
+  position: absolute;
+  left: 0;
+  bottom: 32px;
+  width: 100%;
+  text-align: center;
+  -webkit-app-region: no-drag;
 }
 </style>

@@ -6,19 +6,26 @@
         <span>用户名</span>
       </div>
     </div>
+
+    <action-bar></action-bar>
   </aside>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import ActionBar from './ActionBar.vue'
 
 export default defineComponent({
-  name: 'AppSideBar'
+  name: 'AppSideBar',
+  components: {
+    ActionBar
+  }
 })
 </script>
 
 <style lang="scss">
 .app-side-bar {
+  position: relative;
   box-sizing: border-box;
   width: var(--side-bar-width);
   height: 100%;
