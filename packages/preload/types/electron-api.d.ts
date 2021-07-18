@@ -1,5 +1,5 @@
-
 interface ElectronApi {
+  readonly ipcRenderer: Readonly<Electron.IpcRenderer>
   readonly versions: Readonly<NodeJS.ProcessVersions>
 }
 

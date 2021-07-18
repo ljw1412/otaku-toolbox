@@ -2,18 +2,26 @@
   <header class="app-title-bar">
     <div class="title-bar-left">
       <span>二次元工具箱</span>
-      <span v-if="finalTitle"> - </span>
-      <span>{{ finalTitle }}</span>
+      <span v-if="finalTitle">- {{ finalTitle }}</span>
     </div>
-    <div class="title-bar-right"></div>
+    <div class="title-bar-right mr-8 fs-24 app-no-drag d-flex align-items-center">
+      <skin-pop inner-class="mr-6 fs-20"></skin-pop>
+      <acg-icon name="remove"
+        @click="minWindow"></acg-icon>
+      <acg-icon name="close"
+        @click="closeWindow"></acg-icon>
+    </div>
   </header>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import SkinPop from './SkinPop.vue'
+const { ipcRenderer } = window.electron
 
 export default defineComponent({
   name: 'AppTitleBar',
+  components: { SkinPop },
   props: { title: { type: String, default: '' } },
   computed: {
     metaTitle(): string {
@@ -21,6 +29,14 @@ export default defineComponent({
     },
     finalTitle(): string {
       return this.title || this.metaTitle
+    }
+  },
+  methods: {
+    minWindow() {
+      ipcRenderer.send('window.action', 'min')
+    },
+    closeWindow() {
+      ipcRenderer.send('window.action', 'close')
     }
   }
 })

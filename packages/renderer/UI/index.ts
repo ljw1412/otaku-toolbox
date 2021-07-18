@@ -1,7 +1,6 @@
 import type { App } from 'vue'
-import Icon from './Icon.vue'
-
-const components = [Icon]
+import components from './packages'
+import './styles/Tooltip'
 
 export default function(app: App): void {
   components.forEach(component => {

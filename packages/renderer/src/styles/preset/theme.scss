@@ -1,4 +1,11 @@
 :root {
+  --skin-blue: #2196f3;
+  --skin-dark: #1b1b1b;
+  --skin-red: #f44336;
+  --skin-green: #4caf50;
+}
+
+:root {
   --side-bar-color: #2196f3;
   --title-bar-color: #51abf6;
 
@@ -32,4 +39,9 @@
 :root[data-theme='pink'] {
   --side-bar-color: #fb7299;
   --title-bar-color: #fb93b0;
+}
+
+:root[data-theme='green'] {
+  --side-bar-color: #4caf50;
+  --title-bar-color: #6ebf70;
 }

@@ -6,6 +6,7 @@ import UI from '../UI/index'
 import '@ljw1412/ionicons-sprite'
 
 import '/@/styles/preset/index.scss'
+import '/@/styles/other/common.css'
 
 window.$theme = themeHelper
 

@@ -1,6 +1,7 @@
 import { app, BrowserWindow } from 'electron'
 import { join } from 'path'
 import { URL } from 'url'
+import ipcWindowAction from './ipc/windowAction'
 
 const isSingleInstance = app.requestSingleInstanceLock()
 
@@ -55,7 +56,7 @@ const createWindow = async () => {
    */
   mainWindow.on('ready-to-show', () => {
     mainWindow?.show()
-
+    ipcWindowAction(mainWindow)
     if (env.MODE === 'development') {
       mainWindow?.webContents.openDevTools()
     }
