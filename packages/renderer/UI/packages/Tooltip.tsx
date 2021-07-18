@@ -96,7 +96,7 @@ export default defineComponent({
     }
 
     this.tooltip = { reference, content }
-    console.log('[tooltip]', this.tooltip)
+    // console.log('[tooltip]', this.tooltip)
     return [reference, content] //h(this.tag, [reference, content])
   },
   mounted() {
@@ -196,10 +196,7 @@ export default defineComponent({
       }
       if (content) {
         contentEl = content.el as Element
-        console.log(contentEl)
       }
-
-      console.log(reference, contentEl)
 
       this.initPopover(reference, contentEl)
     }

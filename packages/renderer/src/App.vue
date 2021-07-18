@@ -15,7 +15,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import TitleBar from './components/TitleBar.vue'
-import SideBar from './components/SideBar.vue'
+import SideBar from './components/SideBar/SideBar.vue'
 
 export default defineComponent({
   name: 'App',
@@ -50,7 +50,7 @@ body {
 .app-main {
   /* height: calc(100%- var(--title-bar-height)); */
   height: 100%;
-  user-select: auto;
+  user-select: text;
   overflow-y: auto;
 }
 </style>

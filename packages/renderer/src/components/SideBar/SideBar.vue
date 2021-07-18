@@ -7,6 +7,8 @@
       </div>
     </div>
 
+    <navigation-bar></navigation-bar>
+
     <action-bar></action-bar>
   </aside>
 </template>
@@ -14,11 +16,14 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import ActionBar from './ActionBar.vue'
+import NavigationBar from './NavigationBar.vue'
 
 export default defineComponent({
   name: 'AppSideBar',
+
   components: {
-    ActionBar
+    ActionBar,
+    NavigationBar
   }
 })
 </script>
