@@ -3,6 +3,10 @@
   --skin-dark: #1b1b1b;
   --skin-red: #f44336;
   --skin-green: #4caf50;
+  --bg-season-winter: rgba(133, 133, 133, 0.8);
+  --bg-season-spring: rgba(38, 199, 16, 0.8);
+  --bg-season-summer: rgba(45, 14, 182, 0.8);
+  --bg-season-fall: rgba(194, 182, 20, 0.8);
 }
 
 :root {
@@ -31,6 +35,8 @@
   --scrollbar-bg: #000000;
   --scrollbar-thumb-bg: #666666;
   --scrollbar-thumb-hover-bg: #999999;
+
+  --timeline-color: #999999;
 }
 
 :root[data-theme='red'] {

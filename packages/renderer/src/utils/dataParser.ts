@@ -31,3 +31,11 @@ export function bangumiXml2Json(doc: Document) {
 
   return bangumi
 }
+
+export function obj2query(obj: Record<string, any>) {
+  const queryList = Object.keys(obj).reduce((value, key) => {
+    value.push(`${key}=${obj[key]}`)
+    return value
+  }, [] as string[])
+  return queryList.join('&')
+}

@@ -1,14 +1,10 @@
 <template>
   <div class="anime-timeline position-relative">
-    <div class="options">
-      <span class="option">2021</span>
-      <span class="option">夏</span>
-      <span class="option">日</span>
-
-      <span class="option">今:{{ todayDate }}</span>
-      <span></span>
+    <div class="anime-timeline-header">
+      <timeline-picker @change="fetchTimeLine"></timeline-picker>
     </div>
-    <div class="line position-absolute"></div>
+    <div v-show="list.length"
+      class="line position-absolute"></div>
     <ul>
       <li v-for="(item,index) of list"
         :key="index"
@@ -36,50 +32,29 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { bangumiXml2Json } from '/@/utils/dataParser'
+import { bangumiXml2Json, obj2query } from '/@/utils/dataParser'
+import TimelinePicker from './TimelinePicker.vue'
 
 interface TimeLineData {
   list: Record<string, any>[]
-  now: Date
-  timer: null | number
 }
 
 export default defineComponent({
   name: 'AnimeTimeline',
 
+  components: {
+    TimelinePicker
+  },
+
   data(): TimeLineData {
     return {
-      list: [],
-      now: new Date(),
-      timer: null
+      list: []
     }
-  },
-
-  computed: {
-    todayDate() {
-      const now = this.now as Date
-      return window.$dayjs(now).format('M-DD')
-    }
-  },
-
-  created() {
-    this.fetchTimeLine()
-  },
-
-  beforeUnmount() {
-    this.timer && clearInterval(this.timer)
   },
 
   methods: {
-    timeRunner() {
-      // @ts-ignore
-      this.timer = setInterval(() => {
-        this.now = new Date()
-      }, 60 * 1000)
-    },
-
-    minImage(url: string) {
-      if (url.includes('i0.hdslb.com')) {
+    minImage(url?: string) {
+      if (url && url.includes('i0.hdslb.com')) {
         return `${url}@268w_358h`
       }
       return url
@@ -93,15 +68,19 @@ export default defineComponent({
       }
     },
 
-    fetchTimeLine() {
-      fetch(
-        'http://lab.gpbeta.com/sao-utils/bangumi/weekday_list.php?version=1.2.0.27900&locale=zh_CN&year=2021&season=summer&weekday=sunday'
+    async fetchTimeLine(query: Record<string, any>) {
+      const queryStr = obj2query(query)
+
+      const response = await fetch(
+        `http://lab.gpbeta.com/sao-utils/bangumi/weekday_list.php?${queryStr}`
       )
-        .then(response => response.text())
-        .then(str => new window.DOMParser().parseFromString(str, 'text/xml'))
-        .then(data => {
-          this.list = bangumiXml2Json(data)
-        })
+      if (response.status !== 404) {
+        const str = await response.text()
+        const data = new window.DOMParser().parseFromString(str, 'text/xml')
+        this.list = bangumiXml2Json(data)
+      } else {
+        this.list = []
+      }
     }
   }
 })
@@ -115,12 +94,8 @@ export default defineComponent({
   box-shadow: 0 0 5px #cccccc;
   overflow: hidden;
 
-  .options {
+  .anime-timeline-header {
     height: var(--option-height);
-    .option {
-      padding: 4px;
-      background-color: green;
-    }
   }
 
   > ul {

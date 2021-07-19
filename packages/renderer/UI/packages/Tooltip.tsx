@@ -49,6 +49,7 @@ export default defineComponent({
     delay: { type: [Number, Array], default: 0 },
     duration: { type: [Number, Array], default: () => [300, 250] },
     disabled: Boolean,
+    contentClass: String,
     zIndex: { type: Number, default: undefined }
   },
   emits: [
@@ -87,12 +88,9 @@ export default defineComponent({
     if (referenceVnodes) {
       reference = textWrapper(referenceVnodes)
     }
+
     if (contentVnodes) {
-      if (contentVnodes.length === 1) {
-        content = textWrapper(contentVnodes)[0]
-      } else if (contentVnodes.length > 1) {
-        content = h('div', contentVnodes)
-      }
+      content = h('div', { class: this.contentClass }, contentVnodes)
     }
 
     this.tooltip = { reference, content }
