@@ -1,5 +1,5 @@
 <template>
-  <div class="anime-timeline position-relative">
+  <div class="anime-timeline position-relative w-25 flex-shrink-1">
     <div class="anime-timeline-header">
       <timeline-picker @change="fetchTimeLine"></timeline-picker>
     </div>
@@ -8,19 +8,18 @@
     <ul>
       <li v-for="(item,index) of list"
         :key="index"
-        class="item fs-14 w-100 mb-10 pl-20">
+        class="item fs-14 w-100 mb-10 pl-20 cursor-pointer">
         <div class="position-relative">
           <div class="line-dot position-absolute"></div>
           <div>{{ formatDate(item.release).time }}</div>
         </div>
-        <div class="d-flex">
-          <div class="mr-8">
-            <img :src="minImage(item.image)"
-              width="80"
-              height="80"
-              style="object-fit: cover;">
-          </div>
-          <div>
+        <div class="bangumi d-flex mt-4"
+          @click="onSelect(item)">
+          <img :src="minImage(item.image)"
+            width="80"
+            height="80"
+            style="object-fit: cover;">
+          <div class="ml-8">
             <div>{{ item.title['zh_CN'] }}</div>
             <div>共{{ item.episode }}集</div>
           </div>
@@ -32,7 +31,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { bangumiXml2Json, obj2query } from '/@/utils/dataParser'
+import { bangumiXml2Json, obj2query, minImage } from '/@/utils/dataParser'
 import TimelinePicker from './TimelinePicker.vue'
 
 interface TimeLineData {
@@ -46,6 +45,8 @@ export default defineComponent({
     TimelinePicker
   },
 
+  emits: ['select'],
+
   data(): TimeLineData {
     return {
       list: []
@@ -53,11 +54,10 @@ export default defineComponent({
   },
 
   methods: {
-    minImage(url?: string) {
-      if (url && url.includes('i0.hdslb.com')) {
-        return `${url}@268w_358h`
-      }
-      return url
+    minImage,
+
+    onSelect(item: Record<string, any>) {
+      this.$emit('select', item)
     },
 
     formatDate(unix: number): { date: string; time: string } {
@@ -90,7 +90,6 @@ export default defineComponent({
 .anime-timeline {
   --option-height: 36px;
   height: 100%;
-  width: 33.33%;
   box-shadow: 0 0 5px #cccccc;
   overflow: hidden;
 
@@ -104,6 +103,9 @@ export default defineComponent({
 
     .item {
       box-sizing: border-box;
+      .bangumi:hover {
+        background-color: rgba(255, 255, 255, 0.25);
+      }
     }
   }
 

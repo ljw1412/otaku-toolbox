@@ -5,7 +5,7 @@
       <span v-if="finalTitle">- {{ finalTitle }}</span>
     </div>
     <div class="title-bar-right mr-8 fs-24 app-no-drag d-flex align-items-center">
-      <skin-pop inner-class="mr-6 fs-20"></skin-pop>
+      <skin-pop inner-class="mr-6 fs-20 cursor-pointer"></skin-pop>
       <acg-icon name="remove"
         @click="minWindow"></acg-icon>
       <acg-icon name="close"

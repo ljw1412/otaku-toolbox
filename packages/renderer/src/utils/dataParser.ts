@@ -39,3 +39,10 @@ export function obj2query(obj: Record<string, any>) {
   }, [] as string[])
   return queryList.join('&')
 }
+
+export function minImage(url?: string) {
+  if (url && url.includes('i0.hdslb.com')) {
+    return `${url}@268w_358h`
+  }
+  return url
+}
