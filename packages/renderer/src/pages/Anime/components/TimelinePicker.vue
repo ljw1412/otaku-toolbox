@@ -17,10 +17,10 @@
       </template>
     </acg-tooltip>
     <acg-tooltip :interactive="true"
-      placement="bottom-start"
+      placement="bottom"
       theme="transparent"
       content-class="timeline-weekday-picker"
-      :offset="[0,0]">
+      :offset="[14,0]">
       <span class="picker">{{ weekday.name }}</span>
       <template #content>
         <span v-for="item of weekdays"

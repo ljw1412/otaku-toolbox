@@ -1,5 +1,5 @@
 <template>
-  <div class="app-navigation-bar mt-30">
+  <div class="app-navigation-bar app-no-drag mt-30">
     <ul class="px-8 fs-15">
       <li v-for="item of list"
         :key="item.name"
@@ -60,7 +60,6 @@ export default defineComponent({
   flex-shrink: 0;
   width: var(--navigation-bar-width);
   color: var(--side-bar-text-color);
-  -webkit-app-region: no-drag;
   ul > li {
     cursor: pointer;
     border-radius: 4px;

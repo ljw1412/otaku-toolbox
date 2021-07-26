@@ -1,6 +1,6 @@
 <template>
-  <aside class="app-side-bar">
-    <div class="app-user">
+  <aside class="app-side-bar app-drag">
+    <div class="app-user app-no-drag">
       <div class="user-avatar"></div>
       <div class="user-name">
         <span>用户名</span>
@@ -38,12 +38,10 @@ export default defineComponent({
   flex-shrink: 0;
   color: var(--title-text-color);
   background-color: var(--side-bar-color);
-  -webkit-app-region: drag;
 }
 
 .app-user {
   text-align: center;
-  -webkit-app-region: no-drag;
 
   .user-avatar {
     display: inline-block;

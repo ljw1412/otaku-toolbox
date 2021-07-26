@@ -1,7 +1,11 @@
 <template>
   <div class="anime-home h-100 d-flex">
+    <main id="anime-home-main"
+      class="flex-grow-1 h-100">
+      <quick-bangumi v-model:show="isQuickBangumi"
+        :bangumi="currentBangumi"></quick-bangumi>
+    </main>
     <timeline @select="onSelect"></timeline>
-    <quick-bangumi :bangumi="currentBangumi"></quick-bangumi>
   </div>
 </template>
 
@@ -19,6 +23,7 @@ export default defineComponent({
 
   data() {
     return {
+      isQuickBangumi: false,
       currentBangumi: undefined as undefined | Record<string, any>
     }
   },
@@ -26,10 +31,16 @@ export default defineComponent({
   methods: {
     onSelect(item: Record<string, any>) {
       this.currentBangumi = item
+      this.isQuickBangumi = true
     }
   }
 })
 </script>
 
 <style lang="scss">
+.anime-home {
+  #anime-home-main {
+    width: 0;
+  }
+}
 </style>

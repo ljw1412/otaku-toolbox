@@ -1,27 +1,28 @@
 <template>
-  <header class="app-title-bar">
+  <header class="app-title-bar app-drag">
     <div class="title-bar-left">
       <span>二次元工具箱</span>
       <span v-if="finalTitle">- {{ finalTitle }}</span>
     </div>
-    <div class="title-bar-right mr-8 fs-24 app-no-drag d-flex align-items-center">
-      <skin-pop inner-class="mr-6 fs-20 cursor-pointer"></skin-pop>
-      <acg-icon name="remove"
-        @click="minWindow"></acg-icon>
-      <acg-icon name="close"
-        @click="closeWindow"></acg-icon>
+    <div class="title-bar-right app-no-drag h-100 fs-28 d-flex align-items-center">
+      <div class="app-controll-btn btn-min">
+        <acg-icon name="remove"
+          @click="minWindow"></acg-icon>
+      </div>
+      <div class="app-controll-btn btn-close">
+        <acg-icon name="close"
+          @click="closeWindow"></acg-icon>
+      </div>
     </div>
   </header>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import SkinPop from './SkinPop.vue'
-const { ipcRenderer } = window.electron
+import { ipcSend } from '/@/utils/electron'
 
 export default defineComponent({
   name: 'AppTitleBar',
-  components: { SkinPop },
   props: { title: { type: String, default: '' } },
   computed: {
     metaTitle(): string {
@@ -33,10 +34,10 @@ export default defineComponent({
   },
   methods: {
     minWindow() {
-      ipcRenderer.send('window.action', 'min')
+      ipcSend('window.action', 'min')
     },
     closeWindow() {
-      ipcRenderer.send('window.action', 'close')
+      ipcSend('window.action', 'close')
     }
   }
 })
@@ -53,7 +54,6 @@ export default defineComponent({
   min-height: var(--title-bar-height);
   color: var(--title-text-color);
   background-color: var(--title-bar-color);
-  -webkit-app-region: drag;
 
   display: flex;
   justify-content: space-between;
@@ -64,7 +64,19 @@ export default defineComponent({
   }
 
   .title-bar-right {
-    -webkit-app-region: no-drag;
+  }
+
+  .app-controll-btn {
+    width: 50px;
+    height: 100%;
+    line-height: 50px;
+    text-align: center;
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.25);
+    }
+    &.btn-close:hover {
+      background-color: rgba(223, 0, 0, 0.95);
+    }
   }
 }
 </style>

@@ -5,9 +5,10 @@
     </div>
     <div v-show="list.length"
       class="line position-absolute"></div>
-    <ul>
+    <transition-group name="fade"
+      tag="ul">
       <li v-for="(item,index) of list"
-        :key="index"
+        :key="index+(item.title['zh_CN']||'')"
         class="item fs-14 w-100 mb-10 pl-20 cursor-pointer">
         <div class="position-relative">
           <div class="line-dot position-absolute"></div>
@@ -25,7 +26,7 @@
           </div>
         </div>
       </li>
-    </ul>
+    </transition-group>
   </div>
 </template>
 
@@ -104,7 +105,7 @@ export default defineComponent({
     .item {
       box-sizing: border-box;
       .bangumi:hover {
-        background-color: rgba(255, 255, 255, 0.25);
+        background-color: rgba(165, 165, 165, 0.25);
       }
     }
   }

@@ -1,5 +1,6 @@
 <template>
-  <acg-tooltip placement="bottom-end"
+  <acg-tooltip :placement="placement"
+    :offset="offset"
     :interactive="true"
     animation="perspective-extreme"
     trigger="click"
@@ -10,7 +11,7 @@
 
     <template #content>
       <div class="skin-pop">
-        <div class="fs-14 my-10 title">
+        <div class="fs-14 my-10 title font-weight-bold">
           切换主题
         </div>
         <ul class="skin-picker d-grid">
@@ -18,7 +19,7 @@
             :key="item.name"
             class="skin-item text-center"
             @click="changeTheme(item.value)">
-            <div class="color-block d-flex justify-content-center align-items-center"
+            <div class="color-block d-flex justify-content-center align-items-center cursor-pointer"
               :style="{'backgroundColor':`var(--skin-${item.color})`}">
               <acg-icon v-if="item.value === current"
                 name="checkmark-sharp"
@@ -40,7 +41,11 @@ import { defineComponent } from 'vue'
 
 export default defineComponent({
   name: 'SkinPop',
-  props: { innerClass: { type: [String, Object], default: '' } },
+  props: {
+    innerClass: { type: [String, Object], default: '' },
+    placement: { type: String, default: 'bottom-end' },
+    offset: { type: Array, default: () => [0, 10] }
+  },
   data() {
     return {
       current: '',

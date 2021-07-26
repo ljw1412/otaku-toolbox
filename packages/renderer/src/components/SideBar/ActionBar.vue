@@ -1,15 +1,24 @@
 <template>
-  <div class="app-action-bar">
-    <acg-icon name="menu"
-      :size="28"></acg-icon>
+  <div class="app-action-bar app-no-drag">
+    <div class="action-btn">
+      <skin-pop inner-class="fs-24 cursor-pointer"
+        placement="right-end"
+        :offset="[0,40]"></skin-pop>
+    </div>
+    <div class="action-btn">
+      <acg-icon name="menu"
+        :size="28"></acg-icon>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import SkinPop from '/@/components/SkinPop.vue'
 
 export default defineComponent({
-  name: 'AppActionBar'
+  name: 'AppActionBar',
+  components: { SkinPop }
 })
 </script>
 
@@ -19,7 +28,14 @@ export default defineComponent({
   left: 0;
   bottom: 32px;
   width: 100%;
-  text-align: center;
-  -webkit-app-region: no-drag;
+
+  .action-btn {
+    height: 36px;
+    width: 36px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 5px auto;
+  }
 }
 </style>
