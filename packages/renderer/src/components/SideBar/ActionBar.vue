@@ -1,13 +1,13 @@
 <template>
   <div class="app-action-bar app-no-drag">
     <div class="action-btn">
-      <skin-pop inner-class="fs-24 cursor-pointer"
+      <skin-pop inner-class="fs-24"
         placement="right-end"
         :offset="[0,40]"></skin-pop>
     </div>
     <div class="action-btn">
-      <acg-icon name="menu"
-        :size="28"></acg-icon>
+      <menu-pop placement="right-end"
+        :offset="[0,40]"></menu-pop>
     </div>
   </div>
 </template>
@@ -15,10 +15,11 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import SkinPop from '/@/components/SkinPop.vue'
+import MenuPop from '/@/components/MenuPop.vue'
 
 export default defineComponent({
   name: 'AppActionBar',
-  components: { SkinPop }
+  components: { SkinPop, MenuPop }
 })
 </script>
 

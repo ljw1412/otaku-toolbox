@@ -1,37 +1,39 @@
 <template>
-  <div class="anime-timeline-picker px-10">
-    <span class="picker">{{ year }}</span>
-    <acg-tooltip :interactive="true"
-      placement="bottom-start"
-      theme="transparent"
-      content-class="timeline-season-picker"
-      :offset="[0,0]">
-      <span class="picker"
-        :style="{backgroundColor:`var(--bg-season-${season.value})`}">{{ season.name }}</span>
-      <template #content>
-        <span v-for="item of seasons"
-          :key="item.value"
-          :style="{backgroundColor:`var(--bg-season-${item.value})`}"
-          class="option cursor-pointer"
-          @click="onSeasonChange(item)">{{ item.name }}</span>
-      </template>
-    </acg-tooltip>
-    <acg-tooltip :interactive="true"
-      placement="bottom"
-      theme="transparent"
-      content-class="timeline-weekday-picker"
-      :offset="[14,0]">
-      <span class="picker">{{ weekday.name }}</span>
-      <template #content>
-        <span v-for="item of weekdays"
-          :key="item.value"
-          class="option cursor-pointer"
-          @click="onWeekdayChange(item)">{{ item.name }}</span>
-      </template>
-    </acg-tooltip>
+  <div class="anime-timeline-picker d-flex justify-content-between">
+    <span class="picker-title flex-grow-1 text-center fs-14">新番时间表</span>
+    <div class="fs-13">
+      <span class="picker">{{ year }}</span>
+      <acg-tooltip :interactive="true"
+        placement="bottom-start"
+        theme="transparent"
+        content-class="timeline-season-picker"
+        :offset="[0,0]">
+        <span class="picker">{{ season.name }}</span>
+        <template #content>
+          <span v-for="item of seasons"
+            :key="item.value"
+            :style="{backgroundColor:`var(--bg-season-${item.value})`}"
+            class="option cursor-pointer"
+            @click="onSeasonChange(item)">{{ item.name }}</span>
+        </template>
+      </acg-tooltip>
+      <acg-tooltip :interactive="true"
+        placement="bottom"
+        theme="transparent"
+        content-class="timeline-weekday-picker"
+        :offset="[14,0]">
+        <span class="picker">{{ weekday.name }}</span>
+        <template #content>
+          <span v-for="item of weekdays"
+            :key="item.value"
+            class="option cursor-pointer"
+            @click="onWeekdayChange(item)">{{ item.name }}</span>
+        </template>
+      </acg-tooltip>
 
-    <span class="picker"
-      @click="initDate">今:{{ todayDate }}</span>
+      <span class="picker"
+        @click="initDate">今:{{ todayDate }}</span>
+    </div>
   </div>
 </template>
 
@@ -120,7 +122,7 @@ export default defineComponent({
       const d = window.$dayjs(this.now)
       this.year = d.format('YYYY')
       const month = d.format('M')
-      this.season = this.seasons[(month - 1) / 3]
+      this.season = this.seasons[Math.floor((month - 1) / 3)]
       this.weekday = this.weekdays[d.isoWeekday() - 1]
       this.$emit('change', this.query)
     },
@@ -145,15 +147,21 @@ export default defineComponent({
 <style lang="scss">
 .anime-timeline-picker {
   height: 100%;
-  background-color: rgba($color: #047200, $alpha: 0.5);
-  color: #ffffff;
+  user-select: none;
+  border-bottom: 1px solid var(--border-color);
+  .picker-title {
+    line-height: var(--option-height);
+    border-right: 1px solid var(--border-color);
+  }
+
   .picker {
     display: inline-block;
-    padding: 0 8px;
+    padding: 0 12px;
     cursor: pointer;
     line-height: var(--option-height);
+
     &:hover {
-      background-color: rgba(255, 255, 255, 0.25);
+      background-color: rgba(192, 192, 192, 0.25);
     }
   }
 }

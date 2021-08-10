@@ -1,5 +1,5 @@
 <template>
-  <transition name="bounce">
+  <transition name="fade">
     <div v-show="show"
       class="quick-bangumi px-30 py-20 position-relative">
       <div class="quick-bangumi-close fs-36 cursor-pointer"

@@ -49,11 +49,13 @@ export default defineComponent({
   top: 0;
   right: 0;
   width: 100%;
+  box-sizing: border-box;
   height: var(--title-bar-height);
   max-height: var(--title-bar-height);
   min-height: var(--title-bar-height);
   color: var(--title-text-color);
   background-color: var(--title-bar-color);
+  border-bottom: 1px solid var(--border-color);
 
   display: flex;
   justify-content: space-between;

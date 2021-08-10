@@ -3,30 +3,29 @@
     <div class="anime-timeline-header">
       <timeline-picker @change="fetchTimeLine"></timeline-picker>
     </div>
-    <div v-show="list.length"
-      class="line position-absolute"></div>
-    <transition-group name="fade"
-      tag="ul">
+
+    <ul>
       <li v-for="(item,index) of list"
-        :key="index+(item.title['zh_CN']||'')"
-        class="item fs-14 w-100 mb-10 pl-20 cursor-pointer">
-        <div class="position-relative">
+        :key="index"
+        class="item fs-14 w-100 my-10 cursor-pointer">
+        <div class="position-relative pl-10">
           <div class="line-dot position-absolute"></div>
           <div>{{ formatDate(item.release).time }}</div>
         </div>
-        <div class="bangumi d-flex mt-4"
+        <div class="bangumi d-flex py-4 px-8"
           @click="onSelect(item)">
           <img :src="minImage(item.image)"
             width="80"
             height="80"
-            style="object-fit: cover;">
+            style="object-fit: cover;"
+            class="flex-shrink-0">
           <div class="ml-8">
             <div>{{ item.title['zh_CN'] }}</div>
             <div>共{{ item.episode }}集</div>
           </div>
         </div>
       </li>
-    </transition-group>
+    </ul>
   </div>
 </template>
 
@@ -91,7 +90,7 @@ export default defineComponent({
 .anime-timeline {
   --option-height: 36px;
   height: 100%;
-  box-shadow: 0 0 5px #cccccc;
+  background-color: var(--bg-bangumi-color);
   overflow: hidden;
 
   .anime-timeline-header {
@@ -110,20 +109,12 @@ export default defineComponent({
     }
   }
 
-  .line {
-    width: 2px;
-    height: 100%;
-    left: 10px;
-    background-color: var(--timeline-color, var(--title-bar-color));
-  }
-
   .line-dot {
-    width: 8px;
-    height: 8px;
+    width: 4px;
+    height: 12px;
     top: 50%;
-    left: -13px;
+    left: 0px;
     transform: translateY(-50%);
-    border-radius: 50%;
     background-color: var(--timeline-color, var(--title-bar-color));
   }
 }

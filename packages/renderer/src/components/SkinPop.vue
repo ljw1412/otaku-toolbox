@@ -5,8 +5,8 @@
     animation="perspective-extreme"
     trigger="click"
     :theme="tooltipTheme"
-    @show="onShow">
-    <acg-icon :class="innerClass"
+    @show="getTheme">
+    <acg-icon :class="['cursor-pointer',innerClass]"
       name="shirt"></acg-icon>
 
     <template #content>
@@ -21,7 +21,7 @@
             @click="changeTheme(item.value)">
             <div class="color-block d-flex justify-content-center align-items-center cursor-pointer"
               :style="{'backgroundColor':`var(--skin-${item.color})`}">
-              <acg-icon v-if="item.value === current"
+              <acg-icon v-if="item.value === theme"
                 name="checkmark-sharp"
                 size="20"
                 stroke="#ffffff"></acg-icon>
@@ -38,17 +38,13 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import BasePop from '/@/mixins/BasePop'
 
 export default defineComponent({
   name: 'SkinPop',
-  props: {
-    innerClass: { type: [String, Object], default: '' },
-    placement: { type: String, default: 'bottom-end' },
-    offset: { type: Array, default: () => [0, 10] }
-  },
+  mixins: [BasePop],
   data() {
     return {
-      current: '',
       colorList: [
         { name: '默认', value: '', color: 'blue' },
         { name: '热情红', value: 'red', color: 'red' },
@@ -57,20 +53,11 @@ export default defineComponent({
       ]
     }
   },
-  computed: {
-    tooltipTheme(): string {
-      return this.current === 'dark' ? 'material' : 'light'
-    }
-  },
 
   methods: {
     changeTheme(type: string) {
       window.$theme.set(type)
-      this.current = type
-    },
-
-    onShow() {
-      this.current = window.$theme.get()
+      this.theme = type
     }
   }
 })
