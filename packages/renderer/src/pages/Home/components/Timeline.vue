@@ -1,6 +1,6 @@
 <template>
-  <div class="anime-timeline position-relative w-25 flex-shrink-1">
-    <div class="anime-timeline-header">
+  <div class="bangumi-timeline position-relative">
+    <div class="bangumi-timeline-header">
       <timeline-picker @change="fetchTimeLine"></timeline-picker>
     </div>
 
@@ -87,13 +87,15 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-.anime-timeline {
+.bangumi-timeline {
   --option-height: 36px;
   height: 100%;
   background-color: var(--bg-bangumi-color);
+  border: 1px solid var(--border-color);
   overflow: hidden;
+  z-index: 100;
 
-  .anime-timeline-header {
+  .bangumi-timeline-header {
     height: var(--option-height);
   }
 

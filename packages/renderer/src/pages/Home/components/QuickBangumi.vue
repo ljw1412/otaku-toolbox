@@ -1,5 +1,5 @@
 <template>
-  <transition name="fade">
+  <transition name="right-in">
     <div v-show="show"
       class="quick-bangumi px-30 py-20 position-relative">
       <div class="quick-bangumi-close fs-36 cursor-pointer"
@@ -71,6 +71,10 @@ export default defineComponent({
 .quick-bangumi {
   box-sizing: border-box;
   min-height: 100%;
+  background-color: var(--bg-bangumi-color);
+  border: 1px solid var(--border-color);
+  border-right: none;
+
   .quick-bangumi-close {
     line-height: 1;
     position: absolute;
