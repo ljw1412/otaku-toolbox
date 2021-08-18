@@ -3,15 +3,15 @@
     <div class="home-grid d-grid h-100 position-relative">
       <div class="offical-message">
         <div class="banner h-50">
-轮播图
-</div>
+          轮播图
+        </div>
         <div class="notice h-50">
-官方信息
-</div>
+          官方信息
+        </div>
       </div>
       <div class="news">
-acg新闻
-</div>
+        acg新闻
+      </div>
       <div class="timeline">
         <timeline @select="onBangumiSelect"></timeline>
         <div class="bangumi-dialog position-absolute w-75 h-100">
@@ -67,6 +67,7 @@ export default defineComponent({
   .home-grid {
     display: grid;
     grid-template-columns: 37.5% 37.5% 25%;
+    grid-template-rows: repeat(3, 100%);
     overflow: hidden;
   }
 

@@ -1,10 +1,14 @@
 <template>
-  <div class="anime-home h-100 d-flex">
+  <div class="anime-home">
+    <button @click="onClick">
+按钮
+</button>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import { ipcSend } from '/@/utils/electron'
 
 export default defineComponent({
   name: 'AppAnimeHome',
@@ -14,7 +18,13 @@ export default defineComponent({
     return {}
   },
 
-  methods: {}
+  methods: {
+    onClick() {
+      console.log(this)
+
+      ipcSend('window.action', 'child', { url: 'https://www.bilibili.com' })
+    }
+  }
 })
 </script>
 

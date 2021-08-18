@@ -27,7 +27,7 @@ export default defineComponent({
 .app-action-bar {
   position: absolute;
   left: 0;
-  bottom: 32px;
+  bottom: 24px;
   width: 100%;
 
   .action-btn {

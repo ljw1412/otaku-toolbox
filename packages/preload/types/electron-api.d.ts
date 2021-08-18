@@ -4,6 +4,7 @@ interface ElectronApi {
 }
 
 declare interface Window {
+  tabId: number
   electron: Readonly<ElectronApi>
   electronRequire?: NodeRequire
 }

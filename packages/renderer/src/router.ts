@@ -1,20 +1,31 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import MainWrapper from '/@/wrappers/MainWrapper.vue'
+import TitleWrapper from '/@/wrappers/TitleWrapper.vue'
 import Home from '/@/pages/Home/index.vue'
 
 const routes = [
-  { path: '/', name: 'AppHome', component: Home, meta: { title: '首页' } },
+  { path: '/', redirect: { name: 'AppHome' } },
   {
-    path: '/anime',
-    name: 'AppAnimeHome',
-    component: () => import('/@/pages/Anime/Home/index.vue'),
-    meta: { title: '动画' }
+    path: '/main',
+    name: 'MainApp',
+    component: MainWrapper,
+    children: [
+      { path: '', name: 'AppHome', component: Home, meta: { title: '首页' } },
+      {
+        path: 'anime',
+        name: 'AppAnimeHome',
+        component: () => import('/@/pages/Anime/Home/index.vue'),
+        meta: { title: '动画' }
+      },
+      {
+        path: 'setting',
+        name: 'AppSetting',
+        component: () => import('/@/pages/Setting/index.vue'),
+        meta: { title: '设置' }
+      }
+    ]
   },
-  {
-    path: '/setting',
-    name: 'AppSetting',
-    component: () => import('/@/pages/Setting/index.vue'),
-    meta: { title: '设置' }
-  }
+  { path: '/view', name: 'TitleApp', component: TitleWrapper }
 ]
 
 export default createRouter({

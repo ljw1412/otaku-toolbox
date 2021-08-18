@@ -1,7 +1,8 @@
 import { app, BrowserWindow } from 'electron'
 import { join } from 'path'
 import { URL } from 'url'
-import ipcWindowAction from './ipc/windowAction'
+import IpcWindowAction from './ipc/windowAction'
+import newWindowHandler from './utils/newWindow'
 
 const isSingleInstance = app.requestSingleInstanceLock()
 
@@ -58,13 +59,17 @@ const createWindow = async () => {
    * @see https://github.com/electron/electron/issues/25012
    */
   mainWindow.on('ready-to-show', () => {
+    mainWindow?.webContents.executeJavaScript(`window.tabId=${mainWindow.id}`)
+  })
+  mainWindow.once('ready-to-show', () => {
     mainWindow?.show()
-    ipcWindowAction(mainWindow)
+    IpcWindowAction.bind()
     if (env.MODE === 'development') {
       mainWindow?.webContents.openDevTools()
     }
   })
 
+  newWindowHandler(mainWindow)
   /**
    * URL for main window.
    * Vite dev server for development.
@@ -87,6 +92,7 @@ app.on('second-instance', () => {
 })
 
 app.on('window-all-closed', () => {
+  IpcWindowAction.unbind()
   if (process.platform !== 'darwin') {
     app.quit()
   }

@@ -10,7 +10,7 @@
       name="shirt"></acg-icon>
 
     <template #content>
-      <div class="skin-pop">
+      <div class="skin-pop user-select-none">
         <div class="fs-14 my-10 title font-weight-bold">
           切换主题
         </div>

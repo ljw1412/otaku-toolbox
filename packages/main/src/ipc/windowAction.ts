@@ -1,16 +1,38 @@
-import { ipcMain } from 'electron'
+import { ipcMain, BrowserWindow } from 'electron'
 import { loadView } from '../views'
 
-export default function(mainWindow?: Electron.BrowserWindow | null): void {
-  if (!mainWindow) return
-  ipcMain.on('window.action', (e, type, data) => {
+const channel = 'window.action'
+
+function bind(): void {
+  ipcMain.on(channel, (e, type, data) => {
+    const { tabId } = data
+    const mWin = BrowserWindow.fromId(tabId)
+    console.log('[Tab]', type, tabId)
+
+    if (!mWin) {
+      console.log('[指令错误]', type, data)
+      return
+    }
+
     if (type === 'min') {
-      mainWindow.minimize()
+      mWin.minimize()
     } else if (type === 'close') {
-      mainWindow.destroy()
+      mWin.destroy()
     } else if (type === 'child') {
-      console.log(type, data)
-      loadView(mainWindow)
+      if (typeof data === 'object' && data.url) {
+        loadView(data)
+      }
     }
   })
+}
+
+function unbind(): void {
+  ipcMain.off(channel, () => {
+    console.log(`${channel} 结束监听`)
+  })
+}
+
+export default {
+  bind,
+  unbind
 }

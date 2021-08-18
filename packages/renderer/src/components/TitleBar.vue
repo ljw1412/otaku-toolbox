@@ -1,8 +1,12 @@
 <template>
-  <header class="app-title-bar app-drag">
+  <header class="app-title-bar app-drag"
+    :class="{mini}">
     <div class="title-bar-left">
-      <span>二次元工具箱</span>
-      <span v-if="finalTitle">- {{ finalTitle }}</span>
+      <span v-if="mode==='view'">{{ finalTitle }}</span>
+      <template v-else>
+        <span>二次元工具箱</span>
+        <span v-if="finalTitle">- {{ finalTitle }}</span>
+      </template>
     </div>
     <div class="title-bar-right app-no-drag h-100 fs-28 d-flex align-items-center">
       <div class="app-controll-btn btn-min">
@@ -23,7 +27,11 @@ import { ipcSend } from '/@/utils/electron'
 
 export default defineComponent({
   name: 'AppTitleBar',
-  props: { title: { type: String, default: '' } },
+  props: {
+    mini: Boolean,
+    mode: { type: String, default: '' },
+    title: { type: String, default: '' }
+  },
   computed: {
     metaTitle(): string {
       return this.$route.meta.title as string
@@ -61,6 +69,10 @@ export default defineComponent({
   justify-content: space-between;
   align-items: center;
 
+  &.mini {
+    --title-bar-height: 37px;
+  }
+
   .title-bar-left {
     margin-left: 16px;
   }
@@ -69,9 +81,9 @@ export default defineComponent({
   }
 
   .app-controll-btn {
-    width: 50px;
+    width: var(--title-bar-height);
     height: 100%;
-    line-height: 50px;
+    line-height: var(--title-bar-height);
     text-align: center;
     &:hover {
       background-color: rgba(255, 255, 255, 0.25);

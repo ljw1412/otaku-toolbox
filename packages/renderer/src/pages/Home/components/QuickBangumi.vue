@@ -28,7 +28,8 @@
           </div>
         </div>
         <div class="mt-20">
-          链接:<a :href="bangumi.url['zh_CN']">{{ bangumi.url['zh_CN'] }}</a>
+          链接:<a :href="bangumi.url['zh_CN']"
+            target="_blank">{{ bangumi.url['zh_CN'] }}</a>
         </div>
       </template>
     </div>
@@ -83,11 +84,24 @@ export default defineComponent({
 
     &:hover {
       background-color: rgba(100, 100, 100, 0.25);
+      overflow: hidden;
+      .acg-icon {
+        animation: arrow-actived 1s ease-in-out infinite;
+      }
     }
   }
 
   .cover {
     width: 100%;
+  }
+}
+
+@keyframes arrow-actived {
+  50% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(100%);
   }
 }
 </style>
