@@ -7,6 +7,8 @@
         <acg-icon name="arrow-forward-sharp"></acg-icon>
       </div>
       <template v-if="bangumi">
+        <div class="quick-bangumi-bg position-absolute w-100 h-100"
+          :style="{backgroundImage:`url(${bangumi.image})`}"></div>
         <div class="title mb-20">
           <h1>{{ bangumi.title['zh_CN'] }}</h1>
           <p><i>{{ bangumi.title['ja_JP'] }}</i></p>
@@ -75,6 +77,19 @@ export default defineComponent({
   background-color: var(--bg-bangumi-color);
   border: 1px solid var(--border-color);
   border-right: none;
+  z-index: 10;
+
+  .quick-bangumi-bg {
+    top: 0;
+    left: 0;
+    z-index: -1;
+    opacity: 0.25;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    filter: blur(2px);
+    transform: scale(1.05);
+  }
 
   .quick-bangumi-close {
     line-height: 1;

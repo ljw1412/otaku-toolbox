@@ -1,8 +1,11 @@
 <template>
   <header class="app-title-bar app-drag"
     :class="{mini}">
-    <div class="title-bar-left">
-      <span v-if="mode==='view'">{{ finalTitle }}</span>
+    <div class="title-bar-left"
+      :class="{'h-100': subnav.length}">
+      <subnav-bar v-if="subnav.length"
+        :list="subnav"></subnav-bar>
+      <span v-else-if="mode==='view'">{{ finalTitle }}</span>
       <template v-else>
         <span>二次元工具箱</span>
         <span v-if="finalTitle">- {{ finalTitle }}</span>
@@ -23,10 +26,13 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import SubnavBar from './SubnavBar.vue'
 import { ipcSend } from '/@/utils/electron'
 
 export default defineComponent({
   name: 'AppTitleBar',
+  components: { SubnavBar },
+  inject: ['golbalConfig'],
   props: {
     mini: Boolean,
     mode: { type: String, default: '' },
@@ -38,6 +44,10 @@ export default defineComponent({
     },
     finalTitle(): string {
       return this.title || this.metaTitle
+    },
+    subnav() {
+      if (!this.golbalConfig) return []
+      return this.golbalConfig.subnav
     }
   },
   methods: {

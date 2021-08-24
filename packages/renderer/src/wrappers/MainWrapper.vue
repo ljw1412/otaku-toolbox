@@ -6,22 +6,52 @@
       <title-bar></title-bar>
       <main id="app-main"
         class="app-main">
-        <router-view />
+        <router-view v-slot="{ Component, route }">
+          <keep-alive>
+            <component :is="Component"
+              :key="route.name || undefined" />
+          </keep-alive>
+        </router-view>
       </main>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, reactive } from 'vue'
+import getSubnav from '/@/configs/subnav'
 import TitleBar from '../components/TitleBar.vue'
 import SideBar from '../components/SideBar/SideBar.vue'
+
+const config = reactive({ module: '', subnav: [] })
 
 export default defineComponent({
   name: 'MainApp',
   components: {
     TitleBar,
     SideBar
+  },
+  provide() {
+    return {
+      golbalConfig: config
+    }
+  },
+  beforeRouteUpdate(to) {
+    this.updateConfigFromMeta(to.meta)
+  },
+  computed: {
+    config() {
+      return config
+    }
+  },
+  created() {
+    this.updateConfigFromMeta(this.$route.meta)
+  },
+  methods: {
+    updateConfigFromMeta(meta: Record<string, any>) {
+      const data = { module: meta.module, subnav: getSubnav(meta.module) }
+      Object.assign(config, data)
+    }
   }
 })
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <div class="app-home p-20">
+  <div class="app-home p-16">
     <div class="home-grid d-grid h-100 position-relative">
       <div class="offical-message">
         <div class="banner h-50">

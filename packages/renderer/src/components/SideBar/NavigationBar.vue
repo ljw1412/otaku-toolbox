@@ -4,8 +4,8 @@
       <li v-for="item of list"
         :key="item.name"
         class="d-flex justify-content-center align-items-center py-6 mb-4"
-        :class="{active:item.pageName === $route.name}"
-        @click="navigate(item.to)">
+        :class="{active:item.module === golbalConfig.module}"
+        @click="navigate(item.to,item)">
         <acg-icon :name="item.icon"
           size="18" />
         <span class="ml-8">{{ item.name }}</span>
@@ -21,6 +21,8 @@ import type { RouteLocationRaw } from 'vue-router'
 export default defineComponent({
   name: 'AppNavigationBar',
 
+  inject: ['golbalConfig'],
+
   data() {
     return {
       list: [
@@ -28,28 +30,36 @@ export default defineComponent({
           name: '首页',
           icon: 'home',
           to: { name: 'AppHome' },
-          pageName: 'AppHome'
+          module: 'home'
         },
         {
           name: '动画',
           icon: 'film',
           to: { name: 'AppAnimeHome' },
-          pageName: 'AppAnimeHome'
+          module: 'anime'
         },
-        { name: '漫画', icon: 'book', to: { name: '' }, pageName: '' },
+        {
+          name: '漫画',
+          icon: 'book',
+          to: { name: '' },
+          module: 'comic'
+        },
         {
           name: '游戏',
           icon: 'game-controller',
           to: { name: '' },
-          pageName: ''
+          module: 'game'
         }
       ]
     }
   },
 
   methods: {
-    navigate(to: RouteLocationRaw) {
+    navigate(to: RouteLocationRaw, data: { module: string }) {
       this.$router.push(to)
+      if (this.golbalConfig) {
+        this.golbalConfig.module = data.module
+      }
     }
   }
 })

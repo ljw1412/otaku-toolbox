@@ -17,6 +17,7 @@
           <img :src="minImage(item.image)"
             width="80"
             height="80"
+            loading="lazy"
             style="object-fit: cover;"
             class="flex-shrink-0">
           <div class="ml-8">

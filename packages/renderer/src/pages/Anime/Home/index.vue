@@ -1,8 +1,8 @@
 <template>
   <div class="anime-home">
     <button @click="onClick">
-按钮
-</button>
+      按钮
+    </button>
   </div>
 </template>
 

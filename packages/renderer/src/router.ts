@@ -10,12 +10,23 @@ const routes = [
     name: 'MainApp',
     component: MainWrapper,
     children: [
-      { path: '', name: 'AppHome', component: Home, meta: { title: '首页' } },
       {
-        path: 'anime',
+        path: '',
+        name: 'AppHome',
+        component: Home,
+        meta: { title: '首页', module: 'home' }
+      },
+      {
+        path: 'anime-home',
         name: 'AppAnimeHome',
         component: () => import('/@/pages/Anime/Home/index.vue'),
-        meta: { title: '动画' }
+        meta: { title: '动画-首页', module: 'anime' }
+      },
+      {
+        path: 'anime-index',
+        name: 'AppAnimeIndex',
+        component: () => import('/@/pages/Anime/Index/index.vue'),
+        meta: { title: '动画-索引', module: 'anime' }
       },
       {
         path: 'setting',
