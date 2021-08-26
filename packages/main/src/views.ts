@@ -1,6 +1,7 @@
 import { BrowserView, BrowserWindow } from 'electron'
 import { join } from 'path'
 import { getPageUrl } from './utils/pageUrl'
+import newWindowHandler from './utils/newWindow'
 
 const env = import.meta.env
 
@@ -32,6 +33,10 @@ export function loadView(data: Record<string, any>): BrowserWindow {
       newWin.webContents.openDevTools()
     }
   })
+  newWin.on('close', () => {
+    //@ts-ignore
+    view.webContents.destroy()
+  })
 
   const view = new BrowserView()
   newWin.setBrowserView(view)
@@ -42,5 +47,6 @@ export function loadView(data: Record<string, any>): BrowserWindow {
     console.log(title)
     newWin.webContents.executeJavaScript(`document.title='${title}'`)
   })
+  newWindowHandler(view)
   return newWin
 }

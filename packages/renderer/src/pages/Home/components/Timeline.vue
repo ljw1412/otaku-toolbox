@@ -7,12 +7,12 @@
     <ul>
       <li v-for="(item,index) of list"
         :key="index"
-        class="item fs-14 w-100 my-10 cursor-pointer">
+        class="item fs-14 w-100 my-10">
         <div class="position-relative pl-10">
           <div class="line-dot position-absolute"></div>
           <div>{{ formatDate(item.release).time }}</div>
         </div>
-        <div class="bangumi d-flex py-4 px-8"
+        <div class="bangumi d-flex py-4 px-8 cursor-pointer"
           @click="onSelect(item)">
           <img :src="minImage(item.image)"
             width="80"

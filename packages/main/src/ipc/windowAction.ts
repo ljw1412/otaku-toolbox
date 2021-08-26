@@ -17,7 +17,7 @@ function bind(): void {
     if (type === 'min') {
       mWin.minimize()
     } else if (type === 'close') {
-      mWin.destroy()
+      mWin.close()
     } else if (type === 'child') {
       if (typeof data === 'object' && data.url) {
         loadView(data)

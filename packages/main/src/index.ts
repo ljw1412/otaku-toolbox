@@ -3,8 +3,11 @@ import { join } from 'path'
 import IpcWindowAction from './ipc/windowAction'
 import newWindowHandler from './utils/newWindow'
 import { getPageUrl } from './utils/pageUrl'
+import * as storage from './utils/storage'
 
 const isSingleInstance = app.requestSingleInstanceLock()
+
+storage.init(join(app.getAppPath(), 'data'))
 
 if (!isSingleInstance) {
   app.quit()

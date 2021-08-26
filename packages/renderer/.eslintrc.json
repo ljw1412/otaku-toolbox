@@ -16,8 +16,6 @@
     "vue/max-attributes-per-line": "off",
     "vue/html-closing-bracket-newline": "off",
     "vue/html-indent": "off",
-    "vue/html-self-closing": "off",
-    "@typescript-eslint/explicit-module-boundary-types": "off",
-    "@typescript-eslint/ban-ts-comment": "off"
+    "vue/html-self-closing": "off"
   }
 }
