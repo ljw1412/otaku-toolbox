@@ -1,6 +1,6 @@
 import { createApp } from 'vue'
-import * as dayjs from 'dayjs'
-import * as isoWeek from 'dayjs/plugin/isoWeek'
+import dayjs from 'dayjs'
+import isoWeek from 'dayjs/plugin/isoWeek'
 import App from '/@/App.vue'
 import router from '/@/router'
 import themeHelper from '/@/utils/theme'

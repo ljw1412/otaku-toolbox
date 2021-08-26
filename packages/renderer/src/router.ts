@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router'
 import MainWrapper from '/@/wrappers/MainWrapper.vue'
 import TitleWrapper from '/@/wrappers/TitleWrapper.vue'
 import Home from '/@/pages/Home/index.vue'
@@ -41,5 +41,5 @@ const routes = [
 
 export default createRouter({
   routes,
-  history: createWebHistory()
+  history: createWebHashHistory()
 })

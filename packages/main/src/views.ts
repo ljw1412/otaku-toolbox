@@ -1,6 +1,6 @@
 import { BrowserView, BrowserWindow } from 'electron'
 import { join } from 'path'
-import { URL } from 'url'
+import { getPageUrl } from './utils/pageUrl'
 
 const env = import.meta.env
 
@@ -21,14 +21,7 @@ export function loadView(data: Record<string, any>): BrowserWindow {
     }
   })
 
-  const pageUrl =
-    env.MODE === 'development'
-      ? 'http://localhost:3000/view'
-      : new URL(
-          '../renderer/dist/index.html/view',
-          'file://' + __dirname
-        ).toString()
-
+  const pageUrl = getPageUrl('view')
   newWin.loadURL(pageUrl)
   newWin.on('ready-to-show', () => {
     newWin.webContents.executeJavaScript(`window.tabId=${newWin.id}`)

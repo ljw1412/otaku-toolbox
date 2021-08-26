@@ -1,8 +1,8 @@
 import { app, BrowserWindow } from 'electron'
 import { join } from 'path'
-import { URL } from 'url'
 import IpcWindowAction from './ipc/windowAction'
 import newWindowHandler from './utils/newWindow'
+import { getPageUrl } from './utils/pageUrl'
 
 const isSingleInstance = app.requestSingleInstanceLock()
 
@@ -75,10 +75,7 @@ const createWindow = async () => {
    * Vite dev server for development.
    * `file://../renderer/index.html` for production and test
    */
-  const pageUrl =
-    env.MODE === 'development'
-      ? (env.VITE_DEV_SERVER_URL as string) || 'http://localhost:3000/'
-      : new URL('../renderer/dist/index.html', 'file://' + __dirname).toString()
+  const pageUrl = getPageUrl('main')
 
   await mainWindow.loadURL(pageUrl)
 }
