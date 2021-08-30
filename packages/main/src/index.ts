@@ -77,6 +77,12 @@ const createWindow = async () => {
     }
   })
 
+  mainWindow.on('closed', () => {
+    BrowserWindow.getAllWindows().forEach(win => {
+      win.close()
+    })
+  })
+
   newWindowHandler(mainWindow)
   /**
    * URL for main window.
