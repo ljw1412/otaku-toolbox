@@ -1,11 +1,21 @@
-type ThemeTypes = 'default' | 'dark'
+interface ThemeItem {
+  name: string
+  value: string
+  type: string
+}
+
+interface ThemeData {
+  current: string
+  themes: ThemeItem[]
+}
 
 type ThemeHelper = {
-  themes: typeof themes
+  themes: ThemeItem[]
+  data: ThemeData
   init(): void
   get(): string
   set(name: string): void
-} & { [x in ThemeTypes]?: () => void }
+}
 
 interface Window {
   $theme: ThemeHelper

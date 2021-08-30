@@ -1,11 +1,22 @@
 import { contextBridge, ipcRenderer } from 'electron'
 
 const apiKey = 'electron'
+
+const ipc = {
+  ...ipcRenderer,
+  on: (...args) => {
+    ipcRenderer.on(...args)
+  },
+  off: (...args) => {
+    ipcRenderer.off(...args)
+  }
+} as Electron.IpcRenderer
+
 /**
  * @see https://github.com/electron/electron/issues/21437#issuecomment-573522360
  */
 const api: ElectronApi = {
-  ipcRenderer,
+  ipcRenderer: ipc,
   versions: process.versions
 }
 
@@ -17,6 +28,7 @@ if (import.meta.env.MODE !== 'test') {
    * @see https://www.electronjs.org/docs/api/context-bridge
    */
   contextBridge.exposeInMainWorld(apiKey, api)
+  // window[apiKey] = api
 } else {
   /**
    * Recursively Object.freeze() on objects and functions

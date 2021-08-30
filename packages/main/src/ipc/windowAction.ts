@@ -16,6 +16,12 @@ function bind(): void {
 
     if (type === 'min') {
       mWin.minimize()
+    } else if (type === 'max') {
+      if (mWin.isMaximized()) {
+        mWin.unmaximize()
+      } else {
+        mWin.maximize()
+      }
     } else if (type === 'close') {
       mWin.close()
     } else if (type === 'child') {

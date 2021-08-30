@@ -13,6 +13,10 @@ body,
   height: 100%;
 }
 
+body {
+  color: var();
+}
+
 ::-webkit-scrollbar {
   width: var(--scroll-bar-width);
 }
@@ -32,4 +36,10 @@ body,
 
 .app-drag {
   -webkit-app-region: drag;
+}
+
+.app-container {
+  height: 100%;
+  user-select: none;
+  overflow: hidden;
 }

@@ -1,25 +1,25 @@
 import { createApp } from 'vue'
-import dayjs from 'dayjs'
-import isoWeek from 'dayjs/plugin/isoWeek'
 import App from '/@/App.vue'
 import router from '/@/router'
-import themeHelper from '/@/utils/theme'
-import UI from '../UI/index'
+import AcgUI from '/@/../UI/index'
 import '@ljw1412/ionicons-sprite'
+
+import dayjs from 'dayjs'
+import isoWeek from 'dayjs/plugin/isoWeek'
+import themeHelper from '/@/utils/theme'
 
 import '/@/styles/preset/index.scss'
 import '/@/styles/other/common.css'
 
+dayjs.extend(isoWeek)
+themeHelper.init()
+
 window.$theme = themeHelper
 window.$dayjs = dayjs
-
-dayjs.extend(isoWeek)
-
-themeHelper.init()
 
 const app = createApp(App)
 
 app
   .use(router)
-  .use(UI)
+  .use(AcgUI)
   .mount('#app')

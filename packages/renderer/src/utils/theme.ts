@@ -1,12 +1,17 @@
+import { reactive } from 'vue'
+
 const STORE_KEY = 'app-theme'
 
 const themes = [
-  { name: '默认主题', value: '', type: 'default' },
-  { name: '黑暗主题', value: 'dark', type: 'dark' }
+  { name: '', value: '', type: 'ligth' },
+  { name: '黑暗', value: 'dark', type: 'dark' }
 ]
+
+const themeData = reactive({ current: '', themes })
 
 const themeHelper: ThemeHelper = {
   themes,
+  data: themeData,
   init(): void {
     this.set(this.get())
   },
@@ -17,14 +22,8 @@ const themeHelper: ThemeHelper = {
     const rootDataset = document.documentElement.dataset
     rootDataset.theme = name
     localStorage.setItem(STORE_KEY, name)
+    this.data.current = name
   }
 }
-
-themes.forEach(theme => {
-  const { value, type } = theme
-  themeHelper[type as ThemeTypes] = function() {
-    themeHelper.set(value)
-  }
-})
 
 export default themeHelper

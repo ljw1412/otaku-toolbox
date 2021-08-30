@@ -1,6 +1,7 @@
 import { app, BrowserWindow } from 'electron'
 import { join } from 'path'
 import IpcWindowAction from './ipc/windowAction'
+import baseListerner from './listeners/baseListener'
 import newWindowHandler from './utils/newWindow'
 import { getPageUrl } from './utils/pageUrl'
 import * as storage from './utils/storage'
@@ -55,15 +56,14 @@ const createWindow = async () => {
     }
   })
 
+  baseListerner(mainWindow)
+
   /**
    * If you install `show: true` then it can cause issues when trying to close the window.
    * Use `show: false` and listener events `ready-to-show` to fix these issues.
    *
    * @see https://github.com/electron/electron/issues/25012
    */
-  mainWindow.on('ready-to-show', () => {
-    mainWindow?.webContents.executeJavaScript(`window.tabId=${mainWindow.id}`)
-  })
   mainWindow.once('ready-to-show', () => {
     mainWindow?.show()
     IpcWindowAction.bind()

@@ -1,6 +1,5 @@
 <template>
-  <div class="app-setting">
-    设置页
+  <div class="app-container container-separate">
   </div>
 </template>
 
@@ -8,7 +7,7 @@
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-  name: 'AppSetting'
+  name: 'AppSeparateContainer'
 })
 </script>
 
