@@ -1,6 +1,6 @@
 import type { BrowserView, BrowserWindow } from 'electron'
 import { shell } from 'electron'
-import { loadView } from '../views'
+import { createBuiltInBrowser } from '../window'
 import acgAppConfig from '../default/config'
 
 async function openExternal(url: string) {
@@ -30,7 +30,7 @@ export default function(browerWindow: BrowserWindow | BrowserView): void {
         if (acgAppConfig.use_system_browser) {
           openExternal(url)
         } else {
-          loadView({ url })
+          createBuiltInBrowser({ url })
         }
       }
     }

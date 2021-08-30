@@ -6,7 +6,7 @@ import baseListerner from './listeners/baseListener'
 
 const env = import.meta.env
 
-export function loadView(data: Record<string, any>): BrowserWindow {
+export function createBuiltInBrowser(data: Record<string, any>): BrowserWindow {
   console.log(data)
 
   const newWin = new BrowserWindow({
@@ -39,7 +39,7 @@ export function loadView(data: Record<string, any>): BrowserWindow {
 
   const view = new BrowserView()
   newWin.setBrowserView(view)
-  view.setBounds({ x: 0, y: 36, width: 800, height: 600 - 36 })
+  view.setBounds({ x: 0, y: 40, width: 800, height: 600 - 40 })
   view.setAutoResize({ width: true, height: true })
   view.webContents.loadURL(data.url)
   view.webContents.on('page-title-updated', (e, title) => {
@@ -47,5 +47,37 @@ export function loadView(data: Record<string, any>): BrowserWindow {
     newWin.webContents.executeJavaScript(`document.title='${title}'`)
   })
   newWindowHandler(view)
+  return newWin
+}
+
+function safeBoolean(b?: boolean): boolean {
+  return b === undefined ? true : b
+}
+
+export function createBrowser(config: NewBrowerConfig): BrowserWindow {
+  const newWin = new BrowserWindow({
+    width: config.width || 1280,
+    height: config.height || 720,
+    frame: config.frame || false,
+    resizable: safeBoolean(config.resizable),
+    minimizable: safeBoolean(config.minimizable),
+    maximizable: safeBoolean(config.maximizable),
+    show: false,
+    webPreferences: {
+      preload: join(__dirname, '../../preload/dist/index.cjs'),
+      contextIsolation: env.MODE !== 'test', // Spectron tests can't work with contextIsolation: true
+      enableRemoteModule: env.MODE === 'test', // Spectron tests can't work with enableRemoteModule: false
+      webSecurity: false,
+      allowRunningInsecureContent: true
+    }
+  })
+  baseListerner(newWin)
+  newWin.loadURL(config.url)
+  newWin.once('ready-to-show', () => {
+    newWin.show()
+    if (env.MODE === 'development') {
+      newWin.webContents.openDevTools()
+    }
+  })
   return newWin
 }

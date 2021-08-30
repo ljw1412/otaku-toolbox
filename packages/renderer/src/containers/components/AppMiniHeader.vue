@@ -1,0 +1,35 @@
+<template>
+  <div class="app-mini-header app-drag d-flex align-items-center justify-content-between">
+    <div class="header-left pl-12 fs-13">
+      <span class="title">{{ title }}</span>
+    </div>
+    <div class="header-right pr-4">
+      <app-controls></app-controls>
+    </div>
+  </div>
+</template>
+
+<script lang="ts">
+import { defineComponent } from 'vue'
+import AppControls from './AppControls.vue'
+
+export default defineComponent({
+  name: 'AppMiniHeader',
+  components: {
+    AppControls
+  },
+  props: { title: { type: String, default: '' } }
+})
+</script>
+
+<style lang="scss">
+.app-mini-header {
+  width: 100%;
+  height: var(--app-header-mini-height);
+  color: var(--header-text-color);
+  background-color: var(--app-header-bg);
+
+  .title {
+  }
+}
+</style>

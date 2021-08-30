@@ -29,8 +29,6 @@ export function ipcOn(
     type: string,
     data: Record<string, any> = {}
   ) {
-    console.log('!!!!!')
-
     if (data.tabId === window.tabId) {
       listener(event, type, data)
     }
@@ -43,4 +41,20 @@ export function ipcOff(
 ) {
   const { ipcRenderer } = useElectron()
   ipcRenderer.off(channel, listener)
+}
+
+export function createBrowser(config: NewBrowerConfig) {
+  ipcSend('window.action', 'createBrowser', config)
+}
+
+export function createBuiltInBrowser(
+  url: string,
+  config?: Record<string, any>
+) {
+  ipcSend('window.action', 'built-in-browser', { ...config, url })
+}
+
+export function getAppConfig() {
+  const { ipcRenderer } = useElectron()
+  return ipcRenderer.invoke('config', 'getAppConfig')
 }

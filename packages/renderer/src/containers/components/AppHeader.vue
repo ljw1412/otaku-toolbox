@@ -1,11 +1,15 @@
 <template>
   <header class="app-header app-drag d-flex">
-    <div class="header-left flex-shrink-0">Otaku Tools</div>
+    <div class="header-left flex-shrink-0 d-flex">
+      <img class="logo m-auto pl-10"
+        height="30"
+        src="../../../assets/logo-text.svg">
+    </div>
     <header-center class="flex-grow-1">
       内容
     </header-center>
     <div class="header-right flex-shrink-0 d-flex">
-      <app-controls></app-controls>
+      <app-controls class="m-auto mr-10"></app-controls>
     </div>
   </header>
 </template>

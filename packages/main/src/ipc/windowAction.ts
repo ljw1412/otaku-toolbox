@@ -1,5 +1,5 @@
 import { ipcMain, BrowserWindow } from 'electron'
-import { loadView } from '../views'
+import { createBrowser, createBuiltInBrowser } from '../window'
 
 const channel = 'window.action'
 
@@ -24,9 +24,13 @@ function bind(): void {
       }
     } else if (type === 'close') {
       mWin.close()
-    } else if (type === 'child') {
+    } else if (type === 'built-in-browser') {
       if (typeof data === 'object' && data.url) {
-        loadView(data)
+        createBuiltInBrowser(data)
+      }
+    } else if (type === 'createBrowser') {
+      if (typeof data === 'object' && data.url) {
+        createBrowser(data)
       }
     }
   })

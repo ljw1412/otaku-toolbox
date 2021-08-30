@@ -1,11 +1,13 @@
 import { app, BrowserWindow } from 'electron'
 import { join } from 'path'
 import IpcWindowAction from './ipc/windowAction'
+import IpcConfigAction from './ipc/configAction'
 import baseListerner from './listeners/baseListener'
 import newWindowHandler from './utils/newWindow'
 import { getPageUrl } from './utils/pageUrl'
 import * as storage from './utils/storage'
 
+const IpcActions = [IpcWindowAction, IpcConfigAction]
 const isSingleInstance = app.requestSingleInstanceLock()
 
 storage.init(join(app.getAppPath(), 'data'))
@@ -66,7 +68,10 @@ const createWindow = async () => {
    */
   mainWindow.once('ready-to-show', () => {
     mainWindow?.show()
-    IpcWindowAction.bind()
+    IpcActions.forEach(action => {
+      action.bind()
+    })
+
     if (env.MODE === 'development') {
       mainWindow?.webContents.openDevTools()
     }
@@ -92,7 +97,9 @@ app.on('second-instance', () => {
 })
 
 app.on('window-all-closed', () => {
-  IpcWindowAction.unbind()
+  IpcActions.forEach(action => {
+    action.unbind()
+  })
   if (process.platform !== 'darwin') {
     app.quit()
   }

@@ -6,14 +6,10 @@ export default function baseListerner(win: BrowserWindow) {
   })
 
   win.on('maximize', (e: IpcMainEvent) => {
-    console.log('maximize')
-
     e.sender.send('windowx', 'max', { isMaximized: true, tabId: e.sender.id })
   })
 
   win.on('unmaximize', (e: IpcMainEvent) => {
-    console.log('unmaximize')
-
     e.sender.send('windowx', 'max', { isMaximized: false, tabId: e.sender.id })
   })
 }

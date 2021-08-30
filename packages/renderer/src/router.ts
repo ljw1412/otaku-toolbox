@@ -5,7 +5,7 @@ import SeparateRoutes from '/@/routes/separate'
 const routes = [
   { path: '/', redirect: { name: 'AppHome' } },
   MainRoutes,
-  SeparateRoutes
+  ...SeparateRoutes
 ]
 
 const router = createRouter({

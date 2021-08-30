@@ -6,7 +6,8 @@ const env = import.meta.env
  * @param path 路由地址，不用加上'#/'(函数自动会加的)
  */
 export function getPageUrl(path?: string): string {
-  const hash = path ? `#/${path}` : ''
+  if (path && !path.startsWith('/')) path = `/${path}`
+  const hash = path ? `#${path}` : ''
   if (env.MODE === 'development') {
     return (env.VITE_DEV_SERVER_URL || 'http://localhost:3000/') + hash
   }

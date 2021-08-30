@@ -18,7 +18,7 @@ const themeHelper: ThemeHelper = {
   get(): string {
     return localStorage.getItem(STORE_KEY) || ''
   },
-  set(name: string): void {
+  set(name = ''): void {
     const rootDataset = document.documentElement.dataset
     rootDataset.theme = name
     localStorage.setItem(STORE_KEY, name)
