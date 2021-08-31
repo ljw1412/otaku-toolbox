@@ -1,13 +1,11 @@
 import { app, BrowserWindow } from 'electron'
 import { join } from 'path'
-import IpcWindowAction from './ipc/windowAction'
-import IpcConfigAction from './ipc/configAction'
+import BaseAction from './ipc/index'
 import baseListerner from './listeners/baseListener'
 import newWindowHandler from './utils/newWindow'
 import { getPageUrl } from './utils/pageUrl'
 import * as storage from './utils/storage'
 
-const IpcActions = [IpcWindowAction, IpcConfigAction]
 const isSingleInstance = app.requestSingleInstanceLock()
 
 storage.init(join(app.getAppPath(), 'data'))
@@ -48,7 +46,7 @@ const createWindow = async () => {
     minHeight: 720,
     show: false, // Use 'ready-to-show' event to show window
     frame: false,
-
+    title: '二次元工具箱',
     webPreferences: {
       preload: join(__dirname, '../../preload/dist/index.cjs'),
       contextIsolation: env.MODE !== 'test', // Spectron tests can't work with contextIsolation: true
@@ -68,9 +66,7 @@ const createWindow = async () => {
    */
   mainWindow.once('ready-to-show', () => {
     mainWindow?.show()
-    IpcActions.forEach(action => {
-      action.bind()
-    })
+    BaseAction.bind()
 
     if (env.MODE === 'development') {
       mainWindow?.webContents.openDevTools()
@@ -103,9 +99,7 @@ app.on('second-instance', () => {
 })
 
 app.on('window-all-closed', () => {
-  IpcActions.forEach(action => {
-    action.unbind()
-  })
+  BaseAction.unbind()
   if (process.platform !== 'darwin') {
     app.quit()
   }

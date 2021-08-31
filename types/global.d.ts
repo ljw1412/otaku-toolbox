@@ -11,4 +11,5 @@ interface NewBrowerConfig {
   maximizable?: boolean
   resizable?: boolean
   frame?: boolean
+  singleInstance?: boolean
 }

@@ -9,7 +9,12 @@
       内容
     </header-center>
     <div class="header-right flex-shrink-0 d-flex">
-      <app-controls class="m-auto mr-10"></app-controls>
+      <app-controls class="m-auto mr-10">
+        <div class="app-control-btn btn-menu">
+          <acg-icon name="ellipsis-vertical"
+            size="18"></acg-icon>
+        </div>
+      </app-controls>
     </div>
   </header>
 </template>

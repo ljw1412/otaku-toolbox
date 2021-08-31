@@ -14,7 +14,8 @@ type ThemeHelper = {
   data: ThemeData
   init(): void
   get(): string
-  set(name: string): void
+  set(name?: string): void
+  update(name?: string): void
 }
 
 interface Window {

@@ -29,9 +29,9 @@ export function ipcOn(
     type: string,
     data: Record<string, any> = {}
   ) {
-    if (data.tabId === window.tabId) {
-      listener(event, type, data)
-    }
+    console.log(type, data)
+
+    listener(event, type, data)
   })
 }
 
@@ -43,10 +43,19 @@ export function ipcOff(
   ipcRenderer.off(channel, listener)
 }
 
+/**
+ * 创建独立窗体
+ * @param config 浏览器配置
+ */
 export function createBrowser(config: NewBrowerConfig) {
   ipcSend('window.action', 'createBrowser', config)
 }
 
+/**
+ * 创建内置浏览器
+ * @param url 地址
+ * @param config 参数
+ */
 export function createBuiltInBrowser(
   url: string,
   config?: Record<string, any>
@@ -54,6 +63,10 @@ export function createBuiltInBrowser(
   ipcSend('window.action', 'built-in-browser', { ...config, url })
 }
 
+/**
+ * 获取app配置
+ * @returns 配置
+ */
 export function getAppConfig() {
   const { ipcRenderer } = useElectron()
   return ipcRenderer.invoke('config', 'getAppConfig')

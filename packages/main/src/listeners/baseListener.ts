@@ -6,10 +6,16 @@ export default function baseListerner(win: BrowserWindow) {
   })
 
   win.on('maximize', (e: IpcMainEvent) => {
-    e.sender.send('windowx', 'max', { isMaximized: true, tabId: e.sender.id })
+    e.sender.send('window.maximize', 'max', {
+      isMaximized: true,
+      tabId: e.sender.id
+    })
   })
 
   win.on('unmaximize', (e: IpcMainEvent) => {
-    e.sender.send('windowx', 'max', { isMaximized: false, tabId: e.sender.id })
+    e.sender.send('window.maximize', 'max', {
+      isMaximized: false,
+      tabId: e.sender.id
+    })
   })
 }

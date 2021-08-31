@@ -6,6 +6,7 @@
   --skin-green: #4caf50;
 
   --app-header-bg: var(--skin-blue);
+  --app-header-center-bg: rgba(233, 233, 233, 0.2);
 
   --bg-color: #f5f5f5;
   --border-color: #cccccc;
@@ -19,6 +20,16 @@
 
 :root[data-theme='dark'] {
   --app-header-bg: var(--skin-dark);
+  --app-header-center-bg: rgba(255, 255, 255, 0.05);
+
+  --bg-color: #333333;
+  --border-color: #555555;
+
+  --text-color: #cccccc;
+
+  --scrollbar-bg: #000000;
+  --scrollbar-thumb-bg: #666666;
+  --scrollbar-thumb-hover-bg: #999999;
 }
 
 :root[data-theme='red'] {

@@ -1,5 +1,6 @@
 <template>
   <div class="app-controls app-no-drag d-flex align-items-center">
+    <slot></slot>
     <div v-if="minimizable"
       class="app-control-btn btn-min"
       @click="windowAction('min')">
@@ -38,14 +39,14 @@ export default defineComponent({
     }
   },
   created() {
-    ipcOn('windowx', (e, type, { isMaximized }) => {
+    ipcOn('window.maximize', (e, type, { isMaximized }) => {
       if (type === 'max') {
         this.isMaximized = isMaximized
       }
     })
   },
   beforeUnmount() {
-    ipcOff('windowx')
+    ipcOff('window.maximize')
   },
   methods: {
     windowAction(action: 'min' | 'max' | 'close') {
@@ -60,21 +61,33 @@ export default defineComponent({
   font-size: 20px;
   line-height: 1;
   .app-control-btn {
-    color: #d3d3d3;
-    padding: 6px;
     display: inline-flex;
+    width: 32px;
+    height: 32px;
     flex-shrink: 0;
+    color: #d3d3d3;
     border-radius: 4px;
-    &.btn-max {
-      font-size: 16px;
-      padding: 8px;
+    .acg-icon {
+      margin: auto;
     }
+
+    &.btn-max {
+      font-size: 18px;
+    }
+
+    &.btn-max {
+      .acg-icon {
+        transform: scaleX(-1);
+      }
+    }
+
+    &.btn-close:hover {
+      background-color: #f95a44;
+    }
+
     &:hover {
       background-color: rgba(255, 255, 255, 0.25);
       color: #ffffff;
-    }
-    &.btn-close:hover {
-      background-color: #f95a44;
     }
     &:active {
       opacity: 0.8;

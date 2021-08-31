@@ -23,7 +23,7 @@ export function createBuiltInBrowser(data: Record<string, any>): BrowserWindow {
     }
   })
 
-  const pageUrl = getPageUrl('view')
+  const pageUrl = getPageUrl('browser')
   newWin.loadURL(pageUrl)
   baseListerner(newWin)
   newWin.once('ready-to-show', () => {
@@ -55,6 +55,16 @@ function safeBoolean(b?: boolean): boolean {
 }
 
 export function createBrowser(config: NewBrowerConfig): BrowserWindow {
+  if (config.singleInstance && config.title) {
+    const allWindows = BrowserWindow.getAllWindows()
+    const win = allWindows.find(win => win.getTitle() === config.title)
+    if (win) {
+      if (win.isMinimized()) win.restore()
+      win.focus()
+      return win
+    }
+  }
+
   const newWin = new BrowserWindow({
     width: config.width || 1280,
     height: config.height || 720,
@@ -62,6 +72,7 @@ export function createBrowser(config: NewBrowerConfig): BrowserWindow {
     resizable: safeBoolean(config.resizable),
     minimizable: safeBoolean(config.minimizable),
     maximizable: safeBoolean(config.maximizable),
+    title: config.title,
     show: false,
     webPreferences: {
       preload: join(__dirname, '../../preload/dist/index.cjs'),

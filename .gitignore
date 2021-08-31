@@ -5,6 +5,7 @@ dist
 thumbs.db
 types/env.d.ts
 data/
+src.temp/
 
 .eslintcache
 
