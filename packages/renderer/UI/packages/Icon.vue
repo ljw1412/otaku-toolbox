@@ -2,7 +2,8 @@
   <svg class="acg-icon"
     aria-hidden="true"
     :style="styles">
-    <use :xlink:href="iconName"></use>
+    <use :xlink:href="iconName"
+      v-bind="attrs"></use>
   </svg>
 </template>
 

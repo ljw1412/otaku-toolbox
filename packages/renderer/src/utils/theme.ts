@@ -3,9 +3,12 @@ import { ipcSend } from './electron'
 
 const STORE_KEY = 'app-theme'
 
-const themes = [
-  { name: '', value: '', type: 'ligth' },
-  { name: '黑暗', value: 'dark', type: 'dark' }
+export const themes = [
+  { name: '蓝色', value: '', type: 'ligth', variable: '--skin-blue' },
+  { name: '黑暗', value: 'dark', type: 'dark', variable: '--skin-dark' },
+  { name: '红色', value: 'red', type: 'ligth', variable: '--skin-red' },
+  { name: '粉色', value: 'pink', type: 'ligth', variable: '--skin-pink' },
+  { name: '绿色', value: 'green', type: 'ligth', variable: '--skin-green' }
 ]
 
 const themeData = reactive({ current: '', themes })
@@ -21,16 +24,16 @@ const themeHelper: ThemeHelper = {
     return localStorage.getItem(STORE_KEY) || ''
   },
   // 更新UI并保存主题名称到本地存储
-  set(name = ''): void {
-    this.update(name)
-    localStorage.setItem(STORE_KEY, name)
+  set(value = ''): void {
+    this.update(value)
+    localStorage.setItem(STORE_KEY, value)
     ipcSend('window.message', 'theme-updated')
   },
   // 更新UI
-  update(name = '') {
+  update(value = '') {
     const rootDataset = document.documentElement.dataset
-    rootDataset.theme = name
-    this.data.current = name
+    rootDataset.theme = value
+    this.data.current = value
   }
 }
 

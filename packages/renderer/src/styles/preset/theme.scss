@@ -5,7 +5,9 @@
   --skin-pink: #fb7299;
   --skin-green: #4caf50;
 
-  --app-header-bg: var(--skin-blue);
+  --app-theme: var(--skin-blue);
+
+  --app-header-bg: var(--app-theme);
   --app-header-center-bg: rgba(233, 233, 233, 0.2);
 
   --bg-color: #f5f5f5;
@@ -19,7 +21,7 @@
 }
 
 :root[data-theme='dark'] {
-  --app-header-bg: var(--skin-dark);
+  --app-theme: var(--skin-dark);
   --app-header-center-bg: rgba(255, 255, 255, 0.05);
 
   --bg-color: #333333;
@@ -33,13 +35,13 @@
 }
 
 :root[data-theme='red'] {
-  --app-header-bg: var(--skin-red);
+  --app-theme: var(--skin-red);
 }
 
 :root[data-theme='pink'] {
-  --app-header-bg: var(--skin-pink);
+  --app-theme: var(--skin-pink);
 }
 
 :root[data-theme='green'] {
-  --app-header-bg: var(--skin-green);
+  --app-theme: var(--skin-green);
 }

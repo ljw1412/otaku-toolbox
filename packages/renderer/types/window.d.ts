@@ -2,6 +2,7 @@ interface ThemeItem {
   name: string
   value: string
   type: string
+  variable: string
 }
 
 interface ThemeData {
@@ -14,8 +15,8 @@ type ThemeHelper = {
   data: ThemeData
   init(): void
   get(): string
-  set(name?: string): void
-  update(name?: string): void
+  set(value?: string): void
+  update(value?: string): void
 }
 
 interface Window {

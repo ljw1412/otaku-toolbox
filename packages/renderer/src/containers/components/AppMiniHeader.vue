@@ -11,7 +11,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import AppControls from './AppControls.vue'
+import AppControls from '../../components/AppControls.vue'
 
 export default defineComponent({
   name: 'AppMiniHeader',
@@ -24,10 +24,12 @@ export default defineComponent({
 
 <style lang="scss">
 .app-mini-header {
+  position: relative;
   width: 100%;
   height: var(--app-header-mini-height);
   color: var(--header-text-color);
   background-color: var(--app-header-bg);
+  z-index: 9999999;
 
   .title {
   }

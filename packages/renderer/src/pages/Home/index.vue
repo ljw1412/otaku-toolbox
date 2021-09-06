@@ -6,6 +6,9 @@
     <button @click="onClick2">
       设置
     </button>
+    <button @click="onClick3">
+      主题
+    </button>
     <button @click="setTheme()">默认主题</button>
     <button @click="setTheme('dark')">黑暗主题</button>
   </div>
@@ -39,6 +42,23 @@ export default defineComponent({
           maximizable: false,
           singleInstance: true,
           title: '系统设置'
+        })
+      } catch (error) {
+        console.error(error)
+      }
+    },
+    onClick3() {
+      try {
+        const route = this.$router.resolve({ name: 'AppTheme' })
+        createBrowser({
+          url: getPageUrl(route.href),
+          width: 640,
+          height: 480,
+          resizable: false,
+          minimizable: false,
+          maximizable: false,
+          singleInstance: true,
+          title: '主题'
         })
       } catch (error) {
         console.error(error)

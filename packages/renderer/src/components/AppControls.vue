@@ -1,12 +1,12 @@
 <template>
   <div class="app-controls app-no-drag d-flex align-items-center">
     <slot></slot>
-    <div v-if="minimizable"
+    <div v-if="minimizable && minimizableOfMeta"
       class="app-control-btn btn-min"
       @click="windowAction('min')">
       <acg-icon name="remove"></acg-icon>
     </div>
-    <div v-if="maximizable"
+    <div v-if="maximizable && maximizableOfMeta"
       class="app-control-btn btn-max"
       @click="windowAction('max')">
       <acg-icon :name="isMaximized?'copy-outline':'stop-outline'"></acg-icon>
@@ -25,16 +25,20 @@ import { safeBoolean } from '/@/utils/helper'
 
 export default defineComponent({
   name: 'AppControls',
+  props: {
+    minimizable: { type: Boolean, default: true },
+    maximizable: { type: Boolean, default: true }
+  },
   data() {
     return {
       isMaximized: false
     }
   },
   computed: {
-    minimizable() {
+    minimizableOfMeta(): boolean {
       return safeBoolean(this.$route.meta.minimizable as boolean, true)
     },
-    maximizable() {
+    maximizableOfMeta(): boolean {
       return safeBoolean(this.$route.meta.maximizable as boolean, true)
     }
   },
@@ -67,6 +71,8 @@ export default defineComponent({
     flex-shrink: 0;
     color: #d3d3d3;
     border-radius: 4px;
+    cursor: pointer;
+
     .acg-icon {
       margin: auto;
     }
