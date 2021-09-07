@@ -3,6 +3,7 @@
     <ul class="navigation app-no-drag">
       <li v-for="item of navigations"
         :key="item.value"
+        v-ripple
         class="navigation-item"
         :class="{ active: item.value === currentModule }"
         @click="navigate(item.to)">
@@ -47,6 +48,12 @@ export default defineComponent({
           value: 'game',
           icon: 'game-controller',
           to: { name: 'AppGame' }
+        },
+        {
+          name: '百宝箱',
+          value: '',
+          icon: 'cube',
+          to: { name: '' }
         }
       ]
     }
@@ -83,16 +90,19 @@ export default defineComponent({
       font-weight: bold;
       border-radius: 8px;
       cursor: pointer;
+      color: rgba(255, 255, 255, 0.3);
+      transition: font-size 0.3s, color 0.3s;
 
       &:hover {
         background-color: rgba(255, 255, 255, 0.2);
+        color: rgba(255, 255, 255, 0.75);
       }
 
       &.active {
         background-color: rgba(255, 255, 255, 0.3);
+        color: rgba(255, 255, 255, 1);
         .navigation-icon {
           font-size: 24px;
-          color: rgb(235, 179, 91);
         }
       }
     }
@@ -101,7 +111,6 @@ export default defineComponent({
       font-size: 20px;
       width: 28px;
       height: 28px;
-      transition: font-size 0.4s, color 0.4s;
       > .acg-icon {
         margin: auto;
       }
