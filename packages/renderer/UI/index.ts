@@ -3,6 +3,7 @@ import components from './packages'
 import * as directives from './directives'
 import { hyphenate } from '/@/utils/string'
 
+import './styles/variable.scss'
 import './styles/components/Tooltip'
 import './styles/directives/ripple.scss'
 

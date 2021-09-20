@@ -155,19 +155,13 @@ function updateRipple(
 
 export const Ripple = {
   beforeMount: (el: HTMLElement, binding: DirectiveBinding) => {
-    console.log('[beforeMount]', el)
-
     updateRipple(el, binding, false)
   },
   unmounted: (el: HTMLElement) => {
-    console.log('[unmounted]', el)
-
     delete el._ripple
     removeListeners(el)
   },
   updated: (el: HTMLElement, binding: DirectiveBinding) => {
-    console.log('[updated]', el)
-
     if (binding.value === binding.oldValue) return
     updateRipple(el, binding, isRippleEnabled(binding.oldValue))
   }
