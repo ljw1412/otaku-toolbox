@@ -1,0 +1,21 @@
+:root {
+  --app-header-height: 60px;
+  --app-header-mini-height: 40px;
+  --app-sub-navigation-height: 66px;
+
+  --side-bar-avatar-size: 50px;
+  --scroll-bar-width: 8px;
+
+  --page-width: 1080px;
+}
+
+.page-container {
+  width: var(--page-width);
+  margin: auto;
+}
+
+@media (min-width: 1701px) {
+  :root {
+    --page-width: 1680px;
+  }
+}

@@ -8,7 +8,7 @@ import dayjs from 'dayjs'
 import isoWeek from 'dayjs/plugin/isoWeek'
 import themeHelper from '/@/utils/theme'
 
-import '/@/styles/preset/index.scss'
+import '/@/styles/index.scss'
 import '/@/styles/other/common.css'
 
 dayjs.extend(isoWeek)
