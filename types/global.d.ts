@@ -7,6 +7,10 @@ interface NewBrowerConfig {
   title?: string
   width?: number
   height?: number
+  minWidth?: number
+  minHeight?: number
+  maxWidth?: number
+  maxHeight?: number
   minimizable?: boolean
   maximizable?: boolean
   resizable?: boolean

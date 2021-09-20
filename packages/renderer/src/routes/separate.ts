@@ -18,15 +18,21 @@ const routes = [
       {
         path: 'setting',
         name: 'AppSetting',
-        component: () => import('/@/pages/Setting/index.vue'),
+        component: import('/@/pages/Setting/index.vue'),
         meta: { title: '系统设置', minimizable: false, maximizable: false }
       },
       // 应用主题
       {
         path: '/theme',
         name: 'AppTheme',
-        component: () => import('/@/pages/Theme/index.vue'),
+        component: import('/@/pages/Theme/index.vue'),
         meta: { title: '主题', minimizable: false, maximizable: false }
+      },
+      {
+        path: '/anime/bangumi',
+        name: 'AnimeBangumiS',
+        component: import('/@/pages/Anime/Bangumi/index.vue'),
+        meta: { title: '新番表' }
       }
     ]
   }

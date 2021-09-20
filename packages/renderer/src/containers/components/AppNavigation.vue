@@ -86,20 +86,20 @@ export default defineComponent({
       justify-content: center;
       align-items: center;
       margin-right: 2px;
-      padding: 0 16px;
+      padding: 0 24px;
       font-weight: bold;
       border-radius: 8px;
       cursor: pointer;
-      color: rgba(255, 255, 255, 0.3);
+      color: rgba(255, 255, 255, 0.4);
       transition: font-size 0.3s, color 0.3s;
 
       &:hover {
-        background-color: rgba(255, 255, 255, 0.2);
+        background-color: rgba(255, 255, 255, 0.1);
         color: rgba(255, 255, 255, 0.75);
       }
 
       &.active {
-        background-color: rgba(255, 255, 255, 0.3);
+        background-color: rgba(255, 255, 255, 0.2);
         color: rgba(255, 255, 255, 1);
         .navigation-icon {
           font-size: 24px;

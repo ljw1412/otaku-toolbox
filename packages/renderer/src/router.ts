@@ -10,7 +10,16 @@ const routes = [
 
 const router = createRouter({
   routes,
-  history: createWebHashHistory()
+  history: createWebHashHistory(),
+  scrollBehavior(to, from, savedPosition) {
+    console.log('[scrollBehavior]', savedPosition)
+
+    if (savedPosition) {
+      return savedPosition
+    } else {
+      return { top: 0 }
+    }
+  }
 })
 
 if (import.meta.env.MODE === 'development') {

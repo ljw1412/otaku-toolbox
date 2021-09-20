@@ -11,6 +11,10 @@
     </button>
     <button @click="setTheme()">默认主题</button>
     <button @click="setTheme('dark')">黑暗主题</button>
+
+    loaders.css
+    csshake
+    magic.css
   </div>
 </template>
 
@@ -69,4 +73,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
+.app-home {
+  height: 1000px;
+}
 </style>

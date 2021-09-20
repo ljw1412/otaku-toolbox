@@ -29,3 +29,9 @@ type ThemeHelper = {
   set(value?: string): void
   update(value?: string): void
 }
+
+interface PageNavigationItem {
+  name: string
+  to?: RouteLocationRaw
+  url?: string
+}
