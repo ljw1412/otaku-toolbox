@@ -13,4 +13,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
+.anime-news {
+  height: 1000px;
+}
 </style>

@@ -29,7 +29,7 @@ export default defineComponent({
 .container-main {
   .app-main {
     height: calc(100% - var(--app-header-height));
-    overflow: auto;
+    overflow: hidden;
   }
 }
 </style>

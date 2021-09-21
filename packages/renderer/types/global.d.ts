@@ -7,6 +7,13 @@ interface HTMLElement {
     touched?: boolean
     isTouch?: boolean
   }
+  _watchScroll?: {
+    listener: Funciton
+    position: {
+      left: number
+      top: number
+    }
+  }
 }
 
 interface ThemeItem {

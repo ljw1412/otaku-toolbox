@@ -1,4 +1,13 @@
 import MainContainer from '/@/containers/Main.vue'
+import AppHome from '/@/pages/Home/index.vue'
+
+import AppAnime from '/@/pages/Anime/index.vue'
+import AnimeHome from '/@/pages/Anime/Home/index.vue'
+import AnimeNews from '/@/pages/Anime/News/index.vue'
+import AnimeBangumi from '/@/pages/Anime/Bangumi/index.vue'
+
+import AppComic from '/@/pages/Comic/index.vue'
+import AppGame from '/@/pages/Game/index.vue'
 
 const routes = {
   path: '/main',
@@ -9,14 +18,14 @@ const routes = {
     {
       path: 'home',
       name: 'AppHome',
-      component: import('/@/pages/Home/index.vue'),
-      meta: { module: 'home' }
+      component: AppHome,
+      meta: { module: 'home', scrollEl: '#app-main' }
     },
     // 动画
     {
       path: 'anime',
       name: 'AppAnime',
-      component: import('/@/pages/Anime/index.vue'),
+      component: AppAnime,
       meta: { module: 'anime' },
       redirect: { name: 'AnimeHome' },
       children: [
@@ -24,33 +33,33 @@ const routes = {
         {
           path: 'home',
           name: 'AnimeHome',
-          component: import('/@/pages/Anime/Home/index.vue')
+          component: AnimeHome
         },
         // 新闻资讯
         {
           path: 'news',
           name: 'AnimeNews',
-          component: import('/@/pages/Anime/News/index.vue')
+          component: AnimeNews
         },
         // 新番表
         {
           path: 'bangumi',
           name: 'AnimeBangumi',
-          component: import('/@/pages/Anime/Bangumi/index.vue')
+          component: AnimeBangumi
         }
       ]
     },
     {
       path: 'comic',
       name: 'AppComic',
-      component: import('/@/pages/Comic/index.vue'),
+      component: AppComic,
       meta: { module: 'comic' },
       children: []
     },
     {
       path: 'game',
       name: 'AppGame',
-      component: import('/@/pages/Game/index.vue'),
+      component: AppGame,
       meta: { module: 'game' },
       children: []
     }

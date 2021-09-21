@@ -1,4 +1,7 @@
 import SeparateContainer from '/@/containers/Separate.vue'
+import AppSetting from '/@/pages/Setting/index.vue'
+import AppTheme from '/@/pages/Theme/index.vue'
+import AnimeBangumiS from '/@/pages/Anime/Bangumi/index.vue'
 
 const routes = [
   // 内置浏览器
@@ -18,20 +21,20 @@ const routes = [
       {
         path: 'setting',
         name: 'AppSetting',
-        component: import('/@/pages/Setting/index.vue'),
+        component: AppSetting,
         meta: { title: '系统设置', minimizable: false, maximizable: false }
       },
       // 应用主题
       {
         path: '/theme',
         name: 'AppTheme',
-        component: import('/@/pages/Theme/index.vue'),
+        component: AppTheme,
         meta: { title: '主题', minimizable: false, maximizable: false }
       },
       {
         path: '/anime/bangumi',
         name: 'AnimeBangumiS',
-        component: import('/@/pages/Anime/Bangumi/index.vue'),
+        component: AnimeBangumiS,
         meta: { title: '新番表' }
       }
     ]

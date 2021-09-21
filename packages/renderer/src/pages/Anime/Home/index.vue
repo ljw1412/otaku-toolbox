@@ -1,6 +1,6 @@
 <template>
   <div class="anime-home">
-    <today-bangumi></today-bangumi>
+    <today-bangumi key="AnimeTodayBangumi"></today-bangumi>
   </div>
 </template>
 
@@ -12,6 +12,10 @@ export default defineComponent({
   name: 'AnimeHome',
   components: {
     TodayBangumi
+  },
+
+  data() {
+    return {}
   }
 })
 </script>

@@ -3,22 +3,40 @@
     <h2 class="py-10">
       <span>今日番剧</span>
     </h2>
-    <div class="today-bangumi-list pt-10">
-      <acg-card v-for="item of bangumiList"
-        :key="item.title"
-        class="bangumi-card"
-        no-border
-        hover-up
-        fill
-        @mouseenter="currentImage = item.cover">
-        <div class="cover">
-          <img :src="item.cover"
-            loading="lazy">
-        </div>
-        <div class="info px-16 py-10">
-          <h4 class="title text-truncate">{{ item.title }}</h4>
-        </div>
-      </acg-card>
+    <div v-watch-scroll
+      class="today-bangumi-list pt-10">
+      <!-- 骨架屏 -->
+      <template v-if="!isFirstLoaded">
+        <acg-card v-for="i of 3"
+          :key="`skeleton-bangumi-card-${i}`"
+          class="bangumi-card is-skeleton"
+          data-skeleton-animate
+          shadow="never"
+          no-border
+          fill>
+          <div class="cover skeleton-bg">
+          </div>
+          <div class="info px-16 py-10">
+            <h4 class="title text-truncate skeleton-bg"></h4>
+          </div>
+        </acg-card>
+      </template>
+      <template v-else>
+        <acg-card v-for="item of bangumiList"
+          :key="item.title"
+          class="bangumi-card"
+          no-border
+          hover-up
+          fill>
+          <div class="cover">
+            <img :src="item.cover"
+              loading="lazy">
+          </div>
+          <div class="info px-16 py-10">
+            <h4 class="title text-truncate">{{ item.title }}</h4>
+          </div>
+        </acg-card>
+      </template>
     </div>
   </div>
 </template>
@@ -30,7 +48,7 @@ export default defineComponent({
   name: 'AnimeTodayBangumi',
   data() {
     return {
-      currentImage: '',
+      isFirstLoaded: false,
       bangumiList: [
         {
           title: '见面5秒开始战斗',
@@ -59,20 +77,25 @@ export default defineComponent({
         }
       ]
     }
+  },
+  created() {
+    setTimeout(() => {
+      this.isFirstLoaded = true
+    }, 3000)
+  },
+  activated() {
+    this.$forceUpdate()
   }
 })
 </script>
 
 <style lang="scss">
-// @import '/@/styles/scss/index.scss';
-
 .today-bangumi {
   position: relative;
   min-height: 340px;
 
   &-list {
     display: flex;
-    // white-space: nowrap;
     overflow-x: auto;
     .bangumi-card {
       cursor: pointer;
@@ -96,7 +119,18 @@ export default defineComponent({
       }
       .info {
         .title {
+          font-size: 16px;
+          height: 22px;
+          line-height: 22px;
         }
+      }
+    }
+
+    .bangumi-card.is-skeleton {
+      cursor: default;
+      .title {
+        width: 60%;
+        border-radius: 4px;
       }
     }
   }

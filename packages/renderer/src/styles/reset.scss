@@ -26,17 +26,3 @@ body,
 ::-webkit-scrollbar-thumb:hover {
   background: var(--scrollbar-thumb-hover-bg);
 }
-
-.app-no-drag {
-  -webkit-app-region: no-drag;
-}
-
-.app-drag {
-  -webkit-app-region: drag;
-}
-
-.app-container {
-  height: 100%;
-  user-select: none;
-  overflow: hidden;
-}

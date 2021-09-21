@@ -1,5 +1,6 @@
 <template>
-  <div class="app-home">
+  <div v-watch-scroll
+    class="app-home">
     <button @click="onClick">
       内置浏览器
     </button>
@@ -15,6 +16,7 @@
     loaders.css
     csshake
     magic.css
+    <div style="height: 200%;width:200%;"></div>
   </div>
 </template>
 
@@ -74,6 +76,7 @@ export default defineComponent({
 
 <style lang="scss">
 .app-home {
-  height: 1000px;
+  height: 100%;
+  overflow: auto;
 }
 </style>
