@@ -1,10 +1,9 @@
-import { h, Slot, defineComponent, Text, VNode } from 'vue'
+import { h, defineComponent, VNode } from 'vue'
 import tippy, { followCursor, Instance, MultipleTargets } from 'tippy.js'
 import PopupManager from '../utils/popup-manager'
+import { safeSlot, textWrapper } from '../utils/vue-helper'
 
-function safeSlot(slot?: Slot) {
-  return slot && slot()
-}
+
 
 function getTrigger(trigger: string) {
   return trigger === 'hover' ? 'mouseenter' : trigger
@@ -15,13 +14,7 @@ function getMayBeBoolean(prop: any) {
   return prop === '' ? true : prop
 }
 
-function isText(e: any) {
-  return e === Text
-}
 
-function textWrapper(vnodes: VNode[]) {
-  return vnodes.map(item => (isText(item.type) ? h('span', item) : item))
-}
 
 export default defineComponent({
   name: 'AcgTooltip',
