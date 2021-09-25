@@ -6,7 +6,8 @@
     "baseUrl": ".",
     "jsx": "preserve",
     "paths": {
-      "/@/*": ["./src/*"]
+      "/@/*": ["./src/*"],
+      "/@UI/*": ["./UI/*"]
     },
     "lib": ["ESNext", "dom", "dom.iterable"]
   },

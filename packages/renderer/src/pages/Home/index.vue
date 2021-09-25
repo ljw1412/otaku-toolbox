@@ -12,11 +12,10 @@
     </button>
     <button @click="setTheme()">默认主题</button>
     <button @click="setTheme('dark')">黑暗主题</button>
-
+    村上春树
     loaders.css
     csshake
     magic.css
-    <div style="height: 200%;width:200%;"></div>
   </div>
 </template>
 

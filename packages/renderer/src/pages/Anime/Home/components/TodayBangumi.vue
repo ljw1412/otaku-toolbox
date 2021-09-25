@@ -1,8 +1,11 @@
 <template>
   <div class="today-bangumi">
-    <h2 class="py-10">
-      <span>今日番剧</span>
-    </h2>
+    <app-area-header title="今日番剧">
+      <template #left>
+        <div v-show="weekdayName"
+          class="today-bangumi-weekday">{{ weekdayName }}</div>
+      </template>
+    </app-area-header>
     <div v-watch-scroll
       class="today-bangumi-list pt-10">
       <!-- 骨架屏 -->
@@ -43,12 +46,14 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import { betterWeekdayName } from '/@/utils/date'
 
 export default defineComponent({
   name: 'AnimeTodayBangumi',
   data() {
     return {
       isFirstLoaded: false,
+      weekdayName: '',
       bangumiList: [
         {
           title: '见面5秒开始战斗',
@@ -82,9 +87,15 @@ export default defineComponent({
     setTimeout(() => {
       this.isFirstLoaded = true
     }, 3000)
+    this.updateWeekday()
   },
   activated() {
     this.$forceUpdate()
+  },
+  methods: {
+    updateWeekday() {
+      this.weekdayName = betterWeekdayName(window.$dayjs().day())
+    }
   }
 })
 </script>
@@ -133,6 +144,14 @@ export default defineComponent({
         border-radius: 4px;
       }
     }
+  }
+
+  &-weekday {
+    // align-self: flex-end;
+    font-size: 14px;
+    border: 1px solid var(--border-color);
+    padding: 2px;
+    margin-left: 4px;
   }
 }
 </style>

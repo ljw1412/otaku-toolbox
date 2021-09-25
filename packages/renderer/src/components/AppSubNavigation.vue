@@ -115,15 +115,20 @@ export default defineComponent({
       display: flex;
 
       .navigation-item {
+        cursor: pointer;
         flex-shrink: 0;
         box-sizing: border-box;
-        line-height: 16px;
-        cursor: pointer;
+        height: 32px;
+        line-height: 32px;
         font-size: 15px;
-        padding: 7px 16px;
-        font-weight: bold;
+        padding: 0 16px;
+        font-weight: 500;
         border-radius: 4px;
         transition: font-weight 0.3s;
+
+        > span {
+          height: 100%;
+        }
 
         &:not(:first-child) {
           margin-left: 4px;
@@ -135,6 +140,7 @@ export default defineComponent({
 
         &.active {
           background-color: rgba(var(--bg-hover-rgb), 0.2);
+          font-weight: bold;
           color: var(--text-active-color);
         }
       }
@@ -155,7 +161,7 @@ export default defineComponent({
         flex-shrink: 0;
         > span {
           cursor: pointer;
-          font-weight: bold;
+          font-weight: 500;
           opacity: 0.5;
           transition: opacity 0.3s;
 

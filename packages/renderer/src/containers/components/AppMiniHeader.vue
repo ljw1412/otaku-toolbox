@@ -1,6 +1,6 @@
 <template>
   <div class="app-mini-header app-drag d-flex align-items-center justify-content-between">
-    <div class="header-left pl-12 fs-13">
+    <div class="header-left pl-12 fs-14">
       <span class="title">{{ title }}</span>
     </div>
     <div class="header-right pr-4">
