@@ -2,7 +2,8 @@
   <div class="app-anime">
     <app-sub-navigation :navigations="navigations"
       :right-links="rightLinks"></app-sub-navigation>
-    <main v-watch-scroll
+    <main id="anime-main"
+      v-watch-scroll
       class="anime-main">
       <router-view v-slot="{ Component, route }"
         class="page-container">
@@ -11,6 +12,8 @@
             :key="route.name || undefined" />
         </keep-alive>
       </router-view>
+
+      <acg-back-top target="#anime-main"></acg-back-top>
     </main>
   </div>
 </template>

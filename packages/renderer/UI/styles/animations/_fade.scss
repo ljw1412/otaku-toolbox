@@ -1,0 +1,10 @@
+/* fade */
+.acg-fade-enter-active,
+.acg-fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.acg-fade-enter-from,
+.acg-fade-leave-to {
+  opacity: 0;
+}

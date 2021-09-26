@@ -3,9 +3,7 @@ import components from './packages'
 import * as directives from './directives'
 import { hyphenate } from '/@/utils/string'
 
-import './styles/variable.scss'
-import './styles/components/Tooltip'
-import './styles/directives/ripple.scss'
+import './styles/index.scss'
 
 export default function(app: App): void {
   components.forEach(component => {
