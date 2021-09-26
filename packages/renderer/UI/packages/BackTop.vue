@@ -2,6 +2,7 @@
   <transition name="acg-fade">
     <div v-show="visibility"
       class="acg-back-top"
+      :class="{ 'is-fixed' : fixed }"
       :style="{right: right + 'px',bottom: bottom + 'px'}"
       @click="onClick">
       <slot name="all">
@@ -21,6 +22,7 @@ import { defineComponent } from 'vue'
 export default defineComponent({
   name: 'AcgBackTop',
   props: {
+    fixed: { type: Boolean, default: true },
     target: { type: String, default: '' },
     visibilityHeight: { type: Number, default: 200 },
     right: { type: Number, default: 40 },
@@ -70,7 +72,6 @@ export default defineComponent({
     listener() {
       if (this.targetEl) {
         this.scrollTop = this.targetEl.scrollTop
-        console.log(this.targetEl.scrollTop)
       }
     },
 
@@ -85,8 +86,12 @@ export default defineComponent({
 
 <style lang="scss">
 .acg-back-top {
-  position: fixed;
   cursor: pointer;
+
+  &.is-fixed {
+    position: fixed;
+  }
+
   &_btn {
     display: flex;
     justify-content: center;

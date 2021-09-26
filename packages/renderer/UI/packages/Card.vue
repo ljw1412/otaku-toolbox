@@ -11,7 +11,8 @@
       class="acg-card__header">
       <slot name="header"></slot>
     </div>
-    <div class="acg-card__body">
+    <div class="acg-card__body"
+      :class="innerClass">
       <slot></slot>
     </div>
   </div>
@@ -29,7 +30,8 @@ export default defineComponent({
     noBorder: { type: Boolean, default: false },
     hoverUp: { type: Boolean, default: false },
     // 显示阴影的情况： always / hover / never
-    shadow: { type: String, default: 'hover' }
+    shadow: { type: String, default: 'hover' },
+    innerClass: { type: [String, Object, Array], default: '' }
   }
 })
 </script>
