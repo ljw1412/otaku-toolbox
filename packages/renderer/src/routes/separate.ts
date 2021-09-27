@@ -16,6 +16,7 @@ const routes = [
     path: '/view',
     name: 'SeparateApp',
     component: SeparateContainer,
+    meta: { separate: true },
     children: [
       // 系统设置
       {

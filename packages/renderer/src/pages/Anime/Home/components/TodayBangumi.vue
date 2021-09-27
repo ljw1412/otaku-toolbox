@@ -6,8 +6,9 @@
           class="today-bangumi-weekday">{{ weekdayName }}</div>
       </template>
     </app-area-header>
+
     <div v-watch-scroll
-      class="today-bangumi-list pt-10">
+      class="today-bangumi-list">
       <!-- 骨架屏 -->
       <template v-if="!isFirstLoaded">
         <acg-card v-for="i of 3"
@@ -102,19 +103,16 @@ export default defineComponent({
 
 <style lang="scss">
 .today-bangumi {
-  position: relative;
-  min-height: 340px;
-
   &-list {
     display: flex;
-    overflow-x: auto;
+    overflow-x: scroll;
+    min-height: 280px;
     .bangumi-card {
       cursor: pointer;
       flex: 0 0 auto;
       --acg-card-border-raduis: 8px;
       display: inline-block;
       width: 280px;
-      margin-bottom: 10px;
 
       &:not(:first-child) {
         margin-left: 20px;
@@ -139,6 +137,7 @@ export default defineComponent({
 
     .bangumi-card.is-skeleton {
       cursor: default;
+      margin-bottom: 30px;
       .title {
         width: 60%;
         border-radius: 4px;

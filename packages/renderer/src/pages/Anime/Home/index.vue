@@ -1,6 +1,7 @@
 <template>
   <div class="anime-home">
     <today-bangumi key="AnimeTodayBangumi"></today-bangumi>
+    <div>asdasd</div>
   </div>
 </template>
 

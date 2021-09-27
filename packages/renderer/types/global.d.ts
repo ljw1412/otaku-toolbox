@@ -42,3 +42,22 @@ interface PageNavigationItem {
   to?: RouteLocationRaw
   url?: string
 }
+
+interface AnimeOfBangumi {
+  id: number | string
+  title: string
+  titleJP: string
+  titleMore: string[]
+  tags: string[]
+  desc: string
+  copyright: string
+  links: { name: string; url: string; message: string }[]
+  streamingPlatforms: { name: string; url: string; message: string }[]
+  cast: string[]
+  staff: string[]
+  coverMin: string
+  cover: string[]
+  airdate: string
+  airday: string
+  airtime: string
+}
