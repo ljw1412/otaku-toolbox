@@ -13,9 +13,9 @@
         <div class="anime-tags">
           <span v-for="tag of anime.tags"
             :key="tag"
-            class="tag">{{tag}}</span>
+            class="tag">{{ tag }}</span>
         </div>
-        <div class="anime-onair">播出时间:7月6日起／每週二／23時0分</div>
+        <div class="anime-onair">播出时间：7月6日起／每週二／23時0分</div>
       </div>
     </div>
 
@@ -53,7 +53,7 @@
         class="anime-copyright info-block">
         <i>{{ anime.copyright }}</i>
       </div>
-      <div v-show="anime.links.length"
+      <div v-show="anime.links && anime.links.length"
         class="anime-links info-block">
         <h4>相关链接</h4>
         <p>
@@ -65,8 +65,8 @@
             target="_blank">{{ link.name }}</a>
         </p>
       </div>
-      <div v-show="anime.streamingPlatforms.length"
-        class="info-block">
+      <div v-show="anime.streamingPlatforms && anime.streamingPlatforms.length"
+        class="anime-streaming info-block">
         <h4>网络播放</h4>
         <p>
           <a v-for="link of anime.streamingPlatforms"
@@ -79,12 +79,28 @@
       </div>
     </div>
 
-    <div class="anime-info">
-      <div>
+    <div v-show="anime.cast && anime.cast.length"
+      class="anime-info">
+      <div class="anime-cast info-block">
         <h4>Cast</h4>
+        <div v-for="person of anime.cast"
+          :key="person.name"
+          class="person">
+          <span class="type">{{ person.name }}</span>
+          <span> : </span>
+          <span class="entity">{{ person.entity }}</span>
+        </div>
       </div>
-      <div>
+      <div v-show="anime.staff && anime.staff.length"
+        class="anime-staff info-block">
         <h4>Staff</h4>
+        <div v-for="person of anime.staff"
+          :key="person.name"
+          class="person">
+          <span class="type">{{ person.name }}</span>
+          <span> : </span>
+          <span class="entity">{{ person.entity }}</span>
+        </div>
       </div>
     </div>
   </acg-card>
@@ -256,7 +272,7 @@ export default defineComponent({
       a.anime-link {
         display: inline-block;
         color: #5f8dc7;
-        font-size: var(--list-item-info-min-font-size);
+        font-size: var(--list-item-info-font-size);
         margin-right: 6px;
       }
 

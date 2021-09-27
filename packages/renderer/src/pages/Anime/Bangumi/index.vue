@@ -56,6 +56,25 @@ export default defineComponent({
                 'https://www.youtube.com/playlist?list=PLuxqoToY7Ucin4gYt5FYbWjLn6NDJ8itB'
             }
           ],
+          cast: [
+            { name: '白柳啓', entity: '村瀬歩' },
+            { name: '天翔優利', entity: '愛美' },
+            { name: '魅音', entity: '新谷真弓' },
+            { name: '霧崎円', entity: '中井和哉' },
+            { name: '熊切真', entity: '中村悠一' },
+            { name: '多々良りんご', entity: '島袋美由利' },
+            { name: '楊婷婷', entity: '鬼頭明里' }
+          ],
+          staff: [
+            { name: '漫画', entity: 'みやこかしわ' },
+            { name: '總導演', entity: '内藤明吾' },
+            { name: '導演', entity: '新井宣圭' },
+            { name: '劇本統籌', entity: '待田堂子' },
+            { name: '人物設計', entity: '永作友克' },
+            { name: '製作', entity: '小学館集英社プロダクション' },
+            { name: '動畫製作', entity: 'シナジーSP' },
+            { name: 'CGアニメーション制作', entity: 'Studio A-CAT' }
+          ],
           coverMin:
             'https://i0.hdslb.com/bfs/archive/f949d75199264ae7deece9c8a7a9eb68eab40e42.png@672w_378h_1c_100q',
           cover: [
@@ -102,8 +121,8 @@ export default defineComponent({
 @media (min-width: 1701px) {
   .anime-bangumi {
     --grid-item-size: 163px;
-    --list-item-info-font-size: 15px;
-    --list-item-info-min-font-size: 14px;
+    --list-item-info-font-size: 16px;
+    --list-item-info-min-font-size: 15px;
   }
 }
 </style>

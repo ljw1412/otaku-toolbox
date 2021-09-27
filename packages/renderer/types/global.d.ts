@@ -53,6 +53,8 @@ interface AnimeOfBangumi {
   copyright: string
   links: { name: string; url: string; message: string }[]
   streamingPlatforms: { name: string; url: string; message: string }[]
+  cast: { name: string; entity: string }[]
+  staff: { name: string; entity: string }[]
   cast: string[]
   staff: string[]
   coverMin: string

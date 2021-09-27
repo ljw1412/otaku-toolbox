@@ -26,7 +26,5 @@ export default defineComponent({
 
 <style lang="scss">
 .bangumi-list {
-  .anime-list {
-  }
 }
 </style>

@@ -10,10 +10,10 @@
           <img :src="anime.coverMin">
         </div>
         <div class="anime-title">{{ anime.title }}</div>
-        <div class="anime-airdate">{{anime.airdate}}首播</div>
+        <div class="anime-airdate">{{ anime.airdate }}首播</div>
         <div class="anime-airtime">
-          <div class="day">{{anime.airday}}</div>
-          <div class="time">{{anime.airtime}}</div>
+          <div class="day">{{ anime.airday }}</div>
+          <div class="time">{{ anime.airtime }}</div>
         </div>
       </div>
     </div>
