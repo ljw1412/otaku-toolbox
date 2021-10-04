@@ -71,3 +71,12 @@ export function getAppConfig() {
   const { ipcRenderer } = useElectron()
   return ipcRenderer.invoke('config', 'getAppConfig')
 }
+
+/**
+ * 修改单个配置项
+ * @param params
+ */
+export function setAppConfigOption(data: Record<string, any>) {
+  const { ipcRenderer } = useElectron()
+  return ipcRenderer.invoke('config', 'setOption', data)
+}

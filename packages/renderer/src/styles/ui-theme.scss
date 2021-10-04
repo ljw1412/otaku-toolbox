@@ -1,6 +1,18 @@
+.acg-input {
+  &__inner {
+    background-color: rgba(var(--bg-hover-rgb), 0.1);
+    color: var(--text-color);
+  }
+}
+
 :root[data-theme='dark'] {
   .acg-card {
     --acg-card-background-color: #171819;
     --acg-card-border-color: var(--border-color);
+  }
+  .acg-input {
+    .search-panel {
+      background-color: #171819;
+    }
   }
 }

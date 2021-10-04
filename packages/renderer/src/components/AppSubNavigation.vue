@@ -23,16 +23,10 @@
               <span @click="open(item)">{{ item.name }}</span>
             </div>
           </div>
-          <div class="navigation-search">
-            <input v-model="text"
-              placeholder="" />
-            <acg-icon v-show="text"
-              class="search-btn icon-clear"
-              name="close"
-              @click="text = ''"></acg-icon>
-            <acg-icon class="search-btn icon-search"
-              name="search"></acg-icon>
-          </div>
+          <acg-input v-model="text"
+            is-search
+            clearable
+            history-name="anime"></acg-input>
         </slot>
       </div>
     </div>
@@ -174,44 +168,6 @@ export default defineComponent({
           content: '|';
           padding: 10px;
           opacity: 0.5;
-        }
-      }
-    }
-
-    .navigation-search {
-      flex-shrink: 0;
-      width: 180px;
-      height: 30px;
-      input {
-        border-radius: 4px;
-        border: none;
-        outline: none;
-        appearance: none;
-        background-color: rgba(var(--bg-hover-rgb), 0.1);
-        width: 100%;
-        height: 100%;
-        padding-left: 10px;
-        padding-right: 60px;
-        box-sizing: border-box;
-        color: var(--text-color);
-      }
-
-      .search-btn {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        cursor: pointer;
-      }
-
-      .icon-search {
-        right: 6px;
-      }
-
-      .icon-clear {
-        right: 24px;
-        opacity: 0.6;
-        &:hover {
-          opacity: 1;
         }
       }
     }

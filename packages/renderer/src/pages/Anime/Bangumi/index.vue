@@ -40,20 +40,24 @@ export default defineComponent({
           streamingPlatforms: [
             {
               name: '哔哩哔哩',
-              url: 'https://www.bilibili.com/bangumi/media/md28234627/'
+              url: 'https://www.bilibili.com/bangumi/media/md28234627/',
+              from: 'Bilibili'
             },
             {
               name: '[港澳台]哔哩哔哩',
-              url: 'https://www.bilibili.com/bangumi/media/md28234727/'
+              url: 'https://www.bilibili.com/bangumi/media/md28234727/',
+              from: 'Bilibili'
             },
             {
               name: '[台]巴哈姆特動畫瘋',
-              url: 'https://ani.gamer.com.tw/animeVideo.php?sn=23337'
+              url: 'https://ani.gamer.com.tw/animeVideo.php?sn=23337',
+              from: 'Baha'
             },
             {
               name: '[港]木棉花YouTube',
               url:
-                'https://www.youtube.com/playlist?list=PLuxqoToY7Ucin4gYt5FYbWjLn6NDJ8itB'
+                'https://www.youtube.com/playlist?list=PLuxqoToY7Ucin4gYt5FYbWjLn6NDJ8itB',
+              from: 'YouTube'
             }
           ],
           cast: [

@@ -74,7 +74,12 @@
             :href="link.url"
             class="anime-link"
             :title="link.message || link.name"
-            target="_blank">{{ link.name }}</a>
+            target="_blank">
+            <img v-if="getIcon(link.from)"
+              :src="getIcon(link.from)"
+              class="link-icon">
+            <span>{{ link.name }}</span>
+          </a>
         </p>
       </div>
     </div>
@@ -108,6 +113,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
+import Icons from '/@/utils/icons'
 
 export default defineComponent({
   name: 'AnimeBangumiListItem',
@@ -137,6 +143,10 @@ export default defineComponent({
   methods: {
     changeImage(image: string) {
       this.currentImage = image
+    },
+
+    getIcon(name: string) {
+      return Icons[name as keyof typeof Icons]
     }
   }
 })
@@ -246,7 +256,7 @@ export default defineComponent({
 
           &.active {
             opacity: 1;
-            border-color: var(--app-theme);
+            border-color: var(--bangumi-gallery-active-color);
           }
 
           &:hover {
@@ -270,10 +280,22 @@ export default defineComponent({
       }
 
       a.anime-link {
-        display: inline-block;
+        display: inline-flex;
+        align-items: center;
         color: #5f8dc7;
         font-size: var(--list-item-info-font-size);
         margin-right: 6px;
+        margin-bottom: 4px;
+
+        > .link-icon {
+          flex-shrink: 0;
+          height: 1.25em;
+          margin-right: 2px;
+        }
+
+        > span {
+          flex-shrink: 0;
+        }
       }
 
       .info-block {

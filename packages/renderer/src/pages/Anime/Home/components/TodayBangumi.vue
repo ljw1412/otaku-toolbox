@@ -8,7 +8,7 @@
     </app-area-header>
 
     <div v-watch-scroll
-      class="today-bangumi-list">
+      class="today-bangumi-list pt-10">
       <!-- 骨架屏 -->
       <template v-if="!isFirstLoaded">
         <acg-card v-for="i of 3"

@@ -26,6 +26,7 @@ export async function getConfig(keys?: string | string[]): Promise<any> {
 
 export async function setConfig(data: Record<string, any>): Promise<boolean> {
   return new Promise((resolve, reject) => {
+    data = Object.assign(acgAppConfig, data)
     storage.set(BASE_CONFIG_NAME, data, error => {
       if (error) return reject(error)
       resolve(true)

@@ -30,6 +30,9 @@ export const WatchScroll = {
   updated: (el: HTMLElement, binding: DirectiveBinding) => {
     console.log('updated', [el], el._watchScroll, binding)
     if (el._watchScroll) {
+      const { scrollTop, scrollLeft } = el
+      const { top, left } = el._watchScroll.position
+      if (scrollTop === top && scrollLeft === left) return
       el.scrollTo(el._watchScroll.position)
     }
   }
