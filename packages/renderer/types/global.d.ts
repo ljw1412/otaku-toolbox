@@ -1,4 +1,5 @@
 interface HTMLElement {
+  _clickOutside?: EventListenerOrEventListenerObject
   _ripple?: {
     enabled?: boolean
     centered?: boolean
@@ -52,7 +53,12 @@ interface AnimeOfBangumi {
   desc: string
   copyright: string
   links: { name: string; url: string; message: string }[]
-  streamingPlatforms: { name: string; url: string; message: string }[]
+  streamingPlatforms: {
+    name: string
+    url: string
+    message: string
+    from: string
+  }[]
   cast: { name: string; entity: string }[]
   staff: { name: string; entity: string }[]
   cast: string[]
