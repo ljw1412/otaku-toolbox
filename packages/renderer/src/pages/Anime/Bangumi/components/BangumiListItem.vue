@@ -15,7 +15,10 @@
             :key="tag"
             class="tag">{{ tag }}</span>
         </div>
-        <div class="anime-onair">播出时间：7月6日起／每週二／23時0分</div>
+        <div class="anime-onair">
+          <span v-if="onair">播出时间：{{ onair.dateCH }}起 每周{{ onair.dayCH }} {{ onair.time }}</span>
+          <span v-else>暂未定档</span>
+        </div>
       </div>
     </div>
 
@@ -113,6 +116,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
+import { formatUnixTime } from '/@/utils/date'
 import Icons from '/@/utils/icons'
 
 export default defineComponent({
@@ -131,6 +135,14 @@ export default defineComponent({
   computed: {
     animeTitleMore(): string {
       return (this.anime.titleMore || []).join('、')
+    },
+
+    onair(): FormatedAnimeDatetime | null {
+      return formatUnixTime(this.anime.onair)
+    },
+
+    onairInSteaming(): FormatedAnimeDatetime | null {
+      return formatUnixTime(this.anime.onairInSteaming)
     }
   },
 

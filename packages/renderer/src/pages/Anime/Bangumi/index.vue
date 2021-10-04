@@ -87,9 +87,8 @@ export default defineComponent({
             'https://i0.hdslb.com/bfs/bangumi/cb157a50d75f806e97d228a8f50c43be80c2b61e.jpg',
             'https://i0.hdslb.com/bfs/bangumi/image/290b0c5c399777a6359f1c0dc3cb5e79d3cfd6ca.png'
           ],
-          airdate: '12月5日',
-          airday: '日',
-          airtime: '23:15',
+          onair: 1625583600000,
+          onairInSteaming: 1625583600000,
           desc:
             '事情开始在一个与平常并无区别的早晨。最喜欢游戏和金平糖的高中生白柳启，因为一名自称魅音的神秘少女而突然被卷入战场之中。对着被聚集此处的人们，魅音如此说道「各位的户籍已经不存在了」「你们将成为实验的观测器」还有「你们已经被赋予了能力」启决定要利用获得的能力不断赢得游戏，最终击溃这个组织。用谁都不可能猜到的能力，以及极其稀少的“脑”能力作为武器，新时代的头脑派能力战斗开始！'
         },
@@ -103,10 +102,7 @@ export default defineComponent({
             'https://i0.hdslb.com/bfs/bangumi/image/24d82bc77a58f8b85395a922b61bc97058467614.png',
             'https://i0.hdslb.com/bfs/bangumi/image/91eeb1dd4f6d7c1b29e7122f50d56926fc0c059a.png',
             'https://i0.hdslb.com/bfs/bangumi/cb157a50d75f806e97d228a8f50c43be80c2b61e.jpg'
-          ],
-          airdate: '12月5日',
-          airday: '日',
-          airtime: '23:15'
+          ]
         }
       ]
     }

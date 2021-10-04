@@ -44,6 +44,16 @@ interface PageNavigationItem {
   url?: string
 }
 
+interface FormatedAnimeDatetime {
+  years: string
+  time: string
+  date: string
+  dateCH: string
+  datetime: string
+  day: number
+  dayCH: string
+}
+
 interface AnimeOfBangumi {
   id: number | string
   title: string
@@ -52,11 +62,11 @@ interface AnimeOfBangumi {
   tags: string[]
   desc: string
   copyright: string
-  links: { name: string; url: string; message: string }[]
+  links: { name: string; url: string; message?: string }[]
   streamingPlatforms: {
     name: string
     url: string
-    message: string
+    message?: string
     from: string
   }[]
   cast: { name: string; entity: string }[]
@@ -65,7 +75,6 @@ interface AnimeOfBangumi {
   staff: string[]
   coverMin: string
   cover: string[]
-  airdate: string
-  airday: string
-  airtime: string
+  onair: number
+  onairInSteaming: number
 }
