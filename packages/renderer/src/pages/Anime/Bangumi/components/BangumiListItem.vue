@@ -78,8 +78,8 @@
             class="anime-link"
             :title="link.message || link.name"
             target="_blank">
-            <img v-if="getIcon(link.from)"
-              :src="getIcon(link.from)"
+            <img v-if="getLogoIcon(link.from)"
+              :src="getLogoIcon(link.from)"
               class="link-icon">
             <span>{{ link.name }}</span>
           </a>
@@ -117,7 +117,7 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
 import { formatUnixTime } from '/@/utils/date'
-import Icons from '/@/utils/icons'
+import { getLogoIcon } from '/@/utils/icons'
 
 export default defineComponent({
   name: 'AnimeBangumiListItem',
@@ -153,12 +153,9 @@ export default defineComponent({
   },
 
   methods: {
+    getLogoIcon,
     changeImage(image: string) {
       this.currentImage = image
-    },
-
-    getIcon(name: string) {
-      return Icons[name as keyof typeof Icons]
     }
   }
 })

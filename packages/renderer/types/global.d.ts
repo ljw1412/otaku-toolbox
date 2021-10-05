@@ -44,6 +44,20 @@ interface PageNavigationItem {
   url?: string
 }
 
+interface OnAirItem {
+  url: string
+  name: string
+  time: string
+  from: string
+  message?: string
+}
+
+interface TodayBangumiItem {
+  title: string
+  cover: string
+  onairList: OnAirItem[]
+}
+
 interface FormatedAnimeDatetime {
   years: string
   time: string
@@ -63,12 +77,7 @@ interface AnimeOfBangumi {
   desc: string
   copyright: string
   links: { name: string; url: string; message?: string }[]
-  streamingPlatforms: {
-    name: string
-    url: string
-    message?: string
-    from: string
-  }[]
+  streamingPlatforms: OnAirItem[]
   cast: { name: string; entity: string }[]
   staff: { name: string; entity: string }[]
   cast: string[]

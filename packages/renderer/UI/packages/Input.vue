@@ -40,6 +40,7 @@
       <ul>
         <li v-for="str of history"
           :key="str"
+          :title="str"
           @click="handleHistoryItemClick(str)">{{ str }}</li>
       </ul>
     </div>
@@ -257,20 +258,37 @@ export default defineComponent({
 
   .search-panel {
     position: absolute;
-    left: 0;
     width: 100%;
     background-color: #ffffff;
     border-radius: 0 0 4px 4px;
-    padding: 4px 4px;
+    padding: 4px 8px;
     box-sizing: border-box;
     z-index: 500;
+
+    > ul > li {
+      position: relative;
+      box-sizing: border-box;
+      display: inline-block;
+      cursor: pointer;
+      padding: 4px 6px;
+      background-color: #f6f7f8;
+      margin-right: 4px;
+      margin-bottom: 4px;
+      font-size: 12px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 96px;
+      font-weight: 500;
+      border-radius: 2px;
+    }
   }
 
   .search-panel-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 4px;
+    padding: 4px 0;
 
     > .history-clear {
       cursor: pointer;

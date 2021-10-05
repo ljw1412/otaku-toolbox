@@ -171,6 +171,12 @@ export default defineComponent({
         }
       }
     }
+
+    .acg-input .search-panel {
+      right: 0;
+      width: 200%;
+      border-top-left-radius: 4px;
+    }
   }
 }
 </style>

@@ -13,6 +13,10 @@
   .acg-input {
     .search-panel {
       background-color: #171819;
+
+      > ul > li {
+        background-color: #333436;
+      }
     }
   }
 }
