@@ -22,7 +22,7 @@
       <div v-for="onair of (bangumi.onairList || [])"
         :key="onair.url"
         class="onair-item">
-        <acg-card :title="onair.message || `${onair.name}:${onair.time}`"
+        <acg-card :title="onair.message || `${onair.name}@${onair.time}`"
           fill
           no-border
           shadow="never"

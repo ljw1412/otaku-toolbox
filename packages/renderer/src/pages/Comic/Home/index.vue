@@ -1,6 +1,5 @@
 <template>
-  <div class="app-comic">
-    <router-view></router-view>
+  <div class="comic-home">
   </div>
 </template>
 
@@ -8,13 +7,9 @@
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-  name: 'AppComic'
+  name: 'ComicHome'
 })
 </script>
 
 <style lang="scss">
-.app-comic {
-  height: 100%;
-  overflow: hidden;
-}
 </style>

@@ -1,4 +1,5 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
+import { getNavigationCache } from '/@/utils/cache'
 import MainRoutes from '/@/routes/main'
 import SeparateRoutes from '/@/routes/separate'
 
@@ -19,5 +20,17 @@ if (import.meta.env.MODE === 'development') {
     console.log(`[Current] ${window.location.href}`, ...tofrom)
   })
 }
+
+router.beforeEach((to, from, next) => {
+  const routeName = to.name as string
+  if (['AppAnime', 'AppComic', 'AppGame'].includes(routeName)) {
+    const module = to.meta.module as string
+    const navCache = getNavigationCache(module)
+    const homeRouteName = routeName.replace('App', '') + 'Home'
+    console.log(homeRouteName, navCache)
+    next({ name: navCache || homeRouteName })
+  }
+  next()
+})
 
 export default router

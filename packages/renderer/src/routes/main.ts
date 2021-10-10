@@ -3,11 +3,15 @@ import AppHome from '/@/pages/Home/index.vue'
 
 import AppAnime from '/@/pages/Anime/index.vue'
 import AnimeHome from '/@/pages/Anime/Home/index.vue'
+import AnimeIndex from '/@/pages/Anime/Index/index.vue'
 import AnimeNews from '/@/pages/Anime/News/index.vue'
 import AnimeBangumi from '/@/pages/Anime/Bangumi/index.vue'
 
 import AppComic from '/@/pages/Comic/index.vue'
+import ComicHome from '/@/pages/Comic/Home/index.vue'
+
 import AppGame from '/@/pages/Game/index.vue'
+import GameHome from '/@/pages/Game/Home/index.vue'
 
 const routes = {
   path: '/main',
@@ -27,7 +31,6 @@ const routes = {
       name: 'AppAnime',
       component: AppAnime,
       meta: { module: 'anime' },
-      redirect: { name: 'AnimeHome' },
       children: [
         // 动画主页
         {
@@ -40,6 +43,11 @@ const routes = {
           path: 'news',
           name: 'AnimeNews',
           component: AnimeNews
+        },
+        {
+          path: 'index',
+          name: 'AnimeIndex',
+          component: AnimeIndex
         },
         // 新番表
         {
@@ -54,14 +62,26 @@ const routes = {
       name: 'AppComic',
       component: AppComic,
       meta: { module: 'comic' },
-      children: []
+      children: [
+        {
+          path: 'home',
+          name: 'ComicHome',
+          component: ComicHome
+        }
+      ]
     },
     {
       path: 'game',
       name: 'AppGame',
       component: AppGame,
       meta: { module: 'game' },
-      children: []
+      children: [
+        {
+          path: 'home',
+          name: 'GameHome',
+          component: GameHome
+        }
+      ]
     }
   ]
 }

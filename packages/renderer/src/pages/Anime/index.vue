@@ -30,6 +30,7 @@ export default defineComponent({
       navigations: [
         { name: '推荐', to: { name: 'AnimeHome' } },
         { name: '资讯', to: { name: 'AnimeNews' } },
+        { name: '索引', to: { name: 'AnimeIndex' } },
         { name: '新番表', to: { name: 'AnimeBangumi' } },
         { name: '外链', url: 'https://www.baidu.com' }
       ] as PageNavigationItem[],

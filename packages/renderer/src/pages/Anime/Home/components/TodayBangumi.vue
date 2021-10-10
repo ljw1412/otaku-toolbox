@@ -47,61 +47,8 @@ export default defineComponent({
   },
 
   created() {
-    setTimeout(() => {
-      this.isFirstLoaded = true
-      this.bangumiList = [
-        {
-          title: '见面5秒开始战斗',
-          cover:
-            'https://i0.hdslb.com/bfs/archive/f949d75199264ae7deece9c8a7a9eb68eab40e42.png@672w_378h_1c_100q',
-          onairList: [
-            {
-              name: '哔哩哔哩',
-              time: '10:00',
-              from: 'Bilibili',
-              url: 'https://www.bilibili.com/bangumi/media/md28234627/'
-            },
-            {
-              name: '电视台',
-              time: '09:00',
-              from: 'TV',
-              url: ''
-            }
-          ]
-        },
-        {
-          title: '月光下的异世界之旅',
-          cover:
-            'https://i0.hdslb.com/bfs/archive/460582b33d6d2ba709f50dff710a27b000bfc468.jpg@672w_378h_1c_100q.webp',
-          onairList: [
-            {
-              name: '电视台',
-              time: '09:00',
-              from: 'TV',
-              url: ''
-            }
-          ]
-        },
-        {
-          title: '平家物语',
-          cover:
-            'https://i0.hdslb.com/bfs/archive/5820c6ba694ea301a56f6bb71c89d10d79df2c73.jpg@672w_378h_1c_100q.webp',
-          onairList: []
-        },
-        {
-          title: '开挂药师的奇幻世界悠闲生活',
-          cover:
-            'https://i0.hdslb.com/bfs/archive/7364f1c5642cb0652989a7906de7751357ca7abd.png@672w_378h_1c_100q.webp',
-          onairList: []
-        },
-        {
-          title: '关于我转生变成史莱姆这档事 第二季',
-          cover:
-            'https://i0.hdslb.com/bfs/archive/1604294f1a0b48a5a2adf29c256feb424676026a.png@672w_378h_1c_100q.webp',
-          onairList: []
-        }
-      ]
-    }, 3000)
+    this.fetchTodayBangumiList()
+
     this.updateWeekday()
   },
   activated() {
@@ -110,6 +57,19 @@ export default defineComponent({
   methods: {
     updateWeekday() {
       this.weekdayName = betterWeekdayName(window.$dayjs().day())
+    },
+
+    async fetchTodayBangumiList() {
+      try {
+        const data = await fetch(
+          'http://rap2api.taobao.org/app/mock/288559/today_bangumi'
+        ).then(data => data.json())
+        this.bangumiList = data
+        this.isFirstLoaded = true
+        console.log(data)
+      } catch (error) {
+        console.error(error)
+      }
     }
   }
 })

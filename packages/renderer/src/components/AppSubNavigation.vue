@@ -37,6 +37,7 @@
 import { defineComponent, PropType } from 'vue'
 import { getPageUrl } from '/@/utils/helper'
 import { createBrowser } from '/@/utils/electron'
+import { setNavigationCache } from '../utils/cache'
 
 export default defineComponent({
   name: 'AppSubNavigation',
@@ -56,12 +57,20 @@ export default defineComponent({
     }
   },
   methods: {
+    setCache(item: PageNavigationItem) {
+      const module = this.$route.meta.module as string
+      if (item.to && item.to.name) {
+        setNavigationCache(module, item.to.name)
+      }
+    },
+
     navigate(item: PageNavigationItem) {
       if (item.url) {
         window.open(item.url, '_blank')
         return
       }
       this.$router.push(item.to)
+      this.setCache(item)
     },
 
     open(item: PageNavigationItem) {
