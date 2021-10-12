@@ -9,6 +9,11 @@ import AnimeBangumi from '/@/pages/Anime/Bangumi/index.vue'
 
 import AppComic from '/@/pages/Comic/index.vue'
 import ComicHome from '/@/pages/Comic/Home/index.vue'
+import ComicOrigin from '/@/pages/Comic/Origin/index.vue'
+import ComicFavourite from '/@/pages/Comic/Favourite/index.vue'
+import ComicHistory from '/@/pages/Comic/History/index.vue'
+import ComicSearch from '/@/pages/Comic/Search/index.vue'
+import ComicSetting from '/@/pages/Comic/Setting/index.vue'
 
 import AppGame from '/@/pages/Game/index.vue'
 import GameHome from '/@/pages/Game/Home/index.vue'
@@ -67,6 +72,32 @@ const routes = {
           path: 'home',
           name: 'ComicHome',
           component: ComicHome
+        },
+        {
+          path: 'favourite',
+          name: 'ComicFavourite',
+          component: ComicFavourite
+        },
+        {
+          path: 'history',
+          name: 'ComicHistory',
+          component: ComicHistory
+        },
+        {
+          path: 'search',
+          name: 'ComicSearch',
+          component: ComicSearch
+        },
+        {
+          path: 'setting',
+          name: 'ComicSetting',
+          component: ComicSetting
+        },
+        {
+          path: 'origin/:id',
+          name: 'ComicOrigin',
+          component: ComicOrigin,
+          props: true
         }
       ]
     },

@@ -59,8 +59,8 @@ export default defineComponent({
   methods: {
     setCache(item: PageNavigationItem) {
       const module = this.$route.meta.module as string
-      if (item.to && item.to.name) {
-        setNavigationCache(module, item.to.name)
+      if (module && item.to && item.to.name) {
+        setNavigationCache(module, item.to)
       }
     },
 

@@ -1,3 +1,5 @@
+import { RouteLocationRaw } from 'vue-router'
+
 const APP_NAVIGATION_KEY = 'app-navigation'
 
 export function getNavigationCache(key?: string) {
@@ -9,7 +11,7 @@ export function getNavigationCache(key?: string) {
   return data
 }
 
-export function setNavigationCache(key: string, value: string) {
+export function setNavigationCache(key: string, value: RouteLocationRaw) {
   const cache = getNavigationCache()
   cache[key] = value
   sessionStorage.setItem(APP_NAVIGATION_KEY, JSON.stringify(cache))

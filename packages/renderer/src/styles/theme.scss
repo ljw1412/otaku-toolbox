@@ -26,6 +26,9 @@
 
   --scrollbar-thumb-bg: #cccccc;
   --scrollbar-thumb-hover-bg: #b2b2b2;
+
+  --comic-navigation-bg: #ffffff;
+  --comic-navigation-search-color: var(--app-theme);
 }
 
 :root[data-theme='dark'] {
@@ -45,6 +48,9 @@
   --scrollbar-bg: #000000;
   --scrollbar-thumb-bg: #666666;
   --scrollbar-thumb-hover-bg: #999999;
+
+  --comic-navigation-bg: #3f3f40;
+  --comic-navigation-search-color: #cccccc;
 }
 
 :root[data-theme='red'] {
