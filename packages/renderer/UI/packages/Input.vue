@@ -2,10 +2,15 @@
   <div v-click-outside="handleClickOutside"
     class="acg-input"
     :class="{
+      'is-prefix':!!prefixIcon,
       'is-search': isSearch,
       'is-clearable': clearable,
       'is-focused': isFocused,
       'is-display-history': isDisplayHistory }">
+    <div v-if="prefixIcon"
+      class="acg-input__prefix">
+      <acg-icon :name="prefixIcon"></acg-icon>
+    </div>
     <input ref="input"
       v-model="inputValue"
       :disabled="disabled"
@@ -60,7 +65,8 @@ export default defineComponent({
     clearable: Boolean,
     isSearch: Boolean,
     inputStyle: { type: [String, Object, Array], default: '' },
-    historyName: { type: String, default: 'search' }
+    historyName: { type: String, default: 'search' },
+    prefixIcon: String
   },
   emits: [
     'update:modelValue',
@@ -217,6 +223,13 @@ export default defineComponent({
     box-sizing: border-box;
   }
 
+  &__prefix {
+    position: absolute;
+    left: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
   &__suffix {
     position: absolute;
     right: 6px;
@@ -237,9 +250,13 @@ export default defineComponent({
     }
   }
 
+  &.is-prefix &__inner {
+    padding-left: 28px;
+  }
+
   &.is-search &__inner,
   &.is-clearable &__inner {
-    padding-right: 32px;
+    padding-right: 28px;
   }
 
   &.is-search.is-clearable {
