@@ -19,7 +19,6 @@
           placeholder="搜索源"></acg-input>
         <button v-tooltip="{content:'设置',placement:'right',offset:[0,10]}"
           class="btn-setting"
-          :class="{ active: $route.name === 'ComicSetting' }"
           @click="navigate('ComicSetting')">
           <acg-icon name="settings"></acg-icon>
         </button>
@@ -150,7 +149,7 @@ export default defineComponent({
         }
 
         &.active {
-          color: var(--comic-navigation-search-color);
+          color: var(--app-common-color);
         }
       }
     }
@@ -173,7 +172,7 @@ export default defineComponent({
         transition: border-color 0.3s;
 
         &:focus {
-          border-color: var(--comic-navigation-search-color);
+          border-color: var(--app-common-color);
         }
       }
 
@@ -187,7 +186,7 @@ export default defineComponent({
 
       &.is-focused {
         .acg-input__prefix {
-          color: var(--comic-navigation-search-color);
+          color: var(--app-common-color);
         }
       }
     }
@@ -204,12 +203,7 @@ export default defineComponent({
       color: var(--text-color);
 
       &:hover {
-        color: var(--comic-navigation-search-color);
-        border-color: currentColor;
-      }
-
-      &.active {
-        color: var(--comic-navigation-search-color);
+        color: var(--app-common-color);
         border-color: currentColor;
       }
     }

@@ -16,6 +16,5 @@ export default defineComponent({
 .comic-home {
   height: 100%;
   overflow-y: scroll;
-  padding: 16px 10px;
 }
 </style>

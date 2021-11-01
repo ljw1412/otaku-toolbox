@@ -1,6 +1,6 @@
 {
   "name": "two-dimensions-toolbox",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "private": true,
   "engines": {
     "node": ">=v14.16",
@@ -31,6 +31,7 @@
   "devDependencies": {
     "@types/electron-devtools-installer": "^2.2.0",
     "@types/electron-json-storage": "^4.5.0",
+    "@types/qs": "^6.9.7",
     "@typescript-eslint/eslint-plugin": "^4.25.0",
     "@typescript-eslint/parser": "^4.25.0",
     "@vitejs/plugin-vue": "^1.2.2",
@@ -52,6 +53,7 @@
     "dayjs": "^1.10.6",
     "electron-json-storage": "^4.5.0",
     "electron-updater": "^4.3.9",
+    "qs": "^6.10.1",
     "tippy.js": "^6.3.1",
     "vue": "^3.0.11",
     "vue-router": "^4.0.8"

@@ -9,6 +9,7 @@
   --black-rgb: 0, 0, 0;
 
   --app-theme: var(--skin-blue);
+  --app-common-color: var(--app-theme);
 
   --app-header-bg: var(--app-theme);
   --app-header-center-bg: rgba(233, 233, 233, 0.2);
@@ -33,6 +34,8 @@
 
 :root[data-theme='dark'] {
   --app-theme: var(--skin-dark);
+  --app-common-color: #e4a329;
+
   --app-header-center-bg: rgba(255, 255, 255, 0.05);
 
   --bg-color: #333333;
@@ -40,7 +43,6 @@
   --border-color: #555555;
   --skeleton-bg-color: #4b4b4b;
   --skeleton-bg-color-to: #5d5d5d;
-  --bangumi-gallery-active-color: #e4a329;
 
   --text-color: #cccccc;
   --text-active-color: #ffffff;
@@ -50,7 +52,6 @@
   --scrollbar-thumb-hover-bg: #999999;
 
   --comic-navigation-bg: #3f3f40;
-  --comic-navigation-search-color: #cccccc;
 }
 
 :root[data-theme='red'] {

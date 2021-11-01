@@ -7,7 +7,7 @@
     <div class="anime-header">
       <div class="anime-names">
         <div class="localized-name">{{ anime.title }}</div>
-        <div class="original-name">{{ anime.titleJP }}</div>
+        <div class="original-name">{{ anime.titleOriginal }}</div>
       </div>
       <div class="anime-specs">
         <div class="anime-tags">
@@ -244,7 +244,6 @@ export default defineComponent({
 
       .image {
         width: 100%;
-        height: calc(var(--list-item-height) - 80px);
       }
 
       .image-list {
@@ -265,7 +264,7 @@ export default defineComponent({
 
           &.active {
             opacity: 1;
-            border-color: var(--bangumi-gallery-active-color);
+            border-color: var(--app-common-color);
           }
 
           &:hover {

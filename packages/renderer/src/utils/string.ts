@@ -4,7 +4,12 @@ export function hyphenate(str: string, hyphenate = '-') {
   return str.replace(hyphenateRE, `${hyphenate}$1`).toLowerCase()
 }
 
-// 分隔转驼峰
+/**
+ * 分隔转驼峰
+ * @param str 字符串
+ * @param lower 是否为小驼峰
+ * @returns
+ */
 export function capitalized(str: string, lower = false) {
   let first = true
   return str.replace(/\b\w+\b[-_]?/g, function(word) {
@@ -16,4 +21,13 @@ export function capitalized(str: string, lower = false) {
     }
     return initial + word.substring(1)
   })
+}
+
+/**
+ * 首字母大写
+ * @param str 字符串
+ * @returns 首字母大写
+ */
+export function toTitleCase(str: string) {
+  return str.substring(0, 1).toUpperCase() + str.substring(1).toLowerCase()
 }

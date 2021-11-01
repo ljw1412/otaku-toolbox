@@ -28,7 +28,7 @@ router.beforeEach((to, from, next) => {
     const navCache = getNavigationCache(module)
     const homeRouteName = routeName.replace('App', '') + 'Home'
     console.log(homeRouteName, navCache)
-    next(navCache || { name: homeRouteName })
+    return next(navCache || { name: homeRouteName })
   }
   next()
 })

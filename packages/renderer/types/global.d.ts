@@ -76,7 +76,7 @@ declare global {
   interface AnimeOfBangumi {
     id: number | string
     title: string
-    titleJP: string
+    titleOriginal: string
     titleMore: string[]
     tags: string[]
     desc: string

@@ -2,8 +2,9 @@ import { App } from 'vue'
 import { hyphenate } from '/@/utils/string'
 import * as directives from '/@/directives/index'
 import AppAreaHeader from '/@/components/AppAreaHeader.vue'
+import AppDialog from '/@/components/AppDialog.vue'
 
-const components = [AppAreaHeader]
+const components = [AppAreaHeader, AppDialog]
 
 export default function(app: App) {
   Object.keys(directives).forEach(key => {

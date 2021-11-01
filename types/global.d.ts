@@ -16,4 +16,7 @@ interface NewBrowerConfig {
   resizable?: boolean
   frame?: boolean
   singleInstance?: boolean
+  parent?: BrowserWindow
+  modal?: boolean
+  autoShow?: boolean
 }

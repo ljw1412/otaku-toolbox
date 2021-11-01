@@ -21,6 +21,7 @@
 import { defineComponent } from 'vue'
 import { betterWeekdayName } from '/@/utils/date'
 import TodayBangumiItem from './TodayBangumiItem.vue'
+import tempdata from './data.json'
 
 export default defineComponent({
   name: 'AnimeTodayBangumi',
@@ -60,16 +61,18 @@ export default defineComponent({
     },
 
     async fetchTodayBangumiList() {
-      try {
-        const data = await fetch(
-          'http://rap2api.taobao.org/app/mock/288559/today_bangumi'
-        ).then(data => data.json())
-        this.bangumiList = data
-        this.isFirstLoaded = true
-        console.log(data)
-      } catch (error) {
-        console.error(error)
-      }
+      this.bangumiList = tempdata
+      this.isFirstLoaded = true
+      // try {
+      //   const data = await fetch(
+      //     'http://rap2api.taobao.org/app/mock/288559/today_bangumi'
+      //   ).then(data => data.json())
+      //   this.bangumiList = data
+      //   this.isFirstLoaded = true
+      //   console.log(data)
+      // } catch (error) {
+      //   console.error(error)
+      // }
     }
   }
 })

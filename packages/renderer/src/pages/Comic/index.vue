@@ -15,15 +15,21 @@ import ComicNavigation from './components/ComicNavigation.vue'
 
 export default defineComponent({
   name: 'AppComic',
-  components: { ComicNavigation }
+  components: { ComicNavigation },
+
+  created() {
+    console.log(import.meta.env)
+  }
 })
 </script>
 
 <style lang="scss">
 .app-comic {
+  box-sizing: border-box;
   position: relative;
   height: 100%;
   overflow: hidden;
+  padding: 16px 0 16px 16px;
 
   .comic-aside {
     position: absolute;

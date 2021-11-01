@@ -3,6 +3,7 @@ import App from '/@/App.vue'
 import router from '/@/router'
 import AcgUI from '/@/../UI/index'
 import AppInject from '/@/inject'
+import ApiFetch from '/@/utils/api'
 import '@ljw1412/ionicons-sprite'
 import './dayjs'
 
@@ -13,6 +14,8 @@ themeHelper.init()
 window.$theme = themeHelper
 
 const app = createApp(App)
+
+Object.assign(app.config.globalProperties, ApiFetch)
 
 app
   .use(router)

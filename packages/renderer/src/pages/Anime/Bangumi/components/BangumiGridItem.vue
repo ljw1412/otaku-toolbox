@@ -74,12 +74,13 @@ export default defineComponent({
   }
 
   .anime-title {
-    font-size: 18px;
-    line-height: 20px;
     position: absolute;
     bottom: 0;
-    color: #fff;
+    width: 100%;
     padding: 0 5px 5px;
+    color: #fff;
+    font-size: 18px;
+    line-height: 20px;
     text-shadow: 0 0 3px #000;
     background: rgba(0, 0, 0, 0)
       linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.4)) repeat
