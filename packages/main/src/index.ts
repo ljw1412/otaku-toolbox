@@ -3,6 +3,7 @@ import { join } from 'path'
 import BaseAction from './ipc/index'
 import baseListerner from './listeners/baseListener'
 import newWindowHandler from './utils/newWindow'
+import createQuickWindows from './default/windows'
 import { getPageUrl } from './utils/pageUrl'
 import * as storage from './utils/storage'
 
@@ -88,6 +89,8 @@ const createWindow = async () => {
   const pageUrl = getPageUrl('main')
 
   await mainWindow.loadURL(pageUrl)
+
+  global.quickWindows = createQuickWindows(mainWindow)
 }
 
 app.on('second-instance', () => {
@@ -110,6 +113,9 @@ app
   .then(createWindow)
   .catch(e => console.error('Failed create window:', e))
 
+app.whenReady().then(() => {
+  import('./utils/imageFix')
+})
 // Auto-updates
 if (env.PROD) {
   app

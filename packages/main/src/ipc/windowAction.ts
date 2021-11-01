@@ -3,6 +3,28 @@ import { createBrowser, createBuiltInBrowser } from '../window'
 
 const channel = 'window.action'
 
+function closeApp(win: BrowserWindow, mode: string) {
+  const parentWin = win.getParentWindow()
+  const { exitAppWin } = global.quickWindows
+  if (mode === 'main') {
+    exitAppWin.show()
+    return
+  }
+  if (mode === 'main-ok') {
+    if (parentWin) {
+      win.close()
+      parentWin.close()
+      return
+    }
+  }
+  if (mode === 'main-cancel') {
+    exitAppWin.hide()
+    return
+  }
+
+  win.close()
+}
+
 function bind(): void {
   ipcMain.on(channel, (e, type, data) => {
     const { tabId } = data
@@ -23,7 +45,7 @@ function bind(): void {
         mWin.maximize()
       }
     } else if (type === 'close') {
-      mWin.close()
+      closeApp(mWin, data.mode)
     } else if (type === 'built-in-browser') {
       if (typeof data === 'object' && data.url) {
         createBuiltInBrowser(data)

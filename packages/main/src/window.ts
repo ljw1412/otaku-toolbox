@@ -66,6 +66,8 @@ export function createBrowser(config: NewBrowerConfig): BrowserWindow {
   }
 
   const newWin = new BrowserWindow({
+    parent: config.parent || false,
+    modal: config.modal || false,
     width: config.width || 1280,
     height: config.height || 720,
     frame: config.frame || false,
@@ -88,11 +90,14 @@ export function createBrowser(config: NewBrowerConfig): BrowserWindow {
   })
   baseListerner(newWin)
   newWin.loadURL(config.url)
-  newWin.once('ready-to-show', () => {
-    newWin.show()
-    if (env.MODE === 'development') {
-      newWin.webContents.openDevTools()
-    }
-  })
+  if (config.autoShow || config.autoShow === undefined) {
+    newWin.once('ready-to-show', () => {
+      newWin.show()
+      if (env.MODE === 'development') {
+        newWin.webContents.openDevTools()
+      }
+    })
+  }
+
   return newWin
 }

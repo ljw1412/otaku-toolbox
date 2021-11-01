@@ -9,7 +9,8 @@
       <app-navigation></app-navigation>
     </header-center>
     <div class="header-right flex-shrink-0 d-flex">
-      <app-controls class="m-auto mr-10">
+      <app-controls class="m-auto mr-10"
+        mode="main">
         <div class="app-control-btn btn-skin"
           @click="openSkinWindow">
           <acg-icon name="shirt-outline"

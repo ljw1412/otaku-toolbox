@@ -2,6 +2,7 @@ import SeparateContainer from '/@/containers/Separate.vue'
 import AppSetting from '/@/pages/Setting/index.vue'
 import AppTheme from '/@/pages/Theme/index.vue'
 import AnimeBangumiS from '/@/pages/Anime/Bangumi/index.vue'
+import ExitApp from '/@/pages/Modal/ExitApp/index.vue'
 
 const routes = [
   // 内置浏览器
@@ -11,6 +12,8 @@ const routes = [
     component: SeparateContainer,
     meta: { hasView: true }
   },
+  // 退出弹窗
+  { path: '/exit-app', name: 'ExitApp', component: ExitApp },
   // 带标题栏的界面
   {
     path: '/view',

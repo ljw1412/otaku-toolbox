@@ -26,6 +26,7 @@ import { safeBoolean } from '/@/utils/helper'
 export default defineComponent({
   name: 'AppControls',
   props: {
+    mode: { type: String, default: 'child' },
     minimizable: { type: Boolean, default: true },
     maximizable: { type: Boolean, default: true }
   },
@@ -54,7 +55,7 @@ export default defineComponent({
   },
   methods: {
     windowAction(action: 'min' | 'max' | 'close') {
-      ipcSend('window.action', action)
+      ipcSend('window.action', action, { mode: this.mode })
     }
   }
 })
