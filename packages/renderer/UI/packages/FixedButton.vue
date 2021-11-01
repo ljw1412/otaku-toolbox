@@ -91,8 +91,10 @@ export default defineComponent({
   cursor: pointer;
   transition: transform 0.15s;
   box-sizing: border-box;
+  color: var(--acg-fixed-button-color);
 
   &:not(.is-transparent) {
+    border: var(--acg-fixed-button-border);
     background-color: var(--acg-fixed-button-bg-color);
   }
 
