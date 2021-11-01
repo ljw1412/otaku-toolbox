@@ -2,19 +2,47 @@ import { BrowserWindow } from 'electron'
 import { getPageUrl } from '../utils/pageUrl'
 import { createBrowser } from '../window'
 
-export default function(mainWin: BrowserWindow) {
-  const exitAppWin = createBrowser({
-    autoShow: false,
-    parent: mainWin,
+const windowConfigs = {
+  exitApp: {
+    url: getPageUrl('/exit-app'),
+    parent: true,
     modal: true,
     width: 300,
     height: 150,
-    url: getPageUrl('/exit-app'),
+    title: '退出程序'
+  },
+  setting: {
+    url: getPageUrl('/setting'),
+    width: 800,
+    height: 600,
+    title: '系统设置'
+  },
+  theme: {
+    url: getPageUrl('/theme'),
+    width: 640,
+    height: 480,
+    title: '主题'
+  }
+} as Record<string, NewBrowerConfig>
+
+function createWindow(config: NewBrowerConfig) {
+  return createBrowser({
+    autoShow: false,
     resizable: false,
     minimizable: false,
     maximizable: false,
     singleInstance: true,
-    title: '退出程序'
+    ...config
   })
-  return { exitAppWin }
+}
+
+export default function(mainWin: BrowserWindow) {
+  return Object.keys(windowConfigs).reduce((obj, key) => {
+    const config = windowConfigs[key]
+    if (config.parent) {
+      config.parent = mainWin
+    }
+    obj[key] = createWindow(config)
+    return obj
+  }, {} as Record<string, BrowserWindow>)
 }

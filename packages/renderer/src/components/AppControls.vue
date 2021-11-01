@@ -41,6 +41,9 @@ export default defineComponent({
     },
     maximizableOfMeta(): boolean {
       return safeBoolean(this.$route.meta.maximizable as boolean, true)
+    },
+    hidableOfMeta(): boolean {
+      return safeBoolean(this.$route.meta.hidable as boolean)
     }
   },
   created() {
@@ -54,7 +57,10 @@ export default defineComponent({
     ipcOff('window.maximize')
   },
   methods: {
-    windowAction(action: 'min' | 'max' | 'close') {
+    windowAction(action: 'min' | 'max' | 'close' | 'hide') {
+      if (action === 'close' && this.hidableOfMeta) {
+        action = 'hide'
+      }
       ipcSend('window.action', action, { mode: this.mode })
     }
   }

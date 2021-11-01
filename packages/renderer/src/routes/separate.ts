@@ -23,17 +23,27 @@ const routes = [
     children: [
       // 系统设置
       {
-        path: 'setting',
+        path: '/setting',
         name: 'AppSetting',
         component: AppSetting,
-        meta: { title: '系统设置', minimizable: false, maximizable: false }
+        meta: {
+          title: '系统设置',
+          minimizable: false,
+          maximizable: false,
+          hidable: true
+        }
       },
       // 应用主题
       {
         path: '/theme',
         name: 'AppTheme',
         component: AppTheme,
-        meta: { title: '主题', minimizable: false, maximizable: false }
+        meta: {
+          title: '主题',
+          minimizable: false,
+          maximizable: false,
+          hidable: true
+        }
       },
       {
         path: '/anime/bangumi',

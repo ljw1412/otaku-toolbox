@@ -19,4 +19,5 @@ interface NewBrowerConfig {
   parent?: BrowserWindow
   modal?: boolean
   autoShow?: boolean
+  alwaysOnTop?: boolean
 }

@@ -19,11 +19,11 @@ export default defineComponent({
   name: 'ModalExitApp',
   methods: {
     ok() {
-      ipcSend('window.action', 'close', { mode: 'main-ok' })
+      ipcSend('window.action', 'close', { mode: 'main-close' })
     },
 
     cancel() {
-      ipcSend('window.action', 'close', { mode: 'main-cancel' })
+      ipcSend('window.action', 'hide')
     }
   }
 })

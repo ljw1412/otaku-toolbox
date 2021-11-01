@@ -59,6 +59,7 @@ export function createBrowser(config: NewBrowerConfig): BrowserWindow {
     const allWindows = BrowserWindow.getAllWindows()
     const win = allWindows.find(win => win.getTitle() === config.title)
     if (win) {
+      if (!win.isVisible()) win.show()
       if (win.isMinimized()) win.restore()
       win.focus()
       return win
@@ -71,6 +72,7 @@ export function createBrowser(config: NewBrowerConfig): BrowserWindow {
     width: config.width || 1280,
     height: config.height || 720,
     frame: config.frame || false,
+    alwaysOnTop: config.alwaysOnTop || false,
     minWidth: config.minWidth,
     minHeight: config.minHeight,
     maxWidth: config.maxWidth,
@@ -90,6 +92,7 @@ export function createBrowser(config: NewBrowerConfig): BrowserWindow {
   })
   baseListerner(newWin)
   newWin.loadURL(config.url)
+
   if (config.autoShow || config.autoShow === undefined) {
     newWin.once('ready-to-show', () => {
       newWin.show()

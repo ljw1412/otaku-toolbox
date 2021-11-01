@@ -5,24 +5,19 @@ const channel = 'window.action'
 
 function closeApp(win: BrowserWindow, mode: string) {
   const parentWin = win.getParentWindow()
-  const { exitAppWin } = global.quickWindows
+  const { exitApp } = global.quickWindows
   if (mode === 'main') {
-    exitAppWin.show()
+    exitApp.show()
     return
-  }
-  if (mode === 'main-ok') {
+  } else if (mode === 'main-close') {
     if (parentWin) {
       win.close()
       parentWin.close()
       return
     }
+  } else {
+    win.close()
   }
-  if (mode === 'main-cancel') {
-    exitAppWin.hide()
-    return
-  }
-
-  win.close()
 }
 
 function bind(): void {
@@ -46,6 +41,8 @@ function bind(): void {
       }
     } else if (type === 'close') {
       closeApp(mWin, data.mode)
+    } else if (type === 'hide') {
+      mWin.hide()
     } else if (type === 'built-in-browser') {
       if (typeof data === 'object' && data.url) {
         createBuiltInBrowser(data)

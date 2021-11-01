@@ -67,6 +67,11 @@ export default defineComponent({
     display: grid;
     grid-template-columns: 50% 50%;
     grid-column-gap: 30px;
+
+    box-sizing: border-box;
+    padding: 0 15px;
+    margin: 0 -15px;
+    width: 100%;
   }
 }
 </style>
