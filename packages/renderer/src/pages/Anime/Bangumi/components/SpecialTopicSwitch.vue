@@ -6,8 +6,8 @@
     theme="transparent"
     trigger="click">
     <acg-fixed-button title="专题切换"
-      :visibility-height="-1"
-      :bottom="90">
+      always
+      :bottom="85">
       <acg-icon name="repeat-outline"
         :size="20"></acg-icon>
     </acg-fixed-button>

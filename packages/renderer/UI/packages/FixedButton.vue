@@ -21,7 +21,8 @@ export default defineComponent({
     target: { type: String, default: '' },
     visibilityHeight: { type: Number, default: 200 },
     right: { type: Number, default: 40 },
-    bottom: { type: Number, default: 40 }
+    bottom: { type: Number, default: 40 },
+    always: Boolean
   },
 
   emits: ['click'],
@@ -35,16 +36,16 @@ export default defineComponent({
 
   computed: {
     visibility(): boolean {
-      return this.scrollTop > this.visibilityHeight
+      return this.always || this.scrollTop > this.visibilityHeight
     }
   },
 
   mounted() {
-    this.bind()
+    if (!this.always) this.bind()
   },
 
   beforeUnmount() {
-    this.unbind()
+    if (!this.always) this.unbind()
   },
 
   methods: {
@@ -92,6 +93,7 @@ export default defineComponent({
   transition: transform 0.15s;
   box-sizing: border-box;
   color: var(--acg-fixed-button-color);
+  z-index: 2000;
 
   &:not(.is-transparent) {
     border: var(--acg-fixed-button-border);
