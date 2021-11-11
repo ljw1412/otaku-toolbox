@@ -1,6 +1,17 @@
 declare module '*.vue' {
-  import type { DefineComponent } from 'vue';
+  import type { DefineComponent } from 'vue'
   // eslint-disable-next-line @typescript-eslint/ban-types, @typescript-eslint/no-explicit-any
-  const component: DefineComponent<{}, {}, any>;
-  export default component;
+  const component: DefineComponent<{}, {}, any>
+  export default component
 }
+
+declare module '@vue/runtime-core' {
+  export interface ComponentCustomProperties {
+    apiGet: MyFetch
+    apiPost: MyFetch
+    apiPut: MyFetch
+    apiDelete: MyFetch
+  }
+}
+
+export {}

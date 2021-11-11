@@ -2,6 +2,7 @@
   --skin-blue: #2196f3;
   --skin-dark: #1b1b1b;
   --skin-red: #f44336;
+  --skin-orange: #eb9a18;
   --skin-pink: #fb7299;
   --skin-green: #4caf50;
 
@@ -56,6 +57,10 @@
 
 :root[data-theme='red'] {
   --app-theme: var(--skin-red);
+}
+
+:root[data-theme='orange'] {
+  --app-theme: var(--skin-orange);
 }
 
 :root[data-theme='pink'] {

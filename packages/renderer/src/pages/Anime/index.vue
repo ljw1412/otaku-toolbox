@@ -5,11 +5,10 @@
     <main id="anime-main"
       v-watch-scroll
       class="anime-main">
-      <router-view v-slot="{ Component, route }"
+      <router-view v-slot="{ Component }"
         class="page-container">
         <keep-alive>
-          <component :is="Component"
-            :key="route.name || undefined" />
+          <component :is="Component" />
         </keep-alive>
       </router-view>
 

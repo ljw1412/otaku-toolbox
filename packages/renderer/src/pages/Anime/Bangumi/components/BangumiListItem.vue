@@ -3,7 +3,7 @@
     fill
     no-border
     shadow="never"
-    :data-anime-id="anime.id">
+    :data-anime-id="anime._id">
     <div class="anime-header">
       <div class="anime-names">
         <div class="localized-name">{{ anime.title }}</div>
@@ -12,8 +12,8 @@
       <div class="anime-specs">
         <div class="anime-tags">
           <span v-for="tag of anime.tags"
-            :key="tag"
-            class="tag">{{ tag }}</span>
+            :key="tag._id"
+            class="tag">{{ tag.name }}</span>
         </div>
         <div class="anime-onair">
           <span v-if="onair">播出时间：{{ onair.dateCH }}起 每周{{ onair.dayCH }} {{ onair.time }}</span>
@@ -72,11 +72,12 @@
         class="anime-streaming info-block">
         <h4>网络播放</h4>
         <p>
-          <a v-for="link of anime.streamingPlatforms"
+          <a v-for="link of streamingPlatforms"
             :key="link.name"
             :href="link.url"
             class="anime-link"
             :title="link.message || link.name"
+            :class="{special: link.hide}"
             target="_blank">
             <img v-if="getLogoIcon(link.from)"
               :src="getLogoIcon(link.from)"
@@ -118,6 +119,7 @@
 import { defineComponent, PropType } from 'vue'
 import { formatUnixTime } from '/@/utils/date'
 import { getLogoIcon } from '/@/utils/icons'
+import { contra } from '/@/utils/contra'
 
 export default defineComponent({
   name: 'AnimeBangumiListItem',
@@ -137,6 +139,12 @@ export default defineComponent({
       return (this.anime.titleMore || []).join('、')
     },
 
+    streamingPlatforms(): BangumiStreaming[] {
+      if (!Array.from(this.anime.streamingPlatforms)) return []
+      if (contra.flag) return this.anime.streamingPlatforms
+      return this.anime.streamingPlatforms.filter(item => !item.hide)
+    },
+
     onair(): FormatedAnimeDatetime | null {
       return formatUnixTime(this.anime.onair)
     },
@@ -153,7 +161,12 @@ export default defineComponent({
   },
 
   methods: {
-    getLogoIcon,
+    getLogoIcon(str: string) {
+      if (str.startsWith('http') || str.startsWith('//')) {
+        return str
+      }
+      return getLogoIcon(str)
+    },
     changeImage(image: string) {
       this.currentImage = image
     }
@@ -294,6 +307,11 @@ export default defineComponent({
         font-size: var(--list-item-info-font-size);
         margin-right: 6px;
         margin-bottom: 4px;
+        vertical-align: text-top;
+
+        &.special {
+          color: var(--skin-orange);
+        }
 
         > .link-icon {
           flex-shrink: 0;

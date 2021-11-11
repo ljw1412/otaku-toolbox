@@ -3,7 +3,7 @@
     <app-area-header title="新番资讯"></app-area-header>
     <div class="anime-list">
       <bangumi-list-item v-for="anime of animes"
-        :key="anime.id"
+        :key="anime._id"
         :anime="anime"></bangumi-list-item>
     </div>
   </div>

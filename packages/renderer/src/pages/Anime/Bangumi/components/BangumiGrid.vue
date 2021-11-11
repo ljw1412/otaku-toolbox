@@ -25,7 +25,7 @@ export default defineComponent({
 
   methods: {
     onAnimeItemClick(anime: AnimeOfBangumi) {
-      const query = `.bangumi-list-item[data-anime-id="${anime.id}"]`
+      const query = `.bangumi-list-item[data-anime-id="${anime._id}"]`
       const el = document.querySelector(query)
       if (el) {
         el.scrollIntoView({ behavior: 'smooth', block: 'center' })

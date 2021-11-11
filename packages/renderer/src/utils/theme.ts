@@ -7,6 +7,7 @@ export const themes = [
   { name: '蓝色', value: '', type: 'ligth', variable: '--skin-blue' },
   { name: '黑暗', value: 'dark', type: 'dark', variable: '--skin-dark' },
   { name: '红色', value: 'red', type: 'ligth', variable: '--skin-red' },
+  { name: '橙色', value: 'orange', type: 'ligth', variable: '--skin-orange' },
   { name: '粉色', value: 'pink', type: 'ligth', variable: '--skin-pink' },
   { name: '绿色', value: 'green', type: 'ligth', variable: '--skin-green' }
 ]

@@ -3,6 +3,10 @@
   margin: 0;
 }
 
+a {
+  text-decoration: none;
+}
+
 ul {
   list-style: none;
 }
@@ -21,15 +25,6 @@ body,
 body {
   font-family: PingFang SC, HarmonyOS Sans, Helvetica Neue, Microsoft YaHei,
     sans-serif !important;
-}
-
-.app-font-loader {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 0;
-  height: 0;
-  overflow: hidden;
 }
 
 ::-webkit-scrollbar {

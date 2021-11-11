@@ -3,10 +3,9 @@
     <app-header></app-header>
     <main id="app-main"
       class="app-main">
-      <router-view v-slot="{ Component, route }">
+      <router-view v-slot="{ Component }">
         <keep-alive>
-          <component :is="Component"
-            :key="route.name || undefined" />
+          <component :is="Component" />
         </keep-alive>
       </router-view>
     </main>

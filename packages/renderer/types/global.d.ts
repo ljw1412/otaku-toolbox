@@ -22,6 +22,14 @@ declare global {
     }
   }
 
+  type MyFetch = (api: string, init?: MyRequestInit) => Promise<any>
+
+  interface MyRequestInit extends RequestInit {
+    data?: BodyInit | Record<string, any>
+    query?: string | Record<string, any>
+    timeout?: number
+  }
+
   interface ThemeItem {
     name: string
     value: string
@@ -49,18 +57,29 @@ declare global {
     url?: string
   }
 
-  interface OnAirItem {
-    url: string
+  interface BangumiLink {
+    _id?: string
     name: string
-    time: string
-    from: string
+    url: string
     message?: string
+  }
+
+  interface BangumiStreaming extends BangumiLink {
+    hide: boolean
+    from: string
+    time: string
   }
 
   interface TodayBangumiItem {
     title: string
     cover: string
-    onairList: OnAirItem[]
+    onairList: BangumiStreaming[]
+  }
+
+  interface BangumiPerson {
+    _id?: string
+    entity: string
+    name: string
   }
 
   interface FormatedAnimeDatetime {
@@ -73,23 +92,39 @@ declare global {
     dayCH: string
   }
 
+  interface Tag {
+    _id: string
+    name: string
+    order: number
+    group: string
+    selected?: boolean
+  }
+
   interface AnimeOfBangumi {
-    id: number | string
+    _id: number | string
     title: string
     titleOriginal: string
     titleMore: string[]
-    tags: string[]
+    tags: Tag[]
     desc: string
     copyright: string
-    links: { name: string; url: string; message?: string }[]
-    streamingPlatforms: OnAirItem[]
-    cast: { name: string; entity: string }[]
-    staff: { name: string; entity: string }[]
-    cast: string[]
-    staff: string[]
+    links: BangumiLink[]
+    streamingPlatforms: BangumiStreaming[]
+    cast: BangumiPerson[]
+    staff: BangumiPerson[]
     coverMin: string
     cover: string[]
     onair: number
     onairInSteaming: number
+  }
+
+  interface SpecialTopic {
+    _id?: string
+    name: string
+    type: string
+    code: string
+    tags: Tag[]
+    isEdit: boolean
+    isAdd: boolean
   }
 }
