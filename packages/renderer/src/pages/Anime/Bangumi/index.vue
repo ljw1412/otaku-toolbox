@@ -8,6 +8,11 @@
       <bangumi-list :animes="bangumiList"
         class="mb-20"></bangumi-list>
     </template>
+    <div v-else-if="isError">
+      <span>与母星的通讯受到干扰！</span>
+      <span style="color:var(--app-common-color);cursor: pointer;"
+        @click="retry">重新连接</span>
+    </div>
     <div v-else>
       少女祈祷中……
     </div>
@@ -32,6 +37,7 @@ export default defineComponent({
   data() {
     return {
       loading: true,
+      isError: false,
       code: '',
       specialTopicList: [] as SpecialTopic[],
       bangumiList: []
@@ -53,6 +59,7 @@ export default defineComponent({
 
   methods: {
     async init() {
+      this.isError = false
       await this.fetchSpecialTopicList()
       if (this.specialTopicList.length) {
         this.code = this.specialTopicList[0].code
@@ -67,16 +74,32 @@ export default defineComponent({
 
     async fetchBangumiByCode() {
       this.loading = true
-      this.bangumiList = await this.apiGet('special_topic/preview', {
-        data: { code: this.code }
-      })
-      this.loading = false
+      try {
+        this.bangumiList = await this.apiGet('special_topic/preview', {
+          data: { code: this.code }
+        })
+        this.loading = false
+      } catch (error) {
+        this.isError = true
+      }
     },
 
     async fetchSpecialTopicList() {
-      this.specialTopicList = await this.apiGet('special_topic/codes', {
-        data: { type: '新番表' }
-      })
+      try {
+        this.specialTopicList = await this.apiGet('special_topic/codes', {
+          data: { type: '新番表' }
+        })
+      } catch (error) {
+        this.isError = true
+      }
+    },
+
+    async retry() {
+      if (!this.code) {
+        this.init()
+      } else {
+        this.fetchBangumiByCode()
+      }
     }
   }
 })

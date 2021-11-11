@@ -24,6 +24,7 @@ export default defineComponent({
 <style lang="scss">
 .anime-item-card {
   cursor: pointer;
+  width: 100%;
   .cover-container {
     height: var(--anime-item-height);
   }
@@ -36,7 +37,6 @@ export default defineComponent({
 
   .anime-title {
     padding: 4px;
-    // margin-top: 4px;
     font-size: 14px;
   }
 }

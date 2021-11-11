@@ -42,7 +42,7 @@ export default defineComponent({
   bottom: 0;
   left: 0;
   right: 0;
-  z-index: 2000;
+  z-index: 5000;
   background-color: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(5px);
   padding: 40px 100px;

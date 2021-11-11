@@ -100,6 +100,14 @@ declare global {
     selected?: boolean
   }
 
+  interface TagGroup {
+    _id: string
+    name: string
+    order: number
+    multiple: boolean
+    tags: Tag[]
+  }
+
   interface AnimeOfBangumi {
     _id: number | string
     title: string
