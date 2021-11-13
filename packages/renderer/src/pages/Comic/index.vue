@@ -4,7 +4,12 @@
       <comic-navigation></comic-navigation>
     </aside>
     <main class="comic-main">
-      <router-view></router-view>
+      <router-view v-slot="{ Component, route }">
+        <keep-alive>
+          <component :is="Component"
+            :key="route.name" />
+        </keep-alive>
+      </router-view>
     </main>
   </div>
 </template>

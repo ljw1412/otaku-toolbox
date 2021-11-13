@@ -5,7 +5,8 @@
     hide-on-click
     theme="transparent"
     trigger="click">
-    <acg-fixed-button title="专题切换"
+    <acg-fixed-button v-show="list.length"
+      title="专题切换"
       always
       :bottom="85">
       <acg-icon name="repeat-outline"
