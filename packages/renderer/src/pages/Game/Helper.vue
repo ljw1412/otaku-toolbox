@@ -1,14 +1,12 @@
 <template>
-  <div class="app-game">
-    <router-view></router-view>
-  </div>
+  <div class="app-game"></div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-  name: 'AppGame'
+  name: 'GameHelper'
 })
 </script>
 

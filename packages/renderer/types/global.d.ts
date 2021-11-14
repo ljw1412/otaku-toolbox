@@ -14,10 +14,11 @@ declare global {
       isTouch?: boolean
     }
     _watchScroll?: {
+      name: string
       listener: Funciton
-      position: {
-        left: number
-        top: number
+      positions: {
+        default?: { left: number; top: number }
+        [key: string]: { left: number; top: number }
       }
     }
   }

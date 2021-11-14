@@ -8,7 +8,7 @@
           v-tooltip.arrow.bottom="item.name"
           class="menu-item"
           :class="{ active: $route.name === item.component }"
-          @click="navigate(item.component)">
+          @click="navigate({ name: item.component })">
           <acg-icon :name="item.icon"></acg-icon>
         </div>
       </div>
@@ -26,11 +26,11 @@
     </header>
     <main>
       <div class="comic-origin-list">
-        <div v-for="(item,i) of list"
+        <div v-for="(item,i) of searchResultList"
           :key="i"
           class="comic-origin-item"
-          :class="{ active: getOriginActive(item.id) }"
-          @click="navigate('ComicOrigin',{ id: item.id })">
+          :class="{ active: getOriginActive(item._id) }"
+          @click="navigate({name:'ComicOrigin',params:{id: item._id},query:{title:item.title}})">
           <div class="icon">
             <img :src="item.icon">
           </div>
@@ -46,7 +46,14 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import { RouteLocationRaw } from 'vue-router'
 import { setNavigationCache } from '/@/utils/cache'
+
+interface ComicOrigin {
+  _id: string
+  icon: string
+  title: string
+}
 
 export default defineComponent({
   name: 'ComicNavigation',
@@ -77,35 +84,40 @@ export default defineComponent({
       ],
       list: [
         {
-          id: '1',
+          _id: '1',
           icon: 'https://www.bilibili.com/favicon.ico',
           title: '测试'
         },
         {
-          id: '2',
+          _id: '2',
           icon: 'https://cdn.aixifan.com/ico/favicon.ico',
           title: '测试2'
         }
-      ]
+      ] as ComicOrigin[]
     }
   },
 
   computed: {
     originCount(): number {
       return this.list.length
+    },
+
+    searchResultList(): ComicOrigin[] {
+      return this.list.filter(
+        item => !this.text || item.title.includes(this.text)
+      )
     }
   },
 
   methods: {
-    setCache(route: { name: string; params?: Record<string, any> }) {
+    setCache(route: RouteLocationRaw) {
       const module = this.$route.meta.module as string
       if (module && route) {
         setNavigationCache(module, route)
       }
     },
 
-    navigate(name: string, params?: Record<string, any>) {
-      const route = { name, params }
+    navigate(route: RouteLocationRaw) {
       this.$router.replace(route)
       this.setCache(route)
     },

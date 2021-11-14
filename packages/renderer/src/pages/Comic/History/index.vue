@@ -1,6 +1,7 @@
 <template>
   <div class="comic-history">
-    <app-area-header title="历史记录"></app-area-header>
+    <app-area-header class="comic-header"
+      title="历史记录"></app-area-header>
   </div>
 </template>
 

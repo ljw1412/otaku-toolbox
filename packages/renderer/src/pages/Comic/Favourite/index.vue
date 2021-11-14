@@ -1,6 +1,7 @@
 <template>
   <div class="comic-favourite">
-    <app-area-header title="我的收藏"></app-area-header>
+    <app-area-header class="comic-header"
+      title="我的收藏"></app-area-header>
   </div>
 </template>
 

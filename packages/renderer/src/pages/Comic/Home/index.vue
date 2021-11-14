@@ -1,6 +1,7 @@
 <template>
   <div class="comic-home">
-    <app-area-header title="首页"></app-area-header>
+    <app-area-header class="comic-header"
+      title="首页"></app-area-header>
   </div>
 </template>
 
@@ -14,7 +15,6 @@ export default defineComponent({
 
 <style lang="scss">
 .comic-home {
-  height: 100%;
-  overflow-y: scroll;
+  height: 1000px;
 }
 </style>

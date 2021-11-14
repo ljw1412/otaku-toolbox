@@ -1,6 +1,7 @@
 <template>
   <div class="comic-search">
-    <app-area-header title="搜索"></app-area-header>
+    <app-area-header class="comic-header"
+      title="搜索"></app-area-header>
   </div>
 </template>
 

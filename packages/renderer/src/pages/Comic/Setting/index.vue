@@ -1,6 +1,7 @@
 <template>
   <div class="comic-setting">
-    <app-area-header title="设置"></app-area-header>
+    <app-area-header class="comic-header"
+      title="设置"></app-area-header>
   </div>
 </template>
 

@@ -3,19 +3,22 @@ import { DirectiveBinding, ObjectDirective } from 'vue'
 function createListener(el: HTMLElement) {
   return function() {
     if (el._watchScroll) {
-      const { position } = el._watchScroll
-      position.top = el.scrollTop
-      position.left = el.scrollLeft
+      const { name, positions } = el._watchScroll
+      positions[name] = { left: el.scrollLeft, top: el.scrollTop }
     }
   }
 }
 
+// TODO position 改造为 positions
+
 export const WatchScroll = {
   beforeMount: (el: HTMLElement, binding: DirectiveBinding) => {
+    const name = binding.value || 'default'
     const listener = createListener(el)
     el._watchScroll = {
+      name,
       listener,
-      position: { left: 0, top: 0 }
+      positions: { [name]: { left: 0, top: 0 } }
     }
     el.addEventListener('scroll', listener)
     console.log('beforeMount', el, binding)
@@ -28,12 +31,16 @@ export const WatchScroll = {
     }
   },
   updated: (el: HTMLElement, binding: DirectiveBinding) => {
+    const name = binding.value || 'default'
+
     console.log('updated', [el], el._watchScroll, binding)
     if (el._watchScroll) {
+      el._watchScroll.name = name
       const { scrollTop, scrollLeft } = el
-      const { top, left } = el._watchScroll.position
+      const position = el._watchScroll.positions[name] || { top: 0, left: 0 }
+      const { top, left } = position
       if (scrollTop === top && scrollLeft === left) return
-      el.scrollTo(el._watchScroll.position)
+      el.scrollTo(position)
     }
   }
 }

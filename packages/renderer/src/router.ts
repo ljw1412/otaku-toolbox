@@ -27,7 +27,7 @@ router.beforeEach((to, from, next) => {
     const module = to.meta.module as string
     const navCache = getNavigationCache(module)
     const homeRouteName = routeName.replace('App', '') + 'Home'
-    console.log(homeRouteName, navCache)
+    console.log('路由缓存：', navCache, `,首页路由：${homeRouteName}`)
     return next(navCache || { name: homeRouteName })
   }
   next()

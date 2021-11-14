@@ -5,6 +5,7 @@
       class="app-main">
       <router-view />
     </main>
+    <acg-back-top target="#app-main"></acg-back-top>
   </div>
 </template>
 
