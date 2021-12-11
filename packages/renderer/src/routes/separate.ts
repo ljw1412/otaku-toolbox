@@ -55,10 +55,10 @@ const routes = [
       },
       {
         path: '/anime/wiki/:id',
-        name: 'Wiki',
+        name: 'AnimeWiki',
         props: true,
         component: AnimeWiki,
-        meta: { title: '番剧百科', hideAppHeader: true }
+        meta: { title: '番剧百科' }
       }
     ]
   }

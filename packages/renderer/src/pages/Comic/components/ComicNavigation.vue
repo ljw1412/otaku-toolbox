@@ -13,10 +13,9 @@
         </div>
       </div>
       <div class="origin-search">
-        <acg-input v-model="text"
-          clearable
-          prefix-icon="search-outline"
-          placeholder="搜索源"></acg-input>
+        <a-input-search v-model="text"
+          allow-clear
+          placeholder="搜索源"></a-input-search>
         <button v-tooltip="{content:'设置',placement:'right',offset:[0,10]}"
           class="btn-setting"
           @click="navigate('ComicSetting')">
@@ -146,7 +145,7 @@ export default defineComponent({
       display: grid;
       grid-template-columns: repeat(4, auto);
       height: 46px;
-      border-bottom: 1px solid var(--border-color);
+      border-bottom: 1px solid var(--color-border);
       .menu-item {
         cursor: pointer;
         display: grid;
@@ -173,33 +172,11 @@ export default defineComponent({
       padding: 12px 8px;
     }
 
-    .acg-input {
+    .arco-input-wrapper {
       width: 140px;
 
-      &__inner {
-        background-color: transparent;
-        border: 1px solid var(--border-color);
-        border-radius: 50px;
-        font-size: 12px;
-        transition: border-color 0.3s;
-
-        &:focus {
-          border-color: var(--app-common-color);
-        }
-      }
-
-      &__prefix {
-        transition: color 0.3s;
-      }
-
-      &__suffix {
-        right: 10px;
-      }
-
-      &.is-focused {
-        .acg-input__prefix {
-          color: var(--app-common-color);
-        }
+      &.arco-input-focus {
+        border-color: var(--app-common-color);
       }
     }
 
@@ -209,7 +186,7 @@ export default defineComponent({
       width: 24px;
       height: 24px;
       margin-left: 6px;
-      border: 1px solid var(--border-color);
+      border: 1px solid var(--color-border);
       background-color: rgba(255, 255, 255, 0.05);
       border-radius: 50%;
       color: var(--app-color-text);
@@ -253,11 +230,11 @@ export default defineComponent({
       }
 
       &.active {
-        background-color: rgba(var(--bg-hover-rgb), 0.2);
+        background-color: var(--color-fill-4);
       }
 
       &:hover {
-        background-color: rgba(var(--bg-hover-rgb), 0.1);
+        background-color: var(--color-fill-2);
       }
 
       &:active {

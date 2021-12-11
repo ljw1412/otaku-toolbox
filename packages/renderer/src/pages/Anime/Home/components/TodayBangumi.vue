@@ -21,7 +21,6 @@
 import { defineComponent } from 'vue'
 import { betterWeekdayName } from '/@/utils/date'
 import TodayBangumiItem from './TodayBangumiItem.vue'
-import tempdata from './data.json'
 
 export default defineComponent({
   name: 'AnimeTodayBangumi',
@@ -32,14 +31,15 @@ export default defineComponent({
 
   data() {
     return {
+      isError: false,
       isFirstLoaded: false,
       weekdayName: '',
-      bangumiList: [] as TodayBangumiItem[]
+      bangumiList: [] as BangumiBasicWithTime[]
     }
   },
 
   computed: {
-    mBangumiList(): TodayBangumiItem[] {
+    mBangumiList(): BangumiBasicWithTime[] {
       if (!this.isFirstLoaded) {
         return new Array(3).fill({ title: '', cover: '', onairList: [{}] })
       }
@@ -49,7 +49,6 @@ export default defineComponent({
 
   created() {
     this.fetchTodayBangumiList()
-
     this.updateWeekday()
   },
   activated() {
@@ -61,8 +60,12 @@ export default defineComponent({
     },
 
     async fetchTodayBangumiList() {
-      this.bangumiList = tempdata
-      this.isFirstLoaded = true
+      try {
+        this.bangumiList = await this.$API.Bangumi.listTodayBangumi()
+        this.isFirstLoaded = true
+      } catch (error) {
+        this.isError = true
+      }
       // try {
       //   const data = await fetch(
       //     'http://rap2api.taobao.org/app/mock/288559/today_bangumi'
@@ -88,7 +91,7 @@ export default defineComponent({
 
   &-weekday {
     font-size: 14px;
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--color-border);
     padding: 2px;
     margin-left: 4px;
   }

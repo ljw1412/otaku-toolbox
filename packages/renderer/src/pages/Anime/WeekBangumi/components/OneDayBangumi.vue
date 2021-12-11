@@ -14,7 +14,7 @@
         :key="anime._id"
         :title="anime.title">
         <router-link target="_blank"
-          :to="{name:'Wiki',params:{id:anime._id},query:{app:'otakutools'}}">
+          :to="{name:'AnimeWiki',params:{id:anime._id},query:{app:'otakutools'}}">
           <div class="time">{{anime.formatOnair[hourSystem].time}}</div>
           <acg-ratio-div :ratio="vertical?[1,1]:[3,4]">
             <img :src="compressImage(anime.coverMin)"

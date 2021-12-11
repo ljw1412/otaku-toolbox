@@ -14,7 +14,7 @@
           :sm="24">
           <div class="localized-name">
             <router-link target="_blank"
-              :to="{name:'Wiki',params:{id:anime._id},query:{app:'otakutools'}}">{{ anime.title }}</router-link>
+              :to="{name:'AnimeWiki',params:{id:anime._id},query:{app:'otakutools'}}">{{ anime.title }}</router-link>
           </div>
           <div class="original-name">
             {{ anime.titleOriginal }}

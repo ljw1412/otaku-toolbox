@@ -146,13 +146,13 @@ export default defineComponent({
         }
 
         &:hover {
-          background-color: rgba(var(--bg-hover-rgb), 0.1);
+          background-color: var(--color-fill-2);
         }
 
         &.active {
-          background-color: rgba(var(--bg-hover-rgb), 0.2);
+          background-color: var(--color-fill-4);
           font-weight: bold;
-          color: var(--text-active-color);
+          color: var(--color-text-0);
         }
       }
     }

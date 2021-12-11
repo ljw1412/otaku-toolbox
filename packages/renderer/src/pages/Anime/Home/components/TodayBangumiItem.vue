@@ -2,42 +2,30 @@
   <div class="today-bangumi-item"
     :class="{ 'is-skeleton': skeleton }"
     data-skeleton-animate>
-    <acg-card class="bangumi-card"
-      fill
-      no-border
-      :hover-up="!skeleton"
-      :shadow="skeleton ? 'never' : 'hover'">
-      <div class="cover skeleton-bg">
-        <img v-if="!skeleton"
-          :src="bangumi.cover"
-          loading="lazy">
-      </div>
-      <div class="info">
-        <h4 class="title text-truncate skeleton-bg">
-          <template v-if="!skeleton">{{ bangumi.title }}</template>
-        </h4>
-      </div>
-    </acg-card>
-    <div class="onair-list">
-      <div v-for="onair of (bangumi.onairList || [])"
-        :key="onair.url"
-        class="onair-item">
-        <acg-card :title="onair.message || `${onair.name}@${onair.time}`"
-          fill
-          no-border
-          shadow="never"
-          class="onair-item-card skeleton-bg"
-          :class="{disabled:!onair.url}"
-          @click="handleOnairClick(onair.url)">
-          <template v-if="!skeleton">
-            <img v-if="getLogoIcon(onair.from)"
-              :src="getLogoIcon(onair.from)"
-              class="onair-item-icon">
-            <span class="onair-item-time">{{ onair.time }}</span>
+    <router-link target="_blank"
+      :title="bangumi.title"
+      :to="{name:'AnimeWiki',params:{id:bangumi._id||'0'},query:{app:'otakutools'}}">
+      <a-card class="bangumi-card"
+        hoverable
+        :bordered="false">
+        <template #cover>
+          <acg-ratio-div class="skeleton-bg"
+            :ratio="[4,3]">
+            <img v-if="!skeleton"
+              :src="bangumi.coverMin"
+              loading="lazy">
+          </acg-ratio-div>
+        </template>
+        <a-card-meta>
+          <template #title>
+            <a-space size="mini">
+              <a-tag class="skeleton-bg">{{onair.time || '??:??'}}</a-tag>
+              <div class="title skeleton-bg">{{ bangumi.title }}</div>
+            </a-space>
           </template>
-        </acg-card>
-      </div>
-    </div>
+        </a-card-meta>
+      </a-card>
+    </router-link>
   </div>
 </template>
 
@@ -49,7 +37,19 @@ export default defineComponent({
   name: 'TodayBangumiItem',
   props: {
     skeleton: Boolean,
-    bangumi: { type: Object as PropType<TodayBangumiItem>, default: () => ({}) }
+    bangumi: {
+      type: Object as PropType<BangumiBasicWithTime>,
+      default: () => ({})
+    }
+  },
+
+  computed: {
+    onair(): FormatedAnimeDatetime | Record<string, any> {
+      if (!this.bangumi.formatOnair) {
+        return {}
+      }
+      return this.bangumi.formatOnair[this.hourSystem]
+    }
   },
 
   methods: {
@@ -76,76 +76,20 @@ export default defineComponent({
     cursor: pointer;
     display: inline-block;
     width: 280px;
+    transition-property: box-shadow, transform;
 
     .cover {
-      height: 200px;
-      > img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
+      width: 100%;
     }
 
-    .info {
-      padding: 10px 16px;
-      .title {
-        font-size: 16px;
-        height: 22px;
-        line-height: 22px;
-      }
+    .title {
+      line-height: 24px;
+      height: 24px;
+      min-width: 100px;
     }
-  }
 
-  .onair-list {
-    position: absolute;
-    bottom: 10px;
-    .onair-item {
-      display: inline-block;
-      height: 28px;
-      width: 76px;
-
-      &:not(:first-child) {
-        margin-left: 4px;
-      }
-
-      &-card {
-        cursor: pointer;
-        padding: 0 10px;
-        font-size: 14px;
-        line-height: 16px;
-        width: 100%;
-        height: 100%;
-      }
-
-      .acg-card__body {
-        display: flex;
-        align-items: center;
-        height: 100%;
-      }
-
-      .onair-item-icon,
-      .onair-item-time {
-        flex: 0 0 auto;
-      }
-
-      .onair-item-icon {
-        width: 16px;
-
-        & + .onair-item-time {
-          margin-left: 4px;
-        }
-      }
-    }
-  }
-
-  &:not(.is-skeleton) {
-    .onair-item-card:not(.disabled) {
-      &:hover {
-        opacity: 0.85;
-      }
-      &:active {
-        transform: scale(0.9);
-      }
+    &:hover {
+      transform: translateY(-4px);
     }
   }
 
@@ -154,13 +98,11 @@ export default defineComponent({
       cursor: default;
       margin-bottom: 30px;
       .title {
-        width: 60%;
-        border-radius: 4px;
+        border-radius: var(--border-radius-small);
       }
-    }
-    .onair-list {
-      .onair-item-card {
-        cursor: default;
+
+      .arco-tag {
+        color: transparent;
       }
     }
   }

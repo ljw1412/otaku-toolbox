@@ -10,6 +10,8 @@
 }
 
 body {
+  --color-text-0: #000000;
+
   --app-theme: var(--skin-blue);
   --app-common-color: var(--app-theme);
 
@@ -18,11 +20,8 @@ body {
 
   --app-color-bg: var(--color-bg-3);
   --app-color-text: var(--color-text-1);
-  --text-active-color: #000000;
   --app-header-color-text: #ffffff;
 
-  --bg-hover-rgb: 0, 0, 0;
-  --border-color: #cccccc;
   --skeleton-bg-color: #e9e7e7;
   --skeleton-bg-color-to: #e0e0e0;
   --bangumi-gallery-active-color: var(--app-theme);
@@ -35,17 +34,15 @@ body {
 }
 
 body[arco-theme='dark'] {
+  --color-text-0: #ffffff;
+
   --app-theme: var(--skin-dark);
   --app-common-color: #e4a329;
 
   --app-header-center-bg: rgba(255, 255, 255, 0.05);
 
-  --bg-hover-rgb: 255, 255, 255;
-  --border-color: #555555;
   --skeleton-bg-color: #4b4b4b;
   --skeleton-bg-color-to: #5d5d5d;
-
-  --text-active-color: #ffffff;
 
   --scrollbar-bg: #000000;
   --scrollbar-thumb-bg: #666666;
@@ -54,18 +51,18 @@ body[arco-theme='dark'] {
   --comic-navigation-bg: #3f3f40;
 }
 
-:root[data-theme='red'] {
+body[arco-theme='red'] {
   --app-theme: var(--skin-red);
 }
 
-:root[data-theme='orange'] {
+body[arco-theme='orange'] {
   --app-theme: var(--skin-orange);
 }
 
-:root[data-theme='pink'] {
+body[arco-theme='pink'] {
   --app-theme: var(--skin-pink);
 }
 
-:root[data-theme='green'] {
+body[arco-theme='green'] {
   --app-theme: var(--skin-green);
 }

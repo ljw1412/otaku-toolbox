@@ -26,7 +26,8 @@ export default defineComponent({
           title: '津田尚克×CloverWorks原创TV动画《东京24区》2022年1月播出',
           desc:
             '​津田尚克导演×故事构成/脚本·下倉バイオ（Nitroplus）×动画制作CloverWorks的全新原创TV动画《东京24区》将于2022年1月开始播出！',
-          from: ''
+          from: '',
+          url: 'http://www.baidu.com'
         },
         {
           id: '2',

@@ -1,10 +1,3 @@
-.acg-input {
-  &__inner {
-    background-color: rgba(var(--bg-hover-rgb), 0.1);
-    color: var(--app-color-text);
-  }
-}
-
 body[arco-theme='dark'] {
   --acg-fixed-button-color: #ffffff;
   --acg-fixed-button-border: none;
@@ -17,15 +10,5 @@ body[arco-theme='dark'] {
 
   .acg-drawer {
     --acg-drawer-bg-color: #171819;
-  }
-
-  .acg-input {
-    .search-panel {
-      background-color: #171819;
-
-      > ul > li {
-        background-color: #333436;
-      }
-    }
   }
 }

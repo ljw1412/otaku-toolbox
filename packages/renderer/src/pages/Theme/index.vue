@@ -56,7 +56,7 @@ export default defineComponent({
       height: 100px;
       border-radius: 4px;
       &.actived {
-        border: 4px solid var(--border-color);
+        border: 4px solid var(--color-border);
       }
     }
   }

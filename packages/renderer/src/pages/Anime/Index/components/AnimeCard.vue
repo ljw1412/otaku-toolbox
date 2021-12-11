@@ -2,7 +2,7 @@
   <div class="index-admin-item">
     <router-link target="_blank"
       :title="anime.title"
-      :to="{name:'Wiki',params:{id:anime._id},query:{app:'otakutools'}}">
+      :to="{name:'AnimeWiki',params:{id:anime._id},query:{app:'otakutools'}}">
       <a-card class="anime-card"
         hoverable
         :bordered="false"

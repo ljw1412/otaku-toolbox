@@ -15,7 +15,7 @@ export async function listBangumi(
   page = { index: 1, size: 20 },
   type: string,
   tags: string[] | string,
-  keyword: string = ''
+  keyword = ''
 ): Promise<{ list: BangumiBasic[]; total: number }> {
   if (Array.isArray(tags)) {
     tags = tags.join(',')
@@ -39,6 +39,18 @@ export async function showBangumi(id: string) {
  */
 export async function listWeekBangumi(): Promise<BangumiBasicWithTime[]> {
   const data = await apiGet(`${API_BASE}/week`)
+  data.forEach(computeBangumiTime)
+  return data
+}
+
+/**
+ * 获取一日番剧
+ * @returns
+ */
+export async function listTodayBangumi(): Promise<BangumiBasicWithTime[]> {
+  const data = await apiGet(`${API_BASE}/today`, {
+    data: { t: +new Date() }
+  })
   data.forEach(computeBangumiTime)
   return data
 }

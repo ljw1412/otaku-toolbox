@@ -78,12 +78,6 @@ declare global {
     region: string
   }
 
-  interface TodayBangumiItem {
-    title: string
-    cover: string
-    onairList: BangumiStreaming[]
-  }
-
   interface BangumiPerson {
     _id?: string
     entity: string
