@@ -19,7 +19,7 @@ export default defineComponent({
         { name: '资讯', to: { name: 'AnimeNews' } },
         { name: '索引', to: { name: 'AnimeIndex' } },
         { name: '新番表', to: { name: 'AnimeBangumi' } },
-        { name: '外链', url: 'https://www.baidu.com' }
+        { name: '一周放送', to: { name: 'AnimeWeekBangumi' } }
       ] as PageNavigationItem[],
       rightLinks: [
         { name: '新番表', to: { name: 'AnimeBangumiS' } },

@@ -1,6 +1,6 @@
 <template>
   <div class="bangumi-list">
-    <app-area-header title="新番资讯"></app-area-header>
+    <acg-area-header title="新番简讯"></acg-area-header>
     <div class="anime-list">
       <bangumi-list-item v-for="anime of animes"
         :key="anime._id"
@@ -19,7 +19,7 @@ export default defineComponent({
   components: { BangumiListItem },
 
   props: {
-    animes: { type: Array as PropType<AnimeOfBangumi[]>, default: () => [] }
+    animes: { type: Array as PropType<BangumiBasic[]>, default: () => [] }
   }
 })
 </script>

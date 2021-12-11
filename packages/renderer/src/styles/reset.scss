@@ -5,6 +5,7 @@
 
 a {
   text-decoration: none;
+  color: unset;
 }
 
 ul {
@@ -39,4 +40,46 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--scrollbar-thumb-hover-bg);
+}
+
+h1 {
+  font-size: 32px;
+}
+
+h2 {
+  font-size: 28px;
+}
+
+h3 {
+  font-size: 24px;
+}
+
+h4 {
+  font-size: 22px;
+}
+
+h5 {
+  font-size: 18px;
+}
+
+.full-modal {
+  .arco-modal-body {
+    padding: 0;
+  }
+}
+
+.sticky-b {
+  position: sticky;
+  bottom: 0;
+  z-index: 100;
+}
+
+.sticky-t {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.bg-app {
+  background-color: var(--app-color-bg);
 }

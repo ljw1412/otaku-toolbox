@@ -1,12 +1,22 @@
-const days = ['日', '一', '二', '三', '四', '五', '六']
+export const dayList = [
+  { en: 'Sunday', jp: '日', cn: '日' },
+  { en: 'Monday', jp: '月', cn: '一' },
+  { en: 'Tuesday', jp: '火', cn: '二' },
+  { en: 'Wednesday', jp: '水', cn: '三' },
+  { en: 'Thursday', jp: '木', cn: '四' },
+  { en: 'Friday', jp: '金', cn: '五' },
+  { en: 'Saturday', jp: '土', cn: '六' }
+]
+
+const daysCN = ['日', '一', '二', '三', '四', '五', '六']
 
 export function weekdayName(number: number) {
-  return days[number]
+  return daysCN[number]
 }
 
 export function betterWeekdayName(number: number, short = false) {
   const prefix = short ? '周' : '星期'
-  return prefix + days[number]
+  return prefix + daysCN[number]
 }
 
 function prefixZore(n: number | string, digit = 2) {
@@ -19,11 +29,16 @@ const TIME_FORMAT_MAP = {
   30: 'HH:mm'
 }
 const DATE_FORMAT = 'M/D'
+const FULL_DATE_FORMAT = 'YYYY/M/D'
 const DATE_FORMAT_CH = 'M月D日'
+const FULL_DATE_FORMAT_CH = 'YYYY年M月D日'
 
-export function formatUnixTime(unix: number, hourSystem: 12 | 24 | 30 = 24) {
-  if (!unix) return null
-  let d = window.$dayjs(unix)
+export function formatUnixTime(
+  datetime: number | Date | string,
+  hourSystem: 12 | 24 | 30 = 24
+) {
+  if (!datetime) return null
+  let d = window.$dayjs(datetime)
   const { years, hours, minutes } = d.toObject()
   let time = d.format(TIME_FORMAT_MAP[hourSystem])
   if (hourSystem === 30 && hours < 6) {
@@ -31,15 +46,18 @@ export function formatUnixTime(unix: number, hourSystem: 12 | 24 | 30 = 24) {
     time = prefixZore(hours + 24) + ':' + prefixZore(minutes)
   }
   const date = d.format(DATE_FORMAT)
-  const dateCH = d.format(DATE_FORMAT_CH)
+
   const day = d.day()
   return {
+    unix: d.unix() * 1000,
     years: '' + years,
     time,
     date,
-    dateCH,
+    dateCH: d.format(DATE_FORMAT_CH),
     datetime: `${date} ${time}`,
     day,
-    dayCH: weekdayName(day)
+    dayCH: weekdayName(day),
+    fullDate: d.format(FULL_DATE_FORMAT),
+    fullDateCH: d.format(FULL_DATE_FORMAT_CH)
   }
 }

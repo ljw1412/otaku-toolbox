@@ -46,7 +46,7 @@ export default defineComponent({
     placement: { type: String, default: 'right' },
     innerClass: [String, Object],
     innerStyle: [String, Object],
-    closeByModal: { type: Boolean, default: true }
+    closeByMask: { type: Boolean, default: true }
   },
 
   emits: ['update:modelValue', 'close', 'open', 'closed'],
@@ -76,13 +76,13 @@ export default defineComponent({
       this.isDisplayDrawer = false
     },
 
-    close() {
-      this.$emit('close')
+    close(who?: string) {
+      this.$emit('close', who)
       this.$emit('update:modelValue', false)
     },
 
     handleModalClcik() {
-      if (this.closeByModal) this.close()
+      if (this.closeByMask) this.close('mask')
     }
   }
 })

@@ -1,11 +1,11 @@
 .acg-input {
   &__inner {
     background-color: rgba(var(--bg-hover-rgb), 0.1);
-    color: var(--text-color);
+    color: var(--app-color-text);
   }
 }
 
-:root[data-theme='dark'] {
+body[arco-theme='dark'] {
   --acg-fixed-button-color: #ffffff;
   --acg-fixed-button-border: none;
   --acg-fixed-button-bg-color: var(--skin-dark);

@@ -8,6 +8,7 @@ import AnimeHome from '/@/pages/Anime/Home/index.vue'
 import AnimeIndex from '/@/pages/Anime/Index/index.vue'
 import AnimeNews from '/@/pages/Anime/News/index.vue'
 import AnimeBangumi from '/@/pages/Anime/Bangumi/index.vue'
+import AnimeWeekBangumi from '/@/pages/Anime/WeekBangumi/index.vue'
 
 import AppHelper from '/@/pages/Comic/Helper.vue'
 import ComicHome from '/@/pages/Comic/Home/index.vue'
@@ -63,7 +64,19 @@ const animeRoutes = createRoutes('anime', {
     // 索引
     { path: 'index', name: 'AnimeIndex', component: AnimeIndex },
     // 新番表
-    { path: 'bangumi', name: 'AnimeBangumi', component: AnimeBangumi }
+    {
+      path: 'bangumi/:code?',
+      name: 'AnimeBangumi',
+      component: AnimeBangumi,
+      props: true
+    },
+    // 一周放送
+    {
+      path: 'weekbangumi',
+      name: 'AnimeWeekBangumi',
+      component: AnimeWeekBangumi,
+      meta: { pageContainer: false }
+    }
   ]
 })
 

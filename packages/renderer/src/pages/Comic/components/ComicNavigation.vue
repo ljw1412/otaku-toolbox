@@ -212,7 +212,7 @@ export default defineComponent({
       border: 1px solid var(--border-color);
       background-color: rgba(255, 255, 255, 0.05);
       border-radius: 50%;
-      color: var(--text-color);
+      color: var(--app-color-text);
 
       &:hover {
         color: var(--app-common-color);

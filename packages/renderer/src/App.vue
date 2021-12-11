@@ -22,7 +22,7 @@ export default defineComponent({
 
 <style>
 body {
-  color: var(--text-color);
-  background-color: var(--bg-color);
+  color: var(--app-color-text);
+  background-color: var(--app-color-bg);
 }
 </style>

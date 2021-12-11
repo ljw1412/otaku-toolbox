@@ -1,35 +1,27 @@
 <template>
-  <acg-tooltip v-model="isDisplaySwitch"
-    placement="left-end"
-    interactive
-    hide-on-click
-    theme="transparent"
-    trigger="click">
-    <acg-fixed-button v-show="list.length"
-      title="专题切换"
-      always
-      :bottom="85">
-      <acg-icon name="repeat-outline"
-        :size="20"></acg-icon>
-    </acg-fixed-button>
-    <template #content>
-      <div class="topic-switch">
-        <div v-for="topic of list"
+  <acg-fixed-button ref="btn"
+    title="专题切换"
+    always
+    :bottom="90"
+    @click="isDisplaySwitch=!isDisplaySwitch">
+    <acg-icon name="repeat-outline"
+      :size="20"></acg-icon>
+    <transition name="fade">
+      <div v-show="isDisplaySwitch"
+        class="topic-switch">
+        <router-link v-for="topic of list"
           :key="topic._id"
-          class="topic-item"
-          :class="{active:topic.code === code}"
-          @click="handleCodeChange(topic.code)">
-          <acg-icon v-if="topic.code === code"
-            name="arrow-forward-outline"
-            style="margin-right: 4px;"></acg-icon>
-          <span>{{ topic.name }}</span>
-        </div>
+          :to="{params: {code: topic.code},query:{app:'otakutools'}}">
+          <a-button :type="topic.code === code?'primary':'text'"
+            long>{{ topic.name }}</a-button>
+        </router-link>
       </div>
-    </template>
-  </acg-tooltip>
+    </transition>
+  </acg-fixed-button>
 </template>
 
 <script lang="ts">
+import { onClickOutside } from '@vueuse/core'
 import { defineComponent, PropType } from 'vue'
 
 export default defineComponent({
@@ -38,41 +30,35 @@ export default defineComponent({
     list: { type: Array as PropType<SpecialTopic[]>, default: () => [] },
     code: String
   },
-  emits: ['code-change'],
   data() {
     return { isDisplaySwitch: false }
   },
-  methods: {
-    handleCodeChange(code: string) {
-      if (code === this.code) return
-      this.$emit('code-change', code)
-      this.isDisplaySwitch = false
-    }
+  mounted() {
+    onClickOutside(this.$refs.btn as HTMLElement, () => {
+      if (this.isDisplaySwitch) {
+        this.isDisplaySwitch = false
+      }
+    })
   }
 })
 </script>
 
 <style lang="scss">
 .topic-switch {
+  position: absolute;
+  bottom: 0;
+  right: 48px;
   width: 160px;
-  padding: 4px 2px;
+  padding: 4px;
   border-radius: 4px;
   background-color: var(--acg-fixed-button-bg-color);
   border: var(--acg-fixed-button-border);
   z-index: 1000;
 
-  > .topic-item {
-    color: var(--text-color);
-    padding: 6px;
-    border-radius: 4px;
-    // text-align: center;
-    cursor: pointer;
-
-    &.active {
-      font-weight: bold;
-    }
-    &:hover {
-      background-color: rgba(200, 200, 200, 0.2);
+  > a {
+    display: block;
+    & + a {
+      margin-top: 2px;
     }
   }
 }

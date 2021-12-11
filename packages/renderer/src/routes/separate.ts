@@ -1,8 +1,9 @@
 import SeparateContainer from '/@/containers/Separate.vue'
 import AppSetting from '/@/pages/Setting/index.vue'
 import AppTheme from '/@/pages/Theme/index.vue'
-import AnimeBangumiS from '/@/pages/Anime/Bangumi/index.vue'
 import ExitApp from '/@/pages/Modal/ExitApp/index.vue'
+import AnimeBangumiS from '/@/pages/Anime/Bangumi/index.vue'
+import AnimeWiki from '/@/pages/Anime/Wiki/index.vue'
 
 const routes = [
   // 内置浏览器
@@ -46,10 +47,18 @@ const routes = [
         }
       },
       {
-        path: '/anime/bangumi',
+        path: '/anime/bangumi/:code?',
         name: 'AnimeBangumiS',
         component: AnimeBangumiS,
+        props: true,
         meta: { title: '新番表' }
+      },
+      {
+        path: '/anime/wiki/:id',
+        name: 'Wiki',
+        props: true,
+        component: AnimeWiki,
+        meta: { title: '番剧百科', hideAppHeader: true }
       }
     ]
   }

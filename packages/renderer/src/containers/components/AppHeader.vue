@@ -62,7 +62,7 @@ export default defineComponent({
 <style lang="scss">
 .app-header {
   height: var(--app-header-height);
-  color: var(--header-text-color);
+  color: var(--app-header-color-text);
   background-color: var(--app-header-bg);
 
   .header-left,

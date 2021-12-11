@@ -27,7 +27,7 @@ export default defineComponent({
   position: relative;
   width: 100%;
   height: var(--app-header-mini-height);
-  color: var(--header-text-color);
+  color: var(--app-header-color-text);
   background-color: var(--app-header-bg);
   z-index: 9999999;
 

@@ -58,6 +58,12 @@ declare global {
     url?: string
   }
 
+  interface BangumiPerson {
+    _id?: string
+    entity: string
+    name: string
+  }
+
   interface BangumiLink {
     _id?: string
     name: string
@@ -69,6 +75,7 @@ declare global {
     hide: boolean
     from: string
     time: string
+    region: string
   }
 
   interface TodayBangumiItem {
@@ -91,13 +98,17 @@ declare global {
     datetime: string
     day: number
     dayCH: string
+    fullDate: string
+    fullDateCH: string
   }
 
   interface Tag {
     _id: string
     name: string
-    order: number
-    group: string
+    color?: string
+    count?: number
+    order?: number
+    group?: string
     selected?: boolean
   }
 
@@ -109,7 +120,7 @@ declare global {
     tags: Tag[]
   }
 
-  interface AnimeOfBangumi {
+  interface BangumiBasic {
     _id: number | string
     title: string
     titleOriginal: string
@@ -123,8 +134,18 @@ declare global {
     staff: BangumiPerson[]
     coverMin: string
     cover: string[]
-    onair: number
-    onairInSteaming: number
+    onair: number | Date | string
+    endTime: number | Date | string
+    day: number
+  }
+
+  interface BangumiBasicWithTime extends BangumiBasic {
+    formatOnair: { 24: FormatedAnimeDatetime; 30: FormatedAnimeDatetime }
+  }
+
+  interface BangumiBasicGroup {
+    title?: string
+    list: BangumiBasic[]
   }
 
   interface SpecialTopic {
@@ -135,5 +156,31 @@ declare global {
     tags: Tag[]
     isEdit: boolean
     isAdd: boolean
+    current: boolean
+  }
+
+  interface Banner {
+    _id?: string
+    // 标题
+    title: string
+    // 描述
+    desc: string
+    // 封面
+    cover: string
+    // 开始时间
+    startTime: string | Date
+    // 结束时间
+    endTime: string | Date
+    // 是否启用
+    enabled: boolean
+    // 哪里，比如:'home','news'
+    where: string
+    // 地址
+    url: string
+    // vue路由
+    vueRoute: string
+
+    expired?: boolean
+    bgColor?: string
   }
 }

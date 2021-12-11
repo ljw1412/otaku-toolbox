@@ -1,7 +1,7 @@
 import { toTitleCase } from './string'
 import qs from 'qs'
 
-const timeout = 20 * 1000
+const timeout = 10 * 1000
 
 console.log(import.meta.env)
 
@@ -48,7 +48,13 @@ function createFetch(method: string) {
     }, config.timeout)
 
     return fetch(url, mConfig)
-      .then(resp => resp.json())
+      .then(resp => {
+        const json = resp.json()
+        if (resp.status >= 400) {
+          return Promise.reject(json)
+        }
+        return json
+      })
       .catch(e => {
         if (e.name === 'AbortError') {
           const configStr = JSON.stringify(mConfig, null, 2)
@@ -70,4 +76,9 @@ const fetchMethods = methods.reduce((obj, item) => {
   return obj
 }, {} as Record<string, MyFetch>)
 
-export default fetchMethods
+export default fetchMethods as {
+  apiGet: MyFetch
+  apiPost: MyFetch
+  apiPut: MyFetch
+  apiDelete: MyFetch
+}

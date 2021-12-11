@@ -1,136 +1,159 @@
 <template>
-  <acg-card class="bangumi-list-item"
-    fill
-    no-border
-    shadow="never"
-    :data-anime-id="anime._id">
-    <div class="anime-header">
-      <div class="anime-names">
-        <div class="localized-name">{{ anime.title }}</div>
-        <div class="original-name">{{ anime.titleOriginal }}</div>
-      </div>
-      <div class="anime-specs">
-        <div class="anime-tags">
-          <span v-for="tag of anime.tags"
-            :key="tag._id"
-            class="tag">{{ tag.name }}</span>
-        </div>
-        <div class="anime-onair">
-          <span v-if="onair">播出时间：{{ onair.dateCH }}起 每周{{ onair.dayCH }} {{ onair.time }}</span>
-          <span v-else>暂未定档</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="anime-gallery">
-      <div class="gallery">
-        <div class="image">
-          <img :src="currentImage"
-            loading="lazy" />
-        </div>
-        <div class="image-list">
-          <div v-for="image of anime.cover"
-            :key="image"
-            class="image-item"
-            :class="{active:image === currentImage}"
-            @click="changeImage(image)">
-            <img :src="image"
-              loading="lazy">
+  <a-card class="bangumi-list-item"
+    :bordered="false"
+    :body-style="{padding:0}">
+    <template #cover>
+      <div class="anime-anchor"
+        :id="'anime-'+anime._id"></div>
+    </template>
+    <template #title>
+      <a-row>
+        <a-col class="anime-names"
+          :lg="15"
+          :xs="24"
+          :sm="24">
+          <div class="localized-name">
+            <router-link target="_blank"
+              :to="{name:'Wiki',params:{id:anime._id},query:{app:'otakutools'}}">{{ anime.title }}</router-link>
           </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="anime-info">
-      <div v-show="animeTitleMore"
-        class="anime-name-more info-block">
-        <h4>其它名称</h4>
-        <p>{{ animeTitleMore }}</p>
-      </div>
-      <div v-show="anime.desc"
-        class="anime-desc info-block">
-        <h4>故事简介</h4>
-        <p>{{ anime.desc }}</p>
-      </div>
-      <div v-show="anime.copyright"
-        class="anime-copyright info-block">
-        <i>{{ anime.copyright }}</i>
-      </div>
-      <div v-show="anime.links && anime.links.length"
-        class="anime-links info-block">
-        <h4>相关链接</h4>
-        <p>
-          <a v-for="link of anime.links"
-            :key="link.name"
-            :href="link.url"
-            class="anime-link"
-            :title="link.message || link.name"
-            target="_blank">{{ link.name }}</a>
-        </p>
-      </div>
-      <div v-show="anime.streamingPlatforms && anime.streamingPlatforms.length"
-        class="anime-streaming info-block">
-        <h4>网络播放</h4>
-        <p>
-          <a v-for="link of streamingPlatforms"
-            :key="link.name"
-            :href="link.url"
-            class="anime-link"
-            :title="link.message || link.name"
-            :class="{special: link.hide}"
-            target="_blank">
-            <img v-if="getLogoIcon(link.from)"
-              :src="getLogoIcon(link.from)"
-              class="link-icon">
-            <span>{{ link.name }}</span>
+          <div class="original-name">
+            {{ anime.titleOriginal }}
+          </div>
+        </a-col>
+        <a-col class="anime-specs"
+          :lg="9"
+          :xs="24"
+          :sm="24">
+          <a-space size="mini"
+            wrap
+            class="anime-tags">
+            <a-tag v-for="tag of anime.tags"
+              :color="tag.color"
+              :key="tag._id">{{ tag.name }}</a-tag>
+          </a-space>
+          <div class="anime-onair">{{ onairStr }}</div>
+          <a class="btn-push"
+            :href="'#anime-'+anime._id">
+            <a-button>
+              <template #icon>
+                <icon-pushpin />
+              </template>
+            </a-button>
           </a>
-        </p>
-      </div>
-    </div>
-
-    <div v-show="anime.cast && anime.cast.length"
-      class="anime-info">
-      <div class="anime-cast info-block">
-        <h4>Cast</h4>
-        <div v-for="person of anime.cast"
-          :key="person.name"
-          class="person">
-          <span class="type">{{ person.name }}</span>
-          <span> : </span>
-          <span class="entity">{{ person.entity }}</span>
-        </div>
-      </div>
-      <div v-show="anime.staff && anime.staff.length"
-        class="anime-staff info-block">
-        <h4>Staff</h4>
-        <div v-for="person of anime.staff"
-          :key="person.name"
-          class="person">
-          <span class="type">{{ person.name }}</span>
-          <span> : </span>
-          <span class="entity">{{ person.entity }}</span>
-        </div>
-      </div>
-    </div>
-  </acg-card>
+        </a-col>
+      </a-row>
+    </template>
+    <a-row>
+      <a-col class="anime-gallery"
+        :xl="7"
+        :xs="8"
+        :sm="8">
+        <acg-gallery :images="anime.cover"
+          :default-image="anime.coverMin"></acg-gallery>
+      </a-col>
+      <a-col :xl="17"
+        :xs="16"
+        :sm="16">
+        <a-row class="anime-info"
+          :gutter="{lg:8}">
+          <a-col :lg="12">
+            <div v-show="animeTitleMore"
+              class="anime-name-more info-block">
+              <h4>其它名称</h4>
+              <p>{{ animeTitleMore }}</p>
+            </div>
+            <div v-show="anime.desc"
+              class="anime-desc info-block">
+              <h4>故事简介</h4>
+              <p v-html="mDesc"></p>
+            </div>
+            <div v-show="anime.copyright"
+              class="anime-copyright info-block">
+              <i>{{ anime.copyright }}</i>
+            </div>
+            <div v-show="anime.links && anime.links.length"
+              class="anime-links info-block">
+              <h4>相关链接</h4>
+              <p>
+                <a-space wrap
+                  size="mini">
+                  <a-link v-for="link of anime.links"
+                    :key="link.name"
+                    :href="link.url"
+                    :title="link.message || link.name"
+                    class="anime-link"
+                    target="_blank">{{ link.name }}</a-link>
+                </a-space>
+              </p>
+            </div>
+            <div v-show="streamingPlatforms && streamingPlatforms.length"
+              class="anime-streaming info-block">
+              <h4>网络播放</h4>
+              <p>
+                <a-space wrap
+                  size="mini">
+                  <a-link v-for="link of streamingPlatforms"
+                    :key="link.url"
+                    :href="link.url"
+                    :status="link.hide?'warning':'normal'"
+                    :title="getTitle(link)"
+                    class="anime-link"
+                    target="_blank">
+                    <img v-if="getLogoIcon(link.from)"
+                      :src="getLogoIcon(link.from)"
+                      class="link-icon">
+                    <span v-else
+                      class="link-name">{{ link.name }}</span>
+                    <div v-if="link.hide || link.region"
+                      class="badge">{{link.hide ? '隐藏' : link.region.replace(/,/g,'') }}</div>
+                  </a-link>
+                </a-space>
+              </p>
+            </div>
+          </a-col>
+          <a-col :lg="12">
+            <div v-show="anime.cast&&anime.cast.length"
+              class="anime-cast info-block">
+              <h4>Cast</h4>
+              <div v-for="person of anime.cast"
+                :key="person.name"
+                class="person">
+                <span class="type">{{ person.name }}</span>
+                <span> : </span>
+                <span class="entity">{{ person.entity }}</span>
+              </div>
+            </div>
+            <div v-show="anime.staff && anime.staff.length"
+              class="anime-staff info-block">
+              <h4>Staff</h4>
+              <div v-for="person of anime.staff"
+                :key="person.name"
+                class="person">
+                <span class="type">{{ person.name }}</span>
+                <span> : </span>
+                <span class="entity">{{ person.entity }}</span>
+              </div>
+            </div>
+          </a-col>
+        </a-row>
+      </a-col>
+    </a-row>
+  </a-card>
 </template>
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
-import { formatUnixTime } from '/@/utils/date'
 import { getLogoIcon } from '/@/utils/icons'
 import { contra } from '/@/utils/contra'
+import { onairMessage } from '/@/utils/dataFormat'
 
 export default defineComponent({
   name: 'AnimeBangumiListItem',
 
   props: {
-    anime: { type: Object as PropType<AnimeOfBangumi>, default: () => ({}) }
-  },
-
-  data() {
-    return {
-      currentImage: ''
+    anime: {
+      type: Object as PropType<BangumiBasicWithTime>,
+      default: () => ({})
     }
   },
 
@@ -140,23 +163,21 @@ export default defineComponent({
     },
 
     streamingPlatforms(): BangumiStreaming[] {
-      if (!Array.from(this.anime.streamingPlatforms)) return []
+      if (!Array.isArray(this.anime.streamingPlatforms)) return []
       if (contra.flag) return this.anime.streamingPlatforms
       return this.anime.streamingPlatforms.filter(item => !item.hide)
     },
 
-    onair(): FormatedAnimeDatetime | null {
-      return formatUnixTime(this.anime.onair)
+    mDesc(): string {
+      return (this.anime.desc || '').replace(/\n/g, '<br />')
     },
 
-    onairInSteaming(): FormatedAnimeDatetime | null {
-      return formatUnixTime(this.anime.onairInSteaming)
-    }
-  },
+    onair(): FormatedAnimeDatetime {
+      return this.anime.formatOnair[this.hourSystem]
+    },
 
-  mounted() {
-    if (this.anime && this.anime.cover) {
-      this.currentImage = this.anime.cover[0]
+    onairStr(): string {
+      return onairMessage(this.onair, '播出日期：')
     }
   },
 
@@ -167,8 +188,15 @@ export default defineComponent({
       }
       return getLogoIcon(str)
     },
-    changeImage(image: string) {
-      this.currentImage = image
+    getTitle(link: BangumiStreaming) {
+      let title = link.name
+      if (link.region) {
+        title = `[${link.region.replace(/,/g, '')}]` + title
+      }
+      if (link.message) {
+        title += '\n' + link.message
+      }
+      return title
     }
   }
 })
@@ -176,24 +204,16 @@ export default defineComponent({
 
 <style lang="scss">
 .bangumi-list-item {
-  overflow: initial !important;
-  .acg-card__body {
-    user-select: text;
-    display: grid;
-    height: 100%;
-    grid-template-columns: 30% 35% 35%;
+  &.arco-card {
+    box-shadow: var(--card-box-shadow);
 
-    > .anime-header {
-      box-sizing: border-box;
+    > .arco-card-header {
       position: sticky;
       top: 0;
-      display: flex;
       height: var(--list-item-header-height);
-      padding: 0 8px;
-      grid-column: 1/4;
-      background-color: var(--acg-card-background-color);
-      z-index: 10;
-      align-items: center;
+      background-color: var(--color-bg-2);
+      padding: 4px 8px;
+      z-index: 100;
 
       &::before {
         content: '';
@@ -204,18 +224,6 @@ export default defineComponent({
         height: 100%;
         z-index: -1;
         background-color: rgba(255, 255, 255, 0.05);
-      }
-
-      .anime-names {
-        flex-shrink: 0;
-        box-sizing: border-box;
-        width: 65%;
-      }
-
-      .anime-specs {
-        flex-shrink: 0;
-        box-sizing: border-box;
-        width: 35%;
       }
 
       .localized-name {
@@ -229,110 +237,116 @@ export default defineComponent({
         line-height: 20px;
         font-weight: 400;
       }
-
-      .anime-tags .tag {
-        display: inline-block;
-        margin-right: 4px;
-        padding: 2px 4px;
-        border: 1px solid currentColor;
-        border-radius: 4px;
-      }
     }
 
-    > .anime-gallery {
+    > .arco-card-cover {
+      position: absolute;
+      top: calc(0px - var(--app-header-height));
+      left: 0;
+    }
+
+    > .arco-card-body {
       position: relative;
-      font-size: 0;
-      background-color: rgba(0, 0, 0, 0.15);
+      color: var(--color-text-1);
+    }
+  }
 
-      .gallery {
-        position: sticky;
-        top: var(--list-item-header-height);
-      }
+  .anime-specs {
+    position: relative;
 
-      img {
+    .btn-push {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+    }
+  }
+
+  .anime-gallery {
+    position: relative;
+    font-size: 0;
+    background-color: rgba(0, 0, 0, 0.15);
+    align-self: stretch;
+
+    .acg-gallery {
+      --thumbnail-size: var(--list-item-gallery-item-size, 64);
+
+      position: sticky;
+      top: var(--list-item-header-height);
+
+      .gallery-image {
         width: 100%;
-        height: 100%;
-        object-fit: cover;
+      }
+    }
+  }
+
+  .anime-info {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+    line-height: 1.4em;
+
+    h4 {
+      color: var(--color-text-3);
+      font-size: var(--list-item-info-min-font-size);
+      border-bottom: 1px solid var(--color-border);
+      margin-bottom: 2px;
+    }
+
+    p {
+      padding: 4px 0;
+    }
+
+    a.anime-link {
+      position: relative;
+      text-align: center;
+      > .link-icon {
+        display: block;
+        width: var(--list-item-link-icon-size);
+        height: var(--list-item-link-icon-size);
+        margin: 0 auto;
+        object-fit: contain;
       }
 
-      .image {
-        width: 100%;
-      }
-
-      .image-list {
-        height: 80px;
+      > .link-name {
         display: flex;
+        height: var(--list-item-link-icon-size);
+        justify-items: center;
         align-items: center;
-        justify-content: center;
-        .image-item {
-          cursor: pointer;
-          width: 64px;
-          height: 64px;
-          border: 3px solid #ffffff;
-          opacity: 0.5;
+      }
 
-          & + .image-item {
-            margin-left: 2px;
-          }
+      .badge {
+        position: absolute;
+        left: 0;
+        top: 0;
+        font-size: 12px;
+        line-height: 16px;
+        padding: 0 2px;
+        color: #ffffff;
+        background-color: rgb(var(--danger-6));
+        box-shadow: 0 0 0 1px var(--color-bg-2);
+      }
 
-          &.active {
-            opacity: 1;
-            border-color: var(--app-common-color);
-          }
+      > span {
+        flex-shrink: 0;
+      }
 
-          &:hover {
-            opacity: 1;
-          }
+      &.arco-link-status-warning {
+        .badge {
+          background-color: rgb(var(--warning-6));
         }
       }
     }
 
-    > .anime-info {
-      padding: 8px 8px 0 8px;
+    .info-block {
+      margin-bottom: 6px;
+      font-size: var(--list-item-info-font-size);
+    }
 
-      h4 {
-        font-size: var(--list-item-info-min-font-size);
-        border-bottom: 1px solid var(--border-color);
-        opacity: 0.5;
-      }
-
-      p {
-        padding: 2px 0;
-      }
-
-      a.anime-link {
-        display: inline-flex;
-        align-items: center;
-        color: #5f8dc7;
-        font-size: var(--list-item-info-font-size);
-        margin-right: 6px;
-        margin-bottom: 4px;
-        vertical-align: text-top;
-
-        &.special {
-          color: var(--skin-orange);
-        }
-
-        > .link-icon {
-          flex-shrink: 0;
-          height: 1.25em;
-          margin-right: 2px;
-        }
-
-        > span {
-          flex-shrink: 0;
-        }
-      }
-
-      .info-block {
-        margin-bottom: 6px;
-        font-size: var(--list-item-info-font-size);
-      }
-
-      .anime-copyright {
-        font-size: var(--list-item-info-min-font-size);
-        font-weight: 300;
-      }
+    .anime-name-more,
+    .anime-copyright {
+      color: var(--color-text-2);
+      font-size: var(--list-item-info-min-font-size);
+      font-weight: 300;
     }
   }
 

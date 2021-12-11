@@ -49,7 +49,7 @@ export default defineComponent({
       cursor: pointer;
       width: 60px;
       height: 24px;
-      color: var(--text-color);
+      color: var(--app-color-text);
       border: 1px solid currentColor;
       border-radius: 30px;
       background-color: transparent;

@@ -2,13 +2,14 @@ import { reactive } from 'vue'
 
 const key = 'CONTRA_SECRET'
 export const contra = reactive({
+  isDisplayHanle: false,
   text: '',
   flag: false,
   result: '↑↑↓↓←→←→BABA'
 })
 
 export function getContraState() {
-  let data = localStorage.getItem(key)
+  const data = localStorage.getItem(key)
   if (data) {
     const json = JSON.parse(data) as Record<string, any>
     const { expiry = 0 } = json
@@ -23,6 +24,11 @@ export function setContraState(day = 7) {
     expiry: +new Date() + day * 24 * 3600000
   })
   localStorage.setItem(key, data)
+}
+
+export function exitContra() {
+  localStorage.removeItem(key)
+  initContra()
 }
 
 function showMessage() {
@@ -45,7 +51,7 @@ function showMessage() {
         <use xlink:href="#icon-flower-outline"></use>
       </svg>
     </div>
-    <div style="font-size: 24px;text-align: center;color: #ffffff;">秘密模式已启动</div>
+    <div style="font-size: 24px;text-align: center;color: #ffffff;">避难所模式已启动</div>
   </div>
 </div>`
   document.body.appendChild(div)

@@ -83,7 +83,7 @@ export default defineComponent({
     .comic-header {
       position: sticky;
       top: 0;
-      background-color: var(--bg-color);
+      background-color: var(--app-color-bg);
     }
   }
 }

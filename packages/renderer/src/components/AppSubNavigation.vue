@@ -23,10 +23,13 @@
               <span @click="open(item)">{{ item.name }}</span>
             </div>
           </div>
-          <acg-input v-model="text"
-            is-search
-            clearable
-            history-name="anime"></acg-input>
+          <a-input-search v-if="hasSearch"
+            v-model="text"
+            style="width: 200px;"
+            size="small"
+            allow-clear
+            @press-enter="$emit('search',text)"
+            @search="$emit('search',text)"></a-input-search>
         </slot>
       </div>
     </div>
@@ -41,7 +44,9 @@ import { setNavigationCache } from '../utils/cache'
 
 export default defineComponent({
   name: 'AppSubNavigation',
+
   props: {
+    hasSearch: Boolean,
     navigations: {
       type: Array as PropType<PageNavigationItem[]>,
       default: () => []
@@ -51,6 +56,9 @@ export default defineComponent({
       default: () => []
     }
   },
+
+  emits: ['search'],
+
   data() {
     return {
       text: ''
@@ -179,12 +187,6 @@ export default defineComponent({
           opacity: 0.5;
         }
       }
-    }
-
-    .acg-input .search-panel {
-      right: 0;
-      width: 200%;
-      border-top-left-radius: 4px;
     }
   }
 }

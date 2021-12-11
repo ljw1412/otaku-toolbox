@@ -1,128 +1,348 @@
 <template>
-  <div class="anime-index">
-    <app-area-header title="动画索引"
-      class="anime-index-header">
-      <template v-if="filterTagList.length"
-        #left>
-        <span style="margin-left: 4px;">[</span>
-        <span v-for="(tag,index) of filterTagList"
-          :key="tag._id">
-          {{ tag.name }}{{ filterTagList.length - 1 - index ? '|' : '' }}
-        </span>
-        <span>]</span>
+  <div class="admin-index"
+    :class="{'is-laptop': isLaptopSize, 'is-mobile': isMobileSize}">
+    <a-drawer v-model:visible="isDisplayFilterDialog"
+      :closable="false"
+      :width="isMobileSize ? '100%' : '320px'"
+      class="anime-filter-drawer">
+      <template #footer>
+        <a-button type="primary"
+          @click="isDisplayFilterDialog = false">确认</a-button>
       </template>
-    </app-area-header>
-    <div class="index-grid">
-      <anime-item v-for="bangumi of bangumiList"
-        :key="bangumi._id"
-        :anime="bangumi"></anime-item>
-    </div>
+    </a-drawer>
 
-    <filter-drawer v-model="isDisplayFilter"
-      :group-list="tagGroupList"
-      @submit="handleFilterSubmit"></filter-drawer>
+    <section class="admin-index-container">
+      <main class="admin-index-main">
+        <header class="admin-index-header sticky-t bg-app">
+          <a-page-header :show-back="false">
+            <template #title>
+              <a-space size="mini">
+                <span style="line-height: 1">番剧索引</span>
+                <div v-show="page.total"
+                  style="font-size: 0;"
+                  class="layout-center">
+                  <a-badge :count="page.total"
+                    :max-count="9999" />
+                </div>
+              </a-space>
+            </template>
+            <template #subtitle>
 
-    <acg-fixed-button v-if="!loading"
-      always
-      title="刷新"
-      :bottom="130"
-      @click="fetchBangumiList">
-      <acg-icon name="reload"
-        :size="20"></acg-icon>
-    </acg-fixed-button>
-    <acg-fixed-button always
-      title="筛选"
-      :bottom="85"
-      @click="isDisplayFilter = true">
-      <acg-icon name="funnel-outline"
-        size="24"></acg-icon>
-    </acg-fixed-button>
+            </template>
+            <template #extra>
+              <a-space size="mini">
+                <a-pagination v-show="!isMobileSize"
+                  v-model:current="page.index"
+                  :total="page.total"
+                  :page-size="page.size"
+                  size="small"
+                  hide-on-single-page
+                  @change="handlePageChange" />
+
+                <a-link v-show="isLaptopSize"
+                  style="line-height: 26px;"
+                  @click="isDisplayFilterDialog = true">
+                  <icon-filter /> 筛选器
+                </a-link>
+              </a-space>
+            </template>
+          </a-page-header>
+          <anime-filter-status v-if="isLaptopSize"
+            :keyword="keyword"
+            :tags="filterTagList"
+            :keyword-close="false"
+            style="padding-left: 4px;"></anime-filter-status>
+        </header>
+
+        <div class="admin-index-content">
+          <acg-api-result :loading="loading.bangumi"
+            :error="error.bangumi"
+            :empty="!page.total"
+            @retry="fetchBangumiList"></acg-api-result>
+          <anime-card v-for="bangumi of bangumiList"
+            :key="bangumi._id"
+            :anime="bangumi"></anime-card>
+        </div>
+      </main>
+      <aside class="admin-index-aside"
+        v-show="!isLaptopSize">
+        <teleport to=".anime-filter-drawer .arco-drawer-body"
+          :disabled="!isLaptopSize">
+          <anime-filter :group-list="tagGroupList"
+            :current-keyword="keyword"
+            @change="handleFilterChange"></anime-filter>
+          <acg-api-result :loading="loading.filter"
+            :error="error.filter"
+            @retry="fetchTagGroupList"></acg-api-result>
+        </teleport>
+      </aside>
+    </section>
+
+    <footer v-if="isMobileSize"
+      class="admin-index-footer sticky-b bg-app">
+      <a-pagination v-model:current="page.index"
+        :total="page.total"
+        :page-size="page.size"
+        :base-size="13"
+        size="small"
+        @change="handlePageChange" />
+    </footer>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import AnimeItem from './components/AnimeItem.vue'
-import FilterDrawer from './components/FilterDrawer.vue'
+import AnimeCard from './components/AnimeCard.vue'
+import AnimeFilter from './components/AnimeFilter.vue'
+import AnimeFilterStatus from './components/AnimeFilterStatus.vue'
+import AcgApiResult from '/@/components/AcgApiResult.vue'
+import { typeOf } from '/@/utils/assist'
 
 export default defineComponent({
-  name: 'AnimeIndex',
+  name: 'AdminIndex',
 
   components: {
-    FilterDrawer,
-    AnimeItem
+    AnimeCard,
+    AnimeFilter,
+    AnimeFilterStatus,
+    AcgApiResult
   },
 
   data() {
     return {
-      loading: false,
-      isDisplayFilter: false,
-      bangumiList: [] as AnimeOfBangumi[],
+      loading: { bangumi: true, filter: true },
+      error: { bangumi: false, filter: false },
+      isDisplayFilterDialog: false,
+      keyword: '',
+      page: { index: 1, total: 0, size: 24 },
       tagGroupList: [] as TagGroup[],
-      filterTagList: [] as Tag[]
+      filterTagList: [] as Tag[],
+      bangumiList: [] as BangumiBasic[]
+    }
+  },
+
+  computed: {
+    filterTagIds(): string {
+      return this.filterTagList
+        .filter(tag => tag.group !== 'type')
+        .map(tag => tag._id)
+        .join(',')
+    },
+
+    typeValue(): string {
+      const typeTag = this.filterTagList.find(tag => tag.group === 'type')
+      return typeTag ? typeTag._id : ''
+    }
+  },
+
+  watch: {
+    isLaptopSize(val: boolean) {
+      if (!val) {
+        this.isDisplayFilterDialog = false
+      }
     }
   },
 
   created() {
-    this.fetchBangumiList()
-    this.fetchTagGroup()
+    this.initData()
+    this.loadData()
   },
 
   methods: {
+    initData() {
+      const { p, tags, keyword = '' } = this.$route.query
+      this.page.index = parseInt((p as string) || '1')
+      if (tags) {
+        this.filterTagList = (tags as string)
+          .split(',')
+          .map(id => ({ _id: id, name: '' }))
+      }
+      this.keyword = keyword as string
+    },
+
+    setStatus(
+      name: 'filter' | 'bangumi',
+      status: 'reset' | 'success' | 'fail'
+    ) {
+      if (status === 'reset') {
+        this.error[name] = false
+        this.loading[name] = true
+      } else if (status === 'success') {
+        this.error[name] = false
+        this.loading[name] = false
+      } else if (status === 'fail') {
+        this.error[name] = true
+        this.loading[name] = false
+      }
+    },
+
+    async fetchTagGroupList() {
+      this.setStatus('filter', 'reset')
+      try {
+        const list = await this.$API.Tag.listTagGroup()
+        list.forEach(group => {
+          let hasSelected = false
+          group.tags.forEach(tag => {
+            const index = this.filterTagList.findIndex(
+              item => item._id === tag._id
+            )
+            tag.selected = !!~index
+            if (tag.selected) {
+              hasSelected = true
+              this.filterTagList.splice(index, 1, tag)
+            }
+          })
+
+          group.tags.unshift({
+            _id: '',
+            name: '全部',
+            selected: !hasSelected
+          })
+        })
+        this.tagGroupList = list
+        this.setStatus('filter', 'success')
+      } catch (error) {
+        this.setStatus('filter', 'fail')
+      }
+    },
+
     async fetchBangumiList() {
-      this.loading = true
-      this.bangumiList = await this.apiGet('bangumi')
-      this.loading = false
+      this.bangumiList = []
+      this.setStatus('bangumi', 'reset')
+      try {
+        const { list, total } = await this.$API.Bangumi.listBangumi(
+          this.page,
+          this.typeValue,
+          this.filterTagIds,
+          this.keyword
+        )
+        this.bangumiList = list
+        this.page.total = total
+        this.setStatus('bangumi', 'success')
+      } catch (error) {
+        this.setStatus('bangumi', 'fail')
+      }
     },
 
-    async fetchTagGroup() {
-      const list = (await this.apiGet('tag_group')) as TagGroup[]
-      list.forEach(group => {
-        group.tags.forEach(tag => {
-          tag.selected = false
-        })
-        group.tags.unshift({
-          _id: '',
-          name: '全部',
-          order: 0,
-          group: '',
-          selected: true
-        })
+    async loadData() {
+      this.fetchTagGroupList()
+      this.fetchBangumiList()
+    },
+
+    updateRouteQuery() {
+      const query = Object.assign({}, this.$route.query, {
+        p: this.page.index,
+        tags: this.filterTagIds,
+        keyword: this.keyword,
+        type: this.typeValue
       })
-      this.tagGroupList = list
+      this.$router.replace({ query })
     },
 
-    handleFilterSubmit(tags: Tag[]) {
-      this.filterTagList = tags
+    handleFilterChange({ keyword, tags }: { keyword: string; tags: Tag[] }) {
+      if (tags) this.filterTagList = tags
+      if (typeOf(keyword) === 'string') this.keyword = keyword
+      this.handlePageChange(1)
+    },
+
+    handlePageChange(index: number) {
+      this.page.index = index
+      this.updateRouteQuery()
+      this.fetchBangumiList()
     }
   }
 })
 </script>
 
 <style lang="scss">
-.anime-index {
-  --anime-item-width: 168px;
-  --anime-item-height: 224px;
+.admin-index {
+  --index-aside-width: 300px;
+  --index-anime-item-width: 20%;
+  --index-anime-item-gutter: 16px;
 
-  .anime-index-header {
-    position: sticky;
-    top: 0;
-    background-color: var(--bg-color);
+  .admin-index-container {
+    display: flex;
   }
 
-  .index-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, var(--anime-item-width));
-    justify-content: space-between;
-    justify-items: center;
-    margin-top: 10px;
+  .admin-index-main {
+    flex: 1 0 auto;
+    width: 0;
+  }
+
+  .admin-index-content {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    align-content: stretch;
+    padding-top: 8px;
+    box-sizing: border-box;
+  }
+
+  .admin-index-aside {
+    flex-shrink: 0;
+    width: var(--index-aside-width);
+  }
+
+  .admin-index-footer {
+    padding: 8px;
+    .arco-pagination {
+      justify-content: center;
+    }
+  }
+
+  &:not(.is-laptop) {
+    .arco-page-header-wrapper {
+      padding-left: 0;
+    }
+  }
+  &.is-laptop {
+    .admin-index-content {
+      padding-left: calc(var(--index-anime-item-gutter) / 2);
+    }
+  }
+
+  &.is-laptop:not(.is-mobile) {
+    .index-admin-item:nth-child(4n) {
+      margin-right: 0;
+    }
+  }
+
+  &.is-mobile {
+    .index-admin-item:nth-child(3n) {
+      margin-right: 0;
+    }
   }
 }
 
-@media (min-width: 1701px) {
-  .anime-index {
-    --anime-item-width: 201px;
-    --anime-item-height: 268px;
+.anime-filter-drawer {
+  .arco-drawer-header {
+    display: none;
+  }
+  .arco-drawer-body {
+    padding-top: 0;
+    .index-anime-filter .arco-descriptions-title {
+      top: 0;
+    }
+  }
+}
+
+@media (min-width: 1750px) {
+  .admin-index {
+    --index-anime-item-width: 16.66%;
+  }
+}
+
+@media (max-width: 1599.9px) {
+  .admin-index {
+    --index-anime-item-width: 25%;
+    --index-anime-item-gutter: 12px;
+  }
+}
+
+@media (max-width: 767.9px) {
+  .admin-index {
+    --index-anime-item-width: 33.33%;
+    --index-anime-item-gutter: 8px;
   }
 }
 </style>

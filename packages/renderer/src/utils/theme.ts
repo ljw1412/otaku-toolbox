@@ -32,8 +32,7 @@ const themeHelper: ThemeHelper = {
   },
   // 更新UI
   update(value = '') {
-    const rootDataset = document.documentElement.dataset
-    rootDataset.theme = value
+    document.body.setAttribute('arco-theme', value)
     this.data.current = value
   }
 }
