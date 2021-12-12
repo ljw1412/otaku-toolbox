@@ -86,11 +86,11 @@ export default defineComponent({
     cursor: pointer;
 
     &:hover {
-      background-color: var(--color-fill-2);
+      background-color: rgba(255, 255, 255, 0.08);
       color: #ffffff;
     }
     &:active {
-      background-color: var(--color-fill-4);
+      background-color: rgba(255, 255, 255, 0.16);
     }
 
     &.btn-close {

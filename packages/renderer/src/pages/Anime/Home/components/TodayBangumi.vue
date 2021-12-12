@@ -10,7 +10,7 @@
     </a-page-header>
 
     <div v-watch-scroll
-      class="today-bangumi-list pt-10">
+      class="today-bangumi-list pt-6">
       <today-bangumi-item v-for="(bangumi,i) of mBangumiList"
         :key="bangumi.title || `bangumi-${i}`"
         :bangumi="bangumi"
@@ -81,7 +81,12 @@ export default defineComponent({
             `.today-bangumi-item[data-id="${nearBangumiId}"]`
           )
           if (el) {
-            el.scrollIntoView({ behavior: 'smooth', inline: 'center' })
+            console.dir(el)
+            el.parentElement?.scrollBy({
+              behavior: 'smooth',
+              left: el.offsetLeft
+            })
+            // el.scrollIntoView({ behavior: 'smooth', inline: 'center' })
           }
         })
       }

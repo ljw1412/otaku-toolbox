@@ -2,9 +2,11 @@
   <a-layout class="app-setting">
     <a-layout-sider class="setting-tabs"
       :width="150">
+      <a-typography-title :heading="4"
+        style="margin-left: 16px;">设置</a-typography-title>
       <a-tabs v-model:active-key="tabKey"
         type="text"
-        position="right">
+        position="left">
         <a-tab-pane v-for="tab of tabs"
           :key="tab.key"
           :title="tab.title"></a-tab-pane>
@@ -17,6 +19,8 @@
           :field="item.key"
           :label="item.label"
           :help="item.tip"
+          :label-col-props="{span: 6, offset: 0}"
+          :wrapper-col-props="{span: 18, offset: 0}"
           v-bind="item.formItemProps">
           <config-item v-model="config[item.key]"
             :type="item.type"
@@ -129,7 +133,38 @@ export default defineComponent({
 
   .setting-tabs {
     height: 100%;
-    padding: 16px;
+    // padding: 16px;
+
+    .arco-tabs-nav,
+    .arco-tabs-nav-tab,
+    .arco-tabs-tab,
+    .arco-tabs-tab-title {
+      width: 100%;
+    }
+
+    .arco-tabs-tab {
+      margin-top: 4px;
+    }
+
+    .arco-tabs-tab-title {
+      padding: 6px 16px;
+    }
+
+    .arco-tabs-tab.arco-tabs-tab-active {
+      color: var(--app-color-common);
+      font-weight: bold;
+
+      &::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 4px;
+        height: 60%;
+        background-color: var(--app-color-common);
+      }
+    }
   }
 
   .setting-config {

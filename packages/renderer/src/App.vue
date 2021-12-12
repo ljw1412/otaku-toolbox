@@ -4,7 +4,8 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { ipcOn } from './utils/electron'
+import { clearNavigationCache } from '/@/utils/cache'
+import { ipcOn } from '/@/utils/electron'
 
 export default defineComponent({
   name: 'App',
@@ -14,6 +15,8 @@ export default defineComponent({
     ipcOn('window.message', (e, type) => {
       if (type === 'theme-updated') {
         window.$theme.init()
+      } else if (type === 'clear-navigation-cache') {
+        clearNavigationCache()
       }
     })
   }

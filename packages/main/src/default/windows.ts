@@ -13,8 +13,8 @@ const windowConfigs = {
   },
   setting: {
     url: getPageUrl('/setting'),
-    width: 800,
-    height: 600,
+    width: 729,
+    height: 540,
     title: '系统设置'
   },
   theme: {
