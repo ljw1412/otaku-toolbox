@@ -1,5 +1,9 @@
 import { ipcMain, BrowserWindow } from 'electron'
-import { createBrowser, createBuiltInBrowser } from '../window'
+import {
+  createBrowser,
+  createBuiltInBrowser,
+  openAppSystemWindow
+} from '../window'
 
 const channel = 'window.action'
 
@@ -50,6 +54,10 @@ function bind(): void {
     } else if (type === 'createBrowser') {
       if (typeof data === 'object' && data.url) {
         createBrowser(data)
+      }
+    } else if (type === 'openAppSystemWindow') {
+      if (typeof data === 'object' && data.title) {
+        openAppSystemWindow(data)
       }
     }
   })

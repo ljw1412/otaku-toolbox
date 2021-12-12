@@ -18,7 +18,7 @@
           placeholder="搜索源"></a-input-search>
         <button v-tooltip="{content:'设置',placement:'right',offset:[0,10]}"
           class="btn-setting"
-          @click="navigate('ComicSetting')">
+          @click="navigate({ name: 'ComicSetting' })">
           <acg-icon name="settings"></acg-icon>
         </button>
       </div>
@@ -160,7 +160,7 @@ export default defineComponent({
         }
 
         &.active {
-          color: var(--app-common-color);
+          color: var(--app-color-common);
         }
       }
     }
@@ -176,7 +176,7 @@ export default defineComponent({
       width: 140px;
 
       &.arco-input-focus {
-        border-color: var(--app-common-color);
+        border-color: var(--app-color-common);
       }
     }
 
@@ -192,7 +192,7 @@ export default defineComponent({
       color: var(--app-color-text);
 
       &:hover {
-        color: var(--app-common-color);
+        color: var(--app-color-common);
         border-color: currentColor;
       }
     }

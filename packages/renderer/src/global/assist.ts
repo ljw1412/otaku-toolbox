@@ -1,11 +1,10 @@
-import { computed, ref } from 'vue'
+import { reactive, ref } from 'vue'
 import {
   breakpointsAntDesign,
   useBreakpoints,
-  useTitle,
   toReactive,
   set,
-  get
+  useNow
 } from '@vueuse/core'
 
 type breakpointsMap = typeof breakpointsAntDesign & {
@@ -25,14 +24,19 @@ export const breakpoints = toReactive(breakpointsRef)
 
 export const title = ref('')
 
+/** @deprecated */
 export function setTitle(t: string) {
   set(title, t)
 }
 
-useTitle(
-  computed(() => {
-    return (
-      (get(title) ? `${get(title)} | ` : '') + import.meta.env.VITE_APP_TITLE
-    )
-  })
-)
+export const errorStore: Record<number | string, Error> = reactive({})
+
+export const now = useNow()
+// 客户端不需要更新标题
+// useTitle(
+//   computed(() => {
+//     return (
+//       (get(title) ? `${get(title)} | ` : '') + import.meta.env.VITE_APP_TITLE
+//     )
+//   })
+// )

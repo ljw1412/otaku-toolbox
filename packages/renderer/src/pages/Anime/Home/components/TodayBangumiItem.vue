@@ -1,6 +1,7 @@
 <template>
   <div class="today-bangumi-item"
     :class="{ 'is-skeleton': skeleton }"
+    :data-id="bangumi._id"
     data-skeleton-animate>
     <router-link target="_blank"
       :title="bangumi.title"

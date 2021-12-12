@@ -53,7 +53,7 @@ export default defineComponent({
           name: '百宝箱',
           value: '',
           icon: 'cube',
-          to: { name: '' }
+          to: { name: 'AppTools' }
         }
       ]
     }

@@ -16,3 +16,7 @@ export function setNavigationCache(key: string, value: RouteLocationRaw) {
   cache[key] = value
   sessionStorage.setItem(APP_NAVIGATION_KEY, JSON.stringify(cache))
 }
+
+export function clearNavigationCache() {
+  sessionStorage.removeItem(APP_NAVIGATION_KEY)
+}

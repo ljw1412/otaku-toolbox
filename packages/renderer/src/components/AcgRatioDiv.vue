@@ -1,13 +1,13 @@
-
-
 <script lang="ts">
-import { defineComponent, h } from 'vue'
+import { defineComponent, h, normalizeClass, normalizeStyle } from 'vue'
 
 export default defineComponent({
   name: 'AcgRatioDiv',
   props: {
     // [宽，长]
     ratio: { type: Array, default: () => [1, 1] },
+    bodyStyle: [Object, String],
+    bodyClass: [Object, String],
     disabled: Boolean
   },
 
@@ -21,17 +21,27 @@ export default defineComponent({
 
   render() {
     const defaultSlot = this.$slots.default && this.$slots.default()
-    const children = h('div', { className: 'acg-ratio-content' }, defaultSlot)
-
-    let className = 'acg-ratio-div'
-    if (this.$attrs.class) {
-      className = this.$attrs.class + ' ' + className
-    }
+    const children = h(
+      'div',
+      {
+        className: normalizeClass(['acg-ratio-content', this.bodyClass]),
+        style: normalizeStyle(this.bodyStyle)
+      },
+      defaultSlot
+    )
 
     return [
-      h('div', { className, style: [this.style, this.$attrs.style] }, [
-        this.disabled ? defaultSlot : children
-      ])
+      h(
+        'div',
+        {
+          ...this.$attrs,
+          class: normalizeClass(['acg-ratio-div', this.$attrs.class]),
+          style: normalizeStyle(this.$attrs.style)
+        },
+        h('div', { style: normalizeStyle(this.style) }, [
+          this.disabled ? defaultSlot : children
+        ])
+      )
     ]
   }
 })

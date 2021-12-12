@@ -1,7 +1,13 @@
-import { createRouter, createWebHashHistory } from 'vue-router'
+import { ComponentPublicInstance } from 'vue'
+import {
+  createRouter,
+  createWebHashHistory,
+  isNavigationFailure
+} from 'vue-router'
 import { getNavigationCache } from '/@/utils/cache'
 import MainRoutes from '/@/routes/main'
 import SeparateRoutes from '/@/routes/separate'
+import mGlobal from '/@/global'
 
 const routes = [
   { path: '/', redirect: { name: 'AppHome' } },
@@ -13,13 +19,6 @@ const router = createRouter({
   routes,
   history: createWebHashHistory()
 })
-
-if (import.meta.env.MODE === 'development') {
-  router.afterEach((to, from) => {
-    const tofrom = ['\n[To]', to, '\n[From]', from]
-    console.log(`[Current] ${window.location.href}`, ...tofrom)
-  })
-}
 
 router.beforeEach((to, from, next) => {
   const routeName = to.name as string
@@ -33,4 +32,29 @@ router.beforeEach((to, from, next) => {
   next()
 })
 
+if (import.meta.env.MODE === 'development') {
+  router.afterEach((to, from) => {
+    const tofrom = ['\n[To]', to, '\n[From]', from]
+    console.log(`[Current] ${window.location.href}`, ...tofrom)
+  })
+}
+
 export default router
+
+export function routerErrorhandler(
+  error: unknown,
+  vm: ComponentPublicInstance | null,
+  info: string
+) {
+  const isRouterError = isNavigationFailure(error)
+  if (!isRouterError) return false
+  if (vm) {
+    const errorId = +new Date()
+    router.push({
+      name: vm.$route.path.startsWith('/main') ? 'AppError' : 'ViewError',
+      query: { message: '页面不存在', status: '404', id: errorId }
+    })
+    mGlobal.errorStore[errorId] = error
+  }
+  return true
+}

@@ -1,4 +1,5 @@
 import SeparateContainer from '/@/containers/Separate.vue'
+import AppErrorPage from '/@/pages/pageError/index.vue'
 import AppSetting from '/@/pages/Setting/index.vue'
 import AppTheme from '/@/pages/Theme/index.vue'
 import ExitApp from '/@/pages/Modal/ExitApp/index.vue'
@@ -22,6 +23,7 @@ const routes = [
     component: SeparateContainer,
     meta: { separate: true },
     children: [
+      { path: '/error', name: 'ViewError', component: AppErrorPage },
       // 系统设置
       {
         path: '/setting',
@@ -29,6 +31,7 @@ const routes = [
         component: AppSetting,
         meta: {
           title: '系统设置',
+          hideBackUp: true,
           minimizable: false,
           maximizable: false,
           hidable: true
@@ -41,6 +44,7 @@ const routes = [
         component: AppTheme,
         meta: {
           title: '主题',
+          hideBackUp: true,
           minimizable: false,
           maximizable: false,
           hidable: true

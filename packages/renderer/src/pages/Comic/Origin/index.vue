@@ -1,7 +1,8 @@
 <template>
   <div class="comic-origin">
-    <app-area-header class="comic-header"
-      :title="title"></app-area-header>
+    <a-page-header :title="title"
+      class="comic-header"
+      :show-back="false"> </a-page-header>
     源{{ id }}
   </div>
 </template>

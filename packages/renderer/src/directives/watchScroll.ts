@@ -9,8 +9,6 @@ function createListener(el: HTMLElement) {
   }
 }
 
-// TODO position 改造为 positions
-
 export const WatchScroll = {
   beforeMount: (el: HTMLElement, binding: DirectiveBinding) => {
     const name = binding.value || 'default'
@@ -21,10 +19,10 @@ export const WatchScroll = {
       positions: { [name]: { left: 0, top: 0 } }
     }
     el.addEventListener('scroll', listener)
-    console.log('beforeMount', el, binding)
+    // console.log('beforeMount', el, binding)
   },
   unmounted: (el: HTMLElement) => {
-    console.log('unmounted', el)
+    // console.log('unmounted', el)
     if (el._watchScroll) {
       el.removeEventListener('scroll', el._watchScroll.listener)
       delete el._watchScroll
@@ -33,7 +31,7 @@ export const WatchScroll = {
   updated: (el: HTMLElement, binding: DirectiveBinding) => {
     const name = binding.value || 'default'
 
-    console.log('updated', [el], el._watchScroll, binding)
+    // console.log('updated', [el], el._watchScroll, binding)
     if (el._watchScroll) {
       el._watchScroll.name = name
       const { scrollTop, scrollLeft } = el

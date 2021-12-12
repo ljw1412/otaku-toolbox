@@ -1,7 +1,8 @@
 <template>
   <div class="comic-search">
-    <app-area-header class="comic-header"
-      title="搜索"></app-area-header>
+    <a-page-header title="搜索"
+      class="comic-header"
+      :show-back="false"> </a-page-header>
   </div>
 </template>
 

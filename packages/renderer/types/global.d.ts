@@ -115,7 +115,7 @@ declare global {
   }
 
   interface BangumiBasic {
-    _id: number | string
+    _id: string
     title: string
     titleOriginal: string
     titleMore: string[]

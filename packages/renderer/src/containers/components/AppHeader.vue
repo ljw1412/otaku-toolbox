@@ -11,14 +11,12 @@
     <div class="header-right flex-shrink-0 d-flex">
       <app-controls class="m-auto mr-10"
         mode="main">
-        <div class="app-control-btn btn-skin"
-          @click="openSkinWindow">
-          <acg-icon name="shirt-outline"
-            size="18"></acg-icon>
+        <div class="app-control-btn btn-settings"
+          @click="openSettingsWindow">
+          <icon-settings />
         </div>
         <div class="app-control-btn btn-menu">
-          <acg-icon name="ellipsis-vertical"
-            size="18"></acg-icon>
+          <icon-more-vertical />
         </div>
       </app-controls>
     </div>
@@ -30,30 +28,15 @@ import { defineComponent } from 'vue'
 import HeaderCenter from './AppHeaderCenter.vue'
 import AppControls from '../../components/AppControls.vue'
 import AppNavigation from './AppNavigation.vue'
-import { createBrowser } from '/@/utils/electron'
-import { getPageUrl } from '/@/utils/helper'
+import { openAppSystemWindow } from '/@/utils/electron'
 
 export default defineComponent({
   name: 'AppHeader',
   components: { AppNavigation, HeaderCenter, AppControls },
 
   methods: {
-    openSkinWindow() {
-      try {
-        const route = this.$router.resolve({ name: 'AppTheme' })
-        createBrowser({
-          url: getPageUrl(route.href),
-          width: 640,
-          height: 480,
-          resizable: false,
-          minimizable: false,
-          maximizable: false,
-          singleInstance: true,
-          title: '主题'
-        })
-      } catch (error) {
-        console.error(error)
-      }
+    openSettingsWindow() {
+      openAppSystemWindow('系统设置')
     }
   }
 })

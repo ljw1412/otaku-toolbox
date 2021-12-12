@@ -1,11 +1,13 @@
 <template>
   <div class="today-bangumi">
-    <app-area-header title="今日番剧">
-      <template #left>
-        <div v-show="weekdayName"
-          class="today-bangumi-weekday">{{ weekdayName }}</div>
+    <a-page-header :show-back="false">
+      <template #title>
+        <a-space size="mini">
+          <span>今日番剧</span>
+          <a-tag size="small">{{ weekdayName }}</a-tag>
+        </a-space>
       </template>
-    </app-area-header>
+    </a-page-header>
 
     <div v-watch-scroll
       class="today-bangumi-list pt-10">
@@ -59,10 +61,37 @@ export default defineComponent({
       this.weekdayName = betterWeekdayName(window.$dayjs().day())
     },
 
+    scrollToNextBangumi() {
+      const now = this.$dayjs(this.$global.now.value)
+      let nearBangumiId = ''
+      let minDiff = Infinity
+      this.bangumiList.forEach(item => {
+        const onair = item.formatOnair[this.hourSystem]
+        if (onair.time) {
+          const diff = this.$dayjs(onair.time, 'HH:mm').diff(now)
+          if (minDiff > Math.abs(diff)) {
+            minDiff = Math.abs(diff)
+            nearBangumiId = item._id
+          }
+        }
+      })
+      if (nearBangumiId) {
+        this.$nextTick(() => {
+          const el = document.querySelector(
+            `.today-bangumi-item[data-id="${nearBangumiId}"]`
+          )
+          if (el) {
+            el.scrollIntoView({ behavior: 'smooth', inline: 'center' })
+          }
+        })
+      }
+    },
+
     async fetchTodayBangumiList() {
       try {
         this.bangumiList = await this.$API.Bangumi.listTodayBangumi()
         this.isFirstLoaded = true
+        this.scrollToNextBangumi()
       } catch (error) {
         this.isError = true
       }

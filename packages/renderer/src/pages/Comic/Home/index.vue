@@ -1,7 +1,8 @@
 <template>
   <div class="comic-home">
-    <app-area-header class="comic-header"
-      title="首页"></app-area-header>
+    <a-page-header title="首页"
+      class="comic-header"
+      :show-back="false"> </a-page-header>
   </div>
 </template>
 

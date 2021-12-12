@@ -1,7 +1,8 @@
 <template>
   <div class="comic-setting">
-    <app-area-header class="comic-header"
-      title="设置"></app-area-header>
+    <a-page-header title="设置"
+      class="comic-header"
+      :show-back="false"> </a-page-header>
   </div>
 </template>
 

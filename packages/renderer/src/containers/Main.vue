@@ -3,7 +3,7 @@
     <app-header></app-header>
     <main id="app-main"
       class="app-main">
-      <div :class="`app-${$route.meta.module}`">
+      <div :class="`app-${$route.meta.module || 'other'}`">
         <router-view v-slot="{ Component,route }"
           name="helper">
           <keep-alive>
@@ -15,7 +15,7 @@
           v-watch-scroll="$route.name"
           :class="moduleMain">
           <router-view v-slot="{ Component, route }">
-            <keep-alive>
+            <keep-alive exclude="AppPageError">
               <component :is="Component"
                 :key="route.name"
                 :class="{'page-container': route.meta.pageContainer}" />
@@ -38,8 +38,8 @@ export default defineComponent({
   },
   computed: {
     moduleMain() {
-      if (!this.$route.meta.module) return
-      return `${this.$route.meta.module}-main`
+      const module = this.$route.meta.module || 'other'
+      return `${module}-main`
     }
   }
 })

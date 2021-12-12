@@ -1,6 +1,7 @@
 import { RouteRecordRaw } from 'vue-router'
 
 import MainContainer from '/@/containers/Main.vue'
+import AppErrorPage from '/@/pages/pageError/index.vue'
 import AppHome from '/@/pages/Home/index.vue'
 
 import AppAnimeHelper from '../pages/Anime/Helper.vue'
@@ -124,7 +125,8 @@ const routes = {
     // 漫画
     ...comicRoutes,
     // 游戏
-    ...gameRoutes
+    ...gameRoutes,
+    { path: 'error', name: 'AppError', component: AppErrorPage }
   ]
 }
 

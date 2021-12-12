@@ -43,6 +43,10 @@ export function ipcOff(
   ipcRenderer.off(channel, listener)
 }
 
+export function openAppSystemWindow(title: string) {
+  ipcSend('window.action', 'openAppSystemWindow', { title })
+}
+
 /**
  * 创建独立窗体
  * @param config 浏览器配置

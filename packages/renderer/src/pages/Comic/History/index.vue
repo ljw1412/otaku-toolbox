@@ -1,7 +1,8 @@
 <template>
   <div class="comic-history">
-    <app-area-header class="comic-header"
-      title="历史记录"></app-area-header>
+    <a-page-header title="历史记录"
+      class="comic-header"
+      :show-back="false"> </a-page-header>
   </div>
 </template>
 

@@ -13,7 +13,7 @@ body {
   --color-text-0: #000000;
 
   --app-theme: var(--skin-blue);
-  --app-common-color: var(--app-theme);
+  --app-color-common: var(--app-theme);
 
   --app-header-bg: var(--app-theme);
   --app-header-center-bg: rgba(233, 233, 233, 0.2);
@@ -37,7 +37,7 @@ body[arco-theme='dark'] {
   --color-text-0: #ffffff;
 
   --app-theme: var(--skin-dark);
-  --app-common-color: #e4a329;
+  --app-color-common: #e4a329;
 
   --app-header-center-bg: rgba(255, 255, 255, 0.05);
 

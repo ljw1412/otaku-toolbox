@@ -1,7 +1,8 @@
 <template>
   <div class="comic-favourite">
-    <app-area-header class="comic-header"
-      title="我的收藏"></app-area-header>
+    <a-page-header title="我的收藏"
+      class="comic-header"
+      :show-back="false"> </a-page-header>
   </div>
 </template>
 

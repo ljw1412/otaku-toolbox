@@ -90,17 +90,42 @@ export function createBrowser(config: NewBrowerConfig): BrowserWindow {
       allowRunningInsecureContent: true
     }
   })
+  newWindowHandler(newWin)
   baseListerner(newWin)
   newWin.loadURL(config.url)
 
   if (config.autoShow || config.autoShow === undefined) {
     newWin.once('ready-to-show', () => {
       newWin.show()
-      if (env.MODE === 'development') {
-        newWin.webContents.openDevTools()
-      }
     })
   }
 
+  newWin.on('show', () => {
+    if (env.MODE === 'development') {
+      newWin.webContents.openDevTools()
+    }
+  })
+
+  newWin.on('hide', () => {
+    if (env.MODE === 'development') {
+      newWin.webContents.closeDevTools()
+    }
+  })
+
   return newWin
+}
+
+export function openAppSystemWindow(
+  config: NewBrowerConfig
+): BrowserWindow | null {
+  const { title } = config
+  const allWindows = BrowserWindow.getAllWindows()
+  const win = allWindows.find(win => win.getTitle() === title)
+  if (win) {
+    if (!win.isVisible()) win.show()
+    if (win.isMinimized()) win.restore()
+    win.focus()
+    return win
+  }
+  return null
 }

@@ -4,16 +4,19 @@
     <div v-if="minimizable && minimizableOfMeta"
       class="app-control-btn btn-min"
       @click="windowAction('min')">
-      <acg-icon name="remove"></acg-icon>
+      <icon-minus />
+      <!-- <acg-icon name="remove"></acg-icon> -->
     </div>
     <div v-if="maximizable && maximizableOfMeta"
       class="app-control-btn btn-max"
       @click="windowAction('max')">
-      <acg-icon :name="isMaximized?'copy-outline':'stop-outline'"></acg-icon>
+      <component :is="isMaximized?'icon-shrink':'icon-expand'"></component>
+      <!-- <acg-icon :name="isMaximized?'copy-outline':'stop-outline'"></acg-icon> -->
     </div>
     <div class="app-control-btn btn-close"
       @click="windowAction('close')">
-      <acg-icon name="close"></acg-icon>
+      <icon-close />
+      <!-- <acg-icon name="close"></acg-icon> -->
     </div>
   </div>
 </template>
@@ -69,10 +72,12 @@ export default defineComponent({
 
 <style lang="scss">
 .app-controls {
-  font-size: 20px;
+  font-size: 18px;
   line-height: 1;
   .app-control-btn {
     display: inline-flex;
+    justify-content: center;
+    align-items: center;
     width: 32px;
     height: 32px;
     flex-shrink: 0;
@@ -80,30 +85,21 @@ export default defineComponent({
     border-radius: 4px;
     cursor: pointer;
 
-    .acg-icon {
-      margin: auto;
-    }
-
-    &.btn-max {
-      font-size: 18px;
-    }
-
-    &.btn-max {
-      .acg-icon {
-        transform: scaleX(-1);
-      }
-    }
-
-    &.btn-close:hover {
-      background-color: #f95a44;
-    }
-
     &:hover {
-      background-color: rgba(255, 255, 255, 0.25);
+      background-color: var(--color-fill-2);
       color: #ffffff;
     }
     &:active {
-      opacity: 0.8;
+      background-color: var(--color-fill-4);
+    }
+
+    &.btn-close {
+      &:hover {
+        background-color: var(--color-danger-light-4);
+      }
+      &:active {
+        background-color: #f95a44;
+      }
     }
   }
 }

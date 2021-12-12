@@ -1,6 +1,6 @@
 import { createApp } from 'vue'
 import App from '/@/App.vue'
-import router from '/@/router'
+import router, { routerErrorhandler } from '/@/router'
 import ArcoVue from '@arco-design/web-vue'
 import ArcoVueIcon from '@arco-design/web-vue/es/icon'
 
@@ -40,3 +40,8 @@ app
   .use(AcgUI)
   .use(AppInject)
   .mount('#app')
+
+app.config.errorHandler = (err, vm, info) => {
+  console.error(err)
+  if (routerErrorhandler(err, vm, info)) return
+}

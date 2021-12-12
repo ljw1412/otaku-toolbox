@@ -1,6 +1,7 @@
 <template>
   <div class="mini-news">
-    <app-area-header title="动画资讯"></app-area-header>
+    <a-page-header title="动画资讯"
+      :show-back="false"> </a-page-header>
     <div class="news-list">
       <mini-news-item v-for="item of news"
         :key="item.id"

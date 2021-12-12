@@ -5,7 +5,8 @@
       class="app-main">
       <router-view />
     </main>
-    <acg-back-top target="#app-main"></acg-back-top>
+    <acg-back-top v-if="!hideBackUp"
+      target="#app-main"></acg-back-top>
   </div>
 </template>
 
@@ -22,6 +23,11 @@ export default defineComponent({
     return {
       title: '',
       titleObserver: null as null | MutationObserver
+    }
+  },
+  computed: {
+    hideBackUp() {
+      return this.$route.meta.hideBackUp
     }
   },
   created() {
