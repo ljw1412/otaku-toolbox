@@ -1,0 +1,101 @@
+:root {
+  --app-header-height: 60px;
+  --app-header-mini-height: 40px;
+  --app-sub-navigation-height: 54px;
+
+  --side-bar-avatar-size: 50px;
+  --scroll-bar-width: 8px;
+
+  --page-width: 1480px;
+}
+
+@media (min-width: 1750px) {
+  :root {
+    --page-width: 1720px;
+  }
+}
+
+@media (max-width: 1599.9px) {
+  :root {
+    font-size: 78px;
+    --page-width: 1160px;
+  }
+}
+
+@media (max-width: 1199.9px) {
+  :root {
+    --page-width: 100%;
+  }
+}
+
+@media (max-width: 991.9px) {
+  :root {
+  }
+}
+
+@media (max-width: 767.9px) {
+  :root {
+  }
+}
+
+.page-container {
+  width: var(--page-width);
+  margin: auto;
+}
+
+.layout-lr {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.layout-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.app-no-drag {
+  -webkit-app-region: no-drag;
+}
+
+.app-drag {
+  -webkit-app-region: drag;
+}
+
+.app-container {
+  height: 100%;
+  user-select: none;
+  overflow: hidden;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: 100% 50%;
+  }
+
+  to {
+    background-position: 0 50%;
+  }
+}
+
+// 骨架屏
+.is-skeleton {
+  .skeleton-bg {
+    background-color: var(--skeleton-bg-color);
+  }
+
+  // 骨架屏(动画)
+  &[data-skeleton-animate] {
+    .skeleton-bg {
+      background: linear-gradient(
+        90deg,
+        var(--skeleton-bg-color) 25%,
+        var(--skeleton-bg-color-to) 37%,
+        var(--skeleton-bg-color) 63%
+      );
+      background-size: 400% 100%;
+      animation: skeleton-loading 1.25s ease infinite;
+    }
+  }
+}

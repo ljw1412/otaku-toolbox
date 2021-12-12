@@ -1,7 +1,9 @@
 import { app, BrowserWindow } from 'electron'
 import { join } from 'path'
-import IpcWindowAction from './ipc/windowAction'
+import BaseAction from './ipc/index'
+import baseListerner from './listeners/baseListener'
 import newWindowHandler from './utils/newWindow'
+import createQuickWindows from './default/windows'
 import { getPageUrl } from './utils/pageUrl'
 import * as storage from './utils/storage'
 
@@ -45,7 +47,7 @@ const createWindow = async () => {
     minHeight: 720,
     show: false, // Use 'ready-to-show' event to show window
     frame: false,
-
+    title: '二次元工具箱',
     webPreferences: {
       preload: join(__dirname, '../../preload/dist/index.cjs'),
       contextIsolation: env.MODE !== 'test', // Spectron tests can't work with contextIsolation: true
@@ -55,21 +57,27 @@ const createWindow = async () => {
     }
   })
 
+  baseListerner(mainWindow)
+
   /**
    * If you install `show: true` then it can cause issues when trying to close the window.
    * Use `show: false` and listener events `ready-to-show` to fix these issues.
    *
    * @see https://github.com/electron/electron/issues/25012
    */
-  mainWindow.on('ready-to-show', () => {
-    mainWindow?.webContents.executeJavaScript(`window.tabId=${mainWindow.id}`)
-  })
   mainWindow.once('ready-to-show', () => {
     mainWindow?.show()
-    IpcWindowAction.bind()
+    BaseAction.bind()
+
     if (env.MODE === 'development') {
       mainWindow?.webContents.openDevTools()
     }
+  })
+
+  mainWindow.on('closed', () => {
+    BrowserWindow.getAllWindows().forEach(win => {
+      win.close()
+    })
   })
 
   newWindowHandler(mainWindow)
@@ -81,6 +89,8 @@ const createWindow = async () => {
   const pageUrl = getPageUrl('main')
 
   await mainWindow.loadURL(pageUrl)
+
+  global.quickWindows = createQuickWindows(mainWindow)
 }
 
 app.on('second-instance', () => {
@@ -92,7 +102,7 @@ app.on('second-instance', () => {
 })
 
 app.on('window-all-closed', () => {
-  IpcWindowAction.unbind()
+  BaseAction.unbind()
   if (process.platform !== 'darwin') {
     app.quit()
   }
@@ -103,6 +113,9 @@ app
   .then(createWindow)
   .catch(e => console.error('Failed create window:', e))
 
+app.whenReady().then(() => {
+  import('./utils/imageFix')
+})
 // Auto-updates
 if (env.PROD) {
   app

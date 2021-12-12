@@ -1,3 +1,9 @@
-declare interface AcgAppConfig {
-  use_system_browser: boolean
+import { BrowserWindow } from 'electron'
+
+declare global {
+  namespace NodeJS {
+    interface Global {
+      quickWindows: Record<string, BrowserWindow>
+    }
+  }
 }

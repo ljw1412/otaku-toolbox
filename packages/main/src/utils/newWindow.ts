@@ -1,6 +1,6 @@
 import type { BrowserView, BrowserWindow } from 'electron'
 import { shell } from 'electron'
-import { loadView } from '../views'
+import { createBrowser, createBuiltInBrowser } from '../window'
 import acgAppConfig from '../default/config'
 
 async function openExternal(url: string) {
@@ -29,8 +29,10 @@ export default function(browerWindow: BrowserWindow | BrowserView): void {
         event.preventDefault()
         if (acgAppConfig.use_system_browser) {
           openExternal(url)
+        } else if (url.includes('app=otakutools')) {
+          createBrowser({ minWidth: 1280, minHeight: 720, url })
         } else {
-          loadView({ url })
+          createBuiltInBrowser({ url })
         }
       }
     }

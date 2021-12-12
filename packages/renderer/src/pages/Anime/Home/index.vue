@@ -1,34 +1,32 @@
 <template>
   <div class="anime-home">
-    <button @click="onClick">
-      按钮
-    </button>
+    <today-bangumi key="AnimeTodayBangumi"></today-bangumi>
+    <mini-news-list key="AnimeMiniNewsList"></mini-news-list>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { ipcSend } from '/@/utils/electron'
+import MiniNewsList from './components/MiniNews.vue'
+import TodayBangumi from './components/TodayBangumi.vue'
 
 export default defineComponent({
-  name: 'AppAnimeHome',
-  components: {},
+  name: 'AnimeHome',
+  components: {
+    TodayBangumi,
+    MiniNewsList
+  },
 
   data() {
     return {}
-  },
-
-  methods: {
-    onClick() {
-      console.log(this)
-
-      ipcSend('window.action', 'child', { url: 'https://www.bilibili.com' })
-    }
   }
 })
 </script>
 
 <style lang="scss">
 .anime-home {
+  > * {
+    margin-bottom: 20px;
+  }
 }
 </style>

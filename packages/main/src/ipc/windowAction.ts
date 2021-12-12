@@ -1,7 +1,28 @@
 import { ipcMain, BrowserWindow } from 'electron'
-import { loadView } from '../views'
+import {
+  createBrowser,
+  createBuiltInBrowser,
+  openAppSystemWindow
+} from '../window'
 
 const channel = 'window.action'
+
+function closeApp(win: BrowserWindow, mode: string) {
+  const parentWin = win.getParentWindow()
+  const { exitApp } = global.quickWindows
+  if (mode === 'main') {
+    exitApp.show()
+    return
+  } else if (mode === 'main-close') {
+    if (parentWin) {
+      win.close()
+      parentWin.close()
+      return
+    }
+  } else {
+    win.close()
+  }
+}
 
 function bind(): void {
   ipcMain.on(channel, (e, type, data) => {
@@ -16,11 +37,27 @@ function bind(): void {
 
     if (type === 'min') {
       mWin.minimize()
+    } else if (type === 'max') {
+      if (mWin.isMaximized()) {
+        mWin.unmaximize()
+      } else {
+        mWin.maximize()
+      }
     } else if (type === 'close') {
-      mWin.close()
-    } else if (type === 'child') {
+      closeApp(mWin, data.mode)
+    } else if (type === 'hide') {
+      mWin.hide()
+    } else if (type === 'built-in-browser') {
       if (typeof data === 'object' && data.url) {
-        loadView(data)
+        createBuiltInBrowser(data)
+      }
+    } else if (type === 'createBrowser') {
+      if (typeof data === 'object' && data.url) {
+        createBrowser(data)
+      }
+    } else if (type === 'openAppSystemWindow') {
+      if (typeof data === 'object' && data.title) {
+        openAppSystemWindow(data)
       }
     }
   })

@@ -7,9 +7,7 @@ const BASE_CONFIG_NAME = 'config'
 export function init(path: string): void {
   storage.setDataPath(path)
   // 同步基础配置
-  getConfig().then(data => {
-    Object.assign(acgAppConfig, data)
-  })
+  getConfig()
 }
 
 export async function getConfig(keys?: string | string[]): Promise<any> {
@@ -17,13 +15,10 @@ export async function getConfig(keys?: string | string[]): Promise<any> {
     storage.get(BASE_CONFIG_NAME, (error, data) => {
       if (error) return reject(error)
       if (!keys) {
-        resolve(data)
+        resolve(Object.assign(acgAppConfig, data))
       } else {
-        resolve(
-          Array.isArray(keys)
-            ? only(data, keys)
-            : data[keys as keyof typeof data]
-        )
+        if (!Array.isArray(keys)) keys = [keys]
+        resolve(only(data, keys))
       }
     })
   })
@@ -31,6 +26,7 @@ export async function getConfig(keys?: string | string[]): Promise<any> {
 
 export async function setConfig(data: Record<string, any>): Promise<boolean> {
   return new Promise((resolve, reject) => {
+    data = Object.assign(acgAppConfig, data)
     storage.set(BASE_CONFIG_NAME, data, error => {
       if (error) return reject(error)
       resolve(true)

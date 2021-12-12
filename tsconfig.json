@@ -4,16 +4,12 @@
     "target": "esnext",
     "sourceMap": true,
     "moduleResolution": "Node",
+    "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": true,
     "isolatedModules": true,
-    "types": [
-      "vite/client",
-      "node"
-    ],
-    "typeRoots": [
-      "node_modules/@types",
-    ],
+    "types": ["vite/client", "node"],
+    "typeRoots": ["node_modules/@types"],
     "lib": ["ESNext"]
-  },
+  }
 }

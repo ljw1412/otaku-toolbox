@@ -1,0 +1,85 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+
+a {
+  text-decoration: none;
+  color: unset;
+}
+
+ul {
+  list-style: none;
+}
+
+img {
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+html,
+body,
+#app {
+  height: 100%;
+}
+
+body {
+  font-family: PingFang SC, HarmonyOS Sans, Helvetica Neue, Microsoft YaHei,
+    sans-serif !important;
+}
+
+::-webkit-scrollbar {
+  width: var(--scroll-bar-width);
+  height: var(--scroll-bar-width);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb-bg);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover-bg);
+}
+
+h1 {
+  font-size: 32px;
+}
+
+h2 {
+  font-size: 28px;
+}
+
+h3 {
+  font-size: 24px;
+}
+
+h4 {
+  font-size: 22px;
+}
+
+h5 {
+  font-size: 18px;
+}
+
+.full-modal {
+  .arco-modal-body {
+    padding: 0;
+  }
+}
+
+.sticky-b {
+  position: sticky;
+  bottom: 0;
+  z-index: 100;
+}
+
+.sticky-t {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.bg-app {
+  background-color: var(--app-color-bg);
+}

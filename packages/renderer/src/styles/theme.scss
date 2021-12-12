@@ -1,0 +1,98 @@
+:root {
+  --skin-cyan: #00bcd4;
+  --skin-blue: #2196f3;
+  --skin-dark: #1b1b1b;
+  --skin-red: #f44336;
+  --skin-orange: #eb9a18;
+  --skin-pink: #fb7299;
+  --skin-green: #4caf50;
+  --skin-teal: #009688;
+  --skin-brown: #795548;
+  --skin-purple: #673ab7;
+  --skin-indigo: #3f51b5;
+  --skin-blue-grey: #607d8b;
+  --white-rgb: 255, 255, 255;
+  --black-rgb: 0, 0, 0;
+}
+
+body {
+  --color-text-0: #000000;
+
+  --app-theme: var(--skin-blue);
+  --app-color-common: var(--app-theme);
+
+  --app-header-bg: var(--app-theme);
+  --app-header-center-bg: rgba(233, 233, 233, 0.2);
+
+  --app-color-bg: var(--color-bg-3);
+  --app-color-text: var(--color-text-1);
+  --app-header-color-text: #ffffff;
+
+  --skeleton-bg-color: #e9e7e7;
+  --skeleton-bg-color-to: #e0e0e0;
+  --bangumi-gallery-active-color: var(--app-theme);
+
+  --scrollbar-thumb-bg: #cccccc;
+  --scrollbar-thumb-hover-bg: #b2b2b2;
+
+  --comic-navigation-bg: #ffffff;
+  --comic-navigation-search-color: var(--app-theme);
+}
+
+body[arco-theme='dark'] {
+  --color-text-0: #ffffff;
+
+  --app-theme: var(--skin-dark);
+  --app-color-common: #e4a329;
+
+  --app-header-center-bg: rgba(255, 255, 255, 0.05);
+
+  --skeleton-bg-color: #4b4b4b;
+  --skeleton-bg-color-to: #5d5d5d;
+
+  --scrollbar-bg: #000000;
+  --scrollbar-thumb-bg: #666666;
+  --scrollbar-thumb-hover-bg: #999999;
+
+  --comic-navigation-bg: #3f3f40;
+}
+
+body[arco-theme='cyan'] {
+  --app-theme: var(--skin-cyan);
+}
+
+body[arco-theme='teal'] {
+  --app-theme: var(--skin-teal);
+}
+
+body[arco-theme='red'] {
+  --app-theme: var(--skin-red);
+}
+
+body[arco-theme='orange'] {
+  --app-theme: var(--skin-orange);
+}
+
+body[arco-theme='pink'] {
+  --app-theme: var(--skin-pink);
+}
+
+body[arco-theme='green'] {
+  --app-theme: var(--skin-green);
+}
+
+body[arco-theme='brown'] {
+  --app-theme: var(--skin-brown);
+}
+
+body[arco-theme='purple'] {
+  --app-theme: var(--skin-purple);
+}
+
+body[arco-theme='indigo'] {
+  --app-theme: var(--skin-indigo);
+}
+
+body[arco-theme='blue-grey'] {
+  --app-theme: var(--skin-blue-grey);
+}
