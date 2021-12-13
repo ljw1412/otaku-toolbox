@@ -6,6 +6,7 @@ import newWindowHandler from './utils/newWindow'
 import createQuickWindows from './default/windows'
 import { getPageUrl } from './utils/pageUrl'
 import * as storage from './utils/storage'
+import DataCenter from './dataCenter/index'
 
 const isSingleInstance = app.requestSingleInstanceLock()
 
@@ -68,6 +69,7 @@ const createWindow = async () => {
   mainWindow.once('ready-to-show', () => {
     mainWindow?.show()
     BaseAction.bind()
+    DataCenter.bind()
 
     if (env.MODE === 'development') {
       mainWindow?.webContents.openDevTools()
@@ -103,6 +105,7 @@ app.on('second-instance', () => {
 
 app.on('window-all-closed', () => {
   BaseAction.unbind()
+  DataCenter.unbind()
   if (process.platform !== 'darwin') {
     app.quit()
   }

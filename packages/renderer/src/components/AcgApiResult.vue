@@ -39,12 +39,12 @@ export default defineComponent({
   },
   computed: {
     status() {
-      if (!this.loading && this.error) return 'error'
+      if (this.error) return 'error'
       if (!this.loading && this.empty) return 'warning'
       return null
     },
 
-    title():string {
+    title(): string {
       if (this.error) {
         return errorTitles[this.n2]
       } else if (this.loading) {

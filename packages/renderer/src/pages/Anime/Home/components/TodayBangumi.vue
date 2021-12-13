@@ -14,7 +14,10 @@
       <today-bangumi-item v-for="(bangumi,i) of mBangumiList"
         :key="bangumi.title || `bangumi-${i}`"
         :bangumi="bangumi"
-        :skeleton="!isFirstLoaded"></today-bangumi-item>
+        :skeleton="isSkeleton"></today-bangumi-item>
+      <acg-api-result :loading="false"
+        :error="isError"
+        @retry="fetchTodayBangumiList"></acg-api-result>
     </div>
   </div>
 </template>
@@ -34,15 +37,19 @@ export default defineComponent({
   data() {
     return {
       isError: false,
-      isFirstLoaded: false,
+      isLoading: true,
       weekdayName: '',
       bangumiList: [] as BangumiBasicWithTime[]
     }
   },
 
   computed: {
+    isSkeleton(): boolean {
+      return this.isLoading || this.isError
+    },
+
     mBangumiList(): BangumiBasicWithTime[] {
-      if (!this.isFirstLoaded) {
+      if (this.isSkeleton) {
         return new Array(3).fill({ title: '', cover: '', onairList: [{}] })
       }
       return this.bangumiList
@@ -79,7 +86,7 @@ export default defineComponent({
         this.$nextTick(() => {
           const el = document.querySelector(
             `.today-bangumi-item[data-id="${nearBangumiId}"]`
-          )
+          ) as HTMLElement | null
           if (el) {
             console.dir(el)
             el.parentElement?.scrollBy({
@@ -93,23 +100,17 @@ export default defineComponent({
     },
 
     async fetchTodayBangumiList() {
+      this.isError = false
+      this.isLoading = true
+      this.bangumiList = []
       try {
         this.bangumiList = await this.$API.Bangumi.listTodayBangumi()
-        this.isFirstLoaded = true
+        this.isLoading = false
         this.scrollToNextBangumi()
       } catch (error) {
         this.isError = true
       }
-      // try {
-      //   const data = await fetch(
-      //     'http://rap2api.taobao.org/app/mock/288559/today_bangumi'
-      //   ).then(data => data.json())
-      //   this.bangumiList = data
-      //   this.isFirstLoaded = true
-      //   console.log(data)
-      // } catch (error) {
-      //   console.error(error)
-      // }
+      this.isLoading = false
     }
   }
 })
@@ -118,9 +119,20 @@ export default defineComponent({
 <style lang="scss">
 .today-bangumi {
   &-list {
+    position: relative;
     display: flex;
     overflow-x: scroll;
     min-height: 280px;
+
+    .acg-api-result {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      box-sizing: border-box;
+      backdrop-filter: blur(10px);
+    }
   }
 
   &-weekday {

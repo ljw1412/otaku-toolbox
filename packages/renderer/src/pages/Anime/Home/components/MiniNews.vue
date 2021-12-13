@@ -1,10 +1,16 @@
 <template>
   <div class="mini-news">
     <a-page-header title="动画资讯"
-      :show-back="false"> </a-page-header>
+      :show-back="false">
+      <template #extra>
+        <a-button :loading="isLoading"
+          @click="fetchNewsData">刷新</a-button>
+      </template>
+    </a-page-header>
     <div class="news-list">
-      <mini-news-item v-for="item of news"
+      <mini-news-item v-for="item of newsList"
         :key="item.id"
+        :skeleton="isSkeleton"
         v-bind="item"></mini-news-item>
     </div>
   </div>
@@ -19,45 +25,42 @@ export default defineComponent({
   components: { MiniNewsItem },
   data() {
     return {
-      news: [
-        {
-          id: '1',
-          cover:
-            'https://images.dmzj.com/news/article/72539/row_61754540e83ff.jpg',
-          title: '津田尚克×CloverWorks原创TV动画《东京24区》2022年1月播出',
-          desc:
-            '​津田尚克导演×故事构成/脚本·下倉バイオ（Nitroplus）×动画制作CloverWorks的全新原创TV动画《东京24区》将于2022年1月开始播出！',
-          from: '',
-          url: 'http://www.baidu.com'
-        },
-        {
-          id: '2',
-          cover:
-            'https://images.dmzj.com/news/article/72538/row_617539c94e7b9.jpg',
-          title: 'TV动画《不要欺负我、长瀞同学》第2期制作决定',
-          desc:
-            'TV动画《不要欺负我、长瀞同学》第2期制作决定，这一消息在近日的官方见面会活动中公布。',
-          from: ''
-        },
-        {
-          id: '3',
-          cover:
-            'https://images.dmzj.com/news/article/72537/row_6175366daa5c0.jpg',
-          title: 'TV动画《LoveLive!SuperStar!!》第2期制作决定',
-          desc:
-            'TV动画《LoveLive!SuperStar!!》第2期制作决定，近日公开了制作决定PV。',
-          from: ''
-        },
-        {
-          id: '4',
-          cover:
-            'https://images.dmzj.com/news/article/72529/row_61728e0e159a4.jpg',
-          title: '《Muv-Luv》连线谏山创：迫害角色是让故事有趣的方法？',
-          desc:
-            '作为10月番《Muv-Luv Alternative》动画化的庆祝，官方请来了谏山创发表评价……',
-          from: ''
-        }
-      ]
+      isLoading: true,
+      isError: false,
+      news: [] as Record<string, any>[]
+    }
+  },
+
+  computed: {
+    isSkeleton(): boolean {
+      return this.isLoading || this.isError
+    },
+
+    newsList(): Record<string, any>[] {
+      if (this.isSkeleton) {
+        return new Array(2).fill({})
+      }
+      return this.news
+    }
+  },
+
+  created() {
+    this.fetchNewsData()
+  },
+
+  methods: {
+    async fetchNewsData() {
+      this.isLoading = true
+      this.isError = false
+      this.news = []
+      try {
+        const data = await this.$API.DataCenter.listNews('dmzj', 1)
+        this.news = data.list
+        console.log(data)
+      } catch (error) {
+        this.isError = true
+      }
+      this.isLoading = false
     }
   }
 })

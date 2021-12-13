@@ -1,26 +1,25 @@
 <template>
-  <a-card class="mini-news-item"
+  <a-card class="news-item"
     hoverable
     :bordered="false"
     :body-style="{padding:0}"
-    :class="{ 'is-skeleton': skeleton }"
-    data-skeleton-animate
     @click="handleNewsClick">
-    <div class="news-item-container"
-      :title="`${title}\n${desc}`">
-      <div class="cover skeleton-bg">
-        <img v-if="!skeleton"
-          :src="cover"
+    <div class="news-item-container">
+      <div class="cover">
+        <img :src="cover"
           loading="lazy" />
       </div>
-      <div class="title text-truncate skeleton-bg">{{ title }}</div>
-      <div class="content skeleton-bg"
+
+      <div class="title text-truncate">
+        {{ title }}
+      </div>
+
+      <div class="content"
         :ellipsis="{ rows:3 }">
         {{ desc }}
       </div>
-      <div class="footer">
-        <div class="update-time skeleton-bg">{{ updateTime }}</div>
-      </div>
+
+      <p class="update-time">{{ updateTime }}</p>
     </div>
   </a-card>
 </template>
@@ -29,9 +28,8 @@
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-  name: 'MiniNewsItem',
+  name: 'NewsItem',
   props: {
-    skeleton: Boolean,
     cover: { type: String, default: '' },
     title: { type: String, default: '' },
     desc: { type: String, default: '' },
@@ -52,7 +50,7 @@ export default defineComponent({
 
 <style lang="scss">
 @import '../../../../styles/scss/index';
-.mini-news-item {
+.news-item {
   cursor: pointer;
   overflow: hidden;
   margin-bottom: 30px;
@@ -90,11 +88,11 @@ export default defineComponent({
     .title {
       font-size: 20px;
       line-height: 1.4;
-      margin: 8px;
+      padding: 8px;
     }
 
     .content {
-      margin: 0 8px;
+      padding: 0 8px;
       font-size: 14px;
       line-height: 1.5715;
       height: 68px;
@@ -102,15 +100,9 @@ export default defineComponent({
       @include multi-text-truncate(3);
     }
 
-    .footer {
+    .update-time {
       text-align: right;
       padding: 0 8px;
-      .update-time {
-        display: inline-block;
-        width: 120px;
-        height: 1.2em;
-        line-height: 1.2em;
-      }
     }
   }
 }
