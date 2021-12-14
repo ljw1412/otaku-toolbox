@@ -37,6 +37,7 @@ import { getLogoIcon } from '/@/utils/icons'
 export default defineComponent({
   name: 'TodayBangumiItem',
   props: {
+    current: String,
     skeleton: Boolean,
     bangumi: {
       type: Object as PropType<BangumiBasicWithTime>,
@@ -64,7 +65,6 @@ export default defineComponent({
 
 <style lang="scss">
 .today-bangumi-item {
-  position: relative;
   flex: 0 0 auto;
   padding-bottom: 20px;
 

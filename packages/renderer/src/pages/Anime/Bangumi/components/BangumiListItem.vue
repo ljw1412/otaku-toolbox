@@ -28,7 +28,7 @@
             wrap
             class="anime-tags">
             <a-tag v-for="tag of anime.tags"
-              :color="tag.color"
+              :color="tag.color || 'arcoblue' "
               :key="tag._id">{{ tag.name }}</a-tag>
           </a-space>
           <div class="anime-onair">{{ onairStr }}</div>
@@ -223,7 +223,7 @@ export default defineComponent({
         width: 100%;
         height: 100%;
         z-index: -1;
-        background-color: rgba(255, 255, 255, 0.05);
+        background-color: var(--color-fill-2);
       }
 
       .localized-name {

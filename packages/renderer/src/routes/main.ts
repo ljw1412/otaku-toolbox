@@ -11,7 +11,7 @@ import AnimeNews from '/@/pages/Anime/News/index.vue'
 import AnimeBangumi from '/@/pages/Anime/Bangumi/index.vue'
 import AnimeWeekBangumi from '/@/pages/Anime/WeekBangumi/index.vue'
 
-import AppHelper from '/@/pages/Comic/Helper.vue'
+import AppComicHelper from '/@/pages/Comic/Helper.vue'
 import ComicHome from '/@/pages/Comic/Home/index.vue'
 import ComicOrigin from '/@/pages/Comic/Origin/index.vue'
 import ComicFavourite from '/@/pages/Comic/Favourite/index.vue'
@@ -19,7 +19,9 @@ import ComicHistory from '/@/pages/Comic/History/index.vue'
 import ComicSearch from '/@/pages/Comic/Search/index.vue'
 import ComicSetting from '/@/pages/Comic/Setting/index.vue'
 
+// import AppGameHelper from '/@/pages/Game/Helper.vue'
 import GameHome from '/@/pages/Game/Home/index.vue'
+
 import { toTitleCase } from '../utils/string'
 
 interface CreateRoutes {
@@ -32,7 +34,7 @@ function createRoutes(
   _module: string,
   { routes, helper, pageContainer }: CreateRoutes
 ) {
-  const baseMeta = { module: _module, pageContainer }
+  const baseMeta = { module: _module, pageContainer, hideHelper: !helper }
   const newRoutes = routes.map(route => {
     const newRoute = Object.assign({}, route)
     newRoute.path = `${_module}/${route.path}`
@@ -82,7 +84,7 @@ const animeRoutes = createRoutes('anime', {
 })
 
 const comicRoutes = createRoutes('comic', {
-  helper: AppHelper,
+  helper: AppComicHelper,
   routes: [
     { path: 'home', name: 'ComicHome', component: ComicHome },
     { path: 'favourite', name: 'ComicFavourite', component: ComicFavourite },
@@ -99,6 +101,8 @@ const comicRoutes = createRoutes('comic', {
 })
 
 const gameRoutes = createRoutes('game', {
+  pageContainer: true,
+  // helper: AppGameHelper,
   routes: [
     {
       path: 'home',

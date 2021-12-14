@@ -1,9 +1,9 @@
 {
   "name": "动漫之家",
   "namespace": "dmzj",
-  "type": "anime-news",
+  "type": "game-news",
   "version": "0",
-  "url": "https://news.dmzj.com/donghuaqingbao/p{:page}.html",
+  "url": "https://news.dmzj.com/youxizixun/p{:page}.html",
   "mode": "html",
   "data": {
     "pageTotal": "#page > a:last-child|@href|match#\\d+"
