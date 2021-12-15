@@ -94,6 +94,7 @@ declare global {
     dayCH: string
     fullDate: string
     fullDateCH: string
+    unix: number
   }
 
   interface Tag {

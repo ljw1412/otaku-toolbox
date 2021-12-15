@@ -27,7 +27,14 @@
               </a-space>
             </template>
             <template #subtitle>
-
+              <app-sort-text :active="isDefaultSort"
+                :directions="['']"
+                text="默认排序"
+                @change="handleSortChange('default')"></app-sort-text>
+              <app-sort-text v-model="sort.sortonair"
+                :directions="[-1, 1]"
+                text="开播时间"
+                @change="handleSortChange('sortonair')"></app-sort-text>
             </template>
             <template #extra>
               <a-space size="mini">
@@ -61,6 +68,7 @@
             @retry="fetchBangumiList"></acg-api-result>
           <anime-card v-for="bangumi of bangumiList"
             :key="bangumi._id"
+            :show-onair="!!sort.sortonair"
             :anime="bangumi"></anime-card>
         </div>
       </main>
@@ -96,6 +104,7 @@ import AnimeCard from './components/AnimeCard.vue'
 import AnimeFilter from './components/AnimeFilter.vue'
 import AnimeFilterStatus from './components/AnimeFilterStatus.vue'
 import AcgApiResult from '/@/components/AcgApiResult.vue'
+import AppSortText from '/@/components/AppSortText.vue'
 import { typeOf } from '/@/utils/assist'
 
 export default defineComponent({
@@ -105,7 +114,8 @@ export default defineComponent({
     AnimeCard,
     AnimeFilter,
     AnimeFilterStatus,
-    AcgApiResult
+    AcgApiResult,
+    AppSortText
   },
 
   data() {
@@ -114,6 +124,7 @@ export default defineComponent({
       error: { bangumi: false, filter: false },
       isDisplayFilterDialog: false,
       keyword: '',
+      sort: { sortonair: '' },
       page: { index: 1, total: 0, size: 24 },
       tagGroupList: [] as TagGroup[],
       filterTagList: [] as Tag[],
@@ -122,6 +133,10 @@ export default defineComponent({
   },
 
   computed: {
+    isDefaultSort(): boolean {
+      return Object.values(this.sort).every(item => !item)
+    },
+
     filterTagIds(): string {
       return this.filterTagList
         .filter(tag => tag.group !== 'type')
@@ -214,7 +229,8 @@ export default defineComponent({
           this.page,
           this.typeValue,
           this.filterTagIds,
-          this.keyword
+          this.keyword,
+          this.sort
         )
         this.bangumiList = list
         this.page.total = total
@@ -234,9 +250,19 @@ export default defineComponent({
         p: this.page.index,
         tags: this.filterTagIds,
         keyword: this.keyword,
-        type: this.typeValue
+        type: this.typeValue,
+        ...this.sort
       })
       this.$router.replace({ query })
+    },
+
+    handleSortChange(name: string) {
+      if (name === 'default') {
+        Object.keys(this.sort).forEach(key => {
+          this.sort[key as keyof typeof this.sort] = ''
+        })
+      }
+      this.handlePageChange(1)
     },
 
     handleFilterChange({ keyword, tags }: { keyword: string; tags: Tag[] }) {

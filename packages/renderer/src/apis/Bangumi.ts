@@ -15,12 +15,17 @@ export async function listBangumi(
   page = { index: 1, size: 20 },
   type: string,
   tags: string[] | string,
-  keyword = ''
+  keyword = '',
+  sort: Record<string, string | number> = {}
 ): Promise<{ list: BangumiBasic[]; total: number }> {
   if (Array.isArray(tags)) {
     tags = tags.join(',')
   }
-  return apiGet(API_BASE, { data: { ...page, tags, type, keyword } })
+  const data = await apiGet(API_BASE, {
+    data: { ...page, tags, type, keyword, ...sort }
+  })
+  data.list.forEach(computeBangumiTime)
+  return data
 }
 
 /**
