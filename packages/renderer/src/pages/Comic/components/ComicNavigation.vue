@@ -186,7 +186,7 @@ export default defineComponent({
       width: 24px;
       height: 24px;
       margin-left: 6px;
-      border: 1px solid var(--color-border);
+      border: none;
       background-color: rgba(255, 255, 255, 0.05);
       border-radius: 50%;
       color: var(--app-color-text);

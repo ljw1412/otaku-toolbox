@@ -54,8 +54,6 @@ export default defineComponent({
 
     &[data-module='anime'],
     &[data-module='game'] {
-      height: 100%;
-      overflow: hidden;
       .app-main-body {
         box-sizing: border-box;
         height: calc(100% - var(--app-sub-navigation-height));
@@ -74,8 +72,8 @@ export default defineComponent({
     &[data-module='comic'] {
       box-sizing: border-box;
       position: relative;
-      height: 100%;
-      overflow: hidden;
+      // height: 100%;
+      // overflow: hidden;
       padding: 16px 0 16px 16px;
 
       .comic-main {

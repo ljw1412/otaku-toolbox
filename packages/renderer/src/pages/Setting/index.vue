@@ -1,10 +1,15 @@
 <template>
   <a-layout class="app-setting">
-    <a-layout-sider class="setting-tabs"
+    <header class="app-setting-header app-drag">
+      <app-controls class="app-no-drag"></app-controls>
+    </header>
+
+    <a-layout-sider class="setting-tabs app-drag"
       :width="150">
       <a-typography-title :heading="4"
         style="margin-left: 16px;">设置</a-typography-title>
       <a-tabs v-model:active-key="tabKey"
+        class="app-no-drag"
         type="text"
         position="left">
         <a-tab-pane v-for="tab of tabs"
@@ -12,7 +17,10 @@
           :title="tab.title"></a-tab-pane>
       </a-tabs>
     </a-layout-sider>
+
     <a-layout-content class="setting-config">
+      <a-typography-title :heading="5"
+        style="margin-top: 0;">{{subTitle}}</a-typography-title>
       <a-form :model="config">
         <a-form-item v-for="item of mConfig"
           :key="item.key"
@@ -34,6 +42,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { getAppConfig, setAppConfigOption } from '/@/utils/electron'
+import AppControls from '/@/components/AppControls.vue'
 import ConfigItem from './components/ConfigItem.vue'
 
 interface SettingTab {
@@ -74,13 +83,21 @@ const tabs: SettingTab[] = [
 export default defineComponent({
   name: 'AppSetting',
 
-  components: { ConfigItem },
+  components: { AppControls, ConfigItem },
 
   data() {
     return { tabs, tabKey: 'regular', config: {} as Record<string, any> }
   },
 
   computed: {
+    subTitle(): string {
+      const config = tabs.find(tab => tab.key === this.tabKey)
+      if (config) {
+        return config.title
+      }
+      return ''
+    },
+
     mConfig(): Record<string, any>[] {
       const config = tabs.find(tab => tab.key === this.tabKey)
       const options = config ? config.options || [] : []
@@ -124,6 +141,8 @@ export default defineComponent({
 
 <style lang="scss">
 .app-setting {
+  user-select: none;
+  position: relative;
   height: 100%;
   overflow: hidden;
 
@@ -167,8 +186,24 @@ export default defineComponent({
     }
   }
 
+  .app-setting-header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 24px;
+    width: 100%;
+    z-index: 100;
+
+    .app-controls {
+      position: absolute;
+      right: 0;
+      top: 0;
+    }
+  }
+
   .setting-config {
     padding: 16px;
+    padding-top: 24px;
     width: 85%;
     height: 100%;
     overflow-y: auto;

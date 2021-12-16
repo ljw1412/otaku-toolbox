@@ -15,9 +15,9 @@
           @click="openSettingsWindow">
           <icon-settings />
         </div>
-        <div class="app-control-btn btn-menu">
+        <!-- <div class="app-control-btn btn-menu">
           <icon-more-vertical />
-        </div>
+        </div> -->
       </app-controls>
     </div>
   </header>

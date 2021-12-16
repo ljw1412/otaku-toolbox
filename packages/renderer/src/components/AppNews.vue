@@ -38,7 +38,8 @@
         hoverable
         class="news-item"
         @click="handleNewsClick(item.url)">
-        <div class="news-item-container">
+        <div class="news-item-container"
+          :title="item.title">
           <div class="cover skeleton-bg">
             <img v-if="!isSkeleton"
               :src="item.cover"

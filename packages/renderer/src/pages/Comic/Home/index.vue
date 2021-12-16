@@ -24,6 +24,5 @@ export default defineComponent({
 
 <style lang="scss">
 .comic-home {
-  height: 1000px;
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div class="setting-theme">
-    <a-typography-title :heading="5"
+    <a-typography-title :heading="6"
       style="margin-top: 0;">主题色</a-typography-title>
     <div class="theme-color-list">
       <acg-ratio-div v-for="theme of themeData.themes"

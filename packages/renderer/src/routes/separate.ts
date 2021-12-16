@@ -16,6 +16,20 @@ const routes = [
   },
   // 退出弹窗
   { path: '/exit-app', name: 'ExitApp', component: ExitApp },
+  // 系统设置
+  {
+    path: '/setting',
+    name: 'AppSetting',
+    component: AppSetting,
+    meta: {
+      separate: true,
+      title: '系统设置',
+      hideBackUp: true,
+      minimizable: false,
+      maximizable: false,
+      hidable: true
+    }
+  },
   // 带标题栏的界面
   {
     path: '/view',
@@ -24,19 +38,7 @@ const routes = [
     meta: { separate: true },
     children: [
       { path: '/error', name: 'ViewError', component: AppErrorPage },
-      // 系统设置
-      {
-        path: '/setting',
-        name: 'AppSetting',
-        component: AppSetting,
-        meta: {
-          title: '系统设置',
-          hideBackUp: true,
-          minimizable: false,
-          maximizable: false,
-          hidable: true
-        }
-      },
+
       // 应用主题
       {
         path: '/theme',
