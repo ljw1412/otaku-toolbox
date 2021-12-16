@@ -5,6 +5,7 @@ const GLOBAL_CONFIG = 'GLOBAL_CONFIG'
 const defaultConfig = {
   timeZone: 8,
   hourSystem: 24,
+  allowDevTools: false,
   weekBangumiDirection: 'vertical'
 }
 

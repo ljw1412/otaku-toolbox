@@ -129,3 +129,14 @@ export function openAppSystemWindow(
   }
   return null
 }
+
+export function toggleDevTools(win: BrowserWindow) {
+  try {
+    const view = win.getBrowserView()
+    if (view) {
+      view.webContents.toggleDevTools()
+    }
+  } catch (error) {
+    console.error(error)
+  }
+}

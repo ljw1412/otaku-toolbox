@@ -58,7 +58,7 @@ export default defineComponent({
       .color-name {
         position: absolute;
         width: 100%;
-        font-size: 20px;
+        font-size: 16px;
         left: 0;
         bottom: 4px;
         text-align: center;

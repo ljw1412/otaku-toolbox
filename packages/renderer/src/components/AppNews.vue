@@ -5,7 +5,8 @@
       :show-back="false">
       <template #subtitle>
         <a-select v-model="origin"
-          size="small">
+          size="small"
+          @change="handleOriginChange">
           <a-option v-for="option of originList"
             :key="option.value"
             :value="option.value"
@@ -60,7 +61,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, PropType } from 'vue'
 
 export default defineComponent({
   name: 'AppNews',
@@ -69,7 +70,12 @@ export default defineComponent({
     title: String,
     type: String,
     mini: Boolean,
-    skeletonCount: { type: Number, default: 2 }
+    skeletonCount: { type: Number, default: 2 },
+    //TODO: 改为本地数据库获取
+    originList: {
+      type: Array as PropType<{ value: string; label: string }[]>,
+      default: () => [{ value: 'dmzj', label: '动漫之家' }]
+    }
   },
 
   data() {
@@ -78,7 +84,6 @@ export default defineComponent({
       isError: false,
       //TODO: 改为本地数据库获取
       origin: 'dmzj',
-      originList: [{ value: 'dmzj', label: '动漫之家' }],
       page: { index: 1, size: 1, total: 0 },
       news: [] as Record<string, any>[]
     }
@@ -109,7 +114,7 @@ export default defineComponent({
       try {
         const data = await this.$API.DataCenter.listNews(
           this.type,
-          'dmzj',
+          this.origin,
           this.page.index
         )
         this.news = data.list
@@ -129,6 +134,11 @@ export default defineComponent({
       if (url) {
         window.open(url)
       }
+    },
+
+    handleOriginChange() {
+      this.page.index = 1
+      this.fetchNewsData()
     }
   }
 })
@@ -203,7 +213,7 @@ export default defineComponent({
           padding: 0 8px;
           .update-time {
             display: inline-block;
-            width: 120px;
+            min-width: 120px;
             height: 1.2em;
             line-height: 1.2em;
           }

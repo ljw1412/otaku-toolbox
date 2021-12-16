@@ -80,6 +80,7 @@ export default defineComponent({
     height: 36px;
     line-height: 36px;
     padding: 28px 10px 0;
+    color: #ffffff;
     background: linear-gradient(0deg, rgba(0, 0, 0, 0.6) 0, rgba(0, 0, 0, 0));
   }
 }

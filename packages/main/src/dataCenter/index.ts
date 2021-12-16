@@ -4,6 +4,8 @@ import ruleRunner from './parser'
 import anime_dmzj from './rules/anime/dmzj.json'
 import comic_dmzj from './rules/comic/dmzj.json'
 import game_dmzj from './rules/game/dmzj.json'
+import game_ali213 from './rules/game/ali213.json'
+import game_3dm from './rules/game/3dm.json'
 
 const typeRuleMap = {
   'anime-news': {
@@ -13,7 +15,9 @@ const typeRuleMap = {
     dmzj: comic_dmzj
   },
   'game-news': {
-    dmzj: game_dmzj
+    dmzj: game_dmzj,
+    ali213: game_ali213,
+    '3dm': game_3dm
   }
 } as Record<string, Record<string, DataCenter.Rule>>
 

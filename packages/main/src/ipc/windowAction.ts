@@ -2,7 +2,8 @@ import { ipcMain, BrowserWindow } from 'electron'
 import {
   createBrowser,
   createBuiltInBrowser,
-  openAppSystemWindow
+  openAppSystemWindow,
+  toggleDevTools
 } from '../window'
 
 const channel = 'window.action'
@@ -59,6 +60,8 @@ function bind(): void {
       if (typeof data === 'object' && data.title) {
         openAppSystemWindow(data)
       }
+    } else if (type === 'toggleDevTools') {
+      toggleDevTools(mWin)
     }
   })
 }
