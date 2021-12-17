@@ -2,7 +2,7 @@ import request from './request'
 import cheerio, { CheerioAPI, Cheerio, Node } from 'cheerio'
 import Logger from '../utils/logger'
 
-const isDebugger = true
+const isDebugger = false
 const logger = {} as typeof Logger
 Object.keys(Logger).forEach(key => {
   const state = key as keyof typeof Logger

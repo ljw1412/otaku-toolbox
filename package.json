@@ -31,6 +31,7 @@
   "devDependencies": {
     "@types/electron-devtools-installer": "^2.2.0",
     "@types/electron-json-storage": "^4.5.0",
+    "@types/glob": "^7.2.0",
     "@types/qs": "^6.9.7",
     "@types/superagent": "^4.1.13",
     "@types/superagent-proxy": "^3.0.0",
@@ -58,6 +59,7 @@
     "dayjs": "^1.10.6",
     "electron-json-storage": "^4.5.0",
     "electron-updater": "^4.3.9",
+    "glob": "^7.2.0",
     "qs": "^6.10.1",
     "superagent": "^6.1.0",
     "superagent-proxy": "^3.0.0",

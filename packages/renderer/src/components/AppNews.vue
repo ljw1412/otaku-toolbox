@@ -5,12 +5,13 @@
       :show-back="false">
       <template #subtitle>
         <a-select v-model="origin"
+          style="width: 140px;"
           size="small"
           @change="handleOriginChange">
           <a-option v-for="option of originList"
-            :key="option.value"
-            :value="option.value"
-            :label="option.label"></a-option>
+            :key="option.namespace"
+            :value="option.namespace"
+            :label="option.name"></a-option>
         </a-select>
       </template>
       <template #extra>
@@ -62,7 +63,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue'
+import { defineComponent } from 'vue'
 
 export default defineComponent({
   name: 'AppNews',
@@ -71,20 +72,15 @@ export default defineComponent({
     title: String,
     type: String,
     mini: Boolean,
-    skeletonCount: { type: Number, default: 2 },
-    //TODO: 改为本地数据库获取
-    originList: {
-      type: Array as PropType<{ value: string; label: string }[]>,
-      default: () => [{ value: 'dmzj', label: '动漫之家' }]
-    }
+    skeletonCount: { type: Number, default: 2 }
   },
 
   data() {
     return {
       isLoading: true,
       isError: false,
-      //TODO: 改为本地数据库获取
-      origin: 'dmzj',
+      origin: '',
+      originList: [] as DataCenter.Rule[],
       page: { index: 1, size: 1, total: 0 },
       news: [] as Record<string, any>[]
     }
@@ -104,10 +100,19 @@ export default defineComponent({
   },
 
   created() {
-    this.fetchNewsData()
+    this.listRuleList()
   },
 
   methods: {
+    async listRuleList() {
+      const list = await this.$API.DataCenter.listRules(this.type)
+      this.originList = list
+      if (list.length) {
+        this.origin = list[0].namespace
+        this.fetchNewsData()
+      }
+    },
+
     async fetchNewsData() {
       this.isLoading = true
       this.isError = false

@@ -1,36 +1,22 @@
 import { ipcMain } from 'electron'
 import ruleRunner from './parser'
-
-import anime_dmzj from './rules/anime/dmzj.json'
-import comic_dmzj from './rules/comic/dmzj.json'
-import game_dmzj from './rules/game/dmzj.json'
-import game_ali213 from './rules/game/ali213.json'
-import game_3dm from './rules/game/3dm.json'
-
-const typeRuleMap = {
-  'anime-news': {
-    dmzj: anime_dmzj
-  },
-  'comic-news': {
-    dmzj: comic_dmzj
-  },
-  'game-news': {
-    dmzj: game_dmzj,
-    ali213: game_ali213,
-    '3dm': game_3dm
-  }
-} as Record<string, Record<string, DataCenter.Rule>>
+import { getRule, getRuleList, setRule } from '../utils/storage'
 
 const channel = 'data-center'
 
 function bind(): void {
-  ipcMain.handle(channel, async (e, type, origin, config) => {
-    const typeRules = typeRuleMap[type]
-    if (typeRules && typeRules[origin]) {
-      return await ruleRunner(typeRules[origin], config)
+  ipcMain.handle(channel, async (e, action, { type, origin, config, rule }) => {
+    if (action === 'listRules') {
+      return await getRuleList(type)
+    } else if (action === 'saveRule') {
+      return await setRule(rule)
+    } else if (action === 'fetch') {
+      const rule = await getRule(type, origin)
+      if (!rule.name) {
+        return { list: [], pageTotal: -1 }
+      }
+      return await ruleRunner(rule, config)
     }
-
-    return { list: [], pageTotal: -1 }
   })
 }
 
