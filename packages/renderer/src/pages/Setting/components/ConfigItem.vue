@@ -2,11 +2,13 @@
 import { defineComponent, h } from 'vue'
 import ThemeConfig from './ThemeConfig.vue'
 import Debugger from './Debugger.vue'
+import Proxy from './Proxy.vue'
 import { Switch } from '@arco-design/web-vue'
 
 const configComponent: Record<string, any> = {
   theme: ThemeConfig,
-  debugger: Debugger
+  debugger: Debugger,
+  proxy: Proxy
 }
 
 export default defineComponent({

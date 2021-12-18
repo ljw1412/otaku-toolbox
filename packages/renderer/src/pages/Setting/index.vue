@@ -77,6 +77,7 @@ const tabs: SettingTab[] = [
     title: '主题',
     options: [{ type: 'theme' }]
   },
+  { key: 'proxy', title: '代理', options: [{ type: 'proxy' }] },
   { key: 'debugger', title: '调试', options: [{ type: 'debugger' }] }
 ]
 

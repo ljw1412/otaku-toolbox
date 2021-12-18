@@ -1,4 +1,5 @@
 import config from './config'
+import proxy from './proxy'
 import {
   title,
   setTitle,
@@ -13,6 +14,7 @@ const mGlobal = {
   config,
   breakpoints,
   breakpointsKeys,
+  proxy,
   env: import.meta.env,
   errorStore,
   setTitle,

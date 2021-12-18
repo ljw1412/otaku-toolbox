@@ -178,4 +178,14 @@ declare global {
     expired?: boolean
     bgColor?: string
   }
+
+  interface ProxyItem {
+    key: string
+    name: string
+    host: string
+    port: string
+    type: 'HTTP' | 'SOCKS5'
+    username?: string
+    password?: string
+  }
 }
