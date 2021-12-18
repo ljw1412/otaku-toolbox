@@ -3,11 +3,10 @@
     <h4 v-if="title">{{title}}</h4>
     <a-space wrap
       class="anime-grid">
-      <a v-for="anime of animes"
+      <bangumi-grid-item v-for="anime of animes"
         :key="anime.title"
-        :href="'#anime-' + anime._id">
-        <bangumi-grid-item :anime="anime"></bangumi-grid-item>
-      </a>
+        :anime="anime"
+        @click="handleBangumiClick(anime)"></bangumi-grid-item>
     </a-space>
   </div>
 </template>
@@ -24,6 +23,15 @@ export default defineComponent({
   props: {
     title: String,
     animes: { type: Array as PropType<BangumiBasic[]>, default: () => [] }
+  },
+
+  methods: {
+    handleBangumiClick(anime: BangumiBasic) {
+      const el = document.querySelector(`#anime-${anime._id}`)
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      }
+    }
   }
 })
 </script>

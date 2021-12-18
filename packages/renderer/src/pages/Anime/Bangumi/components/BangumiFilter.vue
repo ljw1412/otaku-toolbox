@@ -25,7 +25,7 @@
           <a-tag v-if="tag._id === 'all' || this.tagCount[tag._id]"
             checkable
             :checked="tag.selected"
-            :color="tag.color"
+            :color="tag.selected?tag.color:undefined"
             @check="handleTagCheck(tag,tagGroup)">
             <span>{{ tag.name }}</span>
             <template v-if="tagCount[tag._id]!==undefined">({{ tagCount[tag._id] }})</template>

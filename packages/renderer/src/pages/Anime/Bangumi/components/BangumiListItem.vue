@@ -3,7 +3,8 @@
     :bordered="false"
     :body-style="{padding:0}">
     <template #cover>
-      <div class="anime-anchor"
+      <div ref="anchor"
+        class="anime-anchor"
         :id="'anime-'+anime._id"></div>
     </template>
     <template #title>
@@ -32,14 +33,15 @@
               :key="tag._id">{{ tag.name }}</a-tag>
           </a-space>
           <div class="anime-onair">{{ onairStr }}</div>
-          <a class="btn-push"
+          <div class="btn-push"
+            @click="handlePushBtnClick"
             :href="'#anime-'+anime._id">
             <a-button>
               <template #icon>
                 <icon-pushpin />
               </template>
             </a-button>
-          </a>
+          </div>
         </a-col>
       </a-row>
     </template>
@@ -197,6 +199,12 @@ export default defineComponent({
         title += '\n' + link.message
       }
       return title
+    },
+    handlePushBtnClick() {
+      const anchor = this.$refs.anchor as HTMLElement
+      if (anchor) {
+        anchor.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      }
     }
   }
 })
@@ -241,7 +249,7 @@ export default defineComponent({
 
     > .arco-card-cover {
       position: absolute;
-      top: calc(0px - var(--app-header-height));
+      top: 0;
       left: 0;
     }
 
