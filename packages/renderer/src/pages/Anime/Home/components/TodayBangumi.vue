@@ -38,7 +38,6 @@ export default defineComponent({
     return {
       isError: false,
       isLoading: true,
-      weekdayName: '',
       bangumiList: [] as BangumiBasicWithTime[]
     }
   },
@@ -48,29 +47,20 @@ export default defineComponent({
       return this.isLoading || this.isError
     },
 
+    weekdayName(): string {
+      return betterWeekdayName(this.$dayjs(this.$global.now.value).day())
+    },
+
     mBangumiList(): BangumiBasicWithTime[] {
       if (this.isSkeleton) {
         return new Array(3).fill({ title: '', cover: '', onairList: [{}] })
       }
       return this.bangumiList
-    }
-  },
-
-  created() {
-    this.fetchTodayBangumiList()
-    this.updateWeekday()
-  },
-  activated() {
-    this.$forceUpdate()
-  },
-  methods: {
-    updateWeekday() {
-      this.weekdayName = betterWeekdayName(window.$dayjs().day())
     },
 
-    scrollToNextBangumi() {
+    nearestBangumiId(): string {
       const now = this.$dayjs(this.$global.now.value)
-      let nearBangumiId = ''
+      let nearBangumiId = this.bangumiList.length ? this.bangumiList[0]._id : ''
       let minDiff = Infinity
       this.bangumiList.forEach(item => {
         const onair = item.formatOnair[this.hourSystem]
@@ -82,17 +72,35 @@ export default defineComponent({
           }
         }
       })
-      if (nearBangumiId) {
+      return nearBangumiId
+    }
+  },
+
+  watch: {
+    weekdayName() {
+      this.fetchTodayBangumiList()
+    }
+  },
+
+  created() {
+    this.fetchTodayBangumiList()
+  },
+
+  activated() {
+    this.$forceUpdate()
+  },
+
+  methods: {
+    scrollToNextBangumi() {
+      if (this.nearestBangumiId) {
         this.$nextTick(() => {
           const el = document.querySelector(
-            `.today-bangumi-item[data-id="${nearBangumiId}"]`
+            `.today-bangumi-item[data-id="${this.nearestBangumiId}"]`
           ) as HTMLElement | null
           if (el) {
             console.dir(el)
-            el.parentElement?.scrollBy({
-              behavior: 'smooth',
-              left: el.offsetLeft
-            })
+            const left = Math.max(el.offsetLeft - (el.offsetWidth * 3) / 2, 0)
+            el.parentElement?.scrollBy({ behavior: 'smooth', left })
             // el.scrollIntoView({ behavior: 'smooth', inline: 'center' })
           }
         })
