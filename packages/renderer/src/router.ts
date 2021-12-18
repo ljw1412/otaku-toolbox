@@ -29,6 +29,16 @@ router.beforeEach((to, from, next) => {
     console.log('路由缓存：', navCache, `,首页路由：${homeRouteName}`)
     return next(navCache || { name: homeRouteName })
   }
+  // 拦截未匹配成功的路由
+  if (!to.matched.length) {
+    const isMain = to.query.isMain === 'true' || from.path.startsWith('/main')
+    return next({
+      replace: true,
+      name: isMain ? 'AppError' : 'ViewError',
+      query: { message: '页面不存在', status: '404', isMain: isMain + '' }
+    })
+  }
+
   next()
 })
 

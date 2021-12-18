@@ -8,7 +8,7 @@
             @click="$router.back">返回</a-button>
         </a-space>
       </template>
-      <a-typography v-if="error"
+      <a-typography v-if="id && error"
         style="background: var(--color-fill-2); padding: 24px;">
         <pre>{{ error.stack }}</pre>
       </a-typography>
