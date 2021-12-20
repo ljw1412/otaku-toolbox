@@ -28,12 +28,12 @@
         <div v-for="(item,i) of searchResultList"
           :key="i"
           class="comic-origin-item"
-          :class="{ active: getOriginActive(item._id) }"
-          @click="navigate({name:'ComicOrigin',params:{id: item._id},query:{title:item.title}})">
+          :class="{ active: getOriginActive(item.namespace) }"
+          @click="handleOriginClick(item)">
           <div class="icon">
             <img :src="item.icon">
           </div>
-          <div class="title">{{ item.title }}</div>
+          <div class="title">{{ item.name }}</div>
         </div>
       </div>
     </main>
@@ -47,12 +47,6 @@
 import { defineComponent } from 'vue'
 import { RouteLocationRaw } from 'vue-router'
 import { setNavigationCache } from '/@/utils/cache'
-
-interface ComicOrigin {
-  _id: string
-  icon: string
-  title: string
-}
 
 export default defineComponent({
   name: 'ComicNavigation',
@@ -81,18 +75,7 @@ export default defineComponent({
           component: 'ComicSearch'
         }
       ],
-      list: [
-        {
-          _id: '1',
-          icon: 'https://www.bilibili.com/favicon.ico',
-          title: '测试'
-        },
-        {
-          _id: '2',
-          icon: 'https://cdn.aixifan.com/ico/favicon.ico',
-          title: '测试2'
-        }
-      ] as ComicOrigin[]
+      list: [] as DataCenter.Rule[]
     }
   },
 
@@ -101,11 +84,15 @@ export default defineComponent({
       return this.list.length
     },
 
-    searchResultList(): ComicOrigin[] {
+    searchResultList(): DataCenter.Rule[] {
       return this.list.filter(
-        item => !this.text || item.title.includes(this.text)
+        item => !this.text || item.name.includes(this.text)
       )
     }
+  },
+
+  created() {
+    this.fetchOriginList()
   },
 
   methods: {
@@ -121,8 +108,22 @@ export default defineComponent({
       this.setCache(route)
     },
 
-    getOriginActive(id: string) {
-      return this.$route.params.id === id
+    getOriginActive(namespace: string) {
+      return this.$route.params.namespace === namespace
+    },
+
+    handleOriginClick(rule: DataCenter.Rule) {
+      if (this.getOriginActive(rule.namespace)) return
+      this.navigate({
+        name: 'ComicOrigin',
+        params: { namespace: rule.namespace },
+        query: { title: rule.name }
+      })
+    },
+
+    async fetchOriginList() {
+      const list = await this.$API.DataCenter.listRules('comic-book')
+      this.list = list
     }
   }
 })
@@ -212,7 +213,7 @@ export default defineComponent({
       height: 42px;
       border-radius: 4px;
       display: grid;
-      grid-template-columns: 42px auto;
+      grid-template-columns: 31px auto;
       grid-column-gap: 8px;
       align-items: center;
       transition: transform 0.15s, background-color 0.15s;
@@ -230,6 +231,7 @@ export default defineComponent({
       }
 
       &.active {
+        color: var(--app-color-common);
         background-color: var(--color-fill-4);
       }
 

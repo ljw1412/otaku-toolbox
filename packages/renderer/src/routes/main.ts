@@ -92,7 +92,7 @@ const comicRoutes = createRoutes('comic', {
     { path: 'search', name: 'ComicSearch', component: ComicSearch },
     { path: 'setting', name: 'ComicSetting', component: ComicSetting },
     {
-      path: 'origin/:id',
+      path: 'origin/:namespace',
       name: 'ComicOrigin',
       component: ComicOrigin,
       props: true

@@ -3,8 +3,6 @@ import AppErrorPage from '/@/pages/pageError/index.vue'
 import AppSetting from '/@/pages/Setting/index.vue'
 import AppTheme from '/@/pages/Theme/index.vue'
 import ExitApp from '/@/pages/Modal/ExitApp/index.vue'
-import AnimeBangumiS from '/@/pages/Anime/Bangumi/index.vue'
-import AnimeWiki from '/@/pages/Anime/Wiki/index.vue'
 
 const routes = [
   // 内置浏览器
@@ -29,6 +27,14 @@ const routes = [
       maximizable: false,
       hidable: true
     }
+  },
+  // 漫画详情页
+  {
+    path: '/comic/:namespace',
+    name: 'ComicDetails',
+    props: true,
+    component: () => import('/@/pages/Comic/Details/index.vue'),
+    meta: { title: '漫画详情页' }
   },
   // 带标题栏的界面
   {
@@ -55,7 +61,7 @@ const routes = [
       {
         path: '/anime/bangumi/:code?',
         name: 'AnimeBangumiS',
-        component: AnimeBangumiS,
+        component: () => import('/@/pages/Anime/Bangumi/index.vue'),
         props: true,
         meta: { title: '新番表' }
       },
@@ -63,7 +69,7 @@ const routes = [
         path: '/anime/wiki/:id',
         name: 'AnimeWiki',
         props: true,
-        component: AnimeWiki,
+        component: () => import('/@/pages/Anime/Wiki/index.vue'),
         meta: { title: '番剧百科' }
       }
     ]

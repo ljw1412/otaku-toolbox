@@ -14,8 +14,9 @@
           :key="tag._id">{{ tag.name }}</a-tag>
       </a-space>
       <div class="data-block onair">
-        <span v-if="onair"><span class="block-title">播出时间：</span>{{ onair.dateCH }}起 每周{{ onair.dayCH }} {{ onair.time }}</span>
-        <span v-else>暂未定档</span>
+        <span v-if="onair.time"
+          class="block-title">播出时间：</span>
+        <span>{{ onairStr }}</span>
       </div>
       <div v-if="data.titleMore && data.titleMore.length"
         class="data-block title-more">
@@ -100,7 +101,7 @@ export default defineComponent({
     streamingPlatforms(): BangumiStreaming[] {
       if (!Array.isArray(this.data.streamingPlatforms)) return []
       if (contra.flag) return this.data.streamingPlatforms
-      return this.data.streamingPlatforms.filter((item) => !item.hide)
+      return this.data.streamingPlatforms.filter(item => !item.hide)
     },
 
     mDesc() {

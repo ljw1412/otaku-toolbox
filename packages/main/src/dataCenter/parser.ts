@@ -146,7 +146,7 @@ function parseItemData(
 }
 
 async function parseHTML(
-  rule: DataCenter.Rule,
+  rule: DataCenter.RulePageParams,
   options: DataCenter.RunnerOptions
 ) {
   const url = parseUrl(rule.url, options.replacer)

@@ -29,11 +29,15 @@ declare namespace DataCenter {
     modifiers: string[]
   }
 
-  interface Rule {
+  interface RuleBase {
     name: string
     namespace: string
     type: string
     version: string
+    icon?: string
+  }
+
+  interface RulePageParams {
     url: string
     mode: 'html' | 'json'
     data?: {
@@ -42,7 +46,19 @@ declare namespace DataCenter {
     }
     items: string
     itemData: Record<string, string>
+
+    // 前端tab懒加载
+    loaded?: boolean
   }
+
+  interface NewsRule extends RuleBase, RulePageParams {}
+
+  interface ComicRule extends RuleBase {
+    pages: (RulePageParams & { name: string })[]
+    details: RulePageParams
+  }
+
+  type Rule = NewsRule & ComicRule
 
   interface RunnerOptions {
     replacer?: Replacer

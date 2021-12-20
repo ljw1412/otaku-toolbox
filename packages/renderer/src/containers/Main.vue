@@ -87,6 +87,8 @@ export default defineComponent({
           position: sticky;
           top: 0;
           background-color: var(--app-color-bg);
+          padding-top: 0;
+          z-index: 100;
         }
       }
     }

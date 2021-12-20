@@ -1,7 +1,8 @@
-import type { BrowserView, BrowserWindow } from 'electron'
+import { BrowserView, BrowserWindow } from 'electron'
 import { shell } from 'electron'
 import { createBrowser, createBuiltInBrowser } from '../window'
 import acgAppConfig from '../default/config'
+import qs from 'qs'
 
 async function openExternal(url: string) {
   const HTTP_REGEXP = /^https?:\/\//
@@ -27,10 +28,25 @@ export default function(browerWindow: BrowserWindow | BrowserView): void {
       if (['foreground-tab', 'new-window'].includes(disposition)) {
         // 阻止鼠标点击链接
         event.preventDefault()
+
+        let serachParams: Record<string, any> = {}
+        const temp = url.split('?')
+        if (temp.length > 1) {
+          serachParams = qs.parse(temp[1])
+        }
+
         if (acgAppConfig.use_system_browser) {
           openExternal(url)
-        } else if (url.includes('app=otakutools')) {
-          createBrowser({ minWidth: 1280, minHeight: 720, url })
+        } else if (serachParams.app === 'otakutools') {
+          let appConfig = { minWidth: 1280, minHeight: 720 }
+          if (serachParams['app-config']) {
+            try {
+              appConfig = JSON.parse(serachParams['app-config'])
+            } catch (error) {
+              console.error('appConfig 解析失败')
+            }
+          }
+          createBrowser({ ...appConfig, url })
         } else {
           createBuiltInBrowser({ url })
         }

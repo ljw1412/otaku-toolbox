@@ -1,27 +1,90 @@
 <template>
   <div class="comic-origin">
-    <a-page-header :title="title"
+    <a-page-header :title="rule.name"
       class="comic-header"
-      :show-back="false"> </a-page-header>
-    源{{ id }}
+      :show-back="false">
+      <template #extra>
+        <a-radio-group v-model="tab"
+          type="button">
+          <a-radio v-for="page of rule.pages"
+            :key="page.name"
+            :value="page.name">{{ page.name }}</a-radio>
+        </a-radio-group>
+      </template>
+    </a-page-header>
+
+    <tab-page v-for="page of loadedTabPageList"
+      v-show="page.name === tab"
+      :key="page.name"
+      :rule="page"></tab-page>
+
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import TabPage from './components/TabPage.vue'
 
 export default defineComponent({
   name: 'ComicOrigin',
 
-  props: { id: String },
+  components: { TabPage },
+
+  props: { namespace: { type: String, default: 'xxx' } },
+
+  data() {
+    return {
+      tab: '',
+      rule: {} as DataCenter.ComicRule
+    }
+  },
 
   computed: {
-    title(): string {
-      return this.$route.query.title as string
+    tabPageList() {
+      return this.rule.pages || []
+    },
+
+    loadedTabPageList() {
+      return this.tabPageList.filter(page => page.loaded)
+    }
+  },
+
+  watch: {
+    tab(val: string) {
+      const page = this.tabPageList.find(page => page.name === val)
+      if (page && !page.loaded) {
+        page.loaded = true
+      }
+    }
+  },
+
+  created() {
+    this.fetchRule()
+  },
+
+  methods: {
+    async fetchRule() {
+      this.rule = await this.$API.DataCenter.showRule(
+        'comic-book',
+        this.namespace
+      )
+
+      this.$nextTick(() => {
+        this.tabPageList.forEach(page => {
+          page.loaded = false
+        })
+        if (this.tabPageList.length) {
+          this.tab = this.tabPageList[0].name
+          this.tabPageList[0].loaded = true
+        }
+      })
     }
   }
 })
 </script>
 
 <style lang="scss">
+.comic-origin {
+  position: relative;
+}
 </style>

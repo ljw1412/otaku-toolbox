@@ -10,12 +10,20 @@ function bind(): void {
       return await getRuleList(type)
     } else if (action === 'saveRule') {
       return await setRule(rule)
+    } else if (action === 'showRule') {
+      return await getRule(type, origin)
     } else if (action === 'fetch') {
-      const rule = await getRule(type, origin)
-      if (!rule.name) {
+      const mRule = await getRule(type, origin)
+      if (!mRule.name) {
         return { list: [], pageTotal: -1 }
       }
-      return await ruleRunner(rule, config)
+      return await ruleRunner(mRule, config)
+    } else if (action === 'runRule') {
+      try {
+        return await ruleRunner(rule, config)
+      } catch (error) {
+        return { list: [], pageTotal: -1, error }
+      }
     }
   })
 }

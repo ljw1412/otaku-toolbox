@@ -125,7 +125,6 @@ export default defineComponent({
         )
         this.news = data.list
         this.page.total = data.pageTotal
-        console.log(data)
       } catch (error) {
         this.isError = true
       }
