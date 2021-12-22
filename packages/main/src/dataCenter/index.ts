@@ -1,6 +1,6 @@
 import { ipcMain } from 'electron'
 import ruleRunner from './parser'
-import { getRule, getRuleList, setRule } from '../utils/storage'
+import { getRule, getRuleList, removeRule, setRule } from '../utils/storage'
 
 const channel = 'data-center'
 
@@ -10,6 +10,8 @@ function bind(): void {
       return await getRuleList(type)
     } else if (action === 'saveRule') {
       return await setRule(rule)
+    } else if (action === 'removeRule') {
+      return await removeRule(rule)
     } else if (action === 'showRule') {
       return await getRule(type, origin)
     } else if (action === 'fetch') {

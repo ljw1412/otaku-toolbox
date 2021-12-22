@@ -1,5 +1,5 @@
 import { Router } from 'vue-router'
-import { Message } from '@arco-design/web-vue'
+import { Message, Modal } from '@arco-design/web-vue'
 import mGlobal from '/@/global/index'
 import API from '/@/apis/index'
 
@@ -15,6 +15,7 @@ declare module '@vue/runtime-core' {
     $global: typeof mGlobal & { router: Router }
     $imagePreview: (current: string, srcList: string[]) => void
     $message: typeof Message
+    $modal: typeof Modal
 
     // global mixin
     isLaptopSize: boolean

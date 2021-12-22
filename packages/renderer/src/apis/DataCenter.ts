@@ -1,3 +1,4 @@
+import { toRaw } from 'vue'
 import { useElectron } from '/@/utils/electron'
 import * as logger from '/@/utils/logger'
 
@@ -6,8 +7,18 @@ const { ipcRenderer } = useElectron()
 const channel = 'data-center'
 
 export async function saveRule(rule: Record<string, any>) {
-  const result = await ipcRenderer.invoke(channel, 'saveRule', { rule })
+  const result = await ipcRenderer.invoke(channel, 'saveRule', {
+    rule: toRaw(rule)
+  })
   logger.message('saveRule', '\n规则:', rule, '\n结果:', result)
+  return result
+}
+
+export async function removeRule(rule: Record<string, any>) {
+  const result = await ipcRenderer.invoke(channel, 'removeRule', {
+    rule: toRaw(rule)
+  })
+  logger.message('removeRule', '\n规则:', rule, '\n结果:', result)
   return result
 }
 

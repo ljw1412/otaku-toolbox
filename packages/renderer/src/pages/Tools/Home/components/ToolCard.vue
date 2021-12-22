@@ -47,7 +47,11 @@ export default defineComponent({
 
   methods: {
     handleCardClick() {
-      openVueView(this.to, { resizable: false })
+      openVueView(this.to, {
+        resizable: false,
+        singleInstance: true,
+        title: this.name
+      })
     }
   }
 })

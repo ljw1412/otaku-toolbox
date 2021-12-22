@@ -83,3 +83,13 @@ export async function setRule(rule: DataCenter.Rule) {
     })
   })
 }
+
+export async function removeRule(rule: DataCenter.Rule) {
+  return new Promise((resolve, reject) => {
+    const key = `${BASE_RULE_NAME}-${rule.type}-${rule.namespace}`
+    storage.remove(key, error => {
+      if (error) return reject(error)
+      resolve(true)
+    })
+  })
+}
