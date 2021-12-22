@@ -91,10 +91,6 @@ export default defineComponent({
   },
 
   watch: {
-    title(title) {
-      this.$global.setTitle(title)
-    },
-
     '$route.path'() {
       this.$nextTick(() => {
         if (!this.code) {

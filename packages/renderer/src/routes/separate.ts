@@ -28,6 +28,11 @@ const routes = [
       hidable: true
     }
   },
+  {
+    path: '/tools/origin-manager',
+    name: 'OriginManager',
+    component: () => import('/@/pages/Tools/OriginManager/index.vue')
+  },
   // 漫画详情页
   {
     path: '/comic/:namespace',
@@ -71,6 +76,13 @@ const routes = [
         props: true,
         component: () => import('/@/pages/Anime/Wiki/index.vue'),
         meta: { title: '番剧百科' }
+      },
+      {
+        path: '/comic/reader/:namespace',
+        name: 'ComicReader',
+        props: true,
+        component: () => import('/@/pages/Comic/Reader/index.vue'),
+        meta: { title: '漫画阅读器', hideBackUp: true }
       }
     ]
   }

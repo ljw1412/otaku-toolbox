@@ -4,7 +4,7 @@ import MainContainer from '/@/containers/Main.vue'
 import AppErrorPage from '/@/pages/pageError/index.vue'
 import AppHome from '/@/pages/Home/index.vue'
 
-import AppAnimeHelper from '../pages/Anime/Helper.vue'
+import AppAnimeHelper from '/@/pages/Anime/Helper.vue'
 import AnimeHome from '/@/pages/Anime/Home/index.vue'
 import AnimeIndex from '/@/pages/Anime/Index/index.vue'
 import AnimeNews from '/@/pages/Anime/News/index.vue'
@@ -22,7 +22,9 @@ import ComicSetting from '/@/pages/Comic/Setting/index.vue'
 // import AppGameHelper from '/@/pages/Game/Helper.vue'
 import GameHome from '/@/pages/Game/Home/index.vue'
 
-import { toTitleCase } from '../utils/string'
+import AppTools from '/@/pages/Tools/Home/index.vue'
+
+import { toTitleCase } from '/@/utils/string'
 
 interface CreateRoutes {
   routes: RouteRecordRaw[]
@@ -122,7 +124,7 @@ const routes = {
       path: 'home',
       name: 'AppHome',
       component: AppHome,
-      meta: { module: 'home', scrollEl: '#app-main' }
+      meta: { module: 'home' }
     },
     // 动画
     ...animeRoutes,
@@ -130,6 +132,13 @@ const routes = {
     ...comicRoutes,
     // 游戏
     ...gameRoutes,
+    // 百宝箱
+    {
+      path: 'tools',
+      name: 'AppTools',
+      component: AppTools,
+      meta: { module: 'tools', pageContainer: true }
+    },
     { path: 'error', name: 'AppError', component: AppErrorPage }
   ]
 }

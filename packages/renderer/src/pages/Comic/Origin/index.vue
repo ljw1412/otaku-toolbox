@@ -24,18 +24,18 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import TabPage from './components/TabPage.vue'
+import ComicMixin from '/@/mixins/comic'
 
 export default defineComponent({
   name: 'ComicOrigin',
 
   components: { TabPage },
 
-  props: { namespace: { type: String, default: 'xxx' } },
+  mixins: [ComicMixin],
 
   data() {
     return {
-      tab: '',
-      rule: {} as DataCenter.ComicRule
+      tab: ''
     }
   },
 
@@ -50,6 +50,9 @@ export default defineComponent({
   },
 
   watch: {
+    rule() {
+      this.initTab()
+    },
     tab(val: string) {
       const page = this.tabPageList.find(page => page.name === val)
       if (page && !page.loaded) {
@@ -58,17 +61,8 @@ export default defineComponent({
     }
   },
 
-  created() {
-    this.fetchRule()
-  },
-
   methods: {
-    async fetchRule() {
-      this.rule = await this.$API.DataCenter.showRule(
-        'comic-book',
-        this.namespace
-      )
-
+    initTab() {
       this.$nextTick(() => {
         this.tabPageList.forEach(page => {
           page.loaded = false

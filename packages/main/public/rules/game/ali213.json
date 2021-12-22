@@ -2,7 +2,7 @@
   "name": "游侠网",
   "namespace": "ali213",
   "type": "game-news",
-  "version": "0",
+  "version": 0,
   "url": "https://www.ali213.net/news/game/index_{:page}.html",
   "mode": "html",
   "data": {

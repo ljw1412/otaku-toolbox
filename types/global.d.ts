@@ -56,6 +56,7 @@ declare namespace DataCenter {
   interface ComicRule extends RuleBase {
     pages: (RulePageParams & { name: string })[]
     details: RulePageParams
+    chapter: RulePageParams
   }
 
   type Rule = NewsRule & ComicRule

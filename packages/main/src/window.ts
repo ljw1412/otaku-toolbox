@@ -66,8 +66,6 @@ export function createBrowser(config: NewBrowerConfig): BrowserWindow {
     }
   }
 
-  console.log(config)
-
   const newWin = new BrowserWindow({
     parent: config.parent || false,
     modal: config.modal || false,

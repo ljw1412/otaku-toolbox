@@ -2,7 +2,7 @@ import request from './request'
 import cheerio, { CheerioAPI, Cheerio, Node } from 'cheerio'
 import Logger from '../utils/logger'
 
-const isDebugger = false
+const isDebugger = true
 const logger = {} as typeof Logger
 Object.keys(Logger).forEach(key => {
   const state = key as keyof typeof Logger
@@ -43,6 +43,7 @@ async function loadUrl(url: string) {
 
 // 格式化选择器
 function formatQuery(ruleStr: string): DataCenter.Query | null {
+  if (!ruleStr) return null
   const temp = ruleStr.split('|')
   const query = temp.shift()
   if (query) return { query, modifiers: temp }
@@ -55,12 +56,18 @@ function parseQuery($: CheerioAPI | Cheerio<Node>, _query: DataCenter.Query) {
   const { query, modifiers: _modifiers } = _query
   const modifiers = [..._modifiers]
 
+  // 不解析，直接输出
+  if (query.startsWith('=')) {
+    return query.substr(1)
+  }
+
   const el = ($ as Cheerio<Node>).find
     ? ($ as Cheerio<Node>).find(query)
     : ($ as CheerioAPI)(query)
+
+  logger.info('[parseQuery]', `获取元素"${query}", 数量:${el.length}`)
   // 如果没有修饰符，则返回查询元素
   if (!modifiers.length) {
-    logger.info('[parseQuery]', `获取元素"${query}", 数量:${el.length}`)
     return el
   }
 
@@ -75,13 +82,23 @@ function parseQuery($: CheerioAPI | Cheerio<Node>, _query: DataCenter.Query) {
   } else if (modifier === 'text') {
     action = '获取元素文本'
     result = el.text()
+  } else if (modifier === 'html') {
+    action = '获取元素源码'
+    result = el.html() || ''
+  } else if (modifier === 'val') {
+    action = '获取元素的值'
+    let val = el.val() || ''
+    if (Array.isArray(val)) {
+      val = val[0]
+    }
+    result = val
   }
-  logger.info('[parseQuery]', action, `结果:${result}`)
+  logger.info('[parseQuery]', modifier, `${action}结果:${result}`)
   return parseModifiers(result, modifiers)
 }
 
 // 解析修饰符
-function parseModifiers(str: string, modifiers: string[]) {
+function parseModifiers(str: string, modifiers: string[]): any {
   if (!str || !modifiers.length) return str
   let result = str
   const modifier = modifiers.shift() as string
@@ -90,13 +107,26 @@ function parseModifiers(str: string, modifiers: string[]) {
     if (regExpStr) {
       const match = result.match(new RegExp(regExpStr))
       result = match ? match[0] : ''
-      logger.info('[parseModifiers]', `修饰符:${modifier} =>`, `结果:${result}`)
     } else {
       logger.error(
         '[parseModifiers] 正则表达式字符串不存在！',
         `修饰符:${modifier}`
       )
     }
+  } else if (modifier.startsWith('append')) {
+    const appendText = modifier.split('#')[1]
+    if (appendText) {
+      result += appendText
+    }
+  } else if (modifier === 'function') {
+    const fn = new Function(result)
+    result = fn()
+  } else if (modifier === 'eval') {
+    result = eval(result)
+  }
+  logger.info('[parseModifiers]', `修饰符:${modifier} =>`, `结果:${result}`)
+  if (modifiers.length) {
+    return parseModifiers(result, modifiers)
   }
   return result
 }
@@ -119,6 +149,7 @@ function parseItem(
   items: string,
   itemData: Record<string, string>
 ) {
+  if (!items) return []
   const query = formatQuery(items)
   if (!query) {
     logger.error('[parseItem]', `[${items}]选择器异常`)
@@ -156,7 +187,7 @@ async function parseHTML(
     globalData.pageTotal = parseInt(globalData.pageTotal)
   }
   const list = parseItem($, rule.items, rule.itemData)
-  return { ...globalData, list }
+  return { url, list, ...globalData }
 }
 
 export default async function ruleRunner(

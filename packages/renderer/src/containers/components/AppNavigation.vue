@@ -51,7 +51,7 @@ export default defineComponent({
         },
         {
           name: '百宝箱',
-          value: '',
+          value: 'tools',
           icon: 'cube',
           to: { name: 'AppTools' }
         }

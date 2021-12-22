@@ -16,11 +16,13 @@
         <a-input-search v-model="text"
           allow-clear
           placeholder="搜索源"></a-input-search>
-        <button v-tooltip="{content:'设置',placement:'right',offset:[0,10]}"
+        <a-button v-tooltip="{content:'设置',placement:'right',offset:[0,10]}"
           class="btn-setting"
+          type="text"
+          shape="circle"
           @click="navigate({ name: 'ComicSetting' })">
-          <acg-icon name="settings"></acg-icon>
-        </button>
+          <icon-settings />
+        </a-button>
       </div>
     </header>
     <main>
@@ -142,6 +144,7 @@ export default defineComponent({
   }
 
   > header {
+    color: var(--color-text-2);
     .comic-menu {
       display: grid;
       grid-template-columns: repeat(4, auto);
@@ -182,19 +185,15 @@ export default defineComponent({
     }
 
     .btn-setting {
-      cursor: pointer;
       flex-shrink: 0;
-      width: 24px;
-      height: 24px;
+      width: 30px;
+      height: 30px;
       margin-left: 6px;
-      border: none;
-      background-color: rgba(255, 255, 255, 0.05);
-      border-radius: 50%;
-      color: var(--app-color-text);
+      color: currentColor;
+      font-size: 20px;
 
       &:hover {
         color: var(--app-color-common);
-        border-color: currentColor;
       }
     }
   }

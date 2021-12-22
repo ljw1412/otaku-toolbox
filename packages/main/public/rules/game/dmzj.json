@@ -2,7 +2,7 @@
   "name": "动漫之家",
   "namespace": "dmzj",
   "type": "game-news",
-  "version": "0",
+  "version": 0,
   "url": "https://news.dmzj.com/youxizixun/p{:page}.html",
   "mode": "html",
   "data": {

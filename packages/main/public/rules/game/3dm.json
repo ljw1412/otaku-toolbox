@@ -2,7 +2,7 @@
   "name": "3DM",
   "namespace": "3dm",
   "type": "game-news",
-  "version": "0",
+  "version": 0,
   "url": "https://www.3dmgame.com/news/game_{:page}/",
   "mode": "html",
   "data": {

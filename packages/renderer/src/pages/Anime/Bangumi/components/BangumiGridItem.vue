@@ -119,7 +119,7 @@ export default defineComponent({
     $colors: (0, #d50000) (1, #ff3d00) (2, #ff9100) (3, #00b42a) (4, #0091ea)
       (5, #00bfa5) (6, #6200ea);
 
-    @each $index, $color, $fColor in $colors {
+    @each $index, $color in $colors {
       &.day-#{$index} {
         background-color: $color;
       }

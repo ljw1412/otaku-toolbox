@@ -1,4 +1,6 @@
 import { IpcRendererEvent } from 'electron'
+import { RouteLocationRaw } from 'vue-router'
+import mGlobal from '/@/global'
 
 export function useElectron(): Readonly<ElectronApi> {
   return window.electron
@@ -65,6 +67,28 @@ export function createBuiltInBrowser(
   config?: Record<string, any>
 ) {
   ipcSend('window.action', 'built-in-browser', { ...config, url })
+}
+
+/**
+ * 打开Vue路由页面
+ * @param to
+ * @param appConfig
+ * @returns
+ */
+export function openVueView(
+  to: RouteLocationRaw,
+  appConfig: Record<string, any> = { minWidth: 1280, minHeight: 720 }
+) {
+  if (typeof to === 'string') return
+  const query = Object.assign(
+    { app: 'otakutools', 'app-config': JSON.stringify(appConfig) },
+    to.query
+  )
+  const mTo = Object.assign({}, to, { query })
+  console.log(mTo)
+
+  const route = mGlobal.router.resolve(mTo)
+  window.open(route.href, '_blank')
 }
 
 /**

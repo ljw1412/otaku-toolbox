@@ -21,6 +21,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import { openVueView } from '/@/utils/electron'
 
 export default defineComponent({
   name: 'ComicCard',
@@ -29,20 +30,14 @@ export default defineComponent({
 
   methods: {
     handleCardClick() {
-      const route = this.$router.resolve({
-        name: 'ComicDetails',
-        params: { namespace: this.$route.params.namespace },
-        query: {
-          app: 'otakutools',
-          path: this.info.path,
-          'app-config': JSON.stringify({
-            width: 960,
-            height: 520,
-            resizable: false
-          })
-        }
-      })
-      window.open(route.href)
+      openVueView(
+        {
+          name: 'ComicDetails',
+          params: { namespace: this.$route.params.namespace },
+          query: { path: this.info.path }
+        },
+        { width: 960, height: 520, resizable: false }
+      )
     }
   }
 })

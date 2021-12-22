@@ -1,5 +1,6 @@
 <template>
-  <acg-fixed-button ref="btn"
+  <acg-fixed-button v-show="list.length"
+    ref="btn"
     title="专题切换"
     always
     :bottom="90"

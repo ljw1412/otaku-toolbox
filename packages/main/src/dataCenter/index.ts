@@ -22,6 +22,7 @@ function bind(): void {
       try {
         return await ruleRunner(rule, config)
       } catch (error) {
+        console.error(error)
         return { list: [], pageTotal: -1, error }
       }
     }

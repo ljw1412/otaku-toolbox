@@ -25,7 +25,7 @@ export async function showRule(type: string, origin: string) {
 }
 
 export async function runRule(
-  rule: DataCenter.Rule,
+  rule: DataCenter.NewsRule | DataCenter.ComicRule | DataCenter.RulePageParams,
   page?: number,
   config: DataCenter.RunnerOptions = { replacer: { page: 1 } }
 ) {

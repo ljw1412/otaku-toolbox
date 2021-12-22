@@ -7,7 +7,7 @@ import {
 import { getNavigationCache } from '/@/utils/cache'
 import MainRoutes from '/@/routes/main'
 import SeparateRoutes from '/@/routes/separate'
-import mGlobal from '/@/global'
+import mGlobal, { globalAdd } from '/@/global'
 
 const routes = [
   { path: '/', redirect: { name: 'AppHome' } },
@@ -50,6 +50,8 @@ if (import.meta.env.MODE === 'development') {
 }
 
 export default router
+
+globalAdd('router', router)
 
 export function routerErrorhandler(
   error: unknown,

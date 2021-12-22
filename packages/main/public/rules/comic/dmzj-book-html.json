@@ -3,7 +3,7 @@
   "namespace": "dmzj-pc",
   "icon": "http://manhua.dmzj.com/favicon.ico",
   "type": "comic-book",
-  "version": "0",
+  "version": 0,
   "pages": [
     {
       "name": "漫画更新",
@@ -37,7 +37,15 @@
     "items": ".cartoon_online_border li",
     "itemData": {
       "name": "a|text",
-      "url": "a|@href"
+      "path": "a|@href"
+    }
+  },
+  "chapter": {
+    "url": "http://manhua.dmzj.com/{:path}",
+    "mode": "html",
+    "data": {
+      "imageOrigin": "=http://images.dmzj.com/",
+      "list": "script:contains(g_comic_id)|html|match#eval.+\\n|append#return pages;|function|eval"
     }
   }
 }

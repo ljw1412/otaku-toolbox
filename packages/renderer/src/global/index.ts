@@ -9,7 +9,7 @@ import {
   now
 } from './assist'
 
-const mGlobal = {
+const props = {
   title,
   config,
   breakpoints,
@@ -21,8 +21,19 @@ const mGlobal = {
   now
 }
 
-if (mGlobal.env.DEV) {
-  console.log(mGlobal)
+type GlobalProps = typeof props
+interface MGlobal extends GlobalProps {
+  [key: string]: any
+}
+
+const mGlobal: MGlobal = props
+
+export function globalAdd(key: string, value: any) {
+  mGlobal[key as keyof typeof mGlobal] = value
 }
 
 export default mGlobal
+
+if (mGlobal.env.DEV) {
+  console.log(mGlobal)
+}

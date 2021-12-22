@@ -1,3 +1,4 @@
+import { Router } from 'vue-router'
 import { Message } from '@arco-design/web-vue'
 import mGlobal from '/@/global/index'
 import API from '/@/apis/index'
@@ -11,7 +12,7 @@ declare module '@vue/runtime-core' {
     $dayjs: dayjsFn
     $theme: ThemeHelper
     $API: typeof API
-    $global: typeof mGlobal
+    $global: typeof mGlobal & { router: Router }
     $imagePreview: (current: string, srcList: string[]) => void
     $message: typeof Message
 

@@ -31,7 +31,8 @@ export default defineComponent({
     }
   },
   created() {
-    this.title = (this.$route.meta.title as string) || ''
+    this.title =
+      this.$global.title.value || (this.$route.meta.title as string) || ''
     this.pageTitleHandler()
   },
   beforeUnmount() {
@@ -62,6 +63,7 @@ export default defineComponent({
 <style lang="scss">
 .container-separate {
   .app-main {
+    position: relative;
     height: calc(100% - var(--app-header-mini-height));
     overflow: auto;
   }

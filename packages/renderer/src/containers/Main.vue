@@ -89,6 +89,7 @@ export default defineComponent({
           background-color: var(--app-color-bg);
           padding-top: 0;
           z-index: 100;
+          padding-right: 8px;
         }
       }
     }
