@@ -132,6 +132,7 @@ declare global {
     onair: number | Date | string
     endTime: number | Date | string
     day: number
+    isSubTagMatched?: boolean
   }
 
   interface BangumiBasicWithTime extends BangumiBasic {

@@ -13,7 +13,7 @@
         class="comic-image"
         loading="lazy"
         @load="handleImageLoad(imageItem)"
-        @error="handleImageError(imageItem,$event)" />
+        @error="handleImageError(imageItem)" />
       <div v-if="!imageItem.loaded"
         class="helper layout-center">
         <div class="number">{{ i + 1 }}</div>
@@ -54,7 +54,7 @@ export default defineComponent({
 
   data() {
     return {
-      scrollEl: null as Element | null,
+      scrollEl: null as HTMLElement | null,
       list: [] as ImageItem[]
     }
   },
@@ -71,8 +71,10 @@ export default defineComponent({
     }
   },
 
-  created() {
-    this.scrollEl = document.querySelector('#app-main')
+  mounted() {
+    const scrollEl = document.querySelector('#app-main')
+    // @ts-ignore
+    this.scrollEl = scrollEl as HTMLElement
   },
 
   methods: {

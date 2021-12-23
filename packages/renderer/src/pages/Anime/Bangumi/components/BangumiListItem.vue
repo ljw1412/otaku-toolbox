@@ -32,7 +32,13 @@
               :color="tag.color || 'arcoblue' "
               :key="tag._id">{{ tag.name }}</a-tag>
           </a-space>
-          <div class="anime-onair">{{ onairStr }}</div>
+          <div class="anime-onair">
+            <span>{{ onairStr }}</span>
+            <template v-if="anime.isSubTagMatched">
+              <a-divider direction="vertical" />
+              <a-typography-text type="warning">跨季放送</a-typography-text>
+            </template>
+          </div>
           <div class="btn-push"
             @click="handlePushBtnClick"
             :href="'#anime-'+anime._id">

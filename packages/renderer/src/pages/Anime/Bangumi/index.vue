@@ -1,7 +1,7 @@
 <template>
   <div class="anime-bangumi"
     :class="{'page-container':$route.meta.separate}">
-    <h1 class="page-title">{{ title }}<span v-show="bangumiList.length">[{{bangumiList.length}}部]</span></h1>
+    <h1 class="page-title">{{ title }}<span v-show="total">[{{total}}部]</span></h1>
     <div v-show="bangumiList.length"
       class="anime-bangumi-header mb-20">
       <bangumi-filter :animes="bangumiList"
@@ -60,6 +60,10 @@ export default defineComponent({
       )
       if (!current) return ''
       return current.name
+    },
+
+    total() {
+      return this.bangumiList.filter(item => !item.isSubTagMatched).length
     },
 
     filterBangumiList(): BangumiBasicWithTime[] {
@@ -172,6 +176,7 @@ export default defineComponent({
             ? formatOnair.dateCH
             : formatOnair.fullDateCH
         if (dateCH === undefined) dateCH = '暂未定档'
+        if (item.isSubTagMatched) dateCH = '跨季放送'
         if (!onairGroup[dateCH]) {
           onairGroup[dateCH] = [item]
         } else {
@@ -191,8 +196,8 @@ export default defineComponent({
         const list = await this.$API.SpecialTopic.preview(this.code!)
 
         this.bangumiList = list.sort((a, b) => {
-          const onairA = a.onair ? a.onair : '2099'
-          const onairB = b.onair ? b.onair : '2099'
+          const onairA = a.isSubTagMatched ? '2098' : a.onair || '2099'
+          const onairB = b.isSubTagMatched ? '2098' : b.onair || '2099'
           return onairA > onairB ? 1 : -1
         })
         this.isLoading = false

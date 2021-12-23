@@ -37,6 +37,7 @@ export default defineComponent({
     },
 
     airdate(): string {
+      if (this.anime.isSubTagMatched) return '跨季放送'
       return this.onair.dateCH ? `${this.onair.dateCH}首播` : '暂未定档'
     },
 
