@@ -1,0 +1,42 @@
+{
+  "name": "动漫屋PC",
+  "namespace": "dm5-pc",
+  "icon": "https://css99tel.cdndm5.com/v202111301550/dm5/images/dm5.ico",
+  "type": "comic-book",
+  "version": 0,
+  "pages": [
+    {
+      "name": "最新更新",
+      "url": "https://www.dm5.com/manhua-list-s2-p{:page}/",
+      "mode": "html",
+      "data": {},
+      "items": ".mh-list .mh-item",
+      "itemData": {
+        "id": ".mh-item-detali .title a|@href",
+        "path": ".mh-item-detali .title a|@href",
+        "title": ".mh-item-detali .title a|text",
+        "cover": ".mh-cover|@style|match#http.*[^\\)]",
+        "author": ".mh-tip-wrap .author a|text",
+        "message": ".chapter a|text",
+        "state": ".chapter span|text",
+        "updateTime": ".mh-item-detali zl|text"
+      }
+    },
+    {
+      "name": "全部分类"
+    }
+  ],
+  "details": {
+    "url": "https://www.dm5.com{:path}",
+    "mode": "html",
+    "data": {
+      "title": ".banner_detail_form .title|text|match#\\S+",
+      "cover": ".banner_detail_form .cover img|@src"
+    },
+    "items": ".detail-list-select li",
+    "itemData": {
+      "name": "a|text",
+      "path": "a|@href"
+    }
+  }
+}

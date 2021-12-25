@@ -16,7 +16,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType, toRaw } from 'vue'
-import ComicCard from './ComicCard.vue'
+import ComicCard from '../../components/ComicCard.vue'
 
 export default defineComponent({
   name: 'ComicOriginTabPage',
@@ -64,7 +64,7 @@ export default defineComponent({
     width: 100%;
     margin-bottom: 12px;
     .comic-card-wrap {
-      flex: 1 0 auto;
+      flex: 0 0 auto;
       width: var(--comic-card-width);
       margin-right: var(--comic-card-gap);
       margin-bottom: var(--comic-card-gap);

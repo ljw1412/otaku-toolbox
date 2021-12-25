@@ -19,7 +19,7 @@
         <router-view v-slot="{ Component, route }">
           <keep-alive exclude="AppPageError">
             <component :is="Component"
-              :key="route.name"
+              :key="getComponentKey(route)"
               :class="{'page-container': route.meta.pageContainer}" />
           </keep-alive>
         </router-view>
@@ -41,6 +41,16 @@ export default defineComponent({
     moduleMain() {
       const module = this.$route.meta.module || 'other'
       return `${module}-main`
+    }
+  },
+  methods: {
+    getComponentKey(route: any) {
+      if (route) {
+        if (route.name === 'ComicOrigin') {
+          return `${route.name}[${route.params.namespace}]`
+        }
+        return route.name
+      }
     }
   }
 })

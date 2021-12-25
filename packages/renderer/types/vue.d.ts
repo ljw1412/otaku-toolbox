@@ -12,7 +12,13 @@ declare module '@vue/runtime-core' {
     $dayjs: dayjsFn
     $theme: ThemeHelper
     $API: typeof API
-    $global: typeof mGlobal & { router: Router }
+    $global: typeof mGlobal & {
+      router: Router
+      IDB: {
+        opend: boolean
+        error: boolean
+      }
+    }
     $imagePreview: (current: string, srcList: string[]) => void
     $message: typeof Message
     $modal: typeof Modal

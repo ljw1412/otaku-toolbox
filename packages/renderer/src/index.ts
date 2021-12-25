@@ -13,6 +13,7 @@ import { initContra } from '/@/utils/contra'
 import { imagePreview } from '/@/utils/image'
 
 import dayjs from './dayjs'
+import './IDB/index'
 import '@ljw1412/ionicons-sprite'
 
 import themeHelper from '/@/utils/theme'

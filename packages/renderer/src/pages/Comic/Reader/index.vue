@@ -1,6 +1,10 @@
 <template>
   <div class="comic-reader"
     @click="handleReaderClick">
+    <a-result v-show="error"
+      status="error"
+      title="规则错误"
+      :subtitle="error"></a-result>
     <div v-for="(imageItem,i) of list"
       :key="imageItem.url"
       class="comic-image-item"
@@ -54,6 +58,7 @@ export default defineComponent({
 
   data() {
     return {
+      error: '',
       scrollEl: null as HTMLElement | null,
       list: [] as ImageItem[]
     }
@@ -79,6 +84,10 @@ export default defineComponent({
 
   methods: {
     async initData() {
+      if (!this.chapterRule) {
+        this.error = '此源中章节阅读页规则未配置'
+      }
+
       const { imageOrigin, list } = (await this.runRule(this.chapterRule, 0, {
         replacer: { path: this.$route.query.path as string }
       })) as { imageOrigin?: string; list: string[] }

@@ -118,8 +118,7 @@ export default defineComponent({
       if (this.getOriginActive(rule.namespace)) return
       this.navigate({
         name: 'ComicOrigin',
-        params: { namespace: rule.namespace },
-        query: { title: rule.name }
+        params: { namespace: rule.namespace }
       })
     },
 

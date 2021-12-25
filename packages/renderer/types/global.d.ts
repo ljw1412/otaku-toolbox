@@ -189,4 +189,12 @@ declare global {
     username?: string
     password?: string
   }
+
+  interface ComicItem {
+    id: string
+    title: string
+    cover: string
+    origin?: string
+    list?: { name: string; path: string }[]
+  }
 }

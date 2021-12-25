@@ -26,15 +26,15 @@ import { openVueView } from '/@/utils/electron'
 export default defineComponent({
   name: 'ComicCard',
 
-  props: { info: { type: Object, default: () => ({}) } },
+  props: { info: { type: Object, default: () => ({}) }, namespace: String },
 
   methods: {
     handleCardClick() {
       openVueView(
         {
           name: 'ComicDetails',
-          params: { namespace: this.$route.params.namespace },
-          query: { path: this.info.path }
+          params: { namespace: this.$route.params.namespace || this.namespace },
+          query: { path: this.info.path || this.info.key }
         },
         { width: 960, height: 520, resizable: false }
       )
