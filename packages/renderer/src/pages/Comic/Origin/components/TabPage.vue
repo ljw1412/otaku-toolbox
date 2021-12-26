@@ -1,5 +1,8 @@
 <template>
   <div class="comic-origin-tab-page">
+    <acg-api-result :loading="isLoading"
+      :error="isError"
+      @retry="runRule"></acg-api-result>
 
     <div class="comic-list">
       <comic-card v-for="item of list"
@@ -10,6 +13,8 @@
       :total="page.total"
       :page-size="page.size"
       style="justify-content: flex-end;"
+      class="bg-app sticky-b pt-4 w-100"
+      :class="{'position-absolute': isLoading || isError}"
       @change="handlePageChange" />
   </div>
 </template>
@@ -28,6 +33,8 @@ export default defineComponent({
   },
   data() {
     return {
+      isLoading: true,
+      isError: true,
       list: [] as Record<string, string>[],
       page: { index: 1, size: 1, total: 0 }
     }
@@ -39,12 +46,20 @@ export default defineComponent({
 
   methods: {
     async runRule() {
-      const { list, pageTotal } = await this.$API.DataCenter.runRule(
-        toRaw(this.rule),
-        this.page.index
-      )
-      this.list = list
-      this.page.total = pageTotal
+      this.list = []
+      this.isLoading = true
+      this.isError = false
+      try {
+        const { list, pageTotal } = await this.$API.DataCenter.runRule(
+          toRaw(this.rule),
+          this.page.index
+        )
+        this.list = list
+        this.page.total = pageTotal
+      } catch (error) {
+        this.isError = true
+      }
+      this.isLoading = false
     },
 
     handlePageChange() {
@@ -56,12 +71,13 @@ export default defineComponent({
 
 <style lang="scss">
 .comic-origin-tab-page {
-  --comic-card-gap: 6px;
+  --comic-card-gap: 8px;
   --comic-card-width: calc(20% - var(--comic-card-gap));
   .comic-list {
     display: flex;
     flex-wrap: wrap;
     width: 100%;
+    min-height: 100%;
     margin-bottom: 12px;
     .comic-card-wrap {
       flex: 0 0 auto;

@@ -191,10 +191,18 @@ declare global {
   }
 
   interface ComicItem {
-    id: string
+    id?: string
+    key?: string
     title: string
     cover: string
     origin?: string
     list?: { name: string; path: string }[]
+    pageOption?: Record<string, any>
+  }
+
+  interface ComicHistory {
+    key: string
+    index: number
+    path: string
   }
 }

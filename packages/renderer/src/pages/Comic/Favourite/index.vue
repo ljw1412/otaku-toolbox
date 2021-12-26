@@ -2,13 +2,18 @@
   <div class="comic-favourite">
     <a-page-header title="我的收藏"
       class="comic-header"
-      :show-back="false"></a-page-header>
+      :show-back="false">
+      <template #extra>
+        <a-button size="small"
+          :loading="isLoading"
+          @click="fetchFavourites">刷新</a-button>
+      </template>
+    </a-page-header>
 
     <div class="comic-list">
       <comic-card v-for="item of list"
         :key="item.id"
-        :info="item"
-        :namespace="item.origin"></comic-card>
+        :info="item"></comic-card>
     </div>
   </div>
 </template>
@@ -27,20 +32,26 @@ export default defineComponent({
 
   data() {
     return {
+      isLoading: true,
       list: [] as ComicItem[]
     }
   },
 
   activated() {
-    console.log('activated')
-
     this.fetchFavourites()
   },
 
   methods: {
     async fetchFavourites() {
+      this.isLoading = true
       if (this.$global.IDB.opend) {
-        this.list = await window.$db.favorites.readAll()
+        const list = await window.$db.favorites.readAll()
+        list.forEach(item => {
+          const [namespace, path] = item.key!.split('||')
+          Object.assign(item, { namespace, path })
+        })
+        this.list = list
+        this.isLoading = false
       } else {
         whenever(() => this.$global.IDB.opend, this.fetchFavourites)
       }

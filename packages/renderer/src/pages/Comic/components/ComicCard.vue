@@ -1,13 +1,11 @@
 <template>
   <div class="comic-card-wrap">
     <a-card class="comic-card"
-      :body-style="{padding:0}"
+      :body-style="{padding:'6px 4px'}"
       @click="handleCardClick">
       <template #cover>
         <acg-ratio-div :ratio="[3,4]">
           <a-image :src="info.cover"
-            :title="info.title"
-            :description="info.author"
             :preview="false"
             loading="lazy"
             width="100%"
@@ -15,6 +13,11 @@
           </a-image>
         </acg-ratio-div>
       </template>
+      <a-card-meta :title="info.title">
+        <template #description>
+          <div class="author text-truncate">{{ info.author }}</div>
+        </template>
+      </a-card-meta>
     </a-card>
   </div>
 </template>
@@ -26,15 +29,17 @@ import { openVueView } from '/@/utils/electron'
 export default defineComponent({
   name: 'ComicCard',
 
-  props: { info: { type: Object, default: () => ({}) }, namespace: String },
+  props: { info: { type: Object, default: () => ({}) } },
 
   methods: {
     handleCardClick() {
       openVueView(
         {
           name: 'ComicDetails',
-          params: { namespace: this.$route.params.namespace || this.namespace },
-          query: { path: this.info.path || this.info.key }
+          params: {
+            namespace: this.$route.params.namespace || this.info.namespace
+          },
+          query: { path: this.info.path }
         },
         { width: 960, height: 520, resizable: false }
       )

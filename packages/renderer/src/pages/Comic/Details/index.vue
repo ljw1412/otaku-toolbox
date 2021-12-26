@@ -41,11 +41,11 @@
             <a-button v-for="chapter of chapterList"
               :key="chapter.path"
               :title="chapter.name"
+              :type="history.path===chapter.path?'primary':undefined"
               class="btn-chapter"
               @click="handleChapterClick(chapter)">{{ chapter.name }}</a-button>
           </a-space>
         </div>
-
       </div>
     </div>
 
@@ -78,7 +78,7 @@
         </a-link>
       </a-space>
       <div class="right app-no-drag">
-        <a-button :disabled="loading">开始阅读</a-button>
+        <a-button :disabled="loading">{{ history.path? '继续阅读':'开始阅读' }}</a-button>
       </div>
     </div>
   </div>
@@ -99,7 +99,8 @@ export default defineComponent({
     return {
       loading: true,
       isFavorited: false,
-      info: {} as Record<string, any>
+      info: {} as Record<string, any>,
+      history: {} as ComicHistory
     }
   },
 
@@ -110,6 +111,10 @@ export default defineComponent({
 
     chapterList(): { name: string; path: string }[] {
       return this.info.list || []
+    },
+
+    dbKey() {
+      return this.namespace + '||' + this.$route.query.path
     }
   },
 
@@ -130,12 +135,15 @@ export default defineComponent({
       ipcSend('window.action', 'close', { mode: 'child' })
     },
 
-    checkState() {
-      window.$db.favorites
-        .readIndex('key', this.$route.query.path as string)
-        .then(data => {
-          this.isFavorited = !!data
-        })
+    async checkState() {
+      window.$db.favorites.read(this.dbKey).then(data => {
+        this.isFavorited = !!data
+      })
+
+      const history = await window.$db.history.read(this.dbKey)
+      if (history) {
+        this.history = history
+      }
     },
 
     async fetchData() {
@@ -153,7 +161,7 @@ export default defineComponent({
         {
           name: 'ComicReader',
           params: { namespace: this.$route.params.namespace },
-          query: { path: chapter.path }
+          query: { path: chapter.path, ppath: this.$route.query.path }
         },
         { width: 600, height: 900, minWidth: 600, minHeight: 900 }
       )
@@ -163,16 +171,12 @@ export default defineComponent({
       if (action === 'favorite') {
         try {
           if (this.isFavorited) {
-            await window.$db.favorites.remove(
-              'key',
-              this.$route.query.path as string
-            )
+            await window.$db.favorites.remove(this.dbKey)
           } else {
             await window.$db.favorites.add({
-              key: this.$route.query.path,
+              key: this.dbKey,
               title: this.info.title,
               cover: this.info.cover,
-              origin: this.namespace,
               pageOption: nin(this.$route.query, 'app app-config')
             })
           }

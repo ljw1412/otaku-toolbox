@@ -1,16 +1,23 @@
 const baseStyles = 'font-size:12px;padding:1px 10px;font-weight:700;'
 
-const baseLog = (
+export const baseLog = (
   type: string,
   bgcolor?: string,
   color = '#fff',
   bgcolor2 = '#666',
   color2 = '#fff'
-) => (info: string, ...data: any) => {
+) => (info: string, message: any = '', ...data: any[]) => {
   const leftStyles = `${baseStyles};background-color:${bgcolor};border-radius:5px 0 0 5px;color:${color}`
   const rightStyles = `${baseStyles};background-color:${bgcolor2};border-radius:0 5px 5px 0;color:${color2}`
-
-  console.log(`%c${type}%c${info}\n`, leftStyles, rightStyles, ...data)
+  if (!data.length) {
+    console.log(`%c${type}%c${info}`, leftStyles, rightStyles, message)
+    return
+  }
+  console.group(`%c${type}%c${info}`, leftStyles, rightStyles, message)
+  data.forEach(item => {
+    console.log(item)
+  })
+  console.groupEnd()
 }
 
 export const message = baseLog('message', '#409EFF')

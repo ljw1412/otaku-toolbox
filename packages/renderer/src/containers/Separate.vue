@@ -21,18 +21,20 @@ export default defineComponent({
   },
   data() {
     return {
-      title: '',
       titleObserver: null as null | MutationObserver
     }
   },
   computed: {
     hideBackUp() {
       return this.$route.meta.hideBackUp
+    },
+    title() {
+      return (
+        this.$global.title.value || (this.$route.meta.title as string) || ''
+      )
     }
   },
   created() {
-    this.title =
-      this.$global.title.value || (this.$route.meta.title as string) || ''
     this.pageTitleHandler()
   },
   beforeUnmount() {

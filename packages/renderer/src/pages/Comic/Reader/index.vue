@@ -5,54 +5,23 @@
       status="error"
       title="规则错误"
       :subtitle="error"></a-result>
-    <div v-for="(imageItem,i) of list"
-      :key="imageItem.url"
-      class="comic-image-item"
-      :class="{loaded: imageItem.loaded}"
-      @click="handleImageItemClick(imageItem,$event)">
-      <img v-show="!imageItem.error"
-        :key="imageItem.key"
-        :src="imageItem.url"
-        style="width:100%;"
-        class="comic-image"
-        loading="lazy"
-        @load="handleImageLoad(imageItem)"
-        @error="handleImageError(imageItem)" />
-      <div v-if="!imageItem.loaded"
-        class="helper layout-center">
-        <div class="number">{{ i + 1 }}</div>
-        <div v-if="!imageItem.error"
-          class="loading">
-          <a-spin dot />
-        </div>
-        <div v-else
-          class="error">
-          <a-typography-text type="danger">
-            {{ imageItem.error }}
-          </a-typography-text>
-          <br>
-          <a-typography-text type="secondary">
-            (点击重新加载)
-          </a-typography-text>
-        </div>
-      </div>
-    </div>
+    <image-loader v-for="(url,i) of list"
+      :key="i + url"
+      :index="i+1"
+      :url="url"
+      @visible="handleImageVisible"></image-loader>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
 import ComicMixin from '/@/mixins/comic'
-
-interface ImageItem {
-  url: string
-  key: string
-  loaded: boolean
-  error: string
-}
+import ImageLoader from './components/ImageLoader.vue'
 
 export default defineComponent({
   name: 'ComicReader',
+
+  components: { ImageLoader },
 
   mixins: [ComicMixin],
 
@@ -60,13 +29,18 @@ export default defineComponent({
     return {
       error: '',
       scrollEl: null as HTMLElement | null,
-      list: [] as ImageItem[]
+      list: [] as string[],
+      currentIndex: 0
     }
   },
 
   computed: {
     chapterRule() {
       return this.rule.chapter
+    },
+
+    dbKey() {
+      return [this.namespace, this.$route.query.ppath].join('||')
     }
   },
 
@@ -80,6 +54,14 @@ export default defineComponent({
     const scrollEl = document.querySelector('#app-main')
     // @ts-ignore
     this.scrollEl = scrollEl as HTMLElement
+
+    window.onunload = () => {
+      window.$db.history.addOrUpdate({
+        key: this.dbKey,
+        index: this.currentIndex,
+        path: this.$route.query.path
+      })
+    }
   },
 
   methods: {
@@ -88,18 +70,22 @@ export default defineComponent({
         this.error = '此源中章节阅读页规则未配置'
       }
 
+      const history = await window.$db.history.read(this.dbKey)
+
       const { imageOrigin, list } = (await this.runRule(this.chapterRule, 0, {
         replacer: { path: this.$route.query.path as string }
       })) as { imageOrigin?: string; list: string[] }
-      this.list = list.map(path => {
-        const url = imageOrigin ? `${imageOrigin}${path}` : path
-        return {
-          url,
-          key: `${url}?${+new Date()}`,
-          loaded: false,
-          error: ''
-        }
-      })
+      this.list = list.map(path =>
+        imageOrigin ? `${imageOrigin}${path}` : path
+      )
+      if (history && history.path === this.$route.query.path) {
+        this.$nextTick(() => {
+          const el = document.querySelector(
+            `.reader-image-loader[data-index='${history.index}']`
+          )
+          if (el) el.scrollIntoView()
+        })
+      }
     },
 
     handleReaderClick(event: MouseEvent) {
@@ -112,22 +98,13 @@ export default defineComponent({
       this.scrollEl.scrollBy({ top, behavior: 'smooth' })
     },
 
-    handleImageItemClick(imageItem: ImageItem, event: Event) {
-      if (imageItem.error) {
-        event.stopPropagation()
-        imageItem.error = ''
-        imageItem.loaded = false
-        imageItem.key = `${imageItem.url}?${+new Date()}`
-      }
-    },
-
-    handleImageLoad(imageItem: ImageItem) {
-      imageItem.loaded = true
-      imageItem.error = ''
-    },
-
-    handleImageError(imageItem: ImageItem) {
-      imageItem.error = '加载失败'
+    handleImageVisible(index: number) {
+      this.currentIndex = index
+      this.$global.setTitle(`漫画阅读器(${index}/${this.list.length})`)
+      // window.$db.history.addOrUpdate({
+      //   key: this.dbKey,
+      //   index: this.currentIndex
+      // })
     }
   }
 })

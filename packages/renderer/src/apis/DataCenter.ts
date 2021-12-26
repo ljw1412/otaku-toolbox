@@ -6,58 +6,46 @@ const { ipcRenderer } = useElectron()
 
 const channel = 'data-center'
 
-export async function saveRule(rule: Record<string, any>) {
-  const result = await ipcRenderer.invoke(channel, 'saveRule', {
-    rule: toRaw(rule)
-  })
-  logger.message('saveRule', '\n规则:', rule, '\n结果:', result)
+async function invoke(action: string, params: Record<string, any> = {}) {
+  params.tabId = window.tabId
+  const result = await ipcRenderer.invoke(channel, action, params)
+  logger.message(channel, action, '参数:', params, '结果:', result)
   return result
+}
+
+export async function saveRule(rule: Record<string, any>) {
+  return await invoke('saveRule', { rule: toRaw(rule) })
 }
 
 export async function removeRule(rule: Record<string, any>) {
-  const result = await ipcRenderer.invoke(channel, 'removeRule', {
-    rule: toRaw(rule)
-  })
-  logger.message('removeRule', '\n规则:', rule, '\n结果:', result)
-  return result
+  return await invoke('removeRule', { rule: toRaw(rule) })
 }
 
 export async function listRules(type = '') {
-  const result = await ipcRenderer.invoke(channel, 'listRules', { type })
-  logger.message('listRules', '\n类型:', type, '\n结果:', result)
-  return result
+  return await invoke('listRules', { type })
 }
 
 export async function showRule(type: string, origin: string) {
-  const params = { type, origin }
-  const result = await ipcRenderer.invoke(channel, 'showRule', params)
-  logger.message('showRule', '\n参数:', params, '\n结果:', result)
-  return result
+  return await invoke('showRule', { type, origin })
 }
 
 export async function runRule(
   rule: DataCenter.NewsRule | DataCenter.ComicRule | DataCenter.RulePageParams,
-  page?: number,
-  config: DataCenter.RunnerOptions = { replacer: { page: 1 } }
+  page = 1,
+  config: DataCenter.RunnerOptions = { replacer: {} }
 ) {
-  if (!config.replacer) config.replacer = { page: page || 1 }
-  else if (config.replacer.page === undefined) config.replacer.page = page
-  const params = { rule, config }
-  const result = await ipcRenderer.invoke(channel, 'runRule', params)
-  logger.message('runRule', '\n规则:', rule, '\n结果:', result)
-  return result
+  if (!config.replacer) config.replacer = {}
+  if (config.replacer.page === undefined) config.replacer.page = page
+  return await invoke('runRule', { rule, config })
 }
 
 export async function listNews(
   type = '',
   origin: string,
-  page?: number,
+  page = 1,
   config: DataCenter.RunnerOptions = { replacer: {} }
 ) {
-  if (!config.replacer) config.replacer = { page: page || 1 }
-  else if (config.replacer.page === undefined) config.replacer.page = page
-  const params = { type, origin, config }
-  const result = await ipcRenderer.invoke(channel, 'fetch', params)
-  logger.message('listNews', '\n参数:', params, '\n结果:', result)
-  return result
+  if (!config.replacer) config.replacer = {}
+  if (config.replacer.page === undefined) config.replacer.page = page
+  return await invoke('fetch', { type, origin, config })
 }

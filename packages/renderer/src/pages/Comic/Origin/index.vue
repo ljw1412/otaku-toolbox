@@ -80,5 +80,6 @@ export default defineComponent({
 <style lang="scss">
 .comic-origin {
   position: relative;
+  min-height: 100%;
 }
 </style>
