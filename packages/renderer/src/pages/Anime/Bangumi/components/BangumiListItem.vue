@@ -100,21 +100,10 @@
               <p>
                 <a-space wrap
                   size="mini">
-                  <a-link v-for="link of streamingPlatforms"
+                  <acg-stream-item v-for="link of streamingPlatforms"
                     :key="link.url"
-                    :href="link.url"
-                    :status="link.hide?'warning':'normal'"
-                    :title="getTitle(link)"
-                    class="anime-link"
-                    target="_blank">
-                    <img v-if="getLogoIcon(link.from)"
-                      :src="getLogoIcon(link.from)"
-                      class="link-icon">
-                    <span v-else
-                      class="link-name">{{ link.name }}</span>
-                    <div v-if="link.hide || link.region"
-                      class="badge">{{link.hide ? '隐藏' : link.region.replace(/,/g,'') }}</div>
-                  </a-link>
+                    mode="icon"
+                    v-bind="link"></acg-stream-item>
                 </a-space>
               </p>
             </div>

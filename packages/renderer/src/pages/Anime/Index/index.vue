@@ -1,5 +1,5 @@
 <template>
-  <div class="admin-index"
+  <div class="anime-index"
     :class="{'is-laptop': isLaptopSize, 'is-mobile': isMobileSize}">
     <a-drawer v-model:visible="isDisplayFilterDialog"
       :closable="false"
@@ -11,9 +11,9 @@
       </template>
     </a-drawer>
 
-    <section class="admin-index-container">
-      <main class="admin-index-main">
-        <header class="admin-index-header sticky-t bg-app">
+    <section class="anime-index-container">
+      <main class="anime-index-main">
+        <header class="anime-index-header sticky-t bg-app">
           <a-page-header :show-back="false">
             <template #title>
               <a-space size="mini">
@@ -61,7 +61,7 @@
             style="padding-left: 4px;"></anime-filter-status>
         </header>
 
-        <div class="admin-index-content">
+        <div class="anime-index-content">
           <acg-api-result :loading="loading.bangumi"
             :error="error.bangumi"
             :empty="!page.total"
@@ -72,7 +72,7 @@
             :anime="bangumi"></anime-card>
         </div>
       </main>
-      <aside class="admin-index-aside"
+      <aside class="anime-index-aside"
         v-show="!isLaptopSize">
         <teleport to=".anime-filter-drawer .arco-drawer-body"
           :disabled="!isLaptopSize">
@@ -87,7 +87,7 @@
     </section>
 
     <footer v-if="isMobileSize"
-      class="admin-index-footer sticky-b bg-app">
+      class="anime-index-footer sticky-b bg-app">
       <a-pagination v-model:current="page.index"
         :total="page.total"
         :page-size="page.size"
@@ -108,7 +108,7 @@ import AppSortText from '/@/components/AppSortText.vue'
 import { typeOf } from '/@/utils/assist'
 
 export default defineComponent({
-  name: 'AdminIndex',
+  name: 'AnimeIndex',
 
   components: {
     AnimeCard,
@@ -124,7 +124,7 @@ export default defineComponent({
       error: { bangumi: false, filter: false },
       isDisplayFilterDialog: false,
       keyword: '',
-      sort: { sortonair: '' },
+      sort: { sortonair: '' } as Record<string, string>,
       page: { index: 1, total: 0, size: 24 },
       tagGroupList: [] as TagGroup[],
       filterTagList: [] as Tag[],
@@ -211,6 +211,7 @@ export default defineComponent({
           group.tags.unshift({
             _id: '',
             name: '全部',
+            group: group._id,
             selected: !hasSelected
           })
         })
@@ -259,7 +260,7 @@ export default defineComponent({
     handleSortChange(name: string) {
       if (name === 'default') {
         Object.keys(this.sort).forEach(key => {
-          this.sort[key as keyof typeof this.sort] = ''
+          this.sort[key] = ''
         })
       }
       this.handlePageChange(1)
@@ -281,21 +282,21 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-.admin-index {
+.anime-index {
   --index-aside-width: 300px;
   --index-anime-item-width: 20%;
   --index-anime-item-gutter: 16px;
 
-  .admin-index-container {
+  .anime-index-container {
     display: flex;
   }
 
-  .admin-index-main {
+  .anime-index-main {
     flex: 1 0 auto;
     width: 0;
   }
 
-  .admin-index-content {
+  .anime-index-content {
     display: flex;
     flex-wrap: wrap;
     width: 100%;
@@ -304,12 +305,12 @@ export default defineComponent({
     box-sizing: border-box;
   }
 
-  .admin-index-aside {
+  .anime-index-aside {
     flex-shrink: 0;
     width: var(--index-aside-width);
   }
 
-  .admin-index-footer {
+  .anime-index-footer {
     padding: 8px;
     .arco-pagination {
       justify-content: center;
@@ -322,19 +323,19 @@ export default defineComponent({
     }
   }
   &.is-laptop {
-    .admin-index-content {
+    .anime-index-content {
       padding-left: calc(var(--index-anime-item-gutter) / 2);
     }
   }
 
   &.is-laptop:not(.is-mobile) {
-    .index-admin-item:nth-child(4n) {
+    .index-anime-item:nth-child(4n) {
       margin-right: 0;
     }
   }
 
   &.is-mobile {
-    .index-admin-item:nth-child(3n) {
+    .index-anime-item:nth-child(3n) {
       margin-right: 0;
     }
   }
@@ -353,20 +354,20 @@ export default defineComponent({
 }
 
 @media (min-width: 1750px) {
-  .admin-index {
+  .anime-index {
     --index-anime-item-width: 16.66%;
   }
 }
 
 @media (max-width: 1599.9px) {
-  .admin-index {
+  .anime-index {
     --index-anime-item-width: 25%;
     --index-anime-item-gutter: 12px;
   }
 }
 
 @media (max-width: 767.9px) {
-  .admin-index {
+  .anime-index {
     --index-anime-item-width: 33.33%;
     --index-anime-item-gutter: 8px;
   }

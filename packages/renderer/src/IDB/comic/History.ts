@@ -17,6 +17,5 @@ export default class History extends BaseIDBTable<ComicHistory> {
       // objectStore.createIndex('pageOption', 'pageOption')
     }
     const { newVersion, oldVersion } = event
-    console.log(this)
   }
 }

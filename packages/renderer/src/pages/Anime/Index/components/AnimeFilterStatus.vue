@@ -6,10 +6,12 @@
     <a-tag v-if="keyword"
       :closable="keywordClose"
       color="orange"
-      @close="$emit('remove-keyword')">关键词：{{keyword}}</a-tag>
+      @close="$emit('remove-keyword')">关键词：{{ keyword }}</a-tag>
     <a-tag v-for="tag of tags"
+      :key="tag._id"
+      :closable="closable"
       :color="tag.group==='type' ? 'green' : 'arcoblue'"
-      :key="tag._id">{{tag.name}}</a-tag>
+      @close="$emit('remove-tag',tag)">{{ tag.name }}</a-tag>
   </a-space>
 </template>
 
@@ -22,11 +24,12 @@ export default defineComponent({
   props: {
     wrap: { type: Boolean, default: true },
     keyword: String,
+    closable: Boolean,
     keywordClose: { type: Boolean, default: true },
     tags: { type: Array as PropType<Tag[]>, default: () => [] }
   },
 
-  emits: ['remove-keyword']
+  emits: ['remove-keyword', 'remove-tag']
 })
 </script>
 

@@ -7,7 +7,8 @@
         <img class="bg-image"
           :src="cover" />
         <div class="mask"></div>
-        <div class="blur"></div>
+        <!-- <div class="blur"></div> -->
+
       </div>
     </transition>
 
@@ -85,7 +86,7 @@ export default defineComponent({
       width: 100%;
       height: 100%;
       background-color: var(--app-color-bg);
-      opacity: 0.5;
+      opacity: 0.9;
       transition: background-color 0.2s;
     }
     .blur {

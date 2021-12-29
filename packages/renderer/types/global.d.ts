@@ -133,6 +133,7 @@ declare global {
     endTime: number | Date | string
     day: number
     isSubTagMatched?: boolean
+    ratingSite: Record<string, any>
   }
 
   interface BangumiBasicWithTime extends BangumiBasic {
@@ -204,5 +205,11 @@ declare global {
     key: string
     index: number
     path: string
+    ppath: string
+    name: string
+    namespace?: string
+    title?: string
+    cover?: string
+    time: Date
   }
 }

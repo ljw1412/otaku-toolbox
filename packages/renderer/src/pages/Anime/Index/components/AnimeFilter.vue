@@ -18,9 +18,11 @@
           :max-length="50"
           @search="search(keyword)"
           @press-enter="search(keyword)"></a-input-search>
-        <anime-filter-status :tags="filterTags"
+        <anime-filter-status closable
+          :tags="filterTags"
           :keyword="currentKeyword"
-          @remove-keyword="search('')"></anime-filter-status>
+          @remove-keyword="search('')"
+          @remove-tag="handleFilterTagRemove"></anime-filter-status>
       </div>
     </template>
     <template #value="{ value }">
@@ -122,6 +124,14 @@ export default defineComponent({
         tag.selected = !tag._id
       })
       this.$emit('change', { keyword: '', tags: this.filterTags })
+    },
+
+    handleFilterTagRemove(tag: Tag) {
+      const groupTagList = this.allTags.filter(t => t.group === tag.group)
+      groupTagList.forEach(tag => {
+        tag.selected = !tag._id
+      })
+      this.$emit('change', { tags: this.filterTags })
     },
 
     handleTagCheck(tag: Tag, groupTags: Tag[]) {

@@ -1,4 +1,5 @@
 import Baha from '/@/../assets/icons/baha.ico'
+import Bangumi from '/@/../assets/icons/bangumi.ico'
 import Bilibili from '/@/../assets/icons/bilibili.svg'
 import YouTube from '/@/../assets/icons/youtube.svg'
 import YouKu from '/@/../assets/icons/youku.svg'
@@ -9,6 +10,7 @@ import Netflix from '/@/../assets/icons/netflix.svg'
 
 const logoIcons = {
   Baha,
+  Bangumi,
   Bilibili,
   YouKu,
   TV,
@@ -19,6 +21,7 @@ const logoIcons = {
 }
 
 export function getLogoIcon(name: string) {
+  if (name.startsWith('http') || name.startsWith('//')) return name
   return logoIcons[name as keyof typeof logoIcons]
 }
 

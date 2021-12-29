@@ -41,7 +41,9 @@ function createFetch(method: string) {
       }
     }
 
-    const url = `${BASE_URL}${api}${mConfig.query}`
+    const url = api.startsWith('http')
+      ? `${api}${mConfig.query}`
+      : `${BASE_URL}${api}${mConfig.query}`
 
     setTimeout(() => {
       controller.abort()

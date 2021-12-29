@@ -17,6 +17,7 @@
 import { defineComponent } from 'vue'
 import ComicMixin from '/@/mixins/comic'
 import ImageLoader from './components/ImageLoader.vue'
+import { ipcOff, ipcOn, ipcSend } from '/@/utils/electron'
 
 export default defineComponent({
   name: 'ComicReader',
@@ -29,6 +30,7 @@ export default defineComponent({
     return {
       error: '',
       scrollEl: null as HTMLElement | null,
+      info: {} as Record<string, any>,
       list: [] as string[],
       currentIndex: 0
     }
@@ -54,17 +56,43 @@ export default defineComponent({
     const scrollEl = document.querySelector('#app-main')
     // @ts-ignore
     this.scrollEl = scrollEl as HTMLElement
+    ipcOn('window.message', this.handleWindowMessage)
+    ipcSend('window.message', 'comic-details-get', { key: this.dbKey })
 
     window.onunload = () => {
-      window.$db.history.addOrUpdate({
+      const history = {
         key: this.dbKey,
         index: this.currentIndex,
-        path: this.$route.query.path
-      })
+        name: this.$route.query.name,
+        path: this.$route.query.path,
+        cover: this.info.cover,
+        title: this.info.title,
+        time: new Date()
+      }
+      ipcSend('window.message', 'comic-history', history)
+      window.$db.history.addOrUpdate(history)
     }
   },
 
+  unmounted() {
+    ipcOff('window.message', this.handleWindowMessage)
+  },
+
   methods: {
+    handleWindowMessage(
+      e: Event,
+      type: string,
+      data: Record<string, any> = {}
+    ) {
+      console.log(type, data)
+
+      if (type.startsWith('comic-') && this.dbKey === data.key) {
+        if (type === 'comic-details') {
+          this.info = data
+        }
+      }
+    },
+
     async initData() {
       if (!this.chapterRule) {
         this.error = '此源中章节阅读页规则未配置'
@@ -101,10 +129,6 @@ export default defineComponent({
     handleImageVisible(index: number) {
       this.currentIndex = index
       this.$global.setTitle(`漫画阅读器(${index}/${this.list.length})`)
-      // window.$db.history.addOrUpdate({
-      //   key: this.dbKey,
-      //   index: this.currentIndex
-      // })
     }
   }
 })

@@ -12,7 +12,7 @@
 
     <div class="comic-list">
       <comic-card v-for="item of list"
-        :key="item.id"
+        :key="item.key"
         :info="item"></comic-card>
     </div>
   </div>

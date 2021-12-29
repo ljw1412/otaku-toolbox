@@ -12,6 +12,5 @@ export default class Favorites extends BaseIDBTable<ComicItem> {
       })
     }
     const { newVersion, oldVersion } = event
-    console.log(this)
   }
 }

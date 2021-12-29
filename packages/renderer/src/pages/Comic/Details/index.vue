@@ -85,8 +85,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
-import { ipcSend, openVueView } from '/@/utils/electron'
+import { defineComponent, toRaw } from 'vue'
+import { ipcOff, ipcOn, ipcSend, openVueView } from '/@/utils/electron'
 import ComicMixin from '/@/mixins/comic'
 import { nin } from '/@/utils/object'
 
@@ -130,9 +130,35 @@ export default defineComponent({
     this.checkState()
   },
 
+  mounted() {
+    ipcOn('window.message', this.handleWindowMessage)
+  },
+
+  unmounted() {
+    ipcOff('window.message', this.handleWindowMessage)
+  },
+
   methods: {
     close() {
       ipcSend('window.action', 'close', { mode: 'child' })
+    },
+
+    handleWindowMessage(
+      e: Event,
+      type: string,
+      data: Record<string, any> = {}
+    ) {
+      if (type.startsWith('comic-') && this.dbKey === data.key) {
+        if (type === 'comic-history') {
+          this.history = data as ComicHistory
+        } else if (type === 'comic-details-get') {
+          ipcSend('window.message', 'comic-details', {
+            key: this.dbKey,
+            ...toRaw(this.info)
+          })
+          console.log(e, data)
+        }
+      }
     },
 
     async checkState() {
@@ -161,7 +187,11 @@ export default defineComponent({
         {
           name: 'ComicReader',
           params: { namespace: this.$route.params.namespace },
-          query: { path: chapter.path, ppath: this.$route.query.path }
+          query: {
+            path: chapter.path,
+            name: chapter.name,
+            ppath: this.$route.query.path
+          }
         },
         { width: 600, height: 900, minWidth: 600, minHeight: 900 }
       )

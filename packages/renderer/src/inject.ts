@@ -7,6 +7,7 @@ import AppCloseBtn from '/@/components/AppCloseBtn.vue'
 import AcgAreaHeader from '/@/components/AcgAreaHeader.vue'
 import AcgGallery from '/@/components/AcgGallery.vue'
 import AcgRatioDiv from '/@/components/AcgRatioDiv.vue'
+import AcgStreamItem from '/@/components/AcgStreamItem.vue'
 import AcgApiResult from '/@/components/AcgApiResult.vue'
 
 const components = [
@@ -14,6 +15,7 @@ const components = [
   AcgAreaHeader,
   AcgGallery,
   AcgRatioDiv,
+  AcgStreamItem,
   AcgApiResult
 ]
 
