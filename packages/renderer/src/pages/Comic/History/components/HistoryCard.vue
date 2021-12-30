@@ -63,6 +63,7 @@ export default defineComponent({
   display: flex;
   .arco-card-cover {
     width: 30%;
+    flex-shrink: 0;
   }
 
   .title {

@@ -1,6 +1,6 @@
 <template>
   <div class="app-container container-separate">
-    <app-mini-header :title="title"></app-mini-header>
+    <app-mini-header :title="mTitle"></app-mini-header>
     <main id="app-main"
       class="app-main">
       <router-view />
@@ -21,6 +21,7 @@ export default defineComponent({
   },
   data() {
     return {
+      title: '',
       titleObserver: null as null | MutationObserver
     }
   },
@@ -28,9 +29,12 @@ export default defineComponent({
     hideBackUp() {
       return this.$route.meta.hideBackUp
     },
-    title() {
+    mTitle(): string {
       return (
-        this.$global.title.value || (this.$route.meta.title as string) || ''
+        this.$global.title.value ||
+        (this.$route.meta.title as string) ||
+        this.title ||
+        ''
       )
     }
   },
