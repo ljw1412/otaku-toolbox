@@ -1,7 +1,8 @@
 <template>
   <a-card class="bangumi-list-item"
     :bordered="false"
-    :body-style="{padding:0}">
+    :body-style="{padding:0}"
+    :class="{'filter-gray': anime.markState.isBan}">
     <template #cover>
       <div ref="anchor"
         class="anime-anchor"
@@ -65,6 +66,10 @@
         <a-row class="anime-info"
           :gutter="{lg:8}">
           <a-col :lg="12">
+            <div v-if="anime.markState.isBan"
+              class="info-block anime-alert">
+              <a-alert type="warning">该动画存在严重争议问题！</a-alert>
+            </div>
             <div v-show="animeTitleMore"
               class="anime-name-more info-block">
               <h4>其它名称</h4>

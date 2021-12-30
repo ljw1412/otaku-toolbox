@@ -1,5 +1,6 @@
 <template>
-  <div class="index-anime-item">
+  <div class="index-anime-item"
+    :class="{'filter-gray': anime.markState.isBan}">
     <router-link target="_blank"
       :title="anime.title"
       :to="{name:'AnimeWiki',params:{id:anime._id},query:{app:'otakutools'}}">

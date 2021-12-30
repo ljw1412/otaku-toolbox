@@ -1,6 +1,6 @@
 import API from '/@/utils/api'
 const { apiGet, apiPost, apiDelete, apiPut } = API
-import { computeBangumiTime } from '/@/utils/dataFormat'
+import { computeBangumiTime, computeMark } from '/@/utils/dataFormat'
 
 const API_BASE = 'bangumi'
 
@@ -21,10 +21,12 @@ export async function listBangumi(
   if (Array.isArray(tags)) {
     tags = tags.join(',')
   }
-  const data = await apiGet(API_BASE, {
+  const data = (await apiGet(API_BASE, {
     data: { ...page, tags, type, keyword, ...sort }
-  })
-  data.list.forEach(computeBangumiTime)
+  })) as { list: BangumiBasic[]; total: number }
+  data.list.forEach(item =>
+    computeMark(computeBangumiTime(item as BangumiBasicWithTime))
+  )
   return data
 }
 
@@ -35,7 +37,7 @@ export async function listBangumi(
  */
 export async function showBangumi(id: string) {
   const data = await apiGet(`${API_BASE}/${id}`)
-  return computeBangumiTime(data)
+  return computeMark(computeBangumiTime(data))
 }
 
 /**
@@ -43,8 +45,8 @@ export async function showBangumi(id: string) {
  * @returns
  */
 export async function listWeekBangumi(): Promise<BangumiBasicWithTime[]> {
-  const data = await apiGet(`${API_BASE}/week`)
-  data.forEach(computeBangumiTime)
+  const data = (await apiGet(`${API_BASE}/week`)) as BangumiBasicWithTime[]
+  data.forEach(item => computeMark(computeBangumiTime(item)))
   return data
 }
 
@@ -53,9 +55,9 @@ export async function listWeekBangumi(): Promise<BangumiBasicWithTime[]> {
  * @returns
  */
 export async function listTodayBangumi(): Promise<BangumiBasicWithTime[]> {
-  const data = await apiGet(`${API_BASE}/today`, {
+  const data = (await apiGet(`${API_BASE}/today`, {
     data: { t: +new Date() }
-  })
-  data.forEach(computeBangumiTime)
+  })) as BangumiBasicWithTime[]
+  data.forEach(item => computeMark(computeBangumiTime(item)))
   return data
 }

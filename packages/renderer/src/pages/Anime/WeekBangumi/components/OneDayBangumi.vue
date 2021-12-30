@@ -16,7 +16,8 @@
         <router-link target="_blank"
           :to="{name:'AnimeWiki',params:{id:anime._id},query:{app:'otakutools'}}">
           <div class="time">{{anime.formatOnair[hourSystem].time}}</div>
-          <acg-ratio-div :ratio="vertical?[1,1]:[3,4]">
+          <acg-ratio-div :ratio="vertical?[1,1]:[3,4]"
+            :class="{'filter-gray': anime.markState.isBan}">
             <img :src="compressImage(anime.coverMin)"
               loading="lazy">
           </acg-ratio-div>

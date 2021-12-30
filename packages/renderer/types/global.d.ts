@@ -134,6 +134,8 @@ declare global {
     day: number
     isSubTagMatched?: boolean
     ratingSite: Record<string, any>
+    mark: string[]
+    markState: Record<string, boolean>
   }
 
   interface BangumiBasicWithTime extends BangumiBasic {

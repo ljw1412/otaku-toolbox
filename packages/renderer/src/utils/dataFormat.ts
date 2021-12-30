@@ -7,6 +7,11 @@ export function computeBangumiTime(bangumi: BangumiBasicWithTime) {
   return bangumi
 }
 
+export function computeMark(bangumi: BangumiBasicWithTime) {
+  bangumi.markState = { isBan: (bangumi.mark || []).includes('ban') }
+  return bangumi
+}
+
 const now = new Date()
 
 export function onairMessage(onair: FormatedAnimeDatetime, prefix = '') {

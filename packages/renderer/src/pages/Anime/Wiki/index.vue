@@ -43,11 +43,18 @@ export default defineComponent({
     this.$message.warning('动画详情页，正在开发中……')
   },
 
+  beforeUnmount() {
+    document.documentElement.classList.remove('filter-gray')
+  },
+
   methods: {
     async fetchBasic() {
       if (!this.id) return
       this.basic = await this.$API.Bangumi.showBangumi(this.id)
       this.cover = this.basic.coverMin
+      if ((this.basic.mark || []).includes('ban')) {
+        document.documentElement.classList.add('filter-gray')
+      }
       this.$global.setTitle(`${this.basic.title} - ${this.$route.meta.title}`)
     },
 

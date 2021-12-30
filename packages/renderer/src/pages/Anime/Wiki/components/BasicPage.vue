@@ -51,6 +51,11 @@
           <span>{{ onairStr }}</span>
         </a-typography-text>
 
+        <div v-if="data.markState.isBan"
+          class="info-block anime-alert">
+          <a-alert type="warning">该动画存在严重争议问题！</a-alert>
+        </div>
+
         <p class="data-block desc"
           v-html="mDesc"></p>
 

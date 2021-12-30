@@ -1,5 +1,6 @@
 <template>
-  <div class="bangumi-grid-item">
+  <div class="bangumi-grid-item"
+    :class="{'filter-gray': anime.markState.isBan}">
     <acg-ratio-div class="anime-cover">
       <img :src="cover">
     </acg-ratio-div>
