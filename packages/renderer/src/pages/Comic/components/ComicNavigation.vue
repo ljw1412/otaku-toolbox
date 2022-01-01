@@ -20,7 +20,7 @@
           class="btn-setting"
           type="text"
           shape="circle"
-          @click="navigate({ name: 'ComicSetting' })">
+          @click="navigate({ name: 'OriginManager',query:{type:'comic'} }, true, {resizable: false, singleInstance: true, title: '源管理'})">
           <icon-settings />
         </a-button>
       </div>
@@ -49,6 +49,7 @@
 import { defineComponent } from 'vue'
 import { RouteLocationRaw } from 'vue-router'
 import { setNavigationCache } from '/@/utils/cache'
+import { openVueView } from '/@/utils/electron'
 
 export default defineComponent({
   name: 'ComicNavigation',
@@ -105,7 +106,15 @@ export default defineComponent({
       }
     },
 
-    navigate(route: RouteLocationRaw) {
+    navigate(
+      route: RouteLocationRaw,
+      isNew = false,
+      config: Record<string, any> = {}
+    ) {
+      if (isNew) {
+        openVueView(route, config)
+        return
+      }
       this.$router.replace(route)
       this.setCache(route)
     },

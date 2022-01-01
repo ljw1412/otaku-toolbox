@@ -17,16 +17,36 @@
             height="100%" />
         </acg-ratio-div>
       </div>
-      <div class="right">
-        <div class="pt-12"
-          style="height:20%">
+      <div class="right d-flex flex-column">
+        <div class="pt-12 mb-12">
           <a-typography-title :heading="3"
-            class="skeleton-bg mt-0"
+            class="skeleton-bg my-0"
             style="margin-right: 60px; min-height: 35px;">
             <span v-show="!loading">{{ info.title }}</span>
           </a-typography-title>
+
+          <div class="mt-4">
+            <a-skeleton animation
+              class="w-50"
+              :loading="loading">
+              <a-skeleton-line :rows="1"
+                :line-height="24"
+                :line-spacing="4" />
+            </a-skeleton>
+            <a-space v-show="!loading"
+              size="mini">
+              <a-typography-text type="secondary"
+                class="mr-8">{{ author }}</a-typography-text>
+              <a-tag v-if="info.status"
+                :color="info.status.includes('完')?'red':'green'">{{ info.status }}</a-tag>
+              <a-tag v-for="tag of tags"
+                :key="tag"
+                color="arcoblue"
+                size="mini">{{ tag }}</a-tag>
+            </a-space>
+          </div>
         </div>
-        <div class="chapter-grid">
+        <div class="chapter-grid py-12 app-no-drag">
           <a-skeleton animation
             :loading="loading"
             style="padding-right: 42px;">
@@ -36,8 +56,7 @@
           </a-skeleton>
           <a-space v-show="!loading"
             wrap
-            size="mini"
-            class="app-no-drag">
+            size="mini">
             <a-button v-for="chapter of chapterList"
               :key="chapter.path"
               :title="chapter.name"
@@ -78,7 +97,9 @@
         </a-link>
       </a-space>
       <div class="right app-no-drag">
-        <a-button :disabled="loading">{{ history.path? '继续阅读':'开始阅读' }}</a-button>
+        <a-button :disabled="loading || !chapterList.length"
+          type="primary"
+          @click="handleReadClick">{{ history.path? '继续阅读':'开始阅读' }}</a-button>
       </div>
     </div>
   </div>
@@ -115,6 +136,18 @@ export default defineComponent({
 
     dbKey() {
       return this.namespace + '||' + this.$route.query.path
+    },
+
+    author() {
+      return Array.isArray(this.info.author)
+        ? this.info.author.join('、')
+        : this.info.author || ''
+    },
+
+    tags() {
+      return Array.isArray(this.info.tags)
+        ? this.info.tags
+        : [this.info.tags].filter(tag => tag)
     }
   },
 
@@ -217,6 +250,16 @@ export default defineComponent({
         }
         return
       }
+    },
+
+    handleReadClick() {
+      if (this.history) {
+        const chapter = this.chapterList.find(
+          chapter => this.history.path === chapter.path
+        )
+        if (chapter) return this.handleChapterClick(chapter)
+      }
+      this.handleChapterClick(this.chapterList[0])
     }
   }
 })
@@ -248,7 +291,7 @@ export default defineComponent({
   }
 
   .chapter-grid {
-    max-height: 80%;
+    // max-height: 70%;
     overflow-y: auto;
 
     .btn-chapter {

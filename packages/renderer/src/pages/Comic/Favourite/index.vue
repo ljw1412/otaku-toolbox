@@ -10,7 +10,7 @@
       </template>
     </a-page-header>
 
-    <div class="comic-list">
+    <div class="comic-list py-6">
       <comic-card v-for="item of list"
         :key="item.key"
         :info="item"></comic-card>

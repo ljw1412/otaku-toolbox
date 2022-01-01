@@ -51,6 +51,9 @@ export default defineComponent({
         if (isIntersecting) {
           ctx.emit('visible', props.index)
         }
+      },
+      {
+        threshold: [0.8]
       }
     )
     return { target, isVisible }

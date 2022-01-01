@@ -63,6 +63,11 @@ export default defineComponent({
       const item = this.menuList.find(item => item.type === this.menuKeys[0])
       return (item ? item.name : '') + '源'
     }
+  },
+
+  created() {
+    const { type = '' } = this.$route.query
+    this.menuKeys = [type as string]
   }
 })
 </script>

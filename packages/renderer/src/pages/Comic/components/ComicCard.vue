@@ -1,6 +1,8 @@
 <template>
   <div class="comic-card-wrap">
     <a-card class="comic-card"
+      hoverable
+      :bordered="false"
       :body-style="{padding:'6px 4px'}"
       @click="handleCardClick">
       <template #cover>

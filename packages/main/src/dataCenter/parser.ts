@@ -1,6 +1,7 @@
 import request from './request'
 import cheerio, { CheerioAPI, Cheerio, Node } from 'cheerio'
 import Logger from '../utils/logger'
+import modifierParser from './modifierParser'
 
 const isDebugger = true
 const logger = {} as typeof Logger
@@ -100,31 +101,8 @@ function parseQuery($: CheerioAPI | Cheerio<Node>, _query: DataCenter.Query) {
 // 解析修饰符
 function parseModifiers(str: string, modifiers: string[]): any {
   if (!str || !modifiers.length) return str
-  let result = str
   const modifier = modifiers.shift() as string
-  if (modifier.startsWith('match')) {
-    const regExpStr = modifier.split('#')[1]
-    if (regExpStr) {
-      const match = result.match(new RegExp(regExpStr))
-      result = match ? match[0] : ''
-    } else {
-      logger.error(
-        '[parseModifiers] 正则表达式字符串不存在！',
-        `修饰符:${modifier}`
-      )
-    }
-  } else if (modifier.startsWith('append')) {
-    const appendText = modifier.split('#')[1]
-    if (appendText) {
-      result += appendText
-    }
-  } else if (modifier === 'function') {
-    const fn = new Function(result)
-    result = fn()
-  } else if (modifier === 'eval') {
-    result = eval(result)
-  }
-  logger.info('[parseModifiers]', `修饰符:${modifier} =>`, `结果:${result}`)
+  const result = modifierParser(str, modifier)
   if (modifiers.length) {
     return parseModifiers(result, modifiers)
   }

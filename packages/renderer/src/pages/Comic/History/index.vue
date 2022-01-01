@@ -10,12 +10,13 @@
       </template>
     </a-page-header>
 
-    <a-row class="history-list"
+    <a-row class="history-list py-6"
       :gutter="8">
       <a-col v-for="item of list"
         :key="item.key"
         :span="8">
-        <history-card :history="item"></history-card>
+        <history-card :history="item"
+          class="mb-8"></history-card>
       </a-col>
     </a-row>
   </div>

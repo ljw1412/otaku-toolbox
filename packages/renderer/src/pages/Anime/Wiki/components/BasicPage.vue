@@ -9,14 +9,18 @@
           <a-typography-title :heading="3"
             class="title"
             copyable>{{ data.title }}</a-typography-title>
-          <a-typography-text class="original-title">{{ data.titleOriginal }}</a-typography-text>
-          <a-popover position="bottom"
+          <a-typography-text class="original-title"
+            :copyable="!hasMoreTitle">{{ data.titleOriginal }}</a-typography-text>
+          <a-popover v-if="hasMoreTitle"
+            position="bottom"
             title="更多名称"
             mini>
             <a-button size="mini"
-              style="margin-left:4px;margin-bottom:4px;"><template #icon>
+              style="margin-left:4px;margin-bottom:4px;">
+              <template #icon>
                 <icon-down />
-              </template></a-button>
+              </template>
+            </a-button>
             <template #content>
               <div class="anime-title-more">
                 <p>
@@ -133,6 +137,10 @@ export default defineComponent({
 
     mDesc() {
       return (this.data.desc || '').replace(/\n/g, '<br />')
+    },
+
+    hasMoreTitle() {
+      return this.data.titleMore && this.data.titleMore.length
     }
   },
 

@@ -43,6 +43,10 @@ export default defineComponent({
 
     dbKey() {
       return [this.namespace, this.$route.query.ppath].join('||')
+    },
+
+    title() {
+      return this.info.title || '漫画阅读器'
     }
   },
 
@@ -128,7 +132,7 @@ export default defineComponent({
 
     handleImageVisible(index: number) {
       this.currentIndex = index
-      this.$global.setTitle(`漫画阅读器(${index}/${this.list.length})`)
+      this.$global.setTitle(`${this.title}(${index}/${this.list.length})`)
     }
   }
 })

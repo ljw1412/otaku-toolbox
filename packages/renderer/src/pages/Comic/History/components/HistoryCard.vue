@@ -10,7 +10,7 @@
     </template>
     <a-card-meta>
       <template #title>
-        <div class="title">{{ history.title }}</div>
+        <div class="title text-truncate">{{ history.title }}</div>
       </template>
       <template #description>
         <div>看到{{ history.name }} 第{{ history.index }}页</div>
@@ -64,6 +64,11 @@ export default defineComponent({
   .arco-card-cover {
     width: 30%;
     flex-shrink: 0;
+  }
+
+  .arco-card-body {
+    flex-grow: 1;
+    width: 0;
   }
 
   .title {

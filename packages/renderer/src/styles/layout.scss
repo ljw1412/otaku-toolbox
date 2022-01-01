@@ -103,3 +103,17 @@
 .filter-gray {
   filter: grayscale(100%);
 }
+
+.multi-text-truncate {
+  display: -webkit-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  /* autoprefixer: ignore next */
+  -webkit-box-orient: vertical;
+  @for $i from 2 through 5 {
+    &[data-line='#{$i}'] {
+      -webkit-line-clamp: $i;
+    }
+  }
+}

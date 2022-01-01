@@ -19,7 +19,7 @@
         "author": ".pictextli|text",
         "message": "li:nth-child(3)|text",
         "type": "li:nth-child(2)|text",
-        "state": "li:nth-child(4)|text",
+        "status": "li:nth-child(4)|text",
         "updateTime": "li:nth-child(5)|text"
       }
     },
@@ -32,6 +32,9 @@
     "mode": "html",
     "data": {
       "title": ".anim_title_text|text",
+      "author": ".anim-main_list tr:contains(作者) a|text|trim|split# ",
+      "status": ".anim-main_list tr:contains(状态) td|text|trim",
+      "tags": ".anim-main_list tr:contains(题材) td|text|trim|split#\u00A0",
       "cover": "#cover_pic|@src"
     },
     "items": ".cartoon_online_border li",

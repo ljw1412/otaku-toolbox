@@ -17,7 +17,6 @@ import ComicOrigin from '/@/pages/Comic/Origin/index.vue'
 import ComicFavourite from '/@/pages/Comic/Favourite/index.vue'
 import ComicHistory from '/@/pages/Comic/History/index.vue'
 import ComicSearch from '/@/pages/Comic/Search/index.vue'
-import ComicSetting from '/@/pages/Comic/Setting/index.vue'
 
 // import AppGameHelper from '/@/pages/Game/Helper.vue'
 import GameHome from '/@/pages/Game/Home/index.vue'
@@ -92,7 +91,6 @@ const comicRoutes = createRoutes('comic', {
     { path: 'favourite', name: 'ComicFavourite', component: ComicFavourite },
     { path: 'history', name: 'ComicHistory', component: ComicHistory },
     { path: 'search', name: 'ComicSearch', component: ComicSearch },
-    { path: 'setting', name: 'ComicSetting', component: ComicSetting },
     {
       path: 'origin/:namespace',
       name: 'ComicOrigin',
