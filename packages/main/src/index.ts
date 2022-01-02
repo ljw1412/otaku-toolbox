@@ -48,7 +48,7 @@ const createWindow = async () => {
     minHeight: 720,
     show: false, // Use 'ready-to-show' event to show window
     frame: false,
-    title: '二次元工具箱',
+    title: '御宅工具箱',
     webPreferences: {
       preload: join(__dirname, '../../preload/dist/index.cjs'),
       contextIsolation: env.MODE !== 'test', // Spectron tests can't work with contextIsolation: true

@@ -31,7 +31,9 @@
           :wrapper-col-props="{span: 18, offset: 0}"
           v-bind="item.formItemProps">
           <config-item v-model="config[item.key]"
+            :value="item.value"
             :type="item.type"
+            :props="item.props"
             @change="handleConfigChange(item.key,$event)"></config-item>
         </a-form-item>
       </a-form>
@@ -41,7 +43,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { getAppConfig, setAppConfigOption } from '/@/utils/electron'
+import { getAppConfig, ipcInvoke, setAppConfigOption } from '/@/utils/electron'
 import AppControls from '/@/components/AppControls.vue'
 import ConfigItem from './components/ConfigItem.vue'
 
@@ -54,6 +56,7 @@ interface SettingTab {
     label?: string
     tip?: string
     value?: boolean | string | number
+    props?: Record<string, any>
     formItemProps?: Record<string, any>
   }[]
 }
@@ -69,6 +72,19 @@ const tabs: SettingTab[] = [
         type: 'switch',
         tip: '开启后，将使用系统默认的浏览器打开外链。',
         value: false
+      },
+      {
+        key: 'create-app-shortcut-link',
+        label: '创建快捷方式',
+        type: 'button',
+        tip: '在桌面创建该应用程序的快捷方式。',
+        value: '创建',
+        props: {
+          async onClick() {
+            const result = await ipcInvoke('shell', 'createAppShortcutLink')
+            console.log(result)
+          }
+        }
       }
     ]
   },
@@ -87,7 +103,11 @@ export default defineComponent({
   components: { AppControls, ConfigItem },
 
   data() {
-    return { tabs, tabKey: 'regular', config: {} as Record<string, any> }
+    return {
+      tabs,
+      tabKey: 'regular',
+      config: {} as Record<string, any>
+    }
   },
 
   computed: {

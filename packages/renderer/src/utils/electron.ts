@@ -6,6 +6,16 @@ export function useElectron(): Readonly<ElectronApi> {
   return window.electron
 }
 
+export function ipcInvoke(
+  channel: string,
+  type: string,
+  data: Record<string, any> = {}
+) {
+  const { ipcRenderer } = useElectron()
+  data.tabId = window.tabId
+  return ipcRenderer.invoke(channel, type, data)
+}
+
 export function ipcSend(
   channel: string,
   type: string,
@@ -96,8 +106,7 @@ export function openVueView(
  * @returns 配置
  */
 export function getAppConfig() {
-  const { ipcRenderer } = useElectron()
-  return ipcRenderer.invoke('config', 'getAppConfig')
+  return ipcInvoke('config', 'getAppConfig')
 }
 
 /**
@@ -105,6 +114,5 @@ export function getAppConfig() {
  * @param params
  */
 export function setAppConfigOption(data: Record<string, any>) {
-  const { ipcRenderer } = useElectron()
-  return ipcRenderer.invoke('config', 'setOption', data)
+  return ipcInvoke('config', 'setOption', data)
 }

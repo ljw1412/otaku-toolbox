@@ -1,8 +1,14 @@
 import IpcWindowAction from './windowAction'
 import IpcConfigAction from './configAction'
 import IpcMessageAction from './messageAction'
+import IpcShellAction from './shellAction'
 
-const IpcActions = [IpcWindowAction, IpcConfigAction, IpcMessageAction]
+const IpcActions = [
+  IpcWindowAction,
+  IpcConfigAction,
+  IpcMessageAction,
+  IpcShellAction
+]
 
 function bind() {
   IpcActions.forEach(action => {

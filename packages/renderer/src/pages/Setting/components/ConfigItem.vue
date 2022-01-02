@@ -1,9 +1,9 @@
 <script lang="ts">
-import { defineComponent, h } from 'vue'
+import { defineComponent, getCurrentInstance, h, PropType, ref } from 'vue'
 import ThemeConfig from './ThemeConfig.vue'
 import Debugger from './Debugger.vue'
 import Proxy from './Proxy.vue'
-import { Switch } from '@arco-design/web-vue'
+import { Switch, Button } from '@arco-design/web-vue'
 
 const configComponent: Record<string, any> = {
   theme: ThemeConfig,
@@ -17,10 +17,15 @@ export default defineComponent({
   props: {
     type: { type: String, default: 'text' },
     options: { type: Array, default: () => [] },
-    modelValue: [String, Boolean, Number]
+    modelValue: [String, Boolean, Number],
+    value: [String, Boolean, Number],
+    props: {
+      type: Object as PropType<Record<string, any>>,
+      default: () => ({})
+    }
   },
 
-  emits: ['change', 'update:modelValue'],
+  emits: ['change', 'click', 'update:modelValue'],
 
   render() {
     if (Object.prototype.hasOwnProperty.call(configComponent, this.type)) {
@@ -32,8 +37,11 @@ export default defineComponent({
         type: 'round',
         'onUpdate:modelValue': (value: boolean) =>
           this.$emit('update:modelValue', value),
-        onChange: (value: boolean) => this.$emit('change', value)
+        onChange: (value: boolean) => this.$emit('change', value),
+        ...this.props
       })
+    } else if (this.type === 'button') {
+      return h(Button, this.props, () => this.value)
     }
 
     return h('span', this.modelValue)
