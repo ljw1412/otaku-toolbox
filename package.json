@@ -1,6 +1,6 @@
 {
-  "name": "two-dimensions-toolbox",
-  "version": "0.0.1",
+  "name": "otaku-toolbox",
+  "version": "0.0.24",
   "private": true,
   "engines": {
     "node": ">=v14.16",

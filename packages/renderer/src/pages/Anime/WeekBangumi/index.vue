@@ -5,12 +5,13 @@
     <div v-show="!isLoading && !isError"
       class="bangumi-grid"
       :data-direction="direction">
-      <one-day-bangumi v-for="day of mList.length"
+      <one-day-bangumi-list v-for="day of mList.length"
         :key="`day-${day}`"
         :day="day-1"
+        :date="weekDateList[day-1]"
         :data="mList[day-1]"
-        :vertical="isVertical"
-        :today="today === day-1"></one-day-bangumi>
+        :direction="direction"
+        :today="today === day-1"></one-day-bangumi-list>
     </div>
     <acg-api-result :loading="isLoading"
       :error="isError"
@@ -28,19 +29,19 @@
 <script lang="ts">
 import { computed, defineComponent } from 'vue'
 import WeekBangumiHeader from './components/WeekBangumiHeader.vue'
-import OneDayBangumi from './components/OneDayBangumi.vue'
+import OneDayBangumiList from './components/OneDayBangumiList.vue'
 import { useNow } from '@vueuse/core'
+import { FULL_DATE_FORMAT } from '/@/utils/date'
 
 export default defineComponent({
   name: 'WeekBangumi',
 
-  components: { WeekBangumiHeader, OneDayBangumi },
+  components: { WeekBangumiHeader, OneDayBangumiList },
 
   setup() {
     const now = useNow()
 
     const today = computed(() => now.value.getDay())
-    console.log(today)
 
     return { now, today }
   },
@@ -63,6 +64,15 @@ export default defineComponent({
       }
     },
 
+    weekDateList(): string[] {
+      const startDay = this.$dayjs(this.now).startOf('w')
+      const list = [startDay.format(FULL_DATE_FORMAT)]
+      for (let i = 1; i < 7; i++) {
+        list.push(startDay.add(i, 'd').format(FULL_DATE_FORMAT))
+      }
+      return list
+    },
+
     isVertical(): boolean {
       return this.direction === 'vertical'
     },
@@ -82,6 +92,13 @@ export default defineComponent({
           return aTime > bTime ? 1 : -1
         })
       )
+    }
+  },
+
+  watch: {
+    today() {
+      console.log(this.today)
+      this.fetchWeekBangumi()
     }
   },
 

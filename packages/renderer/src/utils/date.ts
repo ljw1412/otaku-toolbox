@@ -28,10 +28,10 @@ const TIME_FORMAT_MAP = {
   24: 'HH:mm',
   30: 'HH:mm'
 }
-const DATE_FORMAT = 'M/D'
-const FULL_DATE_FORMAT = 'YYYY/M/D'
-const DATE_FORMAT_CH = 'M月D日'
-const FULL_DATE_FORMAT_CH = 'YYYY年M月D日'
+export const DATE_FORMAT = 'M/D'
+export const FULL_DATE_FORMAT = 'YYYY/M/D'
+export const DATE_FORMAT_CH = 'M月D日'
+export const FULL_DATE_FORMAT_CH = 'YYYY年M月D日'
 
 export function formatUnixTime(
   datetime: number | Date | string,

@@ -66,7 +66,7 @@ export default defineComponent({
   },
 
   created() {
-    const { type = '' } = this.$route.query
+    const { type = 'news' } = this.$route.query
     this.menuKeys = [type as string]
   }
 })
