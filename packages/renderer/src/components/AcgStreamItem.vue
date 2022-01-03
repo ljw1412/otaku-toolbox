@@ -10,7 +10,7 @@
         :src="icon"
         class="icon" />
       <span v-else
-        class="name">{{ link.name }}</span>
+        class="name">{{ name }}</span>
       <div v-if="hide || region"
         class="badge">{{ regionStr }}</div>
     </a-link>

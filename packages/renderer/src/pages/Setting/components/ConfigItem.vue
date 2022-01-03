@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, getCurrentInstance, h, PropType, ref } from 'vue'
+import { defineComponent, h, PropType } from 'vue'
 import ThemeConfig from './ThemeConfig.vue'
 import Debugger from './Debugger.vue'
 import Proxy from './Proxy.vue'

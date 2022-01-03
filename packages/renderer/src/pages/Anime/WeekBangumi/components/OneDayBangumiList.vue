@@ -84,6 +84,10 @@ $colors: (0, #d50000) (1, #ff3d00) (2, #ff9100) (3, #00b42a) (4, #0091ea)
   @each $index, $color in $colors {
     &[data-day='#{$index}'] {
       background-color: $color;
+      &.today {
+        box-shadow: 0 0 10px $color;
+      }
+
       > .data-header {
         background-color: $color;
       }
@@ -103,7 +107,7 @@ $colors: (0, #d50000) (1, #ff3d00) (2, #ff9100) (3, #00b42a) (4, #0091ea)
   }
 
   &.today {
-    box-shadow: 0 0 0 2px var(--color-fill-2);
+    z-index: 10;
 
     &::before {
       @include base-pseudo-element;
