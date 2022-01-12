@@ -83,6 +83,19 @@ const routes = [
         props: true,
         component: () => import('/@/pages/Comic/Reader/index.vue'),
         meta: { title: '漫画阅读器', hideBackUp: true }
+      },
+      {
+        path: '/live',
+        name: 'AppLive',
+        component: () => import('/@/pages/Tools/Live/index.vue'),
+        meta: { title: '直播', maximizable: false, hideBackUp: true }
+      },
+      {
+        path: '/room/:id',
+        name: 'LiveRoom',
+        props: true,
+        component: () => import('/@/pages/Tools/Live/room.vue'),
+        meta: { title: '直播间' }
       }
     ]
   }

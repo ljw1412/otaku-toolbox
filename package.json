@@ -52,7 +52,7 @@
     "vue-tsc": "^0.1.6"
   },
   "dependencies": {
-    "@arco-design/web-vue": "^2.10.0",
+    "@arco-design/web-vue": "^2.14.3",
     "@ljw1412/ionicons-sprite": "^1.0.1",
     "@vueuse/core": "^7.2.2",
     "cheerio": "^1.0.0-rc.10",
@@ -60,6 +60,7 @@
     "electron-json-storage": "^4.5.0",
     "electron-updater": "^4.3.9",
     "glob": "^7.2.0",
+    "hls.js": "^1.1.2",
     "qs": "^6.10.1",
     "superagent": "^6.1.0",
     "superagent-proxy": "^3.0.0",

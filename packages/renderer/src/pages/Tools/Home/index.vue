@@ -4,9 +4,11 @@
       class="tools-header"
       :show-back="false">
     </a-page-header>
-    <tool-card v-for="tool of toolList"
-      :key="tool.name"
-      v-bind="tool"></tool-card>
+    <a-space wrap>
+      <tool-card v-for="tool of toolList"
+        :key="tool.name"
+        v-bind="tool"></tool-card>
+    </a-space>
   </div>
 </template>
 
@@ -23,10 +25,16 @@ export default defineComponent({
     return {
       toolList: [
         {
-          icon: '',
+          icon: 'icon-mind-mapping',
           name: '源管理',
           desc: '对数据源进行管理程序',
           to: { name: 'OriginManager' }
+        },
+        {
+          icon: 'icon-live-broadcast',
+          name: '直播',
+          desc: '观看直播',
+          to: { name: 'AppLive' }
         }
       ]
     }

@@ -32,9 +32,7 @@ export default defineComponent({
 
   computed: {
     iconType() {
-      return this.icon.startsWith('icon-') || !this.icon
-        ? 'icon-common'
-        : 'AImage'
+      return this.icon.startsWith('icon-') || !this.icon ? this.icon : 'AImage'
     },
 
     iconProps() {
