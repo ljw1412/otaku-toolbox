@@ -93,3 +93,19 @@ export async function getRoomInit(room_id: number | string) {
     return Promise.reject(error)
   }
 }
+
+export async function getRoomInfo(room_id: number | string) {
+  try {
+    const res = await request
+      .get('https://api.live.bilibili.com/room_ex/v1/RoomNews/get')
+      .query({ roomid: room_id })
+
+    const { code, data, message } = res.body
+    if (code === 0) {
+      return data as Record<string, any>
+    }
+    return Promise.reject(new Error(message))
+  } catch (error) {
+    return Promise.reject(error)
+  }
+}

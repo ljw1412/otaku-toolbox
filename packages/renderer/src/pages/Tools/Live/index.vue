@@ -16,23 +16,10 @@
       </a-space>
     </header>
     <main>
-      <a-card v-for="item of list"
+      <live-card v-for="item of list"
         :key="item.id"
-        class="live-card"
-        :body-style="{padding:0}"
-        @click="gotoLiveRoom(item.room_id)">
-        <acg-ratio-div :ratio="[16,9]">
-          <div class="room-info">
-            <div class="uname">
-              <a-badge :status="!item.live_status?'danger':'success'"
-                :text="item.uname" />
-            </div>
-          </div>
-          <img :src="item[coverType]"
-            :class="{'filter-gray': !item.live_status}"
-            loading="lazy">
-        </acg-ratio-div>
-      </a-card>
+        :info="item"
+        :cover-type="coverType"></live-card>
     </main>
 
     <add-room-dialog v-model="isDisplayAddRoomDialog"
@@ -47,17 +34,15 @@ import { openVueView } from '/@/utils/electron'
 import * as BLive from './utils/blive'
 import AddRoomDialog from './components/AddRoomDialog.vue'
 import { only } from '/@/utils/object'
+import LiveCard from './components/LiveCard.vue'
 
 export default defineComponent({
   name: 'AppLive',
 
-  components: { AddRoomDialog },
+  components: { AddRoomDialog, LiveCard },
 
   setup() {
-    const liveStore = useLocalStorage(
-      'MY_LIVE_LIST',
-      [] as Record<string, any>[]
-    )
+    const liveStore = useLocalStorage('MY_LIVE_LIST', [] as LiveInfo[])
     const counter = useInterval(1000, { controls: true, immediate: false })
     return { liveStore, counter }
   },
@@ -108,18 +93,22 @@ export default defineComponent({
 
     async updateRoomStatus() {
       this.loading = true
-      this.list = this.liveStore.map(item => ({ ...item }))
-      const uids = this.list.map(item => item.uid)
+      const list = this.liveStore.map(item => ({ ...item }))
+      const uids = list.map(item => item.uid)
       const data = await BLive.getRoomStatusByUids(uids)
-      this.list.forEach(item => {
+      list.forEach(item => {
         const roomStatus = data[item.uid]
         Object.assign(item, roomStatus)
       })
+
+      this.list = list
       this.loading = false
     },
 
-    handleRoomAdd(list: Record<string, any>[]) {
-      const data = list.map(item => only(item, 'uname uid room_id short_id'))
+    handleRoomAdd(list: LiveInfo[]) {
+      const data = list.map(item =>
+        only(item, 'uname uid room_id short_id')
+      ) as LiveInfo[]
       this.liveStore.push(...data)
       this.updateRoomStatus()
     }
@@ -142,44 +131,6 @@ export default defineComponent({
     height: calc(100% - 48px);
     box-sizing: border-box;
     overflow-y: auto;
-  }
-
-  .live-card {
-    display: inline-block;
-    cursor: pointer;
-    margin-right: 12px;
-    margin-bottom: 12px;
-    width: calc(20% - 12px);
-    box-sizing: border-box;
-
-    .room-info {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 10;
-
-      .uname {
-        position: absolute;
-        left: 0;
-        bottom: 0;
-        padding: 2px 6px;
-        width: 100%;
-        background: linear-gradient(
-          0deg,
-          rgba(0, 0, 0, 0.6) 0,
-          rgba(0, 0, 0, 0)
-        );
-        box-sizing: border-box;
-
-        .arco-badge-status-text {
-          color: #ffffff;
-          text-shadow: 1px 1px 3px #000000;
-          font-size: 16px;
-        }
-      }
-    }
   }
 }
 </style>

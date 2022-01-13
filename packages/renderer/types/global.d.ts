@@ -214,4 +214,15 @@ declare global {
     cover?: string
     time: Date
   }
+
+  interface LiveInfo {
+    uname: string
+    uid: number
+    room_id: number
+    short_id: number
+    live_status: number
+    face: string
+    cover_from_user: string
+    keyframe: string
+  }
 }

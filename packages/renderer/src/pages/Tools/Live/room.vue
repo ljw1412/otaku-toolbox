@@ -11,6 +11,13 @@
       </div>
       <div class="not-living mt-10">主播还未开播哦</div>
     </div>
+    <div class="helper">
+      <div class="danmaku-board">
+        <div v-for="danmaku of danmakuList"
+          :key="danmaku.uid+danmaku.message"
+          class="danmaku-item">{{ danmaku.uname }}：{{ danmaku.message }}</div>
+      </div>
+    </div>
     <div class="player">
       <video ref="videoEl"
         autoplay></video>
@@ -22,6 +29,7 @@
 import { defineComponent, ref } from 'vue'
 import * as BLive from './utils/blive'
 import Hls from 'hls.js'
+import { KeepLiveWS } from 'bilibili-live-ws'
 
 export default defineComponent({
   name: 'LiveRoom',
@@ -40,7 +48,10 @@ export default defineComponent({
       hls: new Hls(),
       streamer: { face: '', uname: '主播' },
       url: '',
-      info: { live_status: -1 }
+      info: { live_status: -1 },
+      livews: null as null | KeepLiveWS,
+      danmakuList: [],
+      maxDanmakuSize: 100
     }
   },
 
@@ -52,6 +63,12 @@ export default defineComponent({
 
   mounted() {
     this.initLive()
+  },
+
+  beforeUnmount() {
+    if (this.livews) {
+      this.livews.close()
+    }
   },
 
   methods: {
@@ -77,9 +94,46 @@ export default defineComponent({
       this.url = urls[0] || ''
     },
 
+    addDanmaku(danmaku: any) {
+      this.danmakuList.push(danmaku)
+      if (this.danmakuList.length > this.maxDanmakuSize) {
+        this.danmakuList.splice(0, 1)
+      }
+    },
+
     async initLive() {
       await this.getRoomInfo()
       this.loadLive()
+      this.connectLiveWs()
+    },
+
+    async connectLiveWs() {
+      this.livews = new KeepLiveWS(parseInt(this.id))
+      this.livews.on('open', () => {
+        console.log('已连接直播弹幕服务器')
+        // addInfoDanmaku('已连接直播弹幕服务器');
+      })
+      this.livews.on('live', () => {
+        console.log('已连接直播间', this.id)
+        // addInfoDanmaku(`已连接直播间 ${props.room}`);
+      })
+      this.livews.on('close', () => console.log('已断开与直播弹幕服务器的连接'))
+      this.livews.on('heartbeat', online => console.log('当前人气值', online))
+      this.livews.on(
+        'DANMU_MSG',
+        ({ info: [, message, [uid, uname, isOwner /*, isVip, isSvip*/]] }) => {
+          const danmaku = {
+            type: 'message',
+            uid,
+            uname,
+            message,
+            isAnchor: uid === this.$route.query.uid,
+            isOwner: !!isOwner
+          }
+          console.log(danmaku)
+          this.addDanmaku(danmaku)
+        }
+      )
     },
 
     async loadLive() {
@@ -113,6 +167,21 @@ export default defineComponent({
     video {
       width: 100%;
       height: 100%;
+    }
+  }
+
+  .helper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    color: #ffffff;
+
+    .danmaku-board {
+      width: 300px;
+      height: 400px;
+      overflow-y: auto;
     }
   }
 }

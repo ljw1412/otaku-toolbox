@@ -123,7 +123,7 @@ export default defineComponent({
     async searchByRoomids(roomids: string[]) {
       const data = await Promise.all(
         roomids.map(async id => {
-          return await BLive.getRoomPlayInfo(id)
+          return await BLive.getRoomInfo(id)
         })
       )
       const uids = data.map(item => item.uid)
