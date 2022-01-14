@@ -95,7 +95,7 @@ const routes = [
         name: 'LiveRoom',
         props: true,
         component: () => import('/@/pages/Tools/Live/room.vue'),
-        meta: { title: '直播间' }
+        meta: { title: '直播间', hideBackUp: true }
       }
     ]
   }

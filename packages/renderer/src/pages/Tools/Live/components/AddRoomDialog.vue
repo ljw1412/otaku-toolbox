@@ -3,9 +3,7 @@
     simple
     title="添加直播间"
     width="800px"
-    modal-class="add-live-room-dialog"
-    :ok-button-props="{disabled: !list.length}"
-    @ok="handleOk">
+    modal-class="add-live-room-dialog">
 
     <a-select v-model="idType"
       style="width: 30%">
@@ -25,56 +23,68 @@
       :loading="loading"
       :scroll="{y:200}"
       :pagination="false"
-      :columns="columns"
-      :data="list"></a-table>
+      :data="list">
+      <template #columns>
+        <a-table-column title="直播间id(短id)"
+          :width="160">
+          <template #cell="{ record }">
+            <span>{{ record.room_id }}</span>
+            <span v-if="record.short_id">{{ record.short_id }}</span>
+          </template>
+        </a-table-column>
+        <a-table-column title="用户id"
+          data-index="uid"
+          :width="100"></a-table-column>
+        <a-table-column title="用户名称"
+          data-index="uname"
+          :width="160"></a-table-column>
+        <a-table-column title="直播间标题"
+          data-index="title"></a-table-column>
+        <a-table-column title="操作"
+          :width="160">
+          <template #cell="{ record }">
+            <a-button-group>
+              <a-button size="small"
+                type="primary"
+                :disabled="checkExists(record)"
+                @click="action('add',record)">收藏</a-button>
+              <a-button status="success"
+                size="small"
+                @click="action('enter',record)">进入</a-button>
+            </a-button-group>
+          </template>
+        </a-table-column>
+      </template>
+    </a-table>
+
+    <template #footer>
+      <a-button @click="mVisible = false">关闭</a-button>
+    </template>
   </a-modal>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, PropType } from 'vue'
 import * as BLive from '../utils/blive'
 
 export default defineComponent({
   name: 'AddLiveRoomDialog',
 
-  props: { modelValue: Boolean },
+  props: {
+    modelValue: Boolean,
+    currentList: {
+      type: Array as PropType<Record<string, any>>,
+      default: () => []
+    }
+  },
 
-  emits: ['update:modelValue', 'add'],
+  emits: ['update:modelValue', 'add', 'enter'],
 
   data() {
     return {
       idType: 'roomid',
       id: '',
       loading: false,
-      columns: [
-        {
-          title: '直播间id(短id)',
-          // dataIndex: 'room_id',
-          render({ record }: { record: Record<string, any> }) {
-            const { room_id, short_id } = record
-            let text = '' + room_id
-            if (short_id) {
-              text += `(${short_id})`
-            }
-            return text
-          },
-          width: 160
-        },
-        {
-          title: '用户id',
-          dataIndex: 'uid',
-          width: 120
-        },
-        {
-          title: '用户名称',
-          dataIndex: 'uname',
-          width: 160
-        },
-        {
-          title: '直播间标题',
-          dataIndex: 'title'
-        }
-      ],
       list: [] as Record<string, any>[],
       selectedList: []
     }
@@ -100,6 +110,12 @@ export default defineComponent({
   },
 
   methods: {
+    checkExists(record: Record<string, any>) {
+      return !!~this.currentList.findIndex(
+        item => item.room_id === record.room_id
+      )
+    },
+
     async search() {
       const ids = this.id.split(' ').filter(i => i.trim())
       if (!ids.length) return
@@ -130,8 +146,12 @@ export default defineComponent({
       return await this.searchByUids(uids)
     },
 
-    handleOk() {
-      this.$emit('add', this.list)
+    action(action: string, record: Record<string, any>) {
+      if (action === 'add') {
+        this.$emit('add', record)
+      } else if (action === 'enter') {
+        this.$emit('enter', record)
+      }
     }
   }
 })

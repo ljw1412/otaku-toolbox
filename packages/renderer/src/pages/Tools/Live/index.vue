@@ -3,7 +3,7 @@
     <header>
       <a-space>
         <a-button type="primary"
-          @click="isDisplayAddRoomDialog = true">添加直播间</a-button>
+          @click="isDisplayAddRoomDialog = true">搜索直播间</a-button>
       </a-space>
       <a-space>
         <a-button :loading="loading"
@@ -23,7 +23,9 @@
     </main>
 
     <add-room-dialog v-model="isDisplayAddRoomDialog"
-      @add="handleRoomAdd"></add-room-dialog>
+      :current-list="list"
+      @add="handleRoomAdd"
+      @enter="handleRoomEnter"></add-room-dialog>
   </div>
 </template>
 
@@ -84,17 +86,13 @@ export default defineComponent({
   },
 
   methods: {
-    gotoLiveRoom(id: number) {
-      openVueView(
-        { name: 'LiveRoom', params: { id: id } },
-        { minWidth: 854, minHeight: 480 }
-      )
-    },
-
     async updateRoomStatus() {
       this.loading = true
       const list = this.liveStore.map(item => ({ ...item }))
       const uids = list.map(item => item.uid)
+      if (!uids.length) {
+        return
+      }
       const data = await BLive.getRoomStatusByUids(uids)
       list.forEach(item => {
         const roomStatus = data[item.uid]
@@ -105,12 +103,21 @@ export default defineComponent({
       this.loading = false
     },
 
-    handleRoomAdd(list: LiveInfo[]) {
-      const data = list.map(item =>
-        only(item, 'uname uid room_id short_id')
-      ) as LiveInfo[]
-      this.liveStore.push(...data)
+    handleRoomAdd(room: LiveInfo) {
+      const data = only(room, 'uname uid room_id short_id') as LiveInfo
+      this.liveStore.push(data)
       this.updateRoomStatus()
+    },
+
+    handleRoomEnter(room: LiveInfo) {
+      openVueView(
+        {
+          name: 'LiveRoom',
+          query: { uid: room.uid },
+          params: { id: room.room_id }
+        },
+        { minWidth: 854, minHeight: 480 }
+      )
     }
   }
 })
