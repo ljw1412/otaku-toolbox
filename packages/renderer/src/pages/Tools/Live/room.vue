@@ -25,6 +25,7 @@ import { defineComponent } from 'vue'
 import * as BLive from './utils/blive'
 import Player from 'xgplayer'
 import HlsPlayer from 'xgplayer-hls.js'
+// TODO：修复打包后无法识别buffer的bug
 import { KeepLiveWS } from 'bilibili-live-ws'
 import DanmakuBoard from './components/DanmakuBoard.vue'
 
@@ -164,7 +165,7 @@ export default defineComponent({
             message,
             ts,
             ct,
-            isAnchor: uid === this.$route.query.uid,
+            isAnchor: uid === this.info.uid,
             isOwner: !!isOwner
           }
           console.log(danmaku)
@@ -186,10 +187,10 @@ export default defineComponent({
           area: {
             //弹幕显示区域
             start: 0, //区域顶部到播放器顶部所占播放器高度的比例
-            end: 1 //区域底部到播放器顶部所占播放器高度的比例
+            end: 0.25 //区域底部到播放器顶部所占播放器高度的比例
           },
           live: true,
-          defaultOff: false
+          defaultOff: false //开启此项后弹幕不会初始化，默认初始化弹幕
         }
       })
     }
@@ -216,6 +217,10 @@ export default defineComponent({
     width: 100%;
     height: 100%;
     background-color: #000;
+
+    .xgplayer-panel .xgplayer-panel-slider {
+      left: -230px;
+    }
   }
 }
 </style>
