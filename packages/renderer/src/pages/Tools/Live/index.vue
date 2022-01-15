@@ -4,6 +4,7 @@
       <a-space>
         <a-button type="primary"
           @click="isDisplayAddRoomDialog = true">搜索直播间</a-button>
+        <a-button @click="handleToTestMultiRoom">测试监控台</a-button>
       </a-space>
       <a-space>
         <a-button :loading="loading"
@@ -109,10 +110,21 @@ export default defineComponent({
       this.updateRoomStatus()
     },
 
+    handleToTestMultiRoom() {
+      openVueView(
+        {
+          name: 'MultiLiveRoom',
+          query: { data: [17961, 8643223] },
+          params: { type: 0 }
+        },
+        { minWidth: 854, minHeight: 480 }
+      )
+    },
+
     handleRoomEnter(room: LiveInfo) {
       openVueView(
         {
-          name: 'LiveRoom',
+          name: 'SingleLiveRoom',
           query: { uid: room.uid },
           params: { id: room.room_id }
         },

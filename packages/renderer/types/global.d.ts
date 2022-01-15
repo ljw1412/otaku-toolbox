@@ -215,10 +215,13 @@ declare global {
     time: Date
   }
 
-  interface LiveInfo {
-    uname: string
+  interface BaseLiveInfo {
     uid: number
     room_id: number
+  }
+
+  interface LiveInfo extends BaseLiveInfo {
+    uname: string
     short_id: number
     live_status: number
     face: string

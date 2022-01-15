@@ -63,7 +63,7 @@ export default defineComponent({
     gotoLiveRoom() {
       openVueView(
         {
-          name: 'LiveRoom',
+          name: 'SingleLiveRoom',
           query: { uid: this.info.uid },
           params: { id: this.info.room_id }
         },

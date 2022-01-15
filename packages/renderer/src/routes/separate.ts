@@ -91,11 +91,18 @@ const routes = [
         meta: { title: '直播', maximizable: false, hideBackUp: true }
       },
       {
-        path: '/room/:id',
-        name: 'LiveRoom',
+        path: '/live/sigle-room/:id',
+        name: 'SingleLiveRoom',
         props: true,
-        component: () => import('/@/pages/Tools/Live/room.vue'),
+        component: () => import('/@/pages/Tools/Live/singleRoom.vue'),
         meta: { title: '直播间', hideBackUp: true }
+      },
+      {
+        path: '/live/multi-room/:type',
+        name: 'MultiLiveRoom',
+        props: true,
+        component: () => import('/@/pages/Tools/Live/multiRoom.vue'),
+        meta: { title: '直播监控台', hideBackUp: true }
       }
     ]
   }

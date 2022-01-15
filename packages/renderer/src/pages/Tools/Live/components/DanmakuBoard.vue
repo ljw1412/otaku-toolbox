@@ -14,7 +14,7 @@
         <div class="info-item px-6"
           title="房间号">
           <icon-live-broadcast />
-          <span class="pl-2">{{ $route.params.id }}</span>
+          <span class="pl-2">{{ roomId }}</span>
         </div>
         <div class="info-item px-6"
           title="人气值">
@@ -68,15 +68,24 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, PropType, ref } from 'vue'
+import { defineComponent, isRef, onMounted, PropType, ref } from 'vue'
 import {
   Position,
+  toReactive,
   useDraggable,
   useLocalStorage,
   useScroll
 } from '@vueuse/core'
 
 const units = ['', '万', '亿']
+
+const defaultConfig = {
+  bg: '#000000',
+  opacity: 50,
+  blur: 2,
+  x: 0,
+  y: 240
+}
 
 export default defineComponent({
   name: 'DanmakuBoard',
@@ -86,23 +95,35 @@ export default defineComponent({
     list: {
       type: Array as PropType<Record<string, any>>,
       default: () => []
-    }
+    },
+    roomId: { type: [String, Number], default: '' },
+    roomEl: { type: Object as PropType<HTMLElement | null>, default: null },
+    monitorId: { type: [String, Number], default: '' },
+    keyId: { type: Number, default: -1 }
   },
 
-  setup() {
-    const config = useLocalStorage('DANMAKU_BOARD_CONFIG', {
-      bg: '#000000',
-      opacity: 50,
-      blur: 2,
-      x: 0,
-      y: 240
-    })
+  setup(props) {
+    console.log('id', props.monitorId, props.keyId)
+    let config: Record<string, any> = {}
+    if (props.monitorId) {
+      const store = useLocalStorage(
+        `MONITOR_${props.monitorId}_DANMAKU_BOARD_CONFIG`,
+        {} as Record<string, any>
+      )
+      if (!store.value[props.keyId]) {
+        store.value[props.keyId] = { ...defaultConfig }
+      }
+      config = store.value[props.keyId]
+    } else {
+      config = useLocalStorage('DANMAKU_BOARD_CONFIG', { ...defaultConfig })
+      config = toReactive(config)
+    }
 
     const boardEl = ref<HTMLElement | null>(null)
     const settingEl = ref<HTMLElement | null>(null)
     // @ts-ignore
     const { position, style } = useDraggable(boardEl, {
-      initialValue: { x: config.value.x, y: config.value.y },
+      initialValue: { x: config.x, y: config.y },
       onStart: (position: Position, event: PointerEvent) => {
         if (
           settingEl.value &&
@@ -116,8 +137,8 @@ export default defineComponent({
       },
       onEnd: (position: Position) => {
         const { x, y } = position
-        config.value.x = x
-        config.value.y = y
+        config.x = x
+        config.y = y
       }
     })
     const listEl = ref<HTMLElement | null>(null)
@@ -126,22 +147,32 @@ export default defineComponent({
     arrivedState.bottom = true
 
     function checkPosition(position: Position) {
-      if (boardEl.value) {
+      if (props.roomEl && boardEl.value) {
         const { x, y } = position
         const boardWidth = boardEl.value.offsetWidth
         const boardHeight = boardEl.value.offsetHeight
-        const maxX = window.innerWidth - boardWidth
-        const maxY = window.innerHeight - boardHeight
-        position.x = Math.max(Math.min(x, maxX), 0)
-        position.y = Math.max(Math.min(y, maxY), 40)
+        const maxX =
+          props.roomEl.offsetWidth + props.roomEl.offsetLeft - boardWidth
+        const maxY =
+          props.roomEl.offsetHeight + props.roomEl.offsetTop - boardHeight + 40
+        position.x = Math.max(Math.min(x, maxX), props.roomEl.offsetLeft)
+        position.y = Math.max(Math.min(y, maxY), props.roomEl.offsetTop + 40)
       }
     }
     window.addEventListener('resize', () => {
       checkPosition(position.value)
     })
 
-    onMounted(() => {
+    const init = () => {
+      if (!props.roomEl) {
+        setTimeout(init, 500)
+        return
+      }
       checkPosition(position.value)
+    }
+
+    onMounted(() => {
+      init()
     })
 
     return {
@@ -219,8 +250,8 @@ export default defineComponent({
   height: 400px;
   color: #ffffff;
   box-sizing: border-box;
-  border: 2px solid transparent;
-  transition: border-color 0.3s;
+
+  transition: box-shadow 0.3s;
   overflow: hidden;
   z-index: 150;
   cursor: move;
@@ -298,7 +329,7 @@ export default defineComponent({
   }
 
   &:hover {
-    border-color: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
   }
 }
 </style>

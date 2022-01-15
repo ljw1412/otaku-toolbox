@@ -1,6 +1,7 @@
 <template>
-  <div class="live-room">
-    <div v-show="!isLiving"
+  <div ref="LiveRoomEl"
+    class="live-room">
+    <div v-if="!isLiving"
       class="status">
       <div class="streamer">
         <a-avatar :size="128">
@@ -11,23 +12,30 @@
       </div>
       <div class="not-living mt-10">主播还未开播哦</div>
     </div>
+    <div v-if="isLiving && !hideHeader"
+      class="room-header">
+      <div class="title">[{{ streamer.uname }}] {{ streamer.title }}</div>
+    </div>
     <div class="helper">
       <danmaku-board :online="online"
-        :list="danmakuList"></danmaku-board>
+        :monitor-id="monitorId"
+        :key-id="keyId"
+        :list="danmakuList"
+        :room-id="roomId"
+        :room-el="$refs.LiveRoomEl"></danmaku-board>
     </div>
-    <div id="live-player">
-    </div>
+    <div ref="livePlayerEl"
+      class="live-player"></div>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import * as BLive from './utils/blive'
+import * as BLive from '../utils/blive'
+import connectLiveWs, { KeepLiveWS } from '../utils/bliveWs'
 import Player from 'xgplayer'
 import HlsPlayer from 'xgplayer-hls.js'
-// 改包内引用 'buffer' -> 'buffer/' | 'events' -> 'events/events'
-import { KeepLiveWS } from 'bilibili-live-ws/browser'
-import DanmakuBoard from './components/DanmakuBoard.vue'
+import DanmakuBoard from './DanmakuBoard.vue'
 
 export default defineComponent({
   name: 'LiveRoom',
@@ -37,18 +45,23 @@ export default defineComponent({
   },
 
   props: {
-    id: { type: String, default: '' }
+    hideHeader: Boolean,
+    monitorId: { type: [String, Number], default: '' },
+    keyId: { type: Number, default: -1 },
+    roomId: { type: [Number, String], default: '' }
   },
+
+  emits: ['status-change'],
 
   data() {
     return {
       player: null as null | Player,
-      streamer: { face: '', uname: '主播' },
+      streamer: { face: '', uname: '主播', title: '' },
       url: '',
       info: { live_status: -1, uid: -1 },
       livews: null as null | KeepLiveWS,
       online: 0,
-      danmakuList: [],
+      danmakuList: [] as LivePlayer.BLiveMessageDanmaku[],
       maxDanmakuSize: 100
     }
   },
@@ -73,12 +86,11 @@ export default defineComponent({
     async getRoomStatus(uid: string) {
       const data = await BLive.getRoomStatusByUids([uid])
       this.streamer = data[uid]
-      const { title, uname } = data[uid]
-      this.$global.setTitle(`[${uname}] ${title}`)
+      this.$emit('status-change', data[uid])
     },
 
     async getRoomInfo() {
-      const roomInfo = await BLive.getRoomPlayInfo(this.id)
+      const roomInfo = await BLive.getRoomPlayInfo(this.roomId)
       await this.getRoomStatus(roomInfo.uid)
       this.info = roomInfo
       if (!roomInfo.live_status) {
@@ -92,29 +104,32 @@ export default defineComponent({
       this.url = urls[0] || ''
     },
 
-    addDanmaku(danmaku: any) {
+    addDanmaku(danmaku: LivePlayer.BLiveMessageDanmaku) {
       this.danmakuList.push(danmaku)
       if (this.danmakuList.length > this.maxDanmakuSize) {
         this.danmakuList.splice(0, 1)
       }
       if (this.player) {
-        const playerDanmuList = this.danmakuList.map(danmaku => ({
-          start: 0,
-          duration: 15000,
-          id: danmaku.ct,
-          txt: danmaku.message,
-          mode: 'scroll',
-          prior: true, //该条弹幕优先显示，默认false
-          color: true, //该条弹幕为彩色弹幕，默认false
-          style: {
-            //弹幕自定义样式
-            color: '#ffffff',
-            fontSize: '25px',
-            fontWeight: 'bold',
-            textShadow:
-              '1px 0 1px #000000,0 1px 1px #000000,0 -1px 1px #000000,-1px 0 1px #000000'
-          }
-        }))
+        const playerDanmuList: LivePlayer.XGDanmaku[] = this.danmakuList.map(
+          danmaku => ({
+            start: 0,
+            duration: 15000,
+            id: danmaku.ct,
+            txt: danmaku.message,
+            mode: 'scroll',
+            prior: true, //该条弹幕优先显示，默认false
+            color: true, //该条弹幕为彩色弹幕，默认false
+            style: {
+              //弹幕自定义样式
+              color: '#ffffff',
+              fontSize: '25px',
+              fontWeight: 'bold',
+              textShadow:
+                '1px 0 1px #000000,0 1px 1px #000000,0 -1px 1px #000000,-1px 0 1px #000000'
+            }
+          })
+        )
+        // @ts-ignore
         this.player.danmu.updateComments(playerDanmuList)
       }
     },
@@ -128,56 +143,24 @@ export default defineComponent({
     },
 
     async connectLiveWs() {
-      this.livews = new KeepLiveWS(parseInt(this.id))
-      this.livews.on('open', () => {
-        console.log('已连接直播弹幕服务器')
-        // addInfoDanmaku('已连接直播弹幕服务器');
-      })
-      this.livews.on('live', () => {
-        console.log('已连接直播间', this.id)
-        // addInfoDanmaku(`已连接直播间 ${props.room}`);
-      })
-      this.livews.on('close', () => console.log('已断开与直播弹幕服务器的连接'))
-      this.livews.on('heartbeat', online => {
-        this.online = online
-        console.log('当前人气值', online)
-      })
-      this.livews.on(
-        'DANMU_MSG',
-        ({
-          info: [
-            ,
-            message,
-            [uid, uname, isOwner /*, isVip, isSvip*/],
-            ,
-            ,
-            ,
-            ,
-            ,
-            ,
-            { ts, ct }
-          ]
-        }) => {
-          const danmaku = {
-            type: 'message',
-            uid,
-            uname,
-            message,
-            ts,
-            ct,
-            isAnchor: uid === this.info.uid,
-            isOwner: !!isOwner
+      this.livews = connectLiveWs(this.roomId, {
+        roomUid: this.info.uid,
+        on: {
+          heartbeat: online => {
+            this.online = online
+          },
+          danmu: danmaku => {
+            this.addDanmaku(danmaku)
           }
-          console.log(danmaku)
-          this.addDanmaku(danmaku)
         }
-      )
+      })
     },
 
     async loadLive() {
+      // @ts-ignore
       this.player = new HlsPlayer({
         lang: 'zh-cn',
-        id: 'live-player',
+        el: this.$refs.livePlayerEl,
         url: this.url,
         autoplay: true,
         width: '100%',
@@ -204,6 +187,7 @@ export default defineComponent({
   width: 100%;
   height: 100%;
   overflow: hidden;
+
   .status {
     position: absolute;
     top: 100px;
@@ -213,6 +197,28 @@ export default defineComponent({
     text-align: center;
   }
 
+  .room-header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 48px;
+    align-items: center;
+    z-index: 10;
+    background-image: linear-gradient(
+      0deg,
+      transparent,
+      rgba(0, 0, 0, 0.37),
+      rgba(0, 0, 0, 0.75),
+      rgba(0, 0, 0, 0.75)
+    );
+    display: none;
+    .title {
+      font-size: 16px;
+      padding-left: 12px;
+    }
+  }
+
   #live-player {
     width: 100%;
     height: 100%;
@@ -220,6 +226,12 @@ export default defineComponent({
 
     .xgplayer-panel .xgplayer-panel-slider {
       left: -230px;
+    }
+  }
+
+  &:hover {
+    .room-header {
+      display: flex;
     }
   }
 }
