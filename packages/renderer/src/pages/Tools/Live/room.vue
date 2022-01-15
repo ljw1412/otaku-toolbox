@@ -25,8 +25,8 @@ import { defineComponent } from 'vue'
 import * as BLive from './utils/blive'
 import Player from 'xgplayer'
 import HlsPlayer from 'xgplayer-hls.js'
-// TODO：修复打包后无法识别buffer的bug
-import { KeepLiveWS } from 'bilibili-live-ws'
+// 改包内引用 'buffer' -> 'buffer/' | 'events' -> 'events/events'
+import { KeepLiveWS } from 'bilibili-live-ws/browser'
 import DanmakuBoard from './components/DanmakuBoard.vue'
 
 export default defineComponent({
@@ -45,7 +45,7 @@ export default defineComponent({
       player: null as null | Player,
       streamer: { face: '', uname: '主播' },
       url: '',
-      info: { live_status: -1 },
+      info: { live_status: -1, uid: -1 },
       livews: null as null | KeepLiveWS,
       online: 0,
       danmakuList: [],
