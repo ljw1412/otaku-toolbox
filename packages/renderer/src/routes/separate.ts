@@ -98,11 +98,11 @@ const routes = [
         meta: { title: '直播间', hideBackUp: true }
       },
       {
-        path: '/live/multi-room/:type',
+        path: '/live/multi-room/:monitorId',
         name: 'MultiLiveRoom',
         props: true,
         component: () => import('/@/pages/Tools/Live/multiRoom.vue'),
-        meta: { title: '直播监控台', hideBackUp: true }
+        meta: { title: '直播监控台', hideBackUp: true, isMulti: true }
       }
     ]
   }

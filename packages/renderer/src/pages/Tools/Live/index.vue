@@ -17,8 +17,8 @@
       </a-space>
     </header>
     <main>
-      <live-card v-for="item of list"
-        :key="item.id"
+      <live-card v-for="item of sortedList"
+        :key="item.room_id"
         :info="item"
         :cover-type="coverType"></live-card>
     </main>
@@ -53,7 +53,7 @@ export default defineComponent({
   data() {
     return {
       loading: false,
-      list: [] as Record<string, any>[],
+      list: [] as LiveInfo[],
       isDisplayAddRoomDialog: false,
       coverType: 'keyframe'
     }
@@ -62,6 +62,14 @@ export default defineComponent({
   computed: {
     downCounter(): number {
       return 60 - this.counter.counter.value
+    },
+
+    sortedList(): LiveInfo[] {
+      return [...this.list].sort((a, b) => {
+        const aStatus = a.live_status || 99
+        const bStatus = b.live_status || 99
+        return aStatus > bStatus ? 1 : -1
+      })
     }
   },
 
@@ -114,8 +122,8 @@ export default defineComponent({
       openVueView(
         {
           name: 'MultiLiveRoom',
-          query: { data: [17961, 8643223] },
-          params: { type: 0 }
+          query: { data: [33989, 42062, 17961, 8643223] },
+          params: { monitorId: 0 }
         },
         { minWidth: 854, minHeight: 480 }
       )

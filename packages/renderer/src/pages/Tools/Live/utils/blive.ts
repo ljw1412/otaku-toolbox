@@ -22,7 +22,7 @@ export async function getRoomPlayInfo(room_id: number | string, qn = '10000') {
       const qnDesc: Record<string, any> = {}
       const formatStream: Record<string, any> = {}
 
-      if (live_status) {
+      if (live_status === 1) {
         const { g_qn_desc, stream } = playurl_info.playurl
         if (Array.isArray(g_qn_desc)) {
           g_qn_desc.forEach(item => {

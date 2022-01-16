@@ -228,4 +228,20 @@ declare global {
     cover_from_user: string
     keyframe: string
   }
+
+  interface LiveRoomDanmakuConfig {
+    aside: boolean
+    showBoard: boolean
+    bg: string
+    opacity: number
+    blur: number
+    x: number
+    y: number
+  }
+
+  interface LiveRoomConfig {
+    volume: number
+    showDanmaku: boolean
+    danmaku: LiveRoomDanmakuConfig
+  }
 }

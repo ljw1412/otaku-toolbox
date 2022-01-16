@@ -1,0 +1,15 @@
+.xgplayer-controls .player-live-reload {
+  width: 40px;
+  position: relative;
+  display: block;
+  cursor: pointer;
+}
+
+.xgplayer-controls .player-live-reload .xgplayer-icon {
+  margin-top: 7px;
+  width: 32px;
+}
+
+.xgplayer-controls .player-live-reload:hover .xgplayer-tips {
+  display: block;
+}

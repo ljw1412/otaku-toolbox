@@ -7,13 +7,17 @@ declare namespace LivePlayer {
   import { DanmuCommentOptions } from 'xgplayer'
   type BLiveDanmaku = BLiveInfoDanmaku | BLiveMessageDanmaku | BLiveGiftDanmaku
 
-  interface BLiveInfoDanmaku {
+  interface BLiveBaseDanmaku {
+    key?: string
+  }
+
+  interface BLiveInfoDanmaku extends BLiveBaseDanmaku {
     type: 'info'
     message: string
     stay: number
   }
 
-  interface BLiveSCMessageDanmaku {
+  interface BLiveSCMessageDanmaku extends BLiveBaseDanmaku {
     type: 'sc'
     uid: number
     uname: string
@@ -21,7 +25,7 @@ declare namespace LivePlayer {
     value: number
   }
 
-  interface BLiveMessageDanmaku {
+  interface BLiveMessageDanmaku extends BLiveBaseDanmaku {
     type: 'message'
     uid: number
     uname: string
@@ -32,7 +36,7 @@ declare namespace LivePlayer {
     isOwner: boolean
   }
 
-  interface BLiveGiftDanmaku {
+  interface BLiveGiftDanmaku extends BLiveBaseDanmaku {
     type: 'gift'
     uid: number
     uname: string
