@@ -9,7 +9,7 @@
           class="menu-item"
           :class="{ active: $route.name === item.component }"
           @click="navigate({ name: item.component })">
-          <acg-icon :name="item.icon"></acg-icon>
+          <component :is="item.icon"></component>
         </div>
       </div>
       <div class="origin-search">
@@ -58,23 +58,23 @@ export default defineComponent({
       text: '',
       menu: [
         {
-          name: '首页',
-          icon: 'navigate-circle-outline',
+          name: '资讯',
+          icon: 'icon-nav',
           component: 'ComicHome'
         },
         {
           name: '收藏',
-          icon: 'heart-circle-outline',
+          icon: 'icon-star',
           component: 'ComicFavourite'
         },
         {
           name: '历史',
-          icon: 'time-outline',
+          icon: 'icon-history',
           component: 'ComicHistory'
         },
         {
           name: '搜索',
-          icon: 'search-circle-outline',
+          icon: 'icon-search',
           component: 'ComicSearch'
         }
       ],
@@ -165,7 +165,7 @@ export default defineComponent({
         justify-items: center;
         width: 100%;
         height: 100%;
-        font-size: 24px;
+        font-size: 20px;
         transition: transform 0.15s;
         &:active {
           transform: scale(0.9);

@@ -1,8 +1,5 @@
 <template>
   <div class="comic-home">
-    <a-page-header title="首页"
-      class="comic-header"
-      :show-back="false"> </a-page-header>
     <app-news title="漫画资讯"
       type="comic-news"
       :skeleton-count="4"></app-news>

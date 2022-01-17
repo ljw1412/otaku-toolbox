@@ -21,13 +21,16 @@
         class="room-header">
         <div class="title">[{{ streamer.uname }}] {{ streamer.title }}</div>
         <div class="extra">
-          <a-tooltip content="版聊"
-            position="br">
-            <icon-nav style="font-size: 20px;"
-              class="cursor-pointer"
-              :class="{'board-active': config.danmaku.showBoard}"
-              @click="toggleDisplayBoard" />
-          </a-tooltip>
+          <icon-nav style="font-size: 20px;"
+            v-tooltip.bottom="'版聊'"
+            class="cursor-pointer"
+            :class="{'board-active': config.danmaku.showBoard}"
+            @click="toggleDisplayBoard" />
+          <icon-close v-if="$route.meta.isMulti"
+            style="font-size: 20px;"
+            v-tooltip.bottom="'关闭'"
+            class="cursor-pointer ml-8"
+            @click="$emit('close')" />
         </div>
       </div>
     </div>
@@ -73,12 +76,10 @@ export default defineComponent({
       default: () => ({})
     },
     hideHeader: Boolean,
-    monitorId: { type: [String, Number], default: '' },
-    keyId: { type: Number, default: -1 },
     roomId: { type: [Number, String], default: '' }
   },
 
-  emits: ['status-change'],
+  emits: ['status-change', 'close'],
 
   setup() {
     const LiveRoomEl = ref(null)
@@ -292,7 +293,7 @@ export default defineComponent({
     height: 48px;
     align-items: center;
     justify-content: space-between;
-    z-index: 10;
+    z-index: 150;
     background-image: linear-gradient(
       0deg,
       transparent,
@@ -321,6 +322,7 @@ export default defineComponent({
     flex-grow: 1;
     width: 100%;
     height: 100%;
+    background-color: #000000;
   }
 
   .helper {

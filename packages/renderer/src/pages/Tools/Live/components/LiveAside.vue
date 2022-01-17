@@ -12,13 +12,15 @@
 
     <div v-show="config.aside"
       class="aside-container">
-      <div class="btn-toggle-board cursor-pointer"
+      <div title="切换版聊模式"
+        class="btn-toggle-board cursor-pointer"
         @click="$emit('state-change', 'board')">
         <icon-menu-fold class="btn-fold" />
       </div>
 
       <div class="info px-6">
-        <a-avatar :size="32"
+        <a-avatar :size="36"
+          v-tooltip.bottom="streamer.uname"
           class="flex-shrink-0">
           <img v-if="streamer.face"
             :src="streamer.face">
@@ -32,11 +34,11 @@
               color="orange">{{ streamer.area_v2_name }}</a-tag>
             <div title="房间号">
               <icon-live-broadcast />
-              <span class="pl-2">{{ streamer.room_id }}</span>
+              <span class="pl-2 fs-12">{{ streamer.room_id }}</span>
             </div>
             <div title="人气值">
               <icon-fire />
-              <span class="pl-2">{{ online }}</span>
+              <span class="pl-2 fs-12">{{ online }}</span>
             </div>
           </a-space>
         </div>

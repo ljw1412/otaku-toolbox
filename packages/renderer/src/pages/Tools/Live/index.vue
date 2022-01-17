@@ -4,7 +4,20 @@
       <a-space>
         <a-button type="primary"
           @click="isDisplayAddRoomDialog = true">搜索直播间</a-button>
-        <a-button @click="handleToTestMultiRoom">测试监控台</a-button>
+
+        <a-popover v-for="(monitor,index) of monitors"
+          :key="monitor.id"
+          :title="`监控台${ index }`">
+          <a-button @click="handleToTestMultiRoom(monitor)">监控台{{ index }}</a-button>
+          <template #content>
+            <span v-for="room of monitor.roomList"
+              :key="room.room_id">{{ room.uname }}</span>
+          </template>
+        </a-popover>
+
+        <a-button v-if="monitors.length <= 5"
+          type="outline"
+          @click="handleMonitorAdd">添加监控台</a-button>
       </a-space>
       <a-space>
         <a-button :loading="loading"
@@ -38,6 +51,7 @@ import * as BLive from './utils/blive'
 import AddRoomDialog from './components/AddRoomDialog.vue'
 import { only } from '/@/utils/object'
 import LiveCard from './components/LiveCard.vue'
+import { defaultMonitor } from './utils/data'
 
 export default defineComponent({
   name: 'AppLive',
@@ -45,9 +59,13 @@ export default defineComponent({
   components: { AddRoomDialog, LiveCard },
 
   setup() {
+    const monitors = useLocalStorage(
+      'MY_LIVE_MONITOR_LIST',
+      [] as LiveMonitor[]
+    )
     const liveStore = useLocalStorage('MY_LIVE_LIST', [] as LiveInfo[])
     const counter = useInterval(1000, { controls: true, immediate: false })
-    return { liveStore, counter }
+    return { liveStore, counter, monitors }
   },
 
   data() {
@@ -118,14 +136,24 @@ export default defineComponent({
       this.updateRoomStatus()
     },
 
-    handleToTestMultiRoom() {
+    handleMonitorAdd() {
+      if (this.monitors.length <= 5) {
+        this.monitors.push(defaultMonitor())
+      }
+    },
+
+    handleToTestMultiRoom(monitor: LiveMonitor) {
       openVueView(
         {
           name: 'MultiLiveRoom',
-          query: { data: [33989, 42062, 17961, 8643223] },
-          params: { monitorId: 0 }
+          params: { monitorId: monitor.id }
         },
-        { minWidth: 854, minHeight: 480 }
+        {
+          minWidth: 854,
+          minHeight: 480,
+          title: `监控台${monitor.id}`,
+          singleInstance: true
+        }
       )
     },
 

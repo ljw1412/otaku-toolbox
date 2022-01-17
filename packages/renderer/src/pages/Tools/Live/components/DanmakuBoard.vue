@@ -9,28 +9,31 @@
     <div class="info">
       <div class="d-flex align-items-center flex-shrink-0 mr-8">
         <icon-settings class="cursor-pointer"
+          v-tooltip.bottom="'版聊设置'"
           @click="isSetting = !isSetting" />
       </div>
       <a-space size="mini"
         class="flex-grow-1">
         <div class="info-item"
-          title="房间号">
+          v-tooltip.bottom="'房间号'">
           <icon-live-broadcast />
-          <span class="pl-2">{{ streamer.room_id }}</span>
+          <span class="pl-2 fs-12">{{ streamer.room_id }}</span>
         </div>
         <div class="info-item"
-          title="人气值">
+          v-tooltip.bottom="'人气值'">
           <icon-fire />
-          <span class="pl-2">{{ online }}</span>
+          <span class="pl-2 fs-12">{{ online }}</span>
         </div>
       </a-space>
 
       <div class="d-flex align-items-center flex-shrink-0">
         <icon-menu-unfold v-if="!$route.meta.isMulti"
           class="cursor-pointer"
+          v-tooltip.bottom="'切换普通模式'"
           @click="$emit('state-change', 'aside')" />
         <icon-close v-else
           class="cursor-pointer"
+          v-tooltip.bottom="'关闭'"
           @click="config.showBoard = false" />
       </div>
     </div>
@@ -214,9 +217,6 @@ export default defineComponent({
     .info-item {
       display: flex;
       align-items: center;
-      span {
-        font-size: 14px;
-      }
     }
   }
 

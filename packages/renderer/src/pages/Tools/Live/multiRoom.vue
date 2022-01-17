@@ -1,6 +1,6 @@
 <template>
   <div class="live-multi-room"
-    :data-type="mode"
+    :data-type="monitor.mode"
     @dragleave="handleDragleave">
     <div v-for="index of count"
       :key="index"
@@ -9,23 +9,25 @@
       :class="{dragging: highlightIndex === index}"
       @dragover="handleItemDragover($event,index)"
       @drop="handleItemDrop($event,index)">
-      <live-room v-if="roomList[index - 1]"
-        :key="roomList[index - 1]"
-        :room-id="roomList[index - 1]"
-        :monitor-id="1"
-        :key-id="index"
-        :config="config.roomList[index]"></live-room>
+      <live-room v-if="roomidList[index - 1]"
+        :key="roomidList[index - 1]"
+        :room-id="roomidList[index - 1]"
+        :config="monitor.roomConfigList[index]"
+        @close="handleRoomClose(index - 1)"></live-room>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { useLocalStorage, toReactive } from '@vueuse/core'
+import { useLocalStorage, get } from '@vueuse/core'
 import { defineComponent } from 'vue'
 import LiveRoom from './components/LiveRoom.vue'
-import { defaultLiveConfig } from './utils/data'
-
-const modeAndCount = [2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 6, 6, 8, 8, 8, 9]
+import {
+  defaultLiveConfig,
+  defaultMonitor,
+  getModeLiveCount
+} from './utils/data'
+import { only } from '/@/utils/object'
 
 export default defineComponent({
   name: 'LiveMultiRoom',
@@ -35,43 +37,47 @@ export default defineComponent({
   props: { monitorId: { type: String, default: '-1' } },
 
   setup(props) {
-    const config = toReactive(
-      useLocalStorage(`LIVE_MULTI_${props.monitorId}_CONFIG`, {
-        id: props.monitorId,
-        mode: 1,
-        roomList: [{}] as Record<string, any>[]
-      })
+    const monitors = useLocalStorage(
+      'MY_LIVE_MONITOR_LIST',
+      [] as LiveMonitor[]
     )
-    if (config.roomList.length < 9) {
-      for (let i = config.roomList.length; i < 10; i++) {
-        config.roomList.push(defaultLiveConfig(true))
+
+    let monitor = get(monitors).find(item => item.id + '' === props.monitorId)
+    if (monitor) {
+      if (monitor.roomConfigList.length <= 9) {
+        for (let i = monitor.roomConfigList.length; i < 10; i++) {
+          monitor.roomConfigList.push(defaultLiveConfig(true))
+        }
       }
+    } else {
+      monitor = defaultMonitor()
     }
-    return { config }
+
+    return {
+      monitor
+    }
   },
 
   data() {
     return {
-      mode: 8,
-      roomList: [] as number[],
       highlightIndex: -1
     }
   },
 
   computed: {
     count() {
-      return modeAndCount[this.mode] || 0
-    }
-  },
-
-  mounted() {
-    const { data } = this.$route.query
-    if (Array.isArray(data)) {
-      this.roomList = data.map(id => parseInt(id as string))
+      return getModeLiveCount(this.monitor.mode)
+    },
+    roomidList() {
+      return this.monitor.roomList.map(item => item.room_id)
     }
   },
 
   methods: {
+    handleRoomClose(index: number) {
+      this.monitor.roomList[index] = {} as LiveInfo
+    },
+
     handleItemDragover(ev: DragEvent, index: number) {
       ev.preventDefault()
       this.highlightIndex = index
@@ -82,7 +88,17 @@ export default defineComponent({
       if (data) {
         try {
           const info = JSON.parse(data)
-          this.roomList[index - 1] = info.room_id
+          const i = this.monitor.roomList.findIndex(
+            item => item.room_id === info.room_id
+          )
+          if (i !== -1) {
+            this.handleRoomClose(i)
+          }
+
+          this.monitor.roomList[index - 1] = only(
+            info,
+            'uname uid room_id short_id'
+          ) as LiveInfo
         } catch (error) {
           console.error(error)
         }

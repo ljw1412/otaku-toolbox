@@ -13,3 +13,18 @@ export function defaultLiveConfig(isMulti = false): LiveRoomConfig {
     }
   }
 }
+
+export function defaultMonitor(): LiveMonitor {
+  return {
+    id: +new Date(),
+    mode: 0,
+    roomList: [],
+    roomConfigList: [{} as LiveRoomConfig]
+  }
+}
+
+const modeAndCount = [2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 6, 6, 8, 8, 8, 9]
+
+export function getModeLiveCount(mode: number) {
+  return modeAndCount[mode]
+}

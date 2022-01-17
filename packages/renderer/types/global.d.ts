@@ -220,6 +220,13 @@ declare global {
     room_id: number
   }
 
+  interface LiveMonitor {
+    id: number | string
+    mode: number
+    roomList: LiveInfo[]
+    roomConfigList: LiveRoomConfig[]
+  }
+
   interface LiveInfo extends BaseLiveInfo {
     uname: string
     short_id: number
