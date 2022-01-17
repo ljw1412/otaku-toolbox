@@ -12,7 +12,6 @@
         :key-id="index"
         :config="config.roomList[index]"></live-room>
     </div>
-
   </div>
 </template>
 
@@ -74,6 +73,9 @@ export default defineComponent({
   width: 100%;
   height: 100%;
   display: grid;
+  background: rgba(200, 200, 200, 0.2);
+  overflow: hidden;
+  grid-gap: 1px;
 
   &[data-type='0'] {
     grid-template-columns: repeat(2, 50%);
@@ -181,10 +183,6 @@ export default defineComponent({
         content: '#{$i}';
         font-size: 36px;
       }
-    }
-
-    .live-room {
-      background-color: var(--app-color-bg);
     }
   }
 }

@@ -79,6 +79,8 @@ export default defineComponent({
   font-size: 14px;
   height: 100%;
 
+  box-shadow: 0 0 5px rgba(255, 255, 255, 0.1);
+
   .toggle-btn-container {
     position: absolute;
     top: 0;
@@ -86,7 +88,7 @@ export default defineComponent({
     transform: translate(-100%, 0);
     height: 100%;
     width: 2px;
-    background-color: var(--color-primary-light-4);
+    background-color: var(--app-color-common);
     z-index: 15;
     opacity: 0;
     transition: opacity 0.2s;
@@ -103,7 +105,7 @@ export default defineComponent({
       align-items: center;
       justify-content: center;
       transform: translate(-100%, -50%);
-      background-color: var(--color-primary-light-4);
+      background-color: var(--app-color-common);
       padding: 20px 2px;
       padding-left: 4px;
       border-radius: 10px 0 0 10px;
@@ -132,7 +134,7 @@ export default defineComponent({
     transition: opacity 0.2s;
     color: #ffffff;
     &:hover {
-      background-color: var(--color-primary-light-4);
+      background-color: var(--app-color-common);
       opacity: 1;
     }
   }

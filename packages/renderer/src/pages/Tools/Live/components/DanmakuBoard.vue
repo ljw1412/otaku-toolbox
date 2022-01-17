@@ -63,8 +63,7 @@
           :format-tooltip="(value)=>`${value}px`" />
       </div>
     </div>
-    <danmaku-list :list="list"
-      text-shadow></danmaku-list>
+    <danmaku-list :list="list"></danmaku-list>
   </div>
 </template>
 

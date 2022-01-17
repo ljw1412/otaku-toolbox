@@ -22,9 +22,7 @@ export default defineComponent({
     list: {
       type: Array as PropType<LivePlayer.BLiveMessageDanmaku[]>,
       default: () => []
-    },
-
-    textShadow: Boolean
+    }
   },
 
   setup() {
@@ -72,10 +70,8 @@ export default defineComponent({
 
   .danmaku-item {
     padding: 5px;
-    &.is-text-shadow {
-      text-shadow: 1px 0 1px #000000, 0 1px 1px #000000, 0 -1px 1px #000000,
-        -1px 0 1px #000000;
-    }
+    text-shadow: 1px 0 1px #000000, 0 1px 1px #000000, 0 -1px 1px #000000,
+      -1px 0 1px #000000;
     font-weight: bold;
 
     .uname {

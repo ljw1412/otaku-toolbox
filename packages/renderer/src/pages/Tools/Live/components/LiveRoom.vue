@@ -2,30 +2,36 @@
   <div ref="LiveRoomEl"
     class="live-room"
     :style="roomStyle">
-    <div v-if="!isLiving"
-      class="status">
-      <div class="streamer">
-        <a-avatar style="width:2em; height:2em; font-size:2em;">
-          <img v-if="streamer.face"
-            :src="streamer.face">
-          <span v-else>{{ streamer.uname }}</span>
-        </a-avatar>
+
+    <div class="live-container">
+      <div ref="livePlayerEl"
+        class="live-player"></div>
+      <div v-if="!isLiving"
+        class="status">
+        <div class="streamer">
+          <a-avatar style="width:2em; height:2em; font-size:2em;">
+            <img v-if="streamer.face"
+              :src="streamer.face">
+            <span v-else>{{ streamer.uname }}</span>
+          </a-avatar>
+        </div>
+        <div class="not-living mt-10">主播还未开播哦</div>
       </div>
-      <div class="not-living mt-10">主播还未开播哦</div>
-    </div>
-    <div v-if="isLiving && !hideHeader"
-      class="room-header">
-      <div class="title">[{{ streamer.uname }}] {{ streamer.title }}</div>
-      <div class="extra">
-        <a-tooltip content="版聊"
-          position="br">
-          <icon-nav style="font-size: 20px;"
-            class="cursor-pointer"
-            :class="{'board-active': config.danmaku.showBoard}"
-            @click="toggleDisplayBoard" />
-        </a-tooltip>
+      <div v-if="!hideHeader"
+        class="room-header">
+        <div class="title">[{{ streamer.uname }}] {{ streamer.title }}</div>
+        <div class="extra">
+          <a-tooltip content="版聊"
+            position="br">
+            <icon-nav style="font-size: 20px;"
+              class="cursor-pointer"
+              :class="{'board-active': config.danmaku.showBoard}"
+              @click="toggleDisplayBoard" />
+          </a-tooltip>
+        </div>
       </div>
     </div>
+
     <div class="helper">
       <live-aside :config="config.danmaku"
         :online="onlineStr"
@@ -40,8 +46,6 @@
         :max-height="roomSize.height"
         @state-change="handleBoardStateChange"></danmaku-board>
     </div>
-    <div ref="livePlayerEl"
-      class="live-player"></div>
   </div>
 </template>
 
@@ -267,6 +271,8 @@ export default defineComponent({
   height: 100%;
   display: flex;
   overflow: hidden;
+  background-color: #2a2a2b;
+  color: #ffffff;
 
   .status {
     position: absolute;
@@ -310,8 +316,15 @@ export default defineComponent({
     color: #f85959;
   }
 
+  .live-container {
+    position: relative;
+    flex-grow: 1;
+    width: 100%;
+    height: 100%;
+  }
+
   .helper {
-    order: 3;
+    flex-shrink: 0;
   }
 
   #live-player {
