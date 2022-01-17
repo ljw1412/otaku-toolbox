@@ -1,4 +1,5 @@
 import { ipcMain, BrowserWindow } from 'electron'
+import { openExternal } from '../utils/newWindow'
 import {
   createBrowser,
   createBuiltInBrowser,
@@ -60,6 +61,10 @@ function bind(): void {
     } else if (type === 'openAppSystemWindow') {
       if (typeof data === 'object' && data.title) {
         openAppSystemWindow(data)
+      }
+    } else if (type === 'openSystemBrowser') {
+      if (typeof data === 'object' && data.url) {
+        openExternal(data.url)
       }
     } else if (type === 'toggleDevTools') {
       toggleDevTools(mWin)

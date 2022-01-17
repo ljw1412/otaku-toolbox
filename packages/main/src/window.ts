@@ -23,7 +23,7 @@ export function createBuiltInBrowser(data: Record<string, any>): BrowserWindow {
     }
   })
 
-  const pageUrl = getPageUrl('browser')
+  const pageUrl = getPageUrl('browser', { outlink: data.url })
   newWin.loadURL(pageUrl)
   baseListerner(newWin)
   newWin.once('ready-to-show', () => {

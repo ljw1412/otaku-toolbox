@@ -4,7 +4,7 @@ import { createBrowser, createBuiltInBrowser } from '../window'
 import acgAppConfig from '../default/config'
 import qs from 'qs'
 
-async function openExternal(url: string) {
+export async function openExternal(url: string) {
   const HTTP_REGEXP = /^https?:\/\//
   // 非http协议不打开，防止出现自定义协议等导致的安全问题
   if (!HTTP_REGEXP) {

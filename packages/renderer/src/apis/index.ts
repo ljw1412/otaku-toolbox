@@ -3,5 +3,6 @@ import * as Tag from './Tag'
 import * as Bangumi from './Bangumi'
 import * as Banner from './Banner'
 import * as SpecialTopic from './SpecialTopic'
+import * as Outside from './Outside'
 
-export default { DataCenter, Tag, Bangumi, Banner, SpecialTopic }
+export default { DataCenter, Tag, Bangumi, Banner, SpecialTopic, Outside }

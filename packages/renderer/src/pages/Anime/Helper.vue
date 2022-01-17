@@ -23,7 +23,7 @@ export default defineComponent({
       ] as PageNavigationItem[],
       rightLinks: [
         { name: '新番表', to: { name: 'AnimeBangumiS' } },
-        { name: '外链', url: 'https://www.baidu.com' }
+        { name: '网页版', url: 'http://anime.acgcon.top' }
       ]
     }
   }

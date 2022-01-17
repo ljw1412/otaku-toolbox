@@ -80,6 +80,14 @@ export function createBuiltInBrowser(
 }
 
 /**
+ * 使用系统默认浏览器打开
+ * @param url
+ */
+export function openSystemBrower(url: string) {
+  ipcSend('window.action', 'openSystemBrowser', { url })
+}
+
+/**
  * 打开Vue路由页面
  * @param to
  * @param appConfig
