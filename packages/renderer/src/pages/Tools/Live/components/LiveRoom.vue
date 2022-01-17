@@ -271,8 +271,8 @@ export default defineComponent({
   height: 100%;
   display: flex;
   overflow: hidden;
-  background-color: #2a2a2b;
   color: #ffffff;
+  background-color: #2a2a2b;
 
   .status {
     position: absolute;

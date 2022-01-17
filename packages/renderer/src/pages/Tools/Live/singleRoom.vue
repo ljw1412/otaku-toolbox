@@ -40,5 +40,6 @@ export default defineComponent({
 .live-single-room {
   width: 100%;
   height: 100%;
+  background-color: #2a2a2b;
 }
 </style>

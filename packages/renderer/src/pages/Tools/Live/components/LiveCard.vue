@@ -2,6 +2,8 @@
   <a-card class="live-card"
     :class="{'not-living': info.live_status !== 1}"
     :body-style="{padding:0}"
+    draggable="true"
+    @dragstart="handleDragStart"
     @click="gotoLiveRoom">
     <acg-ratio-div :ratio="[16,9]">
       <div class="room-info">
@@ -69,6 +71,10 @@ export default defineComponent({
         },
         { minWidth: 854, minHeight: 480 }
       )
+    },
+
+    handleDragStart(event: DragEvent) {
+      event.dataTransfer?.setData('Room', JSON.stringify(this.info))
     }
   }
 })

@@ -3,8 +3,7 @@
     class="danmaku-list">
     <div v-for="danmaku of list"
       :key="danmaku.key"
-      class="danmaku-item"
-      :class="{'is-text-shadow': textShadow}">
+      class="danmaku-item">
       <span class="uname">{{ danmaku.uname }}：</span>
       <span class="message">{{ danmaku.message }}</span>
     </div>

@@ -1,10 +1,14 @@
 <template>
   <div class="live-multi-room"
-    :data-type="mode">
+    :data-type="mode"
+    @dragleave="handleDragleave">
     <div v-for="index of count"
       :key="index"
       :data-index="index"
-      class="room-item">
+      class="room-item"
+      :class="{dragging: highlightIndex === index}"
+      @dragover="handleItemDragover($event,index)"
+      @drop="handleItemDrop($event,index)">
       <live-room v-if="roomList[index - 1]"
         :key="roomList[index - 1]"
         :room-id="roomList[index - 1]"
@@ -49,7 +53,8 @@ export default defineComponent({
   data() {
     return {
       mode: 8,
-      roomList: [] as number[]
+      roomList: [] as number[],
+      highlightIndex: -1
     }
   },
 
@@ -64,6 +69,30 @@ export default defineComponent({
     if (Array.isArray(data)) {
       this.roomList = data.map(id => parseInt(id as string))
     }
+  },
+
+  methods: {
+    handleItemDragover(ev: DragEvent, index: number) {
+      ev.preventDefault()
+      this.highlightIndex = index
+    },
+
+    handleItemDrop(ev: DragEvent, index: number) {
+      const data = ev.dataTransfer?.getData('Room')
+      if (data) {
+        try {
+          const info = JSON.parse(data)
+          this.roomList[index - 1] = info.room_id
+        } catch (error) {
+          console.error(error)
+        }
+      }
+      this.highlightIndex = -1
+    },
+
+    handleDragleave() {
+      this.highlightIndex = -1
+    }
   }
 })
 </script>
@@ -73,9 +102,8 @@ export default defineComponent({
   width: 100%;
   height: 100%;
   display: grid;
-  background: rgba(200, 200, 200, 0.2);
+  background-color: #2a2a2b;
   overflow: hidden;
-  grid-gap: 1px;
 
   &[data-type='0'] {
     grid-template-columns: repeat(2, 50%);
@@ -174,6 +202,9 @@ export default defineComponent({
 
   .room-item {
     position: relative;
+    z-index: 300;
+    border: 0.5px solid rgba(200, 200, 200, 0.1);
+
     @for $i from 1 through 9 {
       &[data-index='#{$i}']::before {
         position: absolute;
@@ -182,7 +213,13 @@ export default defineComponent({
         transform: translate(-50%, -50%);
         content: '#{$i}';
         font-size: 36px;
+        color: #ffffff;
       }
+    }
+
+    &.dragging {
+      border: 4px solid var(--app-color-common);
+      box-sizing: border-box;
     }
   }
 }

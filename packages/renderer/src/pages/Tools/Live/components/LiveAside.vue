@@ -78,7 +78,6 @@ export default defineComponent({
   position: relative;
   font-size: 14px;
   height: 100%;
-
   box-shadow: 0 0 5px rgba(255, 255, 255, 0.1);
 
   .toggle-btn-container {
@@ -89,7 +88,7 @@ export default defineComponent({
     height: 100%;
     width: 2px;
     background-color: var(--app-color-common);
-    z-index: 15;
+    z-index: 150;
     opacity: 0;
     transition: opacity 0.2s;
     color: #ffffff;
@@ -129,7 +128,7 @@ export default defineComponent({
     font-size: 24px;
     width: 48px;
     height: 48px;
-    z-index: 15;
+    z-index: 150;
     opacity: 0;
     transition: opacity 0.2s;
     color: #ffffff;
