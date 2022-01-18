@@ -17,7 +17,7 @@ import { defineComponent } from 'vue'
 import { ipcSend } from '/@/utils/electron'
 
 export default defineComponent({
-  name: 'ModalExitApp',
+  name: 'AppExitModal',
   methods: {
     ok() {
       ipcSend('window.action', 'close', { mode: 'main-close' })

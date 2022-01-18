@@ -1,7 +1,8 @@
 <template>
   <a-layout class="app-setting">
     <header class="app-setting-header app-drag">
-      <app-controls class="app-no-drag"></app-controls>
+      <app-close-btn size="mini"
+        fixed="tr" />
     </header>
 
     <a-layout-sider class="setting-tabs app-drag"
@@ -18,11 +19,15 @@
       </a-tabs>
     </a-layout-sider>
 
-    <a-layout-content class="setting-config">
+    <a-layout-content class="setting-config"
+      :style="{
+        backgroundColor: tabConfig.bgColor,
+        color: tabConfig.color
+      }">
       <a-typography-title :heading="5"
-        style="margin-top: 0;">{{subTitle}}</a-typography-title>
+        style="margin-top: 0; color: inherit;">{{subTitle}}</a-typography-title>
       <a-form :model="config">
-        <a-form-item v-for="item of mConfig"
+        <a-form-item v-for="item of options"
           :key="item.key"
           :field="item.key"
           :label="item.label"
@@ -50,6 +55,8 @@ import ConfigItem from './components/ConfigItem.vue'
 interface SettingTab {
   key: string
   title: string
+  color?: string
+  bgColor?: string
   options: {
     type: string
     key?: string
@@ -94,7 +101,14 @@ const tabs: SettingTab[] = [
     options: [{ type: 'theme' }]
   },
   { key: 'proxy', title: '代理', options: [{ type: 'proxy' }] },
-  { key: 'debugger', title: '调试', options: [{ type: 'debugger' }] }
+  { key: 'debugger', title: '调试', options: [{ type: 'debugger' }] },
+  {
+    key: 'about',
+    title: '关于',
+    options: [{ type: 'about' }],
+    color: '#ffffff',
+    bgColor: 'var(--app-theme)'
+  }
 ]
 
 export default defineComponent({
@@ -119,9 +133,12 @@ export default defineComponent({
       return ''
     },
 
-    mConfig(): Record<string, any>[] {
-      const config = tabs.find(tab => tab.key === this.tabKey)
-      const options = config ? config.options || [] : []
+    tabConfig(): SettingTab {
+      return tabs.find(tab => tab.key === this.tabKey) || ({} as SettingTab)
+    },
+
+    options(): Record<string, any>[] {
+      const options = this.tabConfig.options || []
       return options.map(item => {
         if (item.key && this.config[item.key]) {
           item.value = this.config[item.key]
@@ -153,7 +170,6 @@ export default defineComponent({
 
     handleConfigChange(key: string, value: any) {
       console.log(key, value)
-
       this.setOption(key, value)
     }
   }
@@ -211,15 +227,9 @@ export default defineComponent({
     position: absolute;
     top: 0;
     left: 0;
-    height: 24px;
+    height: 32px;
     width: 100%;
     z-index: 100;
-
-    .app-controls {
-      position: absolute;
-      right: 0;
-      top: 0;
-    }
   }
 
   .setting-config {

@@ -8,12 +8,14 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import { safeBoolean } from '/@/utils/helper'
 import { ipcSend } from '/@/utils/electron'
 
 export default defineComponent({
   name: 'AppCloseBtn',
 
   props: {
+    size: { type: String, default: '' },
     mode: { type: String, default: 'child' },
     // 字符串 trbl 组合
     fixed: { type: [Boolean, String], default: false }
@@ -21,7 +23,7 @@ export default defineComponent({
 
   computed: {
     mClass() {
-      let data = {}
+      let data: Record<string, boolean> = {}
       if (typeof this.fixed === 'string') {
         data = {
           'is-top': this.fixed.includes('t'),
@@ -30,16 +32,24 @@ export default defineComponent({
           'is-left': this.fixed.includes('l')
         }
       }
+      if (['small', 'mini'].includes(this.size)) {
+        data[`is-${this.size}`] = true
+      }
       return {
         'is-fixed': !!this.fixed,
         ...data
       }
+    },
+    hidableOfMeta(): boolean {
+      return safeBoolean(this.$route.meta.hidable as boolean)
     }
   },
 
   methods: {
     close() {
-      ipcSend('window.action', 'close', { mode: this.mode })
+      ipcSend('window.action', this.hidableOfMeta ? 'hide' : 'close', {
+        mode: this.mode
+      })
     }
   }
 })
@@ -53,6 +63,12 @@ export default defineComponent({
   background-color: var(--color-danger-light-3);
   color: #ffffff;
   cursor: pointer;
+
+  &.is-mini {
+    width: 32px;
+    height: 32px;
+    font-size: 24px;
+  }
 
   &.is-fixed {
     position: fixed;

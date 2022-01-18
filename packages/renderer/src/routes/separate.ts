@@ -2,7 +2,7 @@ import SeparateContainer from '/@/containers/Separate.vue'
 import AppErrorPage from '/@/pages/pageError/index.vue'
 import AppSetting from '/@/pages/Setting/index.vue'
 import AppTheme from '/@/pages/Theme/index.vue'
-import ExitApp from '/@/pages/Modal/ExitApp/index.vue'
+import AppExit from '/@/pages/Modal/ExitApp/index.vue'
 
 const routes = [
   // 内置浏览器
@@ -13,7 +13,7 @@ const routes = [
     meta: { hasView: true }
   },
   // 退出弹窗
-  { path: '/exit-app', name: 'ExitApp', component: ExitApp },
+  { path: '/exit-app', name: 'ExitApp', component: AppExit },
   // 系统设置
   {
     path: '/setting',

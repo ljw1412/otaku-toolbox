@@ -16,12 +16,6 @@ const windowConfigs = {
     width: 729,
     height: 540,
     title: '系统设置'
-  },
-  theme: {
-    url: getPageUrl('/theme'),
-    width: 640,
-    height: 480,
-    title: '主题'
   }
 } as Record<string, NewBrowerConfig>
 

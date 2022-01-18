@@ -10,13 +10,8 @@ import {
 const channel = 'window.action'
 
 function closeApp(win: BrowserWindow, mode: string) {
-  const parentWin = win.getParentWindow()
-  const { exitApp } = global.quickWindows
-  if (mode === 'main') {
-    exitApp.center()
-    exitApp.show()
-    return
-  } else if (mode === 'main-close') {
+  if (mode === 'main-close') {
+    const parentWin = win.getParentWindow()
     if (parentWin) {
       win.close()
       parentWin.close()

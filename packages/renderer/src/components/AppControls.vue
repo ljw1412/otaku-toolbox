@@ -23,7 +23,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { ipcSend, ipcOn, ipcOff } from '/@/utils/electron'
+import { ipcSend, ipcOn, ipcOff, openAppSystemWindow } from '/@/utils/electron'
 import { safeBoolean } from '/@/utils/helper'
 
 export default defineComponent({
@@ -64,7 +64,11 @@ export default defineComponent({
       if (action === 'close' && this.hidableOfMeta) {
         action = 'hide'
       }
-      ipcSend('window.action', action, { mode: this.mode })
+      if (action === 'close' && this.mode === 'main') {
+        openAppSystemWindow('退出程序')
+      } else {
+        ipcSend('window.action', action, { mode: this.mode })
+      }
     }
   }
 })

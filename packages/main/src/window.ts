@@ -33,8 +33,10 @@ export function createBuiltInBrowser(data: Record<string, any>): BrowserWindow {
     }
   })
   newWin.on('close', () => {
-    //@ts-ignore
-    view.webContents.destroy()
+    if (!view.webContents.isDestroyed()) {
+      //@ts-ignore
+      view.webContents.destroy()
+    }
   })
 
   const view = new BrowserView()
