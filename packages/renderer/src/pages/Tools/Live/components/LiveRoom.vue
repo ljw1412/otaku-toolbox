@@ -33,6 +33,8 @@
             @click="$emit('close')" />
         </div>
       </div>
+      <!-- 截图预览 -->
+      <screen-shot-preview v-model="screenShotUrl"></screen-shot-preview>
     </div>
 
     <div class="helper">
@@ -54,21 +56,22 @@
 
 <script lang="ts">
 import { computed, defineComponent, PropType, ref } from 'vue'
-import * as BLive from '../utils/blive'
+import { toReactive, useElementSize } from '@vueuse/core'
 import connectLiveWs, { KeepLiveWS } from '../utils/bliveWs'
+import * as BLive from '../utils/blive'
 import Player from 'xgplayer'
 import HlsPlayer from 'xgplayer-hls.js'
 // import installPlayerPlugins from '../plugins/index'
 import DanmakuBoard from './DanmakuBoard.vue'
 import LiveAside from './LiveAside.vue'
-import { toReactive, useElementSize } from '@vueuse/core'
+import ScreenShotPreview from './ScreenShotPreview.vue'
 
 const units = ['', '万', '亿']
 
 export default defineComponent({
   name: 'LiveRoom',
 
-  components: { LiveAside, DanmakuBoard },
+  components: { LiveAside, DanmakuBoard, ScreenShotPreview },
 
   props: {
     config: {
@@ -102,13 +105,20 @@ export default defineComponent({
   data() {
     return {
       player: null as null | Player,
-      streamer: { face: '', uname: '主播', title: '' },
+      streamer: { face: '', uname: '主播', title: '', keyframe: '' },
+      qn: 10000,
       url: '',
-      info: { live_status: -1, uid: -1 },
+      info: {
+        live_status: -1,
+        uid: -1,
+        qnDesc: [] as Record<string, any>[],
+        stream: [] as Record<string, any>[]
+      },
       livews: null as null | KeepLiveWS,
       online: 0,
       danmakuList: [] as LivePlayer.BLiveMessageDanmaku[],
-      maxDanmakuSize: 100
+      maxDanmakuSize: 100,
+      screenShotUrl: ''
     }
   },
 
@@ -151,17 +161,23 @@ export default defineComponent({
 
     async getRoomInfo() {
       const roomInfo = await BLive.getRoomPlayInfo(this.roomId)
+      this.info.live_status = roomInfo.live_status
+      this.info.uid = roomInfo.uid
       await this.getRoomStatus(roomInfo.uid)
-      this.info = roomInfo
-      if (!this.isLiving) {
-        this.url = ''
-        return
-      }
-      const { base_url, url_info } = roomInfo.stream.http_hls.ts[0]
-      const urls = url_info.map(
-        (item: any) => `${item.host}${base_url}${item.extra}`
+    },
+
+    async getPlayerUrl() {
+      const { durl, qnDesc, current_qn } = await BLive.getLiveRoomPlayUrl(
+        this.roomId,
+        this.qn
       )
-      this.url = urls[0] || ''
+      this.url = durl[0].url
+      const qnItem = qnDesc.find(
+        (item: { qn: number }) => item.qn === current_qn
+      )
+      if (qnItem) qnItem.url = this.url
+      this.info.stream = durl
+      this.info.qnDesc = qnDesc
     },
 
     toggleDisplayBoard() {
@@ -211,6 +227,7 @@ export default defineComponent({
     async initLive() {
       await this.getRoomInfo()
       if (this.isLiving) {
+        await this.getPlayerUrl()
         this.loadLive()
       }
       this.connectLiveWs()
@@ -239,12 +256,15 @@ export default defineComponent({
         lang: 'zh-cn',
         el: this.$refs.livePlayerEl,
         url: this.url,
+        poster: this.streamer.keyframe,
         autoplay: true,
         width: '100%',
         height: '100%',
         volume: this.config.volume,
         closeVideoClick: true,
+        definitionActive: 'hover',
         danmu: {
+          comments: [],
           area: {
             //弹幕显示区域
             start: 0, //区域顶部到播放器顶部所占播放器高度的比例
@@ -252,6 +272,12 @@ export default defineComponent({
           },
           live: true,
           defaultOff: false //开启此项后弹幕不会初始化，默认初始化弹幕
+        },
+        screenShot: {
+          saveImg: false,
+          quality: 0.92,
+          type: 'image/png',
+          format: '.png'
         }
       })
       if (this.player) {
@@ -259,6 +285,19 @@ export default defineComponent({
           // eslint-disable-next-line vue/no-mutating-props
           this.config.volume = player.volume
         })
+        this.player.on('screenShot', (data: string) => {
+          this.screenShotUrl = data
+        })
+        this.player.on('definitionChange', async data => {
+          const qnItem = this.info.qnDesc.find(item => item.name === data.to)
+          if (qnItem) {
+            this.qn = qnItem.qn
+            await this.getPlayerUrl()
+          }
+          this.player && (this.player.src = this.url)
+        })
+
+        this.player.emit('resourceReady', this.info.qnDesc)
       }
     }
   }
@@ -329,7 +368,7 @@ export default defineComponent({
     flex-shrink: 0;
   }
 
-  #live-player {
+  .live-player {
     width: 100%;
     height: 100%;
     background-color: #000;
@@ -337,6 +376,10 @@ export default defineComponent({
 
     .xgplayer-panel .xgplayer-panel-slider {
       left: -230px;
+    }
+
+    .xgplayer-volume {
+      order: 1;
     }
   }
 

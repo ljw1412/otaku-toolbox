@@ -1,6 +1,9 @@
 import request from 'superagent'
 
-export async function getRoomPlayInfo(room_id: number | string, qn = '10000') {
+export async function getRoomPlayInfo(
+  room_id: number | string,
+  qn: number | string = 10000
+) {
   try {
     const res = await request
       .get(
@@ -19,14 +22,19 @@ export async function getRoomPlayInfo(room_id: number | string, qn = '10000') {
     if (code === 0) {
       const { uid, live_status, playurl_info } = data
 
-      const qnDesc: Record<string, any> = {}
+      let qnDesc: Record<string, any>[] = []
       const formatStream: Record<string, any> = {}
 
       if (live_status === 1) {
         const { g_qn_desc, stream } = playurl_info.playurl
         if (Array.isArray(g_qn_desc)) {
-          g_qn_desc.forEach(item => {
-            qnDesc[item.qn] = item.desc
+          qnDesc = g_qn_desc.map(item => {
+            return {
+              qn: item.qn,
+              name: item.desc,
+              hdr_desc: item.hdr_desc,
+              url: ''
+            }
           })
         }
 
@@ -53,11 +61,30 @@ export async function getRoomPlayInfo(room_id: number | string, qn = '10000') {
   }
 }
 
-export async function getLiveRoomPlayUrl(uid: number | string) {
-  const res = await request
-    .get('https://api.live.bilibili.com/room/v1/Room/playUrl')
-    .query({ cid: uid })
-  return res.body
+export async function getLiveRoomPlayUrl(
+  room_id: number | string,
+  qn: number | string = 10000
+) {
+  try {
+    const res = await request
+      .get('https://api.live.bilibili.com/room/v1/Room/playUrl')
+      .query({ cid: room_id, qn, platform: 'h5' })
+
+    const { code, data, message } = res.body
+    if (code === 0) {
+      const { durl, quality_description, current_qn } = data
+      const qnDesc = quality_description.map(
+        (item: { qn: number; desc: string }) => {
+          return { qn: item.qn, name: item.desc, url: '' }
+        }
+      )
+      return { durl, qnDesc, current_qn }
+    }
+
+    return Promise.reject(new Error(message))
+  } catch (error) {
+    return Promise.reject(error)
+  }
 }
 
 export async function getRoomStatusByUids(uids: (number | string)[]) {
