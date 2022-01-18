@@ -184,8 +184,8 @@ export default defineComponent({
         this.danmakuList.splice(0, 1)
       }
       if (this.player) {
-        const playerDanmuList: LivePlayer.XGDanmaku[] = this.danmakuList.map(
-          danmaku => ({
+        const playerDanmuList: LivePlayer.XGDanmaku[] = [
+          {
             start: 0,
             duration: 15000,
             id: danmaku.ct,
@@ -201,10 +201,10 @@ export default defineComponent({
               textShadow:
                 '1px 0 1px #000000,0 1px 1px #000000,0 -1px 1px #000000,-1px 0 1px #000000'
             }
-          })
-        )
+          }
+        ]
         // @ts-ignore
-        this.player.danmu.updateComments(playerDanmuList)
+        this.player.danmu.updateComments(playerDanmuList, false)
       }
     },
 
