@@ -2,7 +2,7 @@
   <div class="setting-debugger">
     <a-typography-title :heading="6"
       style="margin-top: 0;">功能调试</a-typography-title>
-    <a-form>
+    <a-form :model="{}">
       <a-form-item label="开发者工具"
         help="开启后，允许开启内部浏览器的开发者工具"
         :label-col-props="{span: 6, offset: 0}"
@@ -17,6 +17,7 @@
     <a-space>
       <a-button @click="handleAction('createBuiltInBrowser')">内置浏览器</a-button>
       <a-button @click="handleAction('outterLink')">打开外链</a-button>
+      <a-button @click="handleAction('notice')">通知测试</a-button>
     </a-space>
 
     <a-typography-title :heading="6">本地缓存</a-typography-title>
@@ -33,6 +34,10 @@ import { createBuiltInBrowser, ipcSend } from '/@/utils/electron'
 export default defineComponent({
   name: 'SettingDebugger',
 
+  data() {
+    return {}
+  },
+
   computed: {
     config() {
       return this.$global.config
@@ -48,6 +53,13 @@ export default defineComponent({
       } else if (action === 'cache') {
         if (data === 'navigation') {
           ipcSend('window.message', 'clear-navigation-cache')
+        }
+      } else if (action === 'notice') {
+        const notification = new Notification('通知测试', {
+          body: 'Welcome To Chaos World！'
+        })
+        notification.onclick = () => {
+          this.$message.success('通知点击测试成功！')
         }
       }
     }

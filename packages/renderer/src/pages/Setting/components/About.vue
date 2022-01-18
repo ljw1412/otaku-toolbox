@@ -6,8 +6,7 @@
         src="../../../../assets/logo-text.svg">
       <p class="m-auto"
         style="width:200px">
-        <a-button type="outline"
-          long>检查更新</a-button>
+        <a-button long>检查更新</a-button>
       </p>
       <p class="mt-20">版本: {{ appVersion }}</p>
       <a-descriptions :data="descData"
@@ -84,10 +83,12 @@ export default defineComponent({
 .app-about {
   text-align: center;
   padding-top: 40px;
+  text-shadow: 1px 0 1px rgba(0, 0, 0, 0.5), 0 1px 1px rgba(0, 0, 0, 0.5),
+    0 -1px 1px rgba(0, 0, 0, 0.5), -1px 0 1px rgba(0, 0, 0, 0.5);
 
   .arco-descriptions {
     * {
-      color: #999999 !important;
+      color: #cccccc !important;
       font-weight: normal;
       font-size: 14px;
     }

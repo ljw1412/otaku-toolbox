@@ -124,8 +124,10 @@ export function openAppSystemWindow(
   const allWindows = BrowserWindow.getAllWindows()
   const win = allWindows.find(win => win.getTitle() === title)
   if (win) {
-    win.center()
-    if (!win.isVisible()) win.show()
+    if (!win.isVisible()) {
+      win.center()
+      win.show()
+    }
     if (win.isMinimized()) win.restore()
     win.focus()
     return win

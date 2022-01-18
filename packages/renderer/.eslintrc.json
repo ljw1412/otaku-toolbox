@@ -21,6 +21,6 @@
     "vue/singleline-html-element-content-newline": "off",
     "vue/multiline-html-element-content-newline": "off",
 
-    "vue/no-mutating-props": "warning"
+    "vue/no-mutating-props": "warn"
   }
 }
