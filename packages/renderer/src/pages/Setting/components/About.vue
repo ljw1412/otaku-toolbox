@@ -72,8 +72,6 @@ export default defineComponent({
 
     getAppVersion() {
       const match = window.navigator.userAgent.match(/otaku-toolbox\/(\S+)/)
-      console.log(match)
-
       if (match && match.length > 1) {
         this.appVersion = match[1]
       }

@@ -1,5 +1,5 @@
 <template>
-  <div class="live-multi-room"
+  <div class="live-multi-room live-monitor-template"
     :data-type="monitor.mode"
     @dragleave="handleDragleave">
     <div v-for="index of count"
@@ -44,18 +44,14 @@ export default defineComponent({
 
     let monitor = get(monitors).find(item => item.id + '' === props.monitorId)
     if (monitor) {
-      if (monitor.roomConfigList.length <= 9) {
-        for (let i = monitor.roomConfigList.length; i < 10; i++) {
-          monitor.roomConfigList.push(defaultLiveConfig(true))
-        }
+      for (let i = monitor.roomConfigList.length; i < 10; i++) {
+        monitor.roomConfigList.push(defaultLiveConfig(true))
       }
     } else {
       monitor = defaultMonitor()
     }
 
-    return {
-      monitor
-    }
+    return { monitor }
   },
 
   data() {
@@ -120,101 +116,6 @@ export default defineComponent({
   display: grid;
   background-color: #2a2a2b;
   overflow: hidden;
-
-  &[data-type='0'] {
-    grid-template-columns: repeat(2, 50%);
-  }
-
-  &[data-type='1'] {
-    grid-template-rows: repeat(2, 50%);
-  }
-
-  &[data-type='2'] {
-    grid-template-columns: repeat(3, 33.33%);
-  }
-
-  &[data-type='3'] {
-    grid-template-rows: repeat(3, 33.33%);
-  }
-
-  &[data-type='4'] {
-    grid-template-columns: 60% 40%;
-    grid-template-rows: repeat(2, 50%);
-    .room-item:nth-child(1) {
-      grid-row: 1/3;
-    }
-  }
-
-  &[data-type='5'] {
-    grid-template-columns: repeat(2, 50%);
-    grid-template-rows: 60% 40%;
-    .room-item:nth-child(1) {
-      grid-column: 1/3;
-    }
-  }
-
-  &[data-type='6'] {
-    grid-template-columns: repeat(2, 50%);
-    grid-template-rows: repeat(2, 50%);
-  }
-
-  &[data-type='7'] {
-    grid-template-rows: repeat(4, 25%);
-  }
-
-  &[data-type='8'] {
-    grid-template-columns: 60% 40%;
-    grid-template-rows: repeat(3, 33.33%);
-    .room-item:nth-child(1) {
-      grid-row: 1/4;
-    }
-  }
-
-  &[data-type='9'] {
-    grid-template-columns: repeat(3, 33.33%);
-    grid-template-rows: 60% 40%;
-    .room-item:nth-child(1) {
-      grid-column: 1/4;
-    }
-  }
-
-  &[data-type='10'] {
-    grid-template-columns: repeat(3, 33.33%);
-    grid-template-rows: repeat(2, 50%);
-  }
-
-  &[data-type='11'] {
-    grid-template-columns: repeat(3, 33.33%);
-    grid-template-rows: repeat(3, 33.33%);
-    .room-item:nth-child(1) {
-      grid-row: 1/3;
-      grid-column: 1/3;
-    }
-  }
-
-  &[data-type='12'] {
-    grid-template-columns: repeat(4, 25%);
-    grid-template-rows: repeat(2, 50%);
-  }
-
-  &[data-type='13'] {
-    grid-template-columns: repeat(2, 50%);
-    grid-template-rows: repeat(4, 25%);
-  }
-
-  &[data-type='14'] {
-    grid-template-columns: repeat(4, 25%);
-    grid-template-rows: repeat(4, 25%);
-    .room-item:nth-child(1) {
-      grid-row: 1/4;
-      grid-column: 1/4;
-    }
-  }
-
-  &[data-type='15'] {
-    grid-template-columns: repeat(3, 33.33%);
-    grid-template-rows: repeat(3, 33.33%);
-  }
 
   .room-item {
     position: relative;

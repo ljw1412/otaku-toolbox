@@ -1,6 +1,6 @@
-const now = new Date()
-const buildVersion = `${now.getFullYear() - 2000}.${now.getMonth() +
-  1}.${now.getDate()}`
+const dayjs = require('dayjs')
+const date = dayjs().format('YYMMDD')
+const buildVersion = `0.25.${date}`
 
 /**
  * @type {import('electron-builder').Configuration}
