@@ -8,9 +8,10 @@ import { getPageUrl } from './utils/pageUrl'
 import * as storage from './utils/storage'
 import DataCenter from './dataCenter/index'
 
-const isSingleInstance = app.requestSingleInstanceLock()
-
 storage.init(join(app.getAppPath(), 'data'))
+
+app.setAppUserModelId(import.meta.env.VITE_APP_TITLE)
+const isSingleInstance = app.requestSingleInstanceLock()
 
 if (!isSingleInstance) {
   app.quit()

@@ -1,6 +1,8 @@
+import { isDebugger } from './parser'
+
 function checkInputType(data: any, type: string) {
   const isTruly = typeof data === type
-  if (!isTruly) {
+  if (!isTruly && isDebugger) {
     console.log(
       '[checkInputType]',
       `传入数据："${data}"，不为预设的类型${type}！`
@@ -10,17 +12,19 @@ function checkInputType(data: any, type: string) {
 }
 
 function log(modifier: string, message?: string) {
-  console.log(`[parseModifier]{${modifier}}`, message)
+  if (isDebugger) {
+    console.log(`[parseModifier]{${modifier}}`, message)
+  }
 }
 
 const modifierParsers = {
   match: {
     inputType: 'string',
     fn(str: string, modifier: string) {
-      const regExpStr = modifier.split('#')[1]
+      const [, regExpStr, n = '0'] = modifier.split('#')
       if (regExpStr) {
         const match = str.match(new RegExp(regExpStr))
-        str = match ? match[0] : ''
+        str = match ? match[parseInt(n)] : ''
         return { result: str, error: false }
       }
       log(modifier, '正则表达式字符串不存在！')

@@ -4,7 +4,8 @@
       style="z-index: 100;">
       <a-typography-title style="padding-left: 16px">源管理</a-typography-title>
       <a-menu v-model:selected-keys="menuKeys"
-        class="app-no-drag">
+        class="app-no-drag"
+        @menu-item-click="handleMenuChange">
         <a-menu-item v-for="item of menuList"
           :key="item.type">
           <template #icon>
@@ -23,13 +24,10 @@
       <a-tabs :active-key="menuKeys[0]"
         type="text"
         lazy-load>
-        <a-tab-pane key="news"
-          title="资讯">
-          <origin-news></origin-news>
-        </a-tab-pane>
-        <a-tab-pane key="comic"
-          title="漫画">
-          <origin-comic></origin-comic>
+        <a-tab-pane v-for="item of menuList"
+          :key="item.type"
+          :title="item.name">
+          <component :is="item.component"></component>
         </a-tab-pane>
       </a-tabs>
     </a-layout-content>
@@ -39,21 +37,38 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, markRaw } from 'vue'
 import OriginNews from './components/OriginNews.vue'
 import OriginComic from './components/OriginComic.vue'
+import OriginSubtitle from './components/OriginSubtitle.vue'
 
 export default defineComponent({
   name: 'OriginManager',
 
-  components: { OriginNews, OriginComic },
+  components: { OriginNews, OriginComic, OriginSubtitle },
 
   data() {
     return {
       menuKeys: ['news'],
       menuList: [
-        { name: '资讯', icon: 'icon-nav', type: 'news' },
-        { name: '漫画', icon: 'icon-book', type: 'comic' }
+        {
+          name: '资讯',
+          icon: 'icon-nav',
+          type: 'news',
+          component: markRaw(OriginNews)
+        },
+        {
+          name: '漫画',
+          icon: 'icon-book',
+          type: 'comic',
+          component: markRaw(OriginComic)
+        },
+        {
+          name: '字幕',
+          icon: 'icon-language',
+          type: 'subtitle',
+          component: markRaw(OriginSubtitle)
+        }
       ]
     }
   },
@@ -68,6 +83,12 @@ export default defineComponent({
   created() {
     const { type = 'news' } = this.$route.query
     this.menuKeys = [type as string]
+  },
+
+  methods: {
+    handleMenuChange(type: string) {
+      this.$router.replace({ query: { type } })
+    }
   }
 })
 </script>

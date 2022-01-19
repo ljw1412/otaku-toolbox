@@ -27,8 +27,15 @@ export default defineComponent({
         {
           icon: 'icon-mind-mapping',
           name: '源管理',
-          desc: '对数据源进行管理程序',
+          desc: '对资讯、漫画、字幕等源进行管理程序',
           to: { name: 'OriginManager' }
+        },
+        {
+          icon: 'icon-language',
+          name: '字幕搜索',
+          desc: '获取字幕',
+          to: { name: 'ToolSubtitle' },
+          config: { width: 720 }
         },
         {
           icon: 'icon-live-broadcast',

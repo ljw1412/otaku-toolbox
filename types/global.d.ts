@@ -59,6 +59,11 @@ declare namespace DataCenter {
     chapter: RulePageParams
   }
 
+  interface SubtitleRule extends RuleBase {
+    search: RulePageParams
+    details: RulePageParams
+  }
+
   type Rule = NewsRule & ComicRule
 
   interface RunnerOptions {

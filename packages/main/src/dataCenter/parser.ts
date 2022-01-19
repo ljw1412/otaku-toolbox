@@ -3,7 +3,7 @@ import cheerio, { CheerioAPI, Cheerio, Node } from 'cheerio'
 import Logger from '../utils/logger'
 import modifierParser from './modifierParser'
 
-const isDebugger = false
+export const isDebugger = false
 const logger = {} as typeof Logger
 Object.keys(Logger).forEach(key => {
   const state = key as keyof typeof Logger
@@ -25,7 +25,7 @@ function parseUrl(url: string, replacer: DataCenter.Replacer = { page: 1 }) {
   let newUrl = url
   if (!replacer.page) replacer.page = 1
   Object.keys(replacer).forEach(key => {
-    newUrl = newUrl.replace(`{:${key}}`, replacer[key] + '')
+    newUrl = newUrl.replace(`{:${key}}`, encodeURIComponent(replacer[key]))
   })
   logger.info('[parseUrl]', `规则:${url}`, `结果:${newUrl}`)
   return newUrl

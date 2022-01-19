@@ -103,6 +103,12 @@ const routes = [
         props: true,
         component: () => import('/@/pages/Tools/Live/multiRoom.vue'),
         meta: { title: '直播监控台', hideBackUp: true, isMulti: true }
+      },
+      {
+        path: '/subtitle',
+        name: 'ToolSubtitle',
+        component: () => import('/@/pages/Tools/Subtitle/index.vue'),
+        meta: { title: '字幕搜索', maximizable: false, hideBackUp: true }
       }
     ]
   }

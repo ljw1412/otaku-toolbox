@@ -1,0 +1,19 @@
+{
+  "name": "射手网(伪)",
+  "namespace": "assrt",
+  "type": "subtitle",
+  "version": 0,
+  "search": {
+    "url": "http://assrt.net/sub/?searchword={:keyword}&page={:page}",
+    "mode": "html",
+    "data": { "pageTotal": ".pagelinkcard > a:last-child|text|match#\\d+$" },
+    "items": ".resultcard .subitem:not([id])",
+    "itemData": {
+      "id": ".sublist_box_title a.introtitle|@href",
+      "path": ".sublist_box_title a.introtitle|@href",
+      "title": ".sublist_box_title a.introtitle|@title",
+      "version": "#meta_top b|text",
+      "download": "#downsubbtn|@onclick|match#'(\\S+)'#1|prepend#http://assrt.net"
+    }
+  }
+}

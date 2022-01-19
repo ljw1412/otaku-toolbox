@@ -1,19 +1,19 @@
 <template>
-  <a-card class="tool-card"
-    hoverable
-    :bordered="false"
-    @click="handleCardClick">
-    <template #cover>
-      <component :is="iconType"
-        class="icon"
-        v-bind="iconProps"></component>
-    </template>
-    <a-tooltip :content="desc"
-      mini
-      position="bottom">
+  <a-tooltip :content="desc"
+    mini
+    position="bottom">
+    <a-card class="tool-card"
+      hoverable
+      :bordered="false"
+      @click="handleCardClick">
+      <template #cover>
+        <component :is="iconType"
+          class="icon"
+          v-bind="iconProps"></component>
+      </template>
       <a-card-meta :title="name"></a-card-meta>
-    </a-tooltip>
-  </a-card>
+    </a-card>
+  </a-tooltip>
 </template>
 
 <script lang="ts">
@@ -27,7 +27,8 @@ export default defineComponent({
     icon: { type: String, default: 'icon-common' },
     name: { type: String, default: '' },
     desc: { type: String, default: '' },
-    to: { type: Object, default: () => ({}) }
+    to: { type: Object, default: () => ({}) },
+    config: { type: Object, default: () => ({}) }
   },
 
   computed: {
@@ -45,11 +46,17 @@ export default defineComponent({
 
   methods: {
     handleCardClick() {
-      openVueView(this.to, {
-        resizable: false,
-        singleInstance: true,
-        title: this.name
-      })
+      openVueView(
+        this.to,
+        Object.assign(
+          {
+            resizable: false,
+            singleInstance: true,
+            title: this.name
+          },
+          this.config
+        )
+      )
     }
   }
 })
