@@ -222,6 +222,7 @@ declare global {
 
   interface LiveMonitor {
     id: number | string
+    name: string
     mode: number
     roomList: LiveInfo[]
     roomConfigList: LiveRoomConfig[]

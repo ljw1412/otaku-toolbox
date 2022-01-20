@@ -15,12 +15,18 @@ export function defaultLiveConfig(isMulti = false): LiveRoomConfig {
 }
 
 export function defaultMonitor(): LiveMonitor {
-  return {
+  const monitor: LiveMonitor = {
     id: +new Date(),
+    name: '监控台',
     mode: 0,
     roomList: [],
-    roomConfigList: [{} as LiveRoomConfig]
+    roomConfigList: []
   }
+  for (let i = 0; i < 10; i++) {
+    monitor.roomList.push({} as LiveInfo)
+    monitor.roomConfigList.push(defaultLiveConfig(true))
+  }
+  return monitor
 }
 
 const modeAndCount = [2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 6, 6, 8, 8, 8, 9]

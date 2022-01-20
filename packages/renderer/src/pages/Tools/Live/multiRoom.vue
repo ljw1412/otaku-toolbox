@@ -12,7 +12,7 @@
       <live-room v-if="roomidList[index - 1]"
         :key="roomidList[index - 1]"
         :room-id="roomidList[index - 1]"
-        :config="monitor.roomConfigList[index]"
+        :config="monitor.roomConfigList[index - 1]"
         @close="handleRoomClose(index - 1)"></live-room>
     </div>
   </div>
@@ -22,11 +22,7 @@
 import { useLocalStorage, get } from '@vueuse/core'
 import { defineComponent } from 'vue'
 import LiveRoom from './components/LiveRoom.vue'
-import {
-  defaultLiveConfig,
-  defaultMonitor,
-  getModeLiveCount
-} from './utils/data'
+import { defaultMonitor, getModeLiveCount } from './utils/data'
 import { only } from '/@/utils/object'
 
 export default defineComponent({
@@ -43,11 +39,7 @@ export default defineComponent({
     )
 
     let monitor = get(monitors).find(item => item.id + '' === props.monitorId)
-    if (monitor) {
-      for (let i = monitor.roomConfigList.length; i < 10; i++) {
-        monitor.roomConfigList.push(defaultLiveConfig(true))
-      }
-    } else {
+    if (!monitor) {
       monitor = defaultMonitor()
     }
 
