@@ -1,19 +1,49 @@
 <template>
-  <div class="live-multi-room live-monitor-template"
-    :data-type="monitor.mode"
-    @dragleave="handleDragleave">
-    <div v-for="index of count"
-      :key="index"
-      :data-index="index"
-      class="room-item"
-      :class="{dragging: highlightIndex === index}"
-      @dragover="handleItemDragover($event,index)"
-      @drop="handleItemDrop($event,index)">
-      <live-room v-if="roomidList[index - 1]"
-        :key="roomidList[index - 1]"
-        :room-id="roomidList[index - 1]"
-        :config="monitor.roomConfigList[index - 1]"
-        @close="handleRoomClose(index - 1)"></live-room>
+  <div class="live-monitor">
+    <app-mini-header class="flex-shrink-0">
+      <template #title>
+        <a-button-group class="mr-8 app-no-drag">
+          <a-button v-show="false"
+            size="mini"
+            @click="isCollapsed = !isCollapsed">
+            <template #icon>
+              <component :is="isCollapsed?'icon-down':'icon-up'"></component>
+            </template>
+          </a-button>
+          <a-button size="mini"
+            @click="isDisplayEdit = true">
+            <template #icon>
+              <icon-settings />
+            </template>
+          </a-button>
+        </a-button-group>
+        <span>{{ monitor.name }}</span>
+      </template>
+    </app-mini-header>
+
+    <div v-show="!isCollapsed"
+      class="live-room-list"></div>
+
+    <div class="live-multi-room live-monitor-template"
+      :data-type="monitor.mode"
+      @dragleave="handleDragleave">
+      <div v-for="index of count"
+        :key="index"
+        :data-index="index"
+        class="room-item"
+        :class="{dragging: highlightIndex === index}"
+        @dragover="handleItemDragover($event,index)"
+        @drop="handleItemDrop($event,index)">
+        <live-room v-if="roomidList[index - 1]"
+          :key="roomidList[index - 1]"
+          :room-id="roomidList[index - 1]"
+          :config="monitor.roomConfigList[index - 1]"
+          @close="handleRoomClose(index - 1)"></live-room>
+      </div>
+
+      <monitor-editor-dialog v-model="isDisplayEdit"
+        :current-monitor="monitor"
+        @save="handleMonitorSave"></monitor-editor-dialog>
     </div>
   </div>
 </template>
@@ -21,14 +51,16 @@
 <script lang="ts">
 import { useLocalStorage, get } from '@vueuse/core'
 import { defineComponent } from 'vue'
+import AppMiniHeader from '/@/containers/components/AppMiniHeader.vue'
 import LiveRoom from './components/LiveRoom.vue'
+import MonitorEditorDialog from './components/MonitorEditorDialog.vue'
 import { defaultMonitor, getModeLiveCount } from './utils/data'
 import { only } from '/@/utils/object'
 
 export default defineComponent({
   name: 'LiveMultiRoom',
 
-  components: { LiveRoom },
+  components: { AppMiniHeader, LiveRoom, MonitorEditorDialog },
 
   props: { monitorId: { type: String, default: '-1' } },
 
@@ -48,7 +80,9 @@ export default defineComponent({
 
   data() {
     return {
-      highlightIndex: -1
+      highlightIndex: -1,
+      isCollapsed: true,
+      isDisplayEdit: false
     }
   },
 
@@ -62,6 +96,11 @@ export default defineComponent({
   },
 
   methods: {
+    handleMonitorSave(editor: { name: string; mode: number }) {
+      this.monitor.name = editor.name
+      this.monitor.mode = editor.mode
+    },
+
     handleRoomClose(index: number) {
       this.monitor.roomList[index] = {} as LiveInfo
     },
@@ -102,7 +141,19 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
+.live-monitor {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  .live-room-list {
+    flex-shrink: 0;
+    height: 100px;
+  }
+}
+
 .live-multi-room {
+  flex-grow: 1;
   width: 100%;
   height: 100%;
   display: grid;

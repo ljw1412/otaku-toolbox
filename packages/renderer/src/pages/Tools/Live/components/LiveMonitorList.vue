@@ -36,41 +36,22 @@
       type="outline"
       @click="handleMonitorAdd">添加监控台</a-button>
   </a-space>
-
-  <a-modal v-model:visible="isDisplayEdit"
-    class="live-monitor-editor"
-    title="编辑监控台"
-    @ok="handleEditSave">
-    <a-input v-model="editor.name"
-      :max-length="6"
-      placeholder="名称"
-      show-word-limit></a-input>
-    <div class="mode-select">
-      <acg-ratio-div v-for="i of 15"
-        :key="i"
-        :ratio="[16,9]"
-        class="m-4"
-        @click="editor.mode = i - 1">
-        <div class="mode-item live-monitor-template h-100"
-          :class="{selected: editor.mode === i - 1}"
-          :data-type="i - 1">
-          <div v-for="j of getModeLiveCount(i - 1)"
-            :key="j"
-            class="room-item m-1"></div>
-        </div>
-      </acg-ratio-div>
-    </div>
-  </a-modal>
+  <monitor-editor-dialog v-model="isDisplayEdit"
+    :current-monitor="currentMonitor"
+    @save="handleMonitorSave"></monitor-editor-dialog>
 </template>
 
 <script lang="ts">
 import { useLocalStorage } from '@vueuse/core'
 import { defineComponent } from 'vue'
 import { defaultMonitor, getModeLiveCount } from '../utils/data'
+import MonitorEditorDialog from './MonitorEditorDialog.vue'
 import { openVueView } from '/@/utils/electron'
 
 export default defineComponent({
   name: 'LiveMonitorList',
+
+  components: { MonitorEditorDialog },
 
   setup() {
     const monitors = useLocalStorage(
@@ -83,8 +64,7 @@ export default defineComponent({
   data() {
     return {
       isDisplayEdit: false,
-      currentMonitor: {} as LiveMonitor,
-      editor: { name: '', mode: 0 }
+      currentMonitor: {} as LiveMonitor
     }
   },
 
@@ -103,14 +83,12 @@ export default defineComponent({
 
     handleMonitorEdit(monitor: LiveMonitor) {
       this.currentMonitor = monitor
-      this.editor.name = monitor.name
-      this.editor.mode = monitor.mode
       this.isDisplayEdit = true
     },
 
-    handleEditSave() {
-      this.currentMonitor.name = this.editor.name
-      this.currentMonitor.mode = this.editor.mode
+    handleMonitorSave(editor: { name: string; mode: number }) {
+      this.currentMonitor.name = editor.name
+      this.currentMonitor.mode = editor.mode
     },
 
     handleToTestMultiRoom(monitor: LiveMonitor) {
@@ -140,29 +118,6 @@ export default defineComponent({
     .room-item {
       background-color: var(--app-color-common);
       margin: 1px;
-    }
-  }
-}
-
-.live-monitor-editor {
-  .mode-select {
-    display: grid;
-    grid-template-columns: repeat(3, 33.33%);
-
-    .mode-item {
-      cursor: pointer;
-      opacity: 0.4;
-      &.selected {
-        opacity: 1;
-      }
-
-      &:not(.selected):hover {
-        opacity: 0.6;
-      }
-    }
-
-    .room-item {
-      background-color: var(--app-color-common);
     }
   }
 }

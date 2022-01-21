@@ -41,6 +41,16 @@ const routes = [
     component: () => import('/@/pages/Comic/Details/index.vue'),
     meta: { title: '漫画详情页' }
   },
+
+  // 直播监控台
+  {
+    path: '/live/multi-room/:monitorId',
+    name: 'MultiLiveRoom',
+    props: true,
+    component: () => import('/@/pages/Tools/Live/multiRoom.vue'),
+    meta: { title: '直播监控台', hideBackUp: true, isMulti: true }
+  },
+
   // 带标题栏的界面
   {
     path: '/view',
@@ -96,13 +106,6 @@ const routes = [
         props: true,
         component: () => import('/@/pages/Tools/Live/singleRoom.vue'),
         meta: { title: '直播间', hideBackUp: true }
-      },
-      {
-        path: '/live/multi-room/:monitorId',
-        name: 'MultiLiveRoom',
-        props: true,
-        component: () => import('/@/pages/Tools/Live/multiRoom.vue'),
-        meta: { title: '直播监控台', hideBackUp: true, isMulti: true }
       },
       {
         path: '/subtitle',

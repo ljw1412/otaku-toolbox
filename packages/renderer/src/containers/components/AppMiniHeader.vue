@@ -1,7 +1,10 @@
 <template>
-  <div class="app-mini-header app-drag d-flex align-items-center justify-content-between">
+  <div class="app-mini-header app-drag layout-lr">
     <div class="header-left pl-12 fs-14">
-      <span class="title">{{ title }}</span>
+      <slot name="title"
+        :title="title">
+        <span class="title">{{ title }}</span>
+      </slot>
     </div>
     <div class="header-right pr-4">
       <app-controls>
@@ -13,12 +16,11 @@
             <icon-code-square />
           </div>
           <div v-if="$route.query.outlink"
-            title="以系统浏览器方式打开"
             class="app-control-btn btn-system-browser"
+            title="以系统浏览器方式打开"
             @click="openSystemBrower">
             <icon-desktop />
           </div>
-
           <a-divider direction="vertical" />
         </template>
       </app-controls>
