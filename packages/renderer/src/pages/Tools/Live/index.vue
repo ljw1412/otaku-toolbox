@@ -20,7 +20,11 @@
       <live-card v-for="item of sortedList"
         :key="item.room_id"
         :info="item"
-        :cover-type="coverType"></live-card>
+        :cover-type="coverType"
+        @mousedown.right="handleLiveCardRightMouseDown(item,$event)"></live-card>
+      <live-card-context-menu v-model:visible="liveRoomContextMenu.isDisplay"
+        v-bind="liveRoomContextMenu.position"
+        @menu-item-click="handleMenuItemClick"></live-card-context-menu>
     </main>
 
     <add-room-dialog v-model="isDisplayAddRoomDialog"
@@ -38,12 +42,13 @@ import * as BLive from './utils/blive'
 import { only } from '/@/utils/object'
 import AddRoomDialog from './components/AddRoomDialog.vue'
 import LiveCard from './components/LiveCard.vue'
+import LiveCardContextMenu from './components/LiveCardContextMenu.vue'
 import LiveMonitorList from './components/LiveMonitorList.vue'
 
 export default defineComponent({
   name: 'AppLive',
 
-  components: { AddRoomDialog, LiveCard, LiveMonitorList },
+  components: { AddRoomDialog, LiveCard, LiveCardContextMenu, LiveMonitorList },
 
   setup() {
     const liveStore = useLocalStorage('MY_LIVE_LIST', [] as LiveInfo[])
@@ -54,9 +59,14 @@ export default defineComponent({
   data() {
     return {
       loading: false,
-      list: [] as LiveInfo[],
       isDisplayAddRoomDialog: false,
-      coverType: 'keyframe'
+      coverType: 'keyframe',
+      list: [] as LiveInfo[],
+      liveRoomContextMenu: {
+        isDisplay: false,
+        position: { left: 0, top: 0 },
+        liveRoom: {} as LiveInfo
+      }
     }
   },
 
@@ -117,6 +127,27 @@ export default defineComponent({
       const data = only(room, 'uname uid room_id short_id') as LiveInfo
       this.liveStore.push(data)
       this.updateRoomStatus()
+    },
+
+    handleLiveCardRightMouseDown(room: LiveInfo, ev: MouseEvent) {
+      this.liveRoomContextMenu.liveRoom = room
+      this.liveRoomContextMenu.position.left = ev.clientX
+      this.liveRoomContextMenu.position.top = ev.clientY - 40
+      this.liveRoomContextMenu.isDisplay = true
+    },
+
+    handleMenuItemClick(action: string) {
+      if (action === 'enter') {
+        this.handleRoomEnter(this.liveRoomContextMenu.liveRoom)
+      } else if (action === 'delete') {
+        const i = this.liveStore.findIndex(
+          item => item.room_id === this.liveRoomContextMenu.liveRoom.room_id
+        )
+        if (i > -1) {
+          this.liveStore.splice(i, 1)
+          this.updateRoomStatus()
+        }
+      }
     },
 
     handleRoomEnter(room: LiveInfo) {

@@ -172,6 +172,7 @@ export default defineComponent({
         left: 50%;
         transform: translate(-50%, -50%);
         content: '#{$i}';
+        text-align: center;
         font-size: 36px;
         color: #ffffff;
       }
