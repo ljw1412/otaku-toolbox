@@ -75,6 +75,12 @@ export default defineComponent({
 
     .uname {
       color: #aaaaaa;
+      word-break: keep-all;
+    }
+
+    .message {
+      word-wrap: break-word;
+      word-break: break-all;
     }
   }
 }

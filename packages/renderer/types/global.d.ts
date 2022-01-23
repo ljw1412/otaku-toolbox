@@ -248,6 +248,7 @@ declare global {
   }
 
   interface LiveRoomConfig {
+    qn: number
     volume: number
     showDanmaku: boolean
     danmaku: LiveRoomDanmakuConfig

@@ -1,0 +1,19 @@
+.xgplayer-controls .player-live-time {
+  position: relative;
+  display: block;
+  font-size: 12px;
+  color: #fff;
+  line-height: 40px;
+  order: 1;
+}
+
+.xgplayer-controls .xgplayer-tips {
+  line-height: 1.4;
+  top: -14px;
+}
+
+.xgplayer-controls .player-live-time:hover .xgplayer-tips {
+  display: block;
+  line-height: 1.4;
+  left: 0px;
+}

@@ -8,19 +8,19 @@
       :style="bgStyle"></div>
     <div class="info">
       <div class="d-flex align-items-center flex-shrink-0 mr-8">
-        <icon-settings class="cursor-pointer"
-          v-tooltip.bottom="'版聊设置'"
+        <icon-settings v-tooltip.bottom="'版聊设置'"
+          class="cursor-pointer"
           @click="isSetting = !isSetting" />
       </div>
       <a-space size="mini"
         class="flex-grow-1">
-        <div class="info-item"
-          v-tooltip.bottom="'房间号'">
+        <div v-tooltip.bottom="'房间号'"
+          class="info-item">
           <icon-live-broadcast />
           <span class="pl-2 fs-12">{{ streamer.room_id }}</span>
         </div>
-        <div class="info-item"
-          v-tooltip.bottom="'人气值'">
+        <div v-tooltip.bottom="'人气值'"
+          class="info-item">
           <icon-fire />
           <span class="pl-2 fs-12">{{ online }}</span>
         </div>
@@ -28,12 +28,12 @@
 
       <div class="d-flex align-items-center flex-shrink-0">
         <icon-menu-unfold v-if="!$route.meta.isMulti"
-          class="cursor-pointer"
           v-tooltip.bottom="'切换普通模式'"
+          class="cursor-pointer"
           @click="$emit('state-change', 'aside')" />
         <icon-close v-else
-          class="cursor-pointer"
           v-tooltip.bottom="'关闭'"
+          class="cursor-pointer"
           @click="config.showBoard = false" />
       </div>
     </div>
@@ -94,6 +94,7 @@ export default defineComponent({
     streamer: { type: Object, default: () => ({}) },
     online: { type: String, default: '0' },
     roomEl: { type: Object as PropType<HTMLElement | null>, default: null },
+    maxWidth: Number,
     maxHeight: Number
   },
 
@@ -168,6 +169,7 @@ export default defineComponent({
         this.style,
         {
           maxHeight: `${this.maxHeight}px`,
+          maxWidth: `${this.maxWidth}px`,
           backdropFilter: `blur(${this.config.blur}px)`
         }
       ]
@@ -197,6 +199,7 @@ export default defineComponent({
   overflow: hidden;
   z-index: 150;
   cursor: move;
+  user-select: none;
 
   .bg {
     position: absolute;

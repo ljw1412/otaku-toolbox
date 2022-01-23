@@ -1,7 +1,8 @@
 import Player from 'xgplayer'
-import ReloadPlugin from './reload'
+// import ReloadPlugin from './reload'
+import LiveTimePlugin from './live-time'
 
-const plugins = [ReloadPlugin]
+const plugins = [LiveTimePlugin] // [ReloadPlugin,LiveTimePlugin]
 
 export default function(Player: Player) {
   plugins.forEach(plugin => {

@@ -19,16 +19,22 @@
       </div>
       <div v-if="!hideHeader"
         class="room-header">
-        <div class="title">[{{ streamer.uname }}] {{ streamer.title }}</div>
-        <div class="extra">
-          <icon-nav style="font-size: 20px;"
-            v-tooltip.bottom="'版聊'"
+        <div class="title pl-12"
+          :title="`[${streamer.uname}] ${streamer.title}`">
+          <div class="text-truncate">{{ streamer.title }}</div>
+          <div class="fs-12">
+            <span class="fs-12">{{ streamer.uname }}</span>
+          </div>
+        </div>
+        <div class="extra flex-shrink-0 pl-4 pr-12">
+          <icon-nav v-tooltip.bottom="'版聊'"
+            style="font-size: 20px;"
             class="cursor-pointer"
             :class="{'board-active': config.danmaku.showBoard}"
             @click="toggleDisplayBoard" />
           <icon-close v-if="$route.meta.isMulti"
-            style="font-size: 20px;"
             v-tooltip.bottom="'关闭'"
+            style="font-size: 20px;"
             class="cursor-pointer ml-8"
             @click="$emit('close')" />
         </div>
@@ -48,6 +54,7 @@
         :streamer="streamer"
         :list="danmakuList"
         :room-el="$refs.LiveRoomEl"
+        :max-width="roomSize.width"
         :max-height="roomSize.height"
         @state-change="handleBoardStateChange"></danmaku-board>
     </div>
@@ -61,7 +68,7 @@ import connectLiveWs, { KeepLiveWS } from '../utils/bliveWs'
 import * as BLive from '../utils/blive'
 import Player from 'xgplayer'
 import HlsPlayer from 'xgplayer-hls.js'
-// import installPlayerPlugins from '../plugins/index'
+import installPlayerPlugins from '../plugins/index'
 import DanmakuBoard from './DanmakuBoard.vue'
 import LiveAside from './LiveAside.vue'
 import ScreenShotPreview from './ScreenShotPreview.vue'
@@ -105,8 +112,13 @@ export default defineComponent({
   data() {
     return {
       player: null as null | Player,
-      streamer: { face: '', uname: '主播', title: '', keyframe: '' },
-      qn: 10000,
+      streamer: {
+        face: '',
+        uname: '主播',
+        title: '',
+        keyframe: '',
+        live_time: 0
+      },
       url: '',
       info: {
         live_status: -1,
@@ -135,6 +147,15 @@ export default defineComponent({
         i++
       }
       return online.toFixed(i ? 1 : 0) + units[i]
+    },
+
+    qn: {
+      get() {
+        return this.config.qn || 150
+      },
+      set(val: number) {
+        this.config.qn = val
+      }
     }
   },
 
@@ -250,7 +271,7 @@ export default defineComponent({
     async loadLive() {
       // @ts-ignore
       // TODO: 修复点击刷新后，再点击屏幕中的刷新可能会加载两个
-      // installPlayerPlugins(HlsPlayer)
+      installPlayerPlugins(HlsPlayer)
       // @ts-ignore
       this.player = new HlsPlayer({
         lang: 'zh-cn',
@@ -263,6 +284,7 @@ export default defineComponent({
         volume: this.config.volume,
         closeVideoClick: true,
         definitionActive: 'hover',
+        liveTime: this.streamer.live_time,
         danmu: {
           comments: [],
           area: {
@@ -280,6 +302,7 @@ export default defineComponent({
           format: '.png'
         }
       })
+
       if (this.player) {
         this.player.on('volumechange', (player: Player) => {
           // eslint-disable-next-line vue/no-mutating-props
@@ -342,14 +365,6 @@ export default defineComponent({
     );
     display: none;
     font-size: 16px;
-
-    .title {
-      padding-left: 12px;
-    }
-
-    .extra {
-      padding-right: 12px;
-    }
   }
 
   .board-active {
@@ -380,6 +395,10 @@ export default defineComponent({
 
     .xgplayer-volume {
       order: 1;
+    }
+
+    .xgplayer-live {
+      display: none !important;
     }
   }
 

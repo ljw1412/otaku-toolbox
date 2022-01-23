@@ -49,13 +49,16 @@
 </template>
 
 <script lang="ts">
-import { useLocalStorage, get } from '@vueuse/core'
+import { useLocalStorage, get, useEventListener } from '@vueuse/core'
 import { defineComponent } from 'vue'
 import AppMiniHeader from '/@/containers/components/AppMiniHeader.vue'
 import LiveRoom from './components/LiveRoom.vue'
 import MonitorEditorDialog from './components/MonitorEditorDialog.vue'
 import { defaultMonitor, getModeLiveCount } from './utils/data'
 import { only } from '/@/utils/object'
+import { ipcSend } from '/@/utils/electron'
+
+const STORE_KEY = 'MY_LIVE_MONITOR_LIST'
 
 export default defineComponent({
   name: 'LiveMultiRoom',
@@ -64,22 +67,9 @@ export default defineComponent({
 
   props: { monitorId: { type: String, default: '-1' } },
 
-  setup(props) {
-    const monitors = useLocalStorage(
-      'MY_LIVE_MONITOR_LIST',
-      [] as LiveMonitor[]
-    )
-
-    let monitor = get(monitors).find(item => item.id + '' === props.monitorId)
-    if (!monitor) {
-      monitor = defaultMonitor()
-    }
-
-    return { monitor }
-  },
-
   data() {
     return {
+      monitor: defaultMonitor(),
       highlightIndex: -1,
       isCollapsed: true,
       isDisplayEdit: false
@@ -95,7 +85,39 @@ export default defineComponent({
     }
   },
 
+  created() {
+    this.initMonitor(true)
+    useEventListener(window, 'storage', ev => {
+      if (ev.key === STORE_KEY) {
+        this.initMonitor()
+      }
+    })
+  },
+
   methods: {
+    initMonitor(isFrist = false) {
+      const monitors = useLocalStorage(STORE_KEY, [] as LiveMonitor[])
+
+      let monitor = get(monitors).find(item => item.id + '' === this.monitorId)
+      if (!monitor && !isFrist) {
+        this.$modal.error({
+          title: '错误',
+          alignCenter: true,
+          maskClosable: false,
+          content: '当前监控台可能已经被删除！',
+          okText: '关闭监控台',
+          onOk: () => {
+            ipcSend('window.action', 'close', { mode: 'child' })
+          }
+        })
+        return
+      }
+      if (!monitor) {
+        monitor = defaultMonitor()
+      }
+      this.monitor = monitor
+    },
+
     handleMonitorSave(editor: { name: string; mode: number }) {
       this.monitor.name = editor.name
       this.monitor.mode = editor.mode

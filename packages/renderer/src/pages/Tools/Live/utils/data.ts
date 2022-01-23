@@ -1,5 +1,6 @@
 export function defaultLiveConfig(isMulti = false): LiveRoomConfig {
   return {
+    qn: 150,
     volume: 0.6,
     showDanmaku: true,
     danmaku: {
