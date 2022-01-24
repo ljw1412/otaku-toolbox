@@ -25,7 +25,7 @@ function parseUrl(url: string, replacer: DataCenter.Replacer = { page: 1 }) {
   let newUrl = url
   if (!replacer.page) replacer.page = 1
   Object.keys(replacer).forEach(key => {
-    newUrl = newUrl.replace(`{:${key}}`, encodeURIComponent(replacer[key]))
+    newUrl = newUrl.replace(`{:${key}}`, replacer[key] + '')
   })
   logger.info('[parseUrl]', `规则:${url}`, `结果:${newUrl}`)
   return newUrl
