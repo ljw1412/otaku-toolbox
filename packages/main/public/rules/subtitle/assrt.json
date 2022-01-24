@@ -13,7 +13,30 @@
       "path": ".sublist_box_title a.introtitle|@href",
       "title": ".sublist_box_title a.introtitle|@title",
       "version": "#meta_top b|text",
-      "download": "#downsubbtn|@onclick|match#'(\\S+)'#1|prepend#http://assrt.net"
+      "download": "#downsubbtn|@onclick|match#'(\\S+)'#1|prepend#http://assrt.net",
+      "type": "#sublist_div > span:nth-of-type(1)|text|trim",
+      "lang": "#sublist_div > span:nth-of-type(2)|text|trim",
+      "from": "#sublist_div > span:nth-of-type(3)|text|trim",
+      "updateTime": "#sublist_div > span:nth-of-type(5)|text|trim"
+    }
+  },
+  "details": {
+    "url": "http://assrt.net{:path}",
+    "mode": "html",
+    "data": {
+      "title": ".name_org|text",
+      "type": "#detail-tbl-main>div>div:nth-of-type(2)>span:nth-of-type(1),#detail-tbl-main>div>div:nth-of-type(2)>span:nth-of-type(2)|text|trim",
+      "lang": "#detail-tbl-main>div>div:nth-of-type(2)>span:nth-of-type(3),#detail-tbl-main>div>div:nth-of-type(2)>span:nth-of-type(4)|text|trim",
+      "version": "#detail-tbl-main>div>div:nth-of-type(6)|text|trim",
+      "from": "#detail-tbl-main>div>div:nth-of-type(5)>span:nth-of-type(1),#detail-tbl-main>div>div:nth-of-type(5)>span:nth-of-type(2)|text|trim",
+      "group": "#detail-tbl-main>div>div:nth-of-type(5)>span:nth-of-type(3),#detail-tbl-main>div>div:nth-of-type(5)>span:nth-of-type(4)|text|trim",
+      "updateTime": "#detail-tbl-main>div>div:nth-of-type(4)|text|trim",
+      "download": "#btn_download|@href|prepend#http://assrt.net"
+    },
+    "items": "#detail-filelist .waves-effect",
+    "itemData": {
+      "name": "#filelist-name|text",
+      "size": "#filelist-size|text"
     }
   }
 }
