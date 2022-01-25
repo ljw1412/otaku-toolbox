@@ -38,14 +38,3 @@ export async function runRule(
   if (config.replacer.page === undefined) config.replacer.page = page
   return await invoke('runRule', { rule, config })
 }
-
-export async function listNews(
-  type = '',
-  origin: string,
-  page = 1,
-  config: DataCenter.RunnerOptions = { replacer: {} }
-) {
-  if (!config.replacer) config.replacer = {}
-  if (config.replacer.page === undefined) config.replacer.page = page
-  return await invoke('fetch', { type, origin, config })
-}

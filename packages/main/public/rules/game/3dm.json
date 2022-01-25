@@ -1,20 +1,23 @@
 {
   "name": "3DM",
   "namespace": "3dm",
+  "url": "https://www.3dmgame.com/news/",
   "type": "game-news",
   "version": 0,
-  "url": "https://www.3dmgame.com/news/game_{:page}/",
-  "mode": "html",
-  "data": {
-    "pageTotal": ".pagination .last > a|@data-page"
-  },
-  "items": ".Revision_list .selectpost",
-  "itemData": {
-    "id": ".text > a|@href|match#\\d+.html",
-    "url": ".text > a|@href",
-    "title": ".text > a|text",
-    "desc": ".text > .miaoshu|text",
-    "cover": ".img > img|@data-original",
-    "updateTime": ".text > .bq > .time|text"
+  "news": {
+    "url": "https://www.3dmgame.com/news/game_{:page}/",
+    "mode": "html",
+    "data": {
+      "pageTotal": ".pagination .last > a|@data-page"
+    },
+    "items": ".Revision_list .selectpost",
+    "itemData": {
+      "id": ".text > a|@href|match#\\d+.html",
+      "url": ".text > a|@href",
+      "title": ".text > a|text",
+      "desc": ".text > .miaoshu|text",
+      "cover": ".img > img|@data-original",
+      "updateTime": ".text > .bq > .time|text"
+    }
   }
 }

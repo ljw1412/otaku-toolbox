@@ -21,15 +21,9 @@
         :title="typeTitle"
         :show-back="false"></a-page-header>
 
-      <a-tabs :active-key="menuKeys[0]"
-        type="text"
-        lazy-load>
-        <a-tab-pane v-for="item of menuList"
-          :key="item.type"
-          :title="item.name">
-          <component :is="item.component"></component>
-        </a-tab-pane>
-      </a-tabs>
+      <origin-list class="mt-8"
+        :allow-create="listAllowCreate"
+        :type="listType"></origin-list>
     </a-layout-content>
 
     <app-close-btn fixed="tr"></app-close-btn>
@@ -37,15 +31,21 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, markRaw } from 'vue'
-import OriginNews from './components/OriginNews.vue'
-import OriginComic from './components/OriginComic.vue'
-import OriginSubtitle from './components/OriginSubtitle.vue'
+import { defineComponent } from 'vue'
+import OriginList from './components/OriginList.vue'
+
+interface OriginMenuItem {
+  name: string
+  icon: string
+  type: string
+  allowCreate: boolean
+  typeList?: { label: string; value: string }[]
+}
 
 export default defineComponent({
   name: 'OriginManager',
 
-  components: { OriginNews, OriginComic, OriginSubtitle },
+  components: { OriginList },
 
   data() {
     return {
@@ -55,28 +55,47 @@ export default defineComponent({
           name: '资讯',
           icon: 'icon-nav',
           type: 'news',
-          component: markRaw(OriginNews)
+          typeList: [
+            { label: '动画', value: 'anime-news' },
+            { label: '漫画', value: 'comic-news' },
+            { label: '游戏', value: 'game-news' }
+          ],
+          allowCreate: true
         },
         {
           name: '漫画',
           icon: 'icon-book',
-          type: 'comic',
-          component: markRaw(OriginComic)
+          type: 'comic-book',
+          allowCreate: false
         },
         {
           name: '字幕',
           icon: 'icon-language',
           type: 'subtitle',
-          component: markRaw(OriginSubtitle)
+          allowCreate: false
         }
-      ]
+      ] as OriginMenuItem[]
     }
   },
 
   computed: {
+    currentMenu(): OriginMenuItem | undefined {
+      return this.menuList.find(item => item.type === this.menuKeys[0])
+    },
+
     typeTitle(): string {
-      const item = this.menuList.find(item => item.type === this.menuKeys[0])
-      return (item ? item.name : '') + '源'
+      return (this.currentMenu ? this.currentMenu.name : '') + '源'
+    },
+
+    listType(): string | { label: string; value: string }[] {
+      if (!this.currentMenu) return ''
+      if (this.currentMenu.typeList) return this.currentMenu.typeList
+      return this.currentMenu.type
+    },
+
+    listAllowCreate(): boolean {
+      if (!this.currentMenu) return false
+      return this.currentMenu.allowCreate
     }
   },
 

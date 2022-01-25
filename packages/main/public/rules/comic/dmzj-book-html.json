@@ -2,6 +2,7 @@
   "name": "动漫之家PC",
   "namespace": "dmzj-pc",
   "icon": "http://manhua.dmzj.com/favicon.ico",
+  "url": "http://manhua.dmzj.com",
   "type": "comic-book",
   "version": 0,
   "pages": [

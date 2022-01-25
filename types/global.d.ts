@@ -35,6 +35,7 @@ declare namespace DataCenter {
     type: string
     version: string
     icon?: string
+    url?: string
   }
 
   interface RulePageParams {
@@ -51,7 +52,9 @@ declare namespace DataCenter {
     loaded?: boolean
   }
 
-  interface NewsRule extends RuleBase, RulePageParams {}
+  interface NewsRule extends RuleBase {
+    news: RulePageParams
+  }
 
   interface ComicRule extends RuleBase {
     pages: (RulePageParams & { name: string })[]

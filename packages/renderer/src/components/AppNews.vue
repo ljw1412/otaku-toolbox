@@ -63,7 +63,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, toRaw } from 'vue'
 
 export default defineComponent({
   name: 'AppNews',
@@ -80,7 +80,7 @@ export default defineComponent({
       isLoading: true,
       isError: false,
       origin: '',
-      originList: [] as DataCenter.Rule[],
+      originList: [] as DataCenter.NewsRule[],
       page: { index: 1, size: 1, total: 0 },
       news: [] as Record<string, any>[]
     }
@@ -96,6 +96,9 @@ export default defineComponent({
         return new Array(this.skeletonCount).fill({})
       }
       return this.news
+    },
+    currentRule() {
+      return this.originList.find(item => item.namespace === this.origin)
     }
   },
 
@@ -118,15 +121,17 @@ export default defineComponent({
       this.isError = false
       this.news = []
       try {
-        const data = await this.$API.DataCenter.listNews(
-          this.type,
-          this.origin,
+        if (!this.currentRule || !this.currentRule.news)
+          throw new Error('新闻规则不存在')
+        const data = await this.$API.DataCenter.runRule(
+          toRaw(this.currentRule.news),
           this.page.index
         )
         this.news = data.list
         this.page.total = data.pageTotal
       } catch (error) {
         this.isError = true
+        console.error(error)
       }
       this.isLoading = false
     },
