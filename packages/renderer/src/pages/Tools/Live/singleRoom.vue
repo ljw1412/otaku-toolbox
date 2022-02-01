@@ -8,7 +8,7 @@
 </template>
 
 <script lang="ts">
-import { toReactive, useLocalStorage } from '@vueuse/core'
+import { useLocalStorage } from '@vueuse/core'
 import { defineComponent } from 'vue'
 import LiveRoom from './components/LiveRoom.vue'
 import { defaultLiveConfig } from './utils/data'

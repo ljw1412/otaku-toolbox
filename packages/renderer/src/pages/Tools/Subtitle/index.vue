@@ -127,7 +127,9 @@ export default defineComponent({
       details: {
         isDisplay: false,
         isLoading: false,
-        data: { list: [] as Record<string, any>[] } as Record<string, any>
+        data: { list: [] } as Record<string, any> & {
+          list: Record<string, any>[]
+        }
       }
     }
   },
@@ -152,7 +154,7 @@ export default defineComponent({
 
     async fetchDetails(replacer: Record<string, any>) {
       if (this.rule && this.rule.details) {
-        this.details.data = {}
+        this.details.data = { list: [] }
         this.details.isLoading = true
         this.details.data = await this.$API.DataCenter.runRule(
           toRaw(this.rule.details),

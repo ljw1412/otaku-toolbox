@@ -22,9 +22,10 @@
         :info="item"
         :cover-type="coverType"
         @mousedown.right="handleLiveCardRightMouseDown(item,$event)"></live-card>
-      <live-card-context-menu v-model:visible="liveRoomContextMenu.isDisplay"
+      <app-context-menu v-model:visible="liveRoomContextMenu.isDisplay"
+        :menus="liveRoomContextMenu.list"
         v-bind="liveRoomContextMenu.position"
-        @menu-item-click="handleMenuItemClick"></live-card-context-menu>
+        @menu-item-click="handleMenuItemClick"></app-context-menu>
     </main>
 
     <add-room-dialog v-model="isDisplayAddRoomDialog"
@@ -42,13 +43,12 @@ import * as BLive from './utils/blive'
 import { only } from '/@/utils/object'
 import AddRoomDialog from './components/AddRoomDialog.vue'
 import LiveCard from './components/LiveCard.vue'
-import LiveCardContextMenu from './components/LiveCardContextMenu.vue'
 import LiveMonitorList from './components/LiveMonitorList.vue'
 
 export default defineComponent({
   name: 'AppLive',
 
-  components: { AddRoomDialog, LiveCard, LiveCardContextMenu, LiveMonitorList },
+  components: { AddRoomDialog, LiveCard, LiveMonitorList },
 
   setup() {
     const liveStore = useLocalStorage('MY_LIVE_LIST', [] as LiveInfo[])
@@ -65,7 +65,20 @@ export default defineComponent({
       liveRoomContextMenu: {
         isDisplay: false,
         position: { left: 0, top: 0 },
-        liveRoom: {} as LiveInfo
+        liveRoom: {} as LiveInfo,
+        list: [
+          {
+            name: '进入',
+            icon: 'icon-import',
+            action: 'enter'
+          },
+          {
+            name: '删除',
+            icon: 'icon-delete',
+            action: 'delete',
+            status: 'danger'
+          }
+        ]
       }
     }
   },
@@ -132,7 +145,7 @@ export default defineComponent({
     handleLiveCardRightMouseDown(room: LiveInfo, ev: MouseEvent) {
       this.liveRoomContextMenu.liveRoom = room
       this.liveRoomContextMenu.position.left = ev.clientX
-      this.liveRoomContextMenu.position.top = ev.clientY - 40
+      this.liveRoomContextMenu.position.top = ev.clientY
       this.liveRoomContextMenu.isDisplay = true
     },
 

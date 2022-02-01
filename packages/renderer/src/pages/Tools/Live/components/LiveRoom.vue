@@ -3,7 +3,8 @@
     class="live-room"
     :style="roomStyle">
 
-    <div class="live-container">
+    <div class="live-container"
+      @contextmenu="handleDisplayContextMenu">
       <div ref="livePlayerEl"
         class="live-player"></div>
       <div v-if="!isLiving"
@@ -43,6 +44,13 @@
       <screen-shot-preview v-model="screenShotUrl"></screen-shot-preview>
     </div>
 
+    <teleport to="body">
+      <app-context-menu v-model:visible="contextMenu.isDisplay"
+        :menus="contextMenu.list"
+        v-bind="contextMenu.position"
+        @menu-item-click="handleMenuItemClick"></app-context-menu>
+    </teleport>
+
     <div class="helper">
       <live-aside :config="config.danmaku"
         :online="onlineStr"
@@ -63,7 +71,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, PropType, ref } from 'vue'
-import { toReactive, useElementSize } from '@vueuse/core'
+import { toReactive, useElementSize, useEventListener } from '@vueuse/core'
 import connectLiveWs, { KeepLiveWS } from '../utils/bliveWs'
 import * as BLive from '../utils/blive'
 import Player from 'xgplayer'
@@ -130,7 +138,15 @@ export default defineComponent({
       online: 0,
       danmakuList: [] as LivePlayer.BLiveMessageDanmaku[],
       maxDanmakuSize: 100,
-      screenShotUrl: ''
+      screenShotUrl: '',
+      contextMenu: {
+        isDisplay: false,
+        position: { left: 0, top: 0 },
+        list: [
+          { name: '刷新', icon: 'icon-refresh', action: 'reload' },
+          { name: '切换画质', icon: 'icon-desktop', action: '', list: [] }
+        ]
+      }
     }
   },
 
@@ -161,6 +177,11 @@ export default defineComponent({
 
   mounted() {
     this.initLive()
+    useEventListener(window, 'contextmenu', e => {
+      if (this.contextMenu.isDisplay) {
+        this.contextMenu.isDisplay = false
+      }
+    })
   },
 
   beforeUnmount() {
@@ -199,10 +220,44 @@ export default defineComponent({
       if (qnItem) qnItem.url = this.url
       this.info.stream = durl
       this.info.qnDesc = qnDesc
+      this.contextMenu.list[1].list = qnDesc.map((item: { name: string }) => ({
+        name: item.name,
+        action: `qn-${item.name}`,
+        status: qnItem === item ? 'success' : undefined
+      }))
     },
 
     toggleDisplayBoard() {
       this.config.danmaku.showBoard = !this.config.danmaku.showBoard
+    },
+
+    handleDisplayContextMenu(ev: MouseEvent) {
+      this.contextMenu.position.left = ev.clientX
+      this.contextMenu.position.top = ev.clientY
+
+      setTimeout(() => {
+        this.contextMenu.isDisplay = true
+      }, 100)
+    },
+
+    async handleMenuItemClick(action: string) {
+      if (action === 'reload') {
+        if (this.player) {
+          this.player.destroy()
+          this.loadLive()
+        }
+      } else if (action.startsWith('qn-')) {
+        const [, name] = action.split('-')
+        const qnItem = this.info.qnDesc.find(item => item.name === name)
+        if (qnItem) {
+          this.qn = qnItem.qn
+          await this.getPlayerUrl()
+        }
+        if (this.player) {
+          this.player.src = this.url
+          this.player.emit('resourceReady', this.info.qnDesc)
+        }
+      }
     },
 
     handleBoardStateChange(state: 'aside' | 'board') {
