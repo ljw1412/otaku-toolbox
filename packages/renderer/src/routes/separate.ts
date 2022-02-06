@@ -106,12 +106,6 @@ const routes = [
         props: true,
         component: () => import('/@/pages/Tools/Live/singleRoom.vue'),
         meta: { title: '直播间', hideBackUp: true }
-      },
-      {
-        path: '/subtitle',
-        name: 'ToolSubtitle',
-        component: () => import('/@/pages/Tools/Subtitle/index.vue'),
-        meta: { title: '字幕搜索', maximizable: false, hideBackUp: true }
       }
     ]
   }

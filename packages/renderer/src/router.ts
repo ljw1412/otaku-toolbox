@@ -7,12 +7,14 @@ import {
 import { getNavigationCache } from '/@/utils/cache'
 import MainRoutes from '/@/routes/main'
 import SeparateRoutes from '/@/routes/separate'
+import PluginRoutes from '/@/plugins/route'
 import mGlobal, { globalAdd } from '/@/global'
 
 const routes = [
   { path: '/', redirect: { name: 'AppHome' } },
   MainRoutes,
-  ...SeparateRoutes
+  ...SeparateRoutes,
+  ...PluginRoutes
 ]
 
 const router = createRouter({

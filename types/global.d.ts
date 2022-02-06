@@ -23,6 +23,18 @@ interface NewBrowerConfig {
   alwaysOnTop?: boolean
 }
 
+interface ToolPluginBase {
+  desc: string
+  icon: string
+  name: string
+  plugin: string
+  version: number
+
+  order?: number
+  isAdded?: boolean
+  isNeedUpdate?: boolean
+}
+
 declare namespace DataCenter {
   interface Query {
     query: string
@@ -60,11 +72,6 @@ declare namespace DataCenter {
     pages: (RulePageParams & { name: string })[]
     details: RulePageParams
     chapter: RulePageParams
-  }
-
-  interface SubtitleRule extends RuleBase {
-    search: RulePageParams
-    details: RulePageParams
   }
 
   type Rule = NewsRule & ComicRule

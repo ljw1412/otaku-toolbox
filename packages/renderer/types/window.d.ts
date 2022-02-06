@@ -11,5 +11,7 @@ declare global {
     $theme: ThemeHelper
     $dayjs: dayjs
     $db: IDBTables
+
+    usePlugin: () => Record<string, any>
   }
 }

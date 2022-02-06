@@ -4,6 +4,8 @@
       <img class="logo m-auto pl-10"
         height="30"
         src="../../../assets/logo-text.svg">
+      <span v-if="$global.env.DEV"
+        class="dev-tip">开发版</span>
     </div>
     <header-center class="flex-grow-1">
       <app-navigation></app-navigation>
@@ -50,7 +52,15 @@ export default defineComponent({
 
   .header-left,
   .header-right {
+    position: relative;
     width: 170px;
+  }
+
+  .dev-tip {
+    position: absolute;
+    right: 16px;
+    bottom: 0;
+    font-size: 12px;
   }
 }
 </style>
