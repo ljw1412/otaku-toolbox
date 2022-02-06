@@ -25,7 +25,7 @@
         color: tabConfig.color
       }">
       <a-typography-title :heading="5"
-        style="margin-top: 0; color: inherit;">{{subTitle}}</a-typography-title>
+        style="margin-top: 0; color: inherit;">{{ subTitle }}</a-typography-title>
       <a-form :model="config">
         <a-form-item v-for="item of options"
           :key="item.key"
@@ -49,7 +49,6 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { getAppConfig, ipcInvoke, setAppConfigOption } from '/@/utils/electron'
-import AppControls from '/@/components/AppControls.vue'
 import ConfigItem from './components/ConfigItem.vue'
 
 interface SettingTab {
@@ -114,7 +113,7 @@ const tabs: SettingTab[] = [
 export default defineComponent({
   name: 'AppSetting',
 
-  components: { AppControls, ConfigItem },
+  components: { ConfigItem },
 
   data() {
     return {

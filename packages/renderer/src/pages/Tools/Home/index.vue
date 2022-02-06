@@ -3,26 +3,55 @@
     <a-page-header title="百宝箱"
       class="tools-header"
       :show-back="false">
+      <template #extra>
+        <a-tooltip mini
+          content="百宝箱插件库"
+          position="left">
+          <a-button @click="isDisplayPluginDialog = true">
+            <template #icon>
+              <icon-apps />
+            </template>
+          </a-button>
+        </a-tooltip>
+      </template>
     </a-page-header>
+
     <a-space wrap>
       <tool-card v-for="tool of toolList"
         :key="tool.name"
         v-bind="tool"></tool-card>
+      <tool-card v-for="tool of toolPluginList"
+        :key="tool.plugin"
+        v-bind="tool"></tool-card>
     </a-space>
+
+    <plugin-lib-dialog v-model="isDisplayPluginDialog"
+      :plugin-list="pluginList"></plugin-lib-dialog>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import { useLocalStorage } from '@vueuse/core'
 import ToolCard from './components/ToolCard.vue'
+import PluginLibDialog from './components/PluginLibDialog.vue'
 
 export default defineComponent({
   name: 'AppTools',
 
-  components: { ToolCard },
+  components: { ToolCard, PluginLibDialog },
+
+  setup() {
+    const pluginList = useLocalStorage(
+      'TOOL_PLUGINS_LIST',
+      [] as ToolPluginBase[]
+    )
+    return { pluginList }
+  },
 
   data() {
     return {
+      isDisplayPluginDialog: false,
       toolList: [
         {
           icon: 'icon-mind-mapping',
@@ -31,19 +60,26 @@ export default defineComponent({
           to: { name: 'OriginManager' }
         },
         {
-          icon: 'icon-language',
-          name: '字幕搜索',
-          desc: '获取字幕',
-          to: { name: 'ToolSubtitle' },
-          config: { width: 720 }
-        },
-        {
           icon: 'icon-live-broadcast',
           name: '直播',
           desc: '观看直播',
           to: { name: 'AppLive' }
         }
       ]
+    }
+  },
+
+  computed: {
+    toolPluginList(): ToolPluginBase[] {
+      return this.pluginList.map(plugin => {
+        return {
+          ...plugin,
+          to: {
+            name: 'PluginPage',
+            query: { title: plugin.name, plugin: plugin.plugin }
+          }
+        }
+      })
     }
   }
 })

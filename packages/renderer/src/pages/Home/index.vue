@@ -3,7 +3,6 @@
     class="app-home">
     <a-layout class="home-layout">
       <a-layout-content>
-        <a-button @click="openVueView({name:'PluginPage'})">插件测试</a-button>
       </a-layout-content>
       <a-layout-sider :width="280"
         class="ml-20">
@@ -18,16 +17,11 @@
 import { defineComponent } from 'vue'
 import DigitalClock from './components/DigitalClock.vue'
 import HomeWeather from './components/HomeWeather.vue'
-import { openVueView } from '/@/utils/electron'
 
 export default defineComponent({
   name: 'AppHome',
 
-  components: { DigitalClock, HomeWeather },
-
-  methods: {
-    openVueView
-  }
+  components: { DigitalClock, HomeWeather }
 })
 </script>
 

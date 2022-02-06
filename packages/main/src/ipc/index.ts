@@ -2,12 +2,14 @@ import IpcWindowAction from './windowAction'
 import IpcConfigAction from './configAction'
 import IpcMessageAction from './messageAction'
 import IpcShellAction from './shellAction'
+import IpcToolPlugin from './toolPlugin'
 
 const IpcActions = [
   IpcWindowAction,
   IpcConfigAction,
   IpcMessageAction,
-  IpcShellAction
+  IpcShellAction,
+  IpcToolPlugin
 ]
 
 function bind() {

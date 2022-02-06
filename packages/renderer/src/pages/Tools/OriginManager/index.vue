@@ -67,12 +67,6 @@ export default defineComponent({
           icon: 'icon-book',
           type: 'comic-book',
           allowCreate: false
-        },
-        {
-          name: '字幕',
-          icon: 'icon-language',
-          type: 'subtitle',
-          allowCreate: false
         }
       ] as OriginMenuItem[]
     }
