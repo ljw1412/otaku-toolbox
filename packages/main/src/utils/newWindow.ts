@@ -2,6 +2,7 @@ import { BrowserView, BrowserWindow } from 'electron'
 import { shell } from 'electron'
 import { createBrowser, createBuiltInBrowser } from '../window'
 import acgAppConfig from '../default/config'
+import { nin } from './object'
 import qs from 'qs'
 
 export async function openExternal(url: string) {
@@ -46,6 +47,7 @@ export default function(browerWindow: BrowserWindow | BrowserView): void {
               console.error('appConfig 解析失败')
             }
           }
+          url = temp[0] + '?' + qs.stringify(nin(serachParams, 'app-config'))
           createBrowser({ ...appConfig, url })
         } else {
           createBuiltInBrowser({ url })

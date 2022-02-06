@@ -5,6 +5,7 @@ dist
 thumbs.db
 types/env.d.ts
 data/
+plugins/
 src.temp/
 .env.production
 

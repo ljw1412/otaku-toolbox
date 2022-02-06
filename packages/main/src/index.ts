@@ -6,9 +6,11 @@ import newWindowHandler from './utils/newWindow'
 import createQuickWindows from './default/windows'
 import { getPageUrl } from './utils/pageUrl'
 import * as storage from './utils/storage'
+import * as appPlugin from './utils/appPlugin'
 import DataCenter from './dataCenter/index'
 
 storage.init(join(app.getAppPath(), 'data'))
+appPlugin.init(join(app.getAppPath(), 'plugins'))
 
 app.setAppUserModelId(import.meta.env.VITE_APP_TITLE)
 const isSingleInstance = app.requestSingleInstanceLock()

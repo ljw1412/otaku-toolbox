@@ -22,6 +22,7 @@ export default defineConfig({
   root: PACKAGE_ROOT,
   resolve: {
     alias: {
+      vue: 'vue/dist/vue.esm-bundler.js',
       '/@/': join(PACKAGE_ROOT, 'src') + '/',
       '/@UI/': join(PACKAGE_ROOT, 'UI') + '/'
     }
