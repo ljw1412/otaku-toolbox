@@ -11,13 +11,20 @@ function getPluginUrl(pluginName: string) {
   return `https://gitee.com/ljw1412/otaku-toolbox-plugins/raw/main/plugins/${pluginName}/index.js`
 }
 
+function getDevPluginUrl(pluginName: string, serve: string) {
+  return `${serve}/plugins/${pluginName}/index.js`
+}
+
 function getPluginFilePath(pluginName: string) {
   return join(BASE_PLUGIN_DIR, pluginName + '.js')
 }
 
 async function downloadPlugin(plugin: ToolPluginBase) {
-  const data = await request.get(getPluginUrl(plugin.plugin))
-  await fsp.writeFile(getPluginFilePath(plugin.plugin), data.text)
+  const url = plugin.isDev
+    ? getDevPluginUrl(plugin.plugin, plugin.serve || '')
+    : getPluginUrl(plugin.plugin)
+  const data = await request.get(url)
+  await fsp.writeFile(getPluginFilePath(plugin.plugin), data.text || data.body)
 }
 
 async function removePlugin(plugin: ToolPluginBase) {

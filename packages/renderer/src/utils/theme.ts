@@ -1,7 +1,7 @@
 import { reactive } from 'vue'
 import { ipcSend } from './electron'
 
-const STORE_KEY = 'app-theme'
+const STORE_KEY = 'APP_THEME'
 
 export const themes = [
   { name: '蓝色', value: '', type: 'light', variable: '--skin-blue' },

@@ -33,6 +33,8 @@ interface ToolPluginBase {
   order?: number
   isAdded?: boolean
   isNeedUpdate?: boolean
+  isDev?: boolean
+  serve?: string
 }
 
 declare namespace DataCenter {
