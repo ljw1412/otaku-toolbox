@@ -136,6 +136,7 @@ export default defineComponent({
     },
 
     async fetchDevPluginList() {
+      if (!this.$global.env.DEV) return
       try {
         this.devList = []
         const list: ToolPluginBase[] = await this.apiGet(

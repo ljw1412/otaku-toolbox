@@ -1,10 +1,16 @@
 <template>
   <div ref="LiveRoomEl"
     class="live-room"
+    :class="{'is-hovered': isRoomHovered}"
     :style="roomStyle">
 
     <div class="live-container"
       @contextmenu="handleDisplayContextMenu">
+      <div v-if="isLiving"
+        class="state-mark">
+        <div v-show="isMuted"
+          class="mute">M</div>
+      </div>
       <div ref="livePlayerEl"
         class="live-player"></div>
       <div v-if="!isLiving"
@@ -71,7 +77,13 @@
 
 <script lang="ts">
 import { computed, defineComponent, PropType, ref } from 'vue'
-import { toReactive, useElementSize, useEventListener } from '@vueuse/core'
+import {
+  onKeyStroke,
+  toReactive,
+  useElementHover,
+  useElementSize,
+  useEventListener
+} from '@vueuse/core'
 import connectLiveWs, { KeepLiveWS } from '../utils/bliveWs'
 import * as BLive from '../utils/blive'
 import Player from 'xgplayer'
@@ -100,9 +112,9 @@ export default defineComponent({
   emits: ['status-change', 'close'],
 
   setup() {
-    const LiveRoomEl = ref(null)
+    const LiveRoomEl = ref()
+    const isRoomHovered = useElementHover(LiveRoomEl)
     const roomSize = useElementSize(LiveRoomEl)
-
     const roomStyle = computed(() => {
       const { width, height } = roomSize
       const size = Math.min(
@@ -110,16 +122,21 @@ export default defineComponent({
         (height.value / 720) * 100,
         100
       )
-
       return { fontSize: size + 'px' }
     })
 
-    return { LiveRoomEl, roomSize: toReactive(roomSize), roomStyle }
+    return {
+      LiveRoomEl,
+      isRoomHovered,
+      roomSize: toReactive(roomSize),
+      roomStyle
+    }
   },
 
   data() {
     return {
       player: null as null | Player,
+      savedVolume: 1,
       streamer: {
         face: '',
         uname: '主播',
@@ -155,6 +172,10 @@ export default defineComponent({
       return this.info.live_status === 1
     },
 
+    isMuted() {
+      return !this.config.volume
+    },
+
     onlineStr() {
       let online = this.online
       let i = 0
@@ -180,6 +201,13 @@ export default defineComponent({
     useEventListener(window, 'contextmenu', e => {
       if (this.contextMenu.isDisplay) {
         this.contextMenu.isDisplay = false
+      }
+    })
+
+    onKeyStroke(['m', 'M'], e => {
+      if (this.player && this.isRoomHovered) {
+        this.player.muted = !this.player.muted
+        this.toggleMute(this.player.muted)
       }
     })
   },
@@ -225,6 +253,16 @@ export default defineComponent({
         action: `qn-${item.name}`,
         status: qnItem === item ? 'success' : undefined
       }))
+    },
+
+    toggleMute(mute: boolean) {
+      if (!this.player) return
+      if (mute) {
+        this.savedVolume = this.player.volume
+        this.player.volume = 0
+      } else {
+        this.player.volume = this.savedVolume || 1
+      }
     },
 
     toggleDisplayBoard() {
@@ -279,7 +317,7 @@ export default defineComponent({
         const playerDanmuList: LivePlayer.XGDanmaku[] = [
           {
             start: 0,
-            duration: 15000,
+            duration: 10000,
             id: danmaku.ct,
             txt: danmaku.message,
             mode: 'scroll',
@@ -455,6 +493,16 @@ export default defineComponent({
     .xgplayer-live {
       display: none !important;
     }
+  }
+
+  .state-mark {
+    position: absolute;
+    z-index: 200;
+    font-size: 16px;
+    color: var(--app-color-common);
+    text-shadow: 1px 0 1px #000000, 0 1px 1px #000000, 0 -1px 1px #000000,
+      -1px 0 1px #000000;
+    user-select: none;
   }
 
   &:hover {

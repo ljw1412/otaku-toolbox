@@ -204,6 +204,10 @@ export default defineComponent({
       border: 4px solid var(--app-color-common);
       box-sizing: border-box;
     }
+
+    &:hover {
+      border-color: var(--app-color-common);
+    }
   }
 }
 </style>
