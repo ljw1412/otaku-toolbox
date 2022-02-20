@@ -67,7 +67,7 @@ export default defineComponent({
         time[0] = '2'
         time[1] = 4 + parseInt(time[1]) + ''
       }
-      return time.map((i) => this.digitName[parseInt(i)])
+      return time.map(i => this.digitName[parseInt(i)])
     }
   }
 })
@@ -78,9 +78,9 @@ export default defineComponent({
   position: relative;
   user-select: none;
   padding: 16px 0;
-  border-radius: 6px;
+  border-radius: 4px;
   background-color: var(--digital-clock-color-bg);
-  box-shadow: 0 1px 1px rgb(0 0 0 / 8%) inset, 0 1px 1px var(--color-fill-1);
+  box-shadow: 0 1px 1px var(--color-fill-2) inset, 0 1px 3px var(--color-fill-3);
   overflow: hidden;
 
   .hour-system {

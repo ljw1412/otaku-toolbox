@@ -3,11 +3,22 @@
     class="app-home">
     <a-layout class="home-layout">
       <a-layout-content>
+        <acg-ratio-div :ratio="[2,1]">
+          <div class="w-100 h-100"
+            style="background-color: var(--color-fill-1)"></div>
+        </acg-ratio-div>
       </a-layout-content>
       <a-layout-sider :width="280"
-        class="ml-20">
-        <digital-clock></digital-clock>
-        <home-weather></home-weather>
+        class="ml-12">
+        <a-space direction="vertical"
+          size="medium"
+          class="px-4 sticky-t"
+          style="top: 20px;"
+          fill>
+          <home-user-center></home-user-center>
+          <home-weather></home-weather>
+          <digital-clock></digital-clock>
+        </a-space>
       </a-layout-sider>
     </a-layout>
   </div>
@@ -17,23 +28,35 @@
 import { defineComponent } from 'vue'
 import DigitalClock from './components/DigitalClock.vue'
 import HomeWeather from './components/HomeWeather.vue'
+import HomeUserCenter from './components/HomeUserCenter.vue'
 
 export default defineComponent({
   name: 'AppHome',
 
-  components: { DigitalClock, HomeWeather }
+  components: { DigitalClock, HomeWeather, HomeUserCenter }
 })
 </script>
 
 <style lang="scss">
 .app-home {
-  height: 100%;
-  overflow: auto;
+  // height: 100%;
+  // overflow: auto;
 
   .home-layout {
-    max-width: 1280px;
+    box-sizing: border-box;
+    max-width: 1720px;
+    height: 100%;
     margin: 0 auto;
-    padding: 20px 20px 0;
+    padding: 20px 20px;
+  }
+
+  .arco-layout-sider {
+    background: none;
+    box-shadow: none;
+
+    .arco-layout-sider-children {
+      overflow: inherit;
+    }
   }
 }
 </style>

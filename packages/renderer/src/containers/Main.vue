@@ -62,6 +62,14 @@ export default defineComponent({
     height: calc(100% - var(--app-header-height));
     overflow: hidden;
 
+    &[data-module='home'] {
+      .app-main-body {
+        height: 100%;
+        overflow-y: scroll;
+        overflow-x: hidden;
+      }
+    }
+
     &[data-module='anime'],
     &[data-module='game'] {
       .app-main-body {
