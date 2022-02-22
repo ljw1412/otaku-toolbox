@@ -31,16 +31,10 @@
 </template>
 
 <script lang="ts">
-import { useLocalStorage } from '@vueuse/core'
 import { defineComponent } from 'vue'
 
 export default defineComponent({
   name: 'HomeWeather',
-
-  setup() {
-    const weatherCity = useLocalStorage('WEATHER_CITY', '')
-    return { weatherCity }
-  },
 
   data() {
     return {
@@ -65,17 +59,19 @@ export default defineComponent({
   methods: {
     async fetchIpInfo() {
       const { city } = await this.$API.Outside.ipInfo()
-      this.weatherCity = city
+      this.$global.config.weatherCity = city
     },
 
     async fetchWeather() {
       this.isLoading = true
-      this.weather = await this.$API.Outside.weather(this.weatherCity)
+      this.weather = await this.$API.Outside.weather(
+        this.$global.config.weatherCity
+      )
       this.isLoading = false
     },
 
     async iniWeather() {
-      if (!this.weatherCity) {
+      if (!this.$global.config.weatherCity) {
         await this.fetchIpInfo()
       }
       this.fetchWeather()

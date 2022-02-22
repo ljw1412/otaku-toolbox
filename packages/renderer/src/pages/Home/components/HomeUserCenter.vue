@@ -2,9 +2,11 @@
   <div class="home-user-center">
     <div class="user-info layout-lr px-12">
       <a-avatar class="flex-shrink-0 mr-8"
-        :size="52"></a-avatar>
+        :size="52">
+        <span>{{ username }}</span>
+      </a-avatar>
       <div class="flex-grow-1">
-        <div class="fs-16 lh-26">游客</div>
+        <div class="fs-16 lh-26">{{ username }}</div>
         <div>
           <a-tag size="small">LV.0</a-tag>
         </div>
@@ -18,7 +20,13 @@
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-  name: 'HomeUserCenter'
+  name: 'HomeUserCenter',
+
+  data() {
+    return {
+      username: '游客'
+    }
+  }
 })
 </script>
 

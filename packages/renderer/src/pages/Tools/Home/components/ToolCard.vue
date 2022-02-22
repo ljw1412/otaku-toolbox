@@ -11,7 +11,13 @@
           class="icon"
           v-bind="iconProps"></component>
       </template>
-      <a-card-meta :title="name"></a-card-meta>
+      <a-card-meta :title="name">
+        <template #description>
+          <a-tag v-if="isDev"
+            color="orange"
+            size="small">开发版</a-tag>
+        </template>
+      </a-card-meta>
     </a-card>
   </a-tooltip>
 </template>
@@ -24,6 +30,7 @@ export default defineComponent({
   name: 'ToolCard',
 
   props: {
+    isDev: { type: Boolean, default: false },
     icon: { type: String, default: 'icon-common' },
     name: { type: String, default: '' },
     desc: { type: String, default: '' },

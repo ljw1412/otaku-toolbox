@@ -2,6 +2,9 @@ import { IpcRendererEvent } from 'electron'
 import { RouteLocationRaw } from 'vue-router'
 import mGlobal from '/@/global'
 
+const CHANNEL_WINDOW_ACTION = 'window.action'
+const CHANNEL_APP_CONFIG = 'config'
+
 export function useElectron(): Readonly<ElectronApi> {
   return window.electron
 }
@@ -55,8 +58,12 @@ export function ipcOff(
   ipcRenderer.off(channel, listener)
 }
 
+export function checkWinExists(title: string) {
+  return ipcInvoke(CHANNEL_WINDOW_ACTION, 'check-exists', { title })
+}
+
 export function openAppSystemWindow(title: string) {
-  ipcSend('window.action', 'openAppSystemWindow', { title })
+  ipcSend(CHANNEL_WINDOW_ACTION, 'openAppSystemWindow', { title })
 }
 
 /**
@@ -64,7 +71,7 @@ export function openAppSystemWindow(title: string) {
  * @param config 浏览器配置
  */
 export function createBrowser(config: NewBrowerConfig) {
-  ipcSend('window.action', 'createBrowser', config)
+  ipcSend(CHANNEL_WINDOW_ACTION, 'createBrowser', config)
 }
 
 /**
@@ -76,7 +83,7 @@ export function createBuiltInBrowser(
   url: string,
   config?: Record<string, any>
 ) {
-  ipcSend('window.action', 'built-in-browser', { ...config, url })
+  ipcSend(CHANNEL_WINDOW_ACTION, 'built-in-browser', { ...config, url })
 }
 
 /**
@@ -84,7 +91,7 @@ export function createBuiltInBrowser(
  * @param url
  */
 export function openSystemBrower(url: string) {
-  ipcSend('window.action', 'openSystemBrowser', { url })
+  ipcSend(CHANNEL_WINDOW_ACTION, 'openSystemBrowser', { url })
 }
 
 /**
@@ -114,7 +121,7 @@ export function openVueView(
  * @returns 配置
  */
 export function getAppConfig() {
-  return ipcInvoke('config', 'getAppConfig')
+  return ipcInvoke(CHANNEL_APP_CONFIG, 'getAppConfig')
 }
 
 /**
@@ -122,5 +129,5 @@ export function getAppConfig() {
  * @param params
  */
 export function setAppConfigOption(data: Record<string, any>) {
-  return ipcInvoke('config', 'setOption', data)
+  return ipcInvoke(CHANNEL_APP_CONFIG, 'setOption', data)
 }

@@ -25,29 +25,20 @@
         v-bind="tool"></tool-card>
     </a-space>
 
-    <plugin-lib-dialog v-model="isDisplayPluginDialog"
-      :plugin-list="pluginList"></plugin-lib-dialog>
+    <plugin-lib-dialog v-model="isDisplayPluginDialog"></plugin-lib-dialog>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { useLocalStorage } from '@vueuse/core'
 import ToolCard from './components/ToolCard.vue'
 import PluginLibDialog from './components/PluginLibDialog.vue'
+import { pluginStore } from '/@/stores/index'
 
 export default defineComponent({
   name: 'AppTools',
 
   components: { ToolCard, PluginLibDialog },
-
-  setup() {
-    const pluginList = useLocalStorage(
-      'TOOL_PLUGINS_LIST',
-      [] as ToolPluginBase[]
-    )
-    return { pluginList }
-  },
 
   data() {
     return {
@@ -71,12 +62,16 @@ export default defineComponent({
 
   computed: {
     toolPluginList(): ToolPluginBase[] {
-      return this.pluginList.map(plugin => {
+      return pluginStore.list.map(plugin => {
         return {
           ...plugin,
           to: {
             name: 'PluginPage',
-            query: { title: plugin.name, plugin: plugin.plugin }
+            query: {
+              title: plugin.name,
+              plugin: plugin.plugin,
+              isDev: plugin.isDev
+            }
           }
         }
       })

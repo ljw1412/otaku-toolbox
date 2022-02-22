@@ -52,7 +52,7 @@
     "vue-tsc": "^0.1.6"
   },
   "dependencies": {
-    "@arco-design/web-vue": "^2.15.1",
+    "@arco-design/web-vue": "2.17.0",
     "@ljw1412/ionicons-sprite": "^1.0.1",
     "@vueuse/core": "^7.6.2",
     "bilibili-live-ws": "^6.0.3",
@@ -68,7 +68,7 @@
     "superagent": "^6.1.0",
     "superagent-proxy": "^3.0.0",
     "tippy.js": "^6.3.1",
-    "vue": "^3.2.24",
+    "vue": "^3.2.31",
     "vue-router": "^4.0.12",
     "xgplayer": "^2.31.4",
     "xgplayer-hls.js": "^2.6.1"

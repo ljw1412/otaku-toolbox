@@ -6,6 +6,15 @@ import baseListerner from './listeners/baseListener'
 
 const env = import.meta.env
 
+function safeBoolean(b?: boolean): boolean {
+  return b === undefined ? true : b
+}
+
+/**
+ * 创建内置浏览器
+ * @param data {url:string}
+ * @returns
+ */
 export function createBuiltInBrowser(data: Record<string, any>): BrowserWindow {
   console.log(data)
 
@@ -52,14 +61,14 @@ export function createBuiltInBrowser(data: Record<string, any>): BrowserWindow {
   return newWin
 }
 
-function safeBoolean(b?: boolean): boolean {
-  return b === undefined ? true : b
-}
-
+/**
+ * 创建窗体
+ * @param config
+ * @returns
+ */
 export function createBrowser(config: NewBrowerConfig): BrowserWindow {
   if (config.singleInstance && config.title) {
-    const allWindows = BrowserWindow.getAllWindows()
-    const win = allWindows.find(win => win.getTitle() === config.title)
+    const win = getWindowByTitle(config.title)
     if (win) {
       if (!win.isVisible()) win.show()
       if (win.isMinimized()) win.restore()
@@ -117,12 +126,26 @@ export function createBrowser(config: NewBrowerConfig): BrowserWindow {
   return newWin
 }
 
+/**
+ * 窗体是否存在
+ * @param title
+ */
+export function getWindowByTitle(title?: string) {
+  const allWindows = BrowserWindow.getAllWindows()
+  const win = allWindows.find(win => win.getTitle() === title)
+  return win
+}
+
+/**
+ * 打开APP默认窗体
+ * @param config { title: string }
+ * @returns
+ */
 export function openAppSystemWindow(
   config: NewBrowerConfig
 ): BrowserWindow | null {
   const { title } = config
-  const allWindows = BrowserWindow.getAllWindows()
-  const win = allWindows.find(win => win.getTitle() === title)
+  const win = getWindowByTitle(title)
   if (win) {
     if (!win.isVisible()) {
       win.center()
@@ -135,6 +158,10 @@ export function openAppSystemWindow(
   return null
 }
 
+/**
+ * 开关开发者工具
+ * @param win 目标窗体
+ */
 export function toggleDevTools(win: BrowserWindow) {
   try {
     const view = win.getBrowserView()

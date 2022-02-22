@@ -11,6 +11,7 @@ import { defineComponent } from 'vue'
 import AppMiniHeader from '/@/containers/components/AppMiniHeader.vue'
 import './index'
 import { ipcInvoke } from '../utils/electron'
+import { pluginStore } from '/@/stores/index'
 
 export default defineComponent({
   name: 'PluginPage',
@@ -29,14 +30,24 @@ export default defineComponent({
 
   methods: {
     async init() {
-      console.log('init')
-      const filePath = await ipcInvoke('tool-plugin', 'getPath', {
-        plugin: this.$route.query.plugin
-      })
-      const url = new URL(filePath)
-
+      const { isDev, plugin: pluginName } = this.$route.query
+      let url = null
       const script = document.createElement('script')
-      script.src = url.href
+      if (isDev) {
+        console.log('使用插件开发模式运行')
+        url = new URL(`${pluginStore.devUrl}/plugins/${pluginName}/index.js`)
+        const resp = await fetch(url.href)
+        const text = await resp.text()
+        const blob = new Blob([text], { type: 'text/javascript' })
+        url = URL.createObjectURL(blob)
+        script.src = url
+      } else {
+        const filePath = await ipcInvoke('tool-plugin', 'getPath', {
+          plugin: pluginName
+        })
+        url = new URL(filePath)
+        script.src = url.href
+      }
       document.body.appendChild(script)
     }
   }

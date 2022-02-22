@@ -6,7 +6,8 @@ const defaultConfig = {
   timeZone: 8,
   hourSystem: 24,
   allowDevTools: false,
-  weekBangumiDirection: 'vertical'
+  weekBangumiDirection: 'vertical',
+  weatherCity: ''
 }
 
 const config = useLocalStorage(GLOBAL_CONFIG, defaultConfig, {

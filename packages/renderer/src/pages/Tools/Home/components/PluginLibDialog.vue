@@ -14,8 +14,8 @@
       </a-input>
       <a-button type="primary"
         @click="handleSavePluginDevUrlClick">保存</a-button>
-      <a-button :disabled="!pluginDevUrl"
-        @click="handleCreateDevList">生成列表</a-button>
+      <a-button :disabled="notDevServer"
+        @click="handleCreateDevList">刷新服务列表</a-button>
     </a-button-group>
 
     <a-list :data="mList"
@@ -58,25 +58,19 @@
 </template>
 
 <script lang="ts">
-import { useLocalStorage } from '@vueuse/core'
-import { defineComponent, PropType, toRaw } from 'vue'
-import { ipcInvoke } from '/@/utils/electron'
+import { defineComponent, toRaw } from 'vue'
+import { checkWinExists, ipcInvoke } from '/@/utils/electron'
 import { only } from '/@/utils/object'
+import { pluginStore } from '/@/stores/index'
 
 export default defineComponent({
   name: 'PluginLibDialog',
 
   props: {
-    modelValue: Boolean,
-    pluginList: { type: Array as PropType<ToolPluginBase[]>, default: () => [] }
+    modelValue: Boolean
   },
 
   emits: ['update:modelValue'],
-
-  setup() {
-    const pluginDevUrl = useLocalStorage('PLUGIN_DEV_URL', '')
-    return { pluginDevUrl }
-  },
 
   data() {
     return {
@@ -98,6 +92,10 @@ export default defineComponent({
 
     mList() {
       return [...this.devList, ...this.list]
+    },
+
+    notDevServer() {
+      return !pluginStore.devUrl
     }
   },
 
@@ -111,21 +109,21 @@ export default defineComponent({
   },
 
   created() {
-    this.inputPluginDevUrl = this.pluginDevUrl
+    this.inputPluginDevUrl = pluginStore.devUrl
   },
 
   methods: {
     handleSavePluginDevUrlClick() {
-      this.pluginDevUrl = this.inputPluginDevUrl
+      pluginStore.devUrl = this.inputPluginDevUrl
       this.$message.info('插件开发服务地址保存成功')
       this.fetchDevPluginList()
     },
 
     async handleCreateDevList() {
-      if (this.pluginDevUrl) {
+      if (pluginStore.devUrl) {
         try {
           const { message } = await this.apiGet(
-            `${this.pluginDevUrl}/create-list`
+            `${pluginStore.devUrl}/create-list`
           )
           this.$message.info(message)
           this.fetchDevPluginList()
@@ -140,17 +138,17 @@ export default defineComponent({
       try {
         this.devList = []
         const list: ToolPluginBase[] = await this.apiGet(
-          `${this.pluginDevUrl}/plugins/list.json`
+          `${pluginStore.devUrl}/plugins/list.json`
         )
 
         list.forEach(plugin => {
-          const item = this.pluginList.find(
+          const item = pluginStore.list.find(
             item => item.plugin === plugin.plugin
           )
           plugin.isAdded = !!item
           plugin.isNeedUpdate = item && item.version < plugin.version
           plugin.isDev = true
-          plugin.serve = this.pluginDevUrl
+          plugin.serve = pluginStore.devUrl
         })
 
         this.devList = list
@@ -165,7 +163,9 @@ export default defineComponent({
       )
 
       list.forEach(plugin => {
-        const item = this.pluginList.find(item => item.plugin === plugin.plugin)
+        const item = pluginStore.list.find(
+          item => item.plugin === plugin.plugin
+        )
         plugin.isAdded = !!item
         plugin.isNeedUpdate = item && item.version < plugin.version
       })
@@ -176,8 +176,27 @@ export default defineComponent({
     formatPluginInfo(plugin: ToolPluginBase) {
       return only(
         plugin,
-        'plugin icon name desc version config order'
+        'plugin icon name desc version config order isDev'
       ) as ToolPluginBase
+    },
+
+    async checkPluginWin(plugin: ToolPluginBase) {
+      const isExists = await checkWinExists(plugin.name)
+      if (isExists) {
+        return new Promise((resolve, reject) => {
+          this.$modal.warning({
+            title: '警告',
+            content: '插件页面正在使用中，是否强制关闭后，继续操作？',
+            hideCancel: false,
+            onOk: () => {
+              ipcInvoke('window.action', 'close', { title: plugin.name })
+              resolve(true)
+            },
+            onCancel: () => reject
+          })
+        })
+      }
+      return Promise.resolve(true)
     },
 
     async addPlugin(plugin: ToolPluginBase) {
@@ -190,27 +209,29 @@ export default defineComponent({
         this.$message.error(`添加失败：${error.message}`)
         return
       }
-      plugin.order = this.pluginList.length
-      this.pluginList.push(this.formatPluginInfo(plugin))
+      plugin.order = pluginStore.list.length
+      pluginStore.list.push(this.formatPluginInfo(plugin))
       plugin.isAdded = true
     },
 
     async updatePlugin(plugin: ToolPluginBase) {
+      await this.checkPluginWin(plugin)
       const data = await ipcInvoke('tool-plugin', 'update', toRaw(plugin))
-      const index = this.pluginList.findIndex(
+      const index = pluginStore.list.findIndex(
         item => item.plugin === plugin.plugin
       )
-      plugin.order = this.pluginList[index].order
-      this.pluginList.splice(index, 1, this.formatPluginInfo(plugin))
+      plugin.order = pluginStore.list[index].order
+      pluginStore.list.splice(index, 1, this.formatPluginInfo(plugin))
       plugin.isNeedUpdate = false
     },
 
     async removePlugin(plugin: ToolPluginBase) {
+      await this.checkPluginWin(plugin)
       const data = await ipcInvoke('tool-plugin', 'remove', toRaw(plugin))
-      const index = this.pluginList.findIndex(
+      const index = pluginStore.list.findIndex(
         item => item.plugin === plugin.plugin
       )
-      this.pluginList.splice(index, 1)
+      pluginStore.list.splice(index, 1)
       plugin.isAdded = false
     }
   }
