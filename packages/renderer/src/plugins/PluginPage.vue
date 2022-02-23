@@ -30,25 +30,45 @@ export default defineComponent({
 
   methods: {
     async init() {
-      const { isDev, plugin: pluginName } = this.$route.query
-      let url = null
-      const script = document.createElement('script')
-      if (isDev) {
-        console.log('使用插件开发模式运行')
-        url = new URL(`${pluginStore.devUrl}/plugins/${pluginName}/index.js`)
-        const resp = await fetch(url.href)
-        const text = await resp.text()
-        const blob = new Blob([text], { type: 'text/javascript' })
-        url = URL.createObjectURL(blob)
-        script.src = url
-      } else {
-        const filePath = await ipcInvoke('tool-plugin', 'getPath', {
-          plugin: pluginName
-        })
-        url = new URL(filePath)
-        script.src = url.href
+      const { isDev, plugin: pluginName, css } = this.$route.query
+      const getUrl = isDev ? this.getDevBlobUrl : this.getPluginUrl
+      const jsUrl = await getUrl(pluginName as string, '.js')
+      this.appendElement('.js', jsUrl)
+      if (css) {
+        const cssUrl = await getUrl(pluginName as string, '.css')
+        this.appendElement('.css', cssUrl)
       }
-      document.body.appendChild(script)
+    },
+
+    async getDevBlobUrl(pluginName: string, ext: '.css' | '.js') {
+      const url = `${pluginStore.devUrl}/plugins/${pluginName}/index${ext}`
+      const resp = await fetch(url)
+      const text = await resp.text()
+      const blob = new Blob([text], {
+        type: ext === '.js' ? 'text/javascript' : 'text/css'
+      })
+      return URL.createObjectURL(blob)
+    },
+
+    async getPluginUrl(plugin: string, ext: '.css' | '.js') {
+      const filePath = await ipcInvoke('tool-plugin', 'getPath', {
+        plugin,
+        ext
+      })
+      return new URL(filePath).href
+    },
+
+    appendElement(ext: '.css' | '.js', url: string) {
+      let el
+      if (ext === '.js') {
+        el = document.createElement('script')
+        el.src = url
+      } else {
+        el = document.createElement('link')
+        el.rel = 'stylesheet'
+        el.href = url
+      }
+      document.body.appendChild(el)
     }
   }
 })

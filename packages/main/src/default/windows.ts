@@ -30,6 +30,11 @@ function createWindow(config: NewBrowerConfig) {
   })
 }
 
+export function createDefaultWinByTitle(title?: string) {
+  const config = Object.values(windowConfigs).find(item => item.title === title)
+  return config ? createWindow(config) : null
+}
+
 export default function(mainWin: BrowserWindow) {
   return Object.keys(windowConfigs).reduce((obj, key) => {
     const config = windowConfigs[key]

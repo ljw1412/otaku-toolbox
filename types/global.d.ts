@@ -29,6 +29,7 @@ interface ToolPluginBase {
   name: string
   plugin: string
   version: number
+  css?: boolean
 
   order?: number
   isAdded?: boolean

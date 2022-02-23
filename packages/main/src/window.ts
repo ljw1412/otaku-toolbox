@@ -3,6 +3,7 @@ import { join } from 'path'
 import { getPageUrl } from './utils/pageUrl'
 import newWindowHandler from './utils/newWindow'
 import baseListerner from './listeners/baseListener'
+import { createDefaultWinByTitle } from './default/windows'
 
 const env = import.meta.env
 
@@ -154,8 +155,9 @@ export function openAppSystemWindow(
     if (win.isMinimized()) win.restore()
     win.focus()
     return win
+  } else {
+    return createDefaultWinByTitle(title)
   }
-  return null
 }
 
 /**

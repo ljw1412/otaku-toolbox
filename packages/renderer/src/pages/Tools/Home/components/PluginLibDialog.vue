@@ -176,7 +176,7 @@ export default defineComponent({
     formatPluginInfo(plugin: ToolPluginBase) {
       return only(
         plugin,
-        'plugin icon name desc version config order isDev'
+        'plugin icon name desc version config order css isDev'
       ) as ToolPluginBase
     },
 

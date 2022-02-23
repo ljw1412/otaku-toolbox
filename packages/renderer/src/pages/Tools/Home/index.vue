@@ -70,7 +70,8 @@ export default defineComponent({
             query: {
               title: plugin.name,
               plugin: plugin.plugin,
-              isDev: plugin.isDev
+              isDev: plugin.isDev,
+              css: plugin.css
             }
           }
         }
