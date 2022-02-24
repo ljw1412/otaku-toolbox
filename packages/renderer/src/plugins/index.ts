@@ -16,7 +16,7 @@ window.usePlugin = () => {
         .use(AppInject)
     },
     appMount(app: Vue.App) {
-      app.mount('#plugin-main')
+      return app.mount('#plugin-main')
     },
     appUnMount(app: Vue.App) {
       app.unmount()
