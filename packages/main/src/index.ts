@@ -112,14 +112,13 @@ app.on('window-all-closed', () => {
   }
 })
 
+app.whenReady().then(() => import('./utils/imageFix'))
+
 app
   .whenReady()
   .then(createWindow)
   .catch(e => console.error('Failed create window:', e))
 
-app.whenReady().then(() => {
-  import('./utils/imageFix')
-})
 // Auto-updates
 if (env.PROD) {
   app

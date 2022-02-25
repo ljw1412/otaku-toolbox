@@ -1,7 +1,8 @@
+import { typeOf } from '../utils/object'
 import { isDebugger } from './parser'
 
 function checkInputType(data: any, type: string) {
-  const isTruly = typeof data === type
+  const isTruly = typeOf(data) === type
   if (!isTruly && isDebugger) {
     console.log(
       '[checkInputType]',
@@ -75,10 +76,17 @@ const modifierParsers = {
     fn(str: string, modifier: string) {
       return { result: eval(str), error: false }
     }
+  },
+  eq: {
+    inputType: 'array',
+    fn(list: any[], modifier: string) {
+      const i = parseInt(modifier.split('#')[1] || '')
+      return { result: list[i], error: false }
+    }
   }
 }
 
-export default function(str: string, modifier: string) {
+export default function(str: any, modifier: string) {
   let modifierName = ''
   for (const key in modifierParsers) {
     if (modifier.startsWith(key)) {
