@@ -49,6 +49,7 @@ export default defineComponent({
           const [namespace, ppath] = item.key!.split('||')
           Object.assign(item, { namespace, ppath })
         })
+        list.sort((a, b) => (a.time > b.time ? -1 : 1))
         this.list = list
         this.isLoading = false
       } else {

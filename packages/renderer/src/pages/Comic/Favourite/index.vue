@@ -13,7 +13,8 @@
     <div class="comic-list py-6">
       <comic-card v-for="item of list"
         :key="item.key"
-        :info="item"></comic-card>
+        :info="item"
+        show-tag></comic-card>
     </div>
   </div>
 </template>

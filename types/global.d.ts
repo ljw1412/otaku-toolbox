@@ -77,7 +77,7 @@ declare namespace DataCenter {
     chapter: RulePageParams
   }
 
-  type Rule = NewsRule & ComicRule
+  type Rule = NewsRule & ComicRule & RulePageParams
 
   interface RunnerOptions {
     replacer?: Replacer

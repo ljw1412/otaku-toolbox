@@ -1,27 +1,32 @@
 <template>
   <a-card class="comic-history-card"
+    hoverable
     :bordered="false"
+    :body-style="{ padding: '4px 8px' }"
     @click="handleCardClick">
     <template #cover>
       <acg-ratio-div :ratio="[3,4]">
         <img :src="history.cover"
-          loading="lazy">
+          loading="lazy"
+          :class="{'filter-gray': !originName}">
       </acg-ratio-div>
     </template>
-    <a-card-meta>
-      <template #title>
-        <div class="title text-truncate">{{ history.title }}</div>
-      </template>
-      <template #description>
-        <div>看到{{ history.name }} 第{{ history.index }}页</div>
-        <div>{{ historyTime }}</div>
-      </template>
-    </a-card-meta>
+
+    <h5 class="title multi-text-truncate color-text-1"
+      data-line="2">{{ history.title }}</h5>
+    <div class="description mt-8">
+      <div>看到{{ history.name }} 第{{ history.index }}页</div>
+      <div class="mt-4">{{ historyTime }}</div>
+    </div>
+    <div class="origin-tag text-right">
+      <a-tag :color="originName ? 'green' : 'red'">{{ originName || '源不存在' }}</a-tag>
+    </div>
   </a-card>
 </template>
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
+import { comicStore } from '/@/stores'
 import { openVueView } from '/@/utils/electron'
 
 export default defineComponent({
@@ -37,11 +42,18 @@ export default defineComponent({
         return this.$dayjs(this.history.time).format('YYYY-MM-DD hh:mm:ss')
       }
       return ''
+    },
+    originName() {
+      return comicStore.nameMap[this.history.namespace!]
     }
   },
 
   methods: {
     handleCardClick() {
+      if (!this.originName) {
+        this.$message.error('源不存在，无法阅读！')
+        return
+      }
       openVueView(
         {
           name: 'ComicDetails',
@@ -59,8 +71,16 @@ export default defineComponent({
 
 <style lang="scss">
 .comic-history-card {
+  position: relative;
   cursor: pointer;
   display: flex;
+  &.arco-card {
+    transition-property: box-shadow, transform;
+    &:hover {
+      transform: translateY(-4px);
+    }
+  }
+
   .arco-card-cover {
     width: 30%;
     flex-shrink: 0;
@@ -72,8 +92,15 @@ export default defineComponent({
   }
 
   .title {
-    height: 2em;
+    height: 2.2em;
     margin-bottom: 4px;
+    white-space: normal;
+  }
+
+  .origin-tag {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
   }
 }
 </style>

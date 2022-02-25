@@ -48,6 +48,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { RouteLocationRaw } from 'vue-router'
+import { comicStore } from '/@/stores'
 import { setNavigationCache } from '/@/utils/cache'
 import { openVueView } from '/@/utils/electron'
 
@@ -77,12 +78,15 @@ export default defineComponent({
           icon: 'icon-search',
           component: 'ComicSearch'
         }
-      ],
-      list: [] as DataCenter.Rule[]
+      ]
     }
   },
 
   computed: {
+    list(): DataCenter.Rule[] {
+      return comicStore.origins
+    },
+
     originCount(): number {
       return this.list.length
     },
@@ -95,7 +99,7 @@ export default defineComponent({
   },
 
   created() {
-    this.fetchOriginList()
+    comicStore.updateOriginList()
   },
 
   methods: {
@@ -129,12 +133,12 @@ export default defineComponent({
         name: 'ComicOrigin',
         params: { namespace: rule.namespace }
       })
-    },
-
-    async fetchOriginList() {
-      const list = await this.$API.DataCenter.listRules('comic-book')
-      this.list = list
     }
+
+    // async fetchOriginList() {
+    //   const list = await this.$API.DataCenter.listRules('comic-book')
+    //   this.list = list
+    // }
   }
 })
 </script>

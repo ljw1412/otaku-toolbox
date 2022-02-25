@@ -113,4 +113,8 @@ export default defineComponent({
     }
   }
 }
+
+body .arco-message-list-top {
+  top: 70px;
+}
 </style>
