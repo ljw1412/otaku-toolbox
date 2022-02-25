@@ -8,7 +8,7 @@ const BASE_PLUGIN_DIR = join(app.getAppPath(), 'plugins')
 const channel = 'tool-plugin'
 
 function getPluginUrl(pluginName: string, ext = '.js') {
-  return `https://gitee.com/ljw1412/otaku-toolbox-plugins/raw/main/plugins/${pluginName}/index${ext}`
+  return `https://gitee.com/ljw1412/otaku-toolbox-plugins/raw/main/release/plugins/${pluginName}/index${ext}`
 }
 
 function getDevPluginUrl(pluginName: string, serve: string) {

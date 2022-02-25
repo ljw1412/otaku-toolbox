@@ -159,7 +159,7 @@ export default defineComponent({
 
     async fetchPluginList() {
       const list: ToolPluginBase[] = await this.apiGet(
-        'https://gitee.com/ljw1412/otaku-toolbox-plugins/raw/main/plugins/list.json'
+        'https://gitee.com/ljw1412/otaku-toolbox-plugins/raw/main/release/plugins/list.json'
       )
 
       list.forEach(plugin => {
