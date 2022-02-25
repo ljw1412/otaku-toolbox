@@ -11,7 +11,7 @@ const channel = 'shell'
 
 function bind(): void {
   ipcMain.handle(channel, async (e, type, data) => {
-    console.log(type)
+    console.log('[shellAction]', type, data)
     if (type === 'createAppShortcutLink') {
       return shell.writeShortcutLink(shortcutLinkPath, 'create', {
         target: appPath

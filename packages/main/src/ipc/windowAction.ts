@@ -26,7 +26,7 @@ function closeApp(win: BrowserWindow, mode: string) {
 const listener: IpcListener = (e, type, data) => {
   const { tabId } = data
   const mWin = BrowserWindow.fromId(tabId)
-  console.log('[Tab]', type, tabId)
+  console.log('[windowAction]', type, tabId)
 
   if (!mWin) {
     console.log('[指令错误]', type, data)

@@ -1,5 +1,5 @@
 {
-  "name": "动漫屋PC",
+  "name": "动漫屋",
   "namespace": "dm5-pc",
   "icon": "https://css99tel.cdndm5.com/v202111301550/dm5/images/dm5.ico",
   "url": "https://www.dm5.com/",
@@ -49,9 +49,13 @@
       "cover": ".banner_detail_form .cover img|@src"
     },
     "items": ".detail-list-select li",
-    "itemData": {
-      "name": "a|text",
-      "path": "a|@href"
+    "itemData": { "name": "a|text", "path": "a|@href" }
+  },
+  "chapter": {
+    "url": "https://m.dm5.com{:path}",
+    "mode": "html",
+    "data": {
+      "list": "script:contains(eval)|html|append#return newImgs;|function"
     }
   }
 }
