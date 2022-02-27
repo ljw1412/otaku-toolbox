@@ -1,7 +1,7 @@
 <template>
   <div class="home-user-center">
     <div class="user-info layout-lr px-12">
-      <a-avatar class="flex-shrink-0 mr-8"
+      <a-avatar class="flex-shrink-0 mr-16"
         :size="52">
         <span>{{ username }}</span>
       </a-avatar>
@@ -12,7 +12,12 @@
         </div>
       </div>
     </div>
-    <div class="user-action"></div>
+    <div class="user-action d-flex">
+      <acg-ratio-div v-for="i of 4"
+        :key="i"
+        :ratio="[1,1]"
+        class="action-item w-25 flex-shrink-0"></acg-ratio-div>
+    </div>
   </div>
 </template>
 
@@ -37,11 +42,19 @@ export default defineComponent({
 
   .user-info {
     height: 80px;
-    border-bottom: 1px solid var(--color-border-1);
   }
 
   .user-action {
     height: 70px;
+    .action-item {
+      box-sizing: border-box;
+      border-top: 1px solid var(--color-fill-2);
+      border-right: 1px solid var(--color-fill-2);
+
+      &:last-child {
+        border-right: none;
+      }
+    }
   }
 }
 </style>

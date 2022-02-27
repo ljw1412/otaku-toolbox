@@ -2,24 +2,25 @@
   <div v-watch-scroll
     class="app-home">
     <a-layout class="home-layout">
-      <a-layout-sider :width="280"
-        class="mr-12">
-        <a-space direction="vertical"
-          size="medium"
-          class="px-4 sticky-t"
-          style="top: 20px;"
-          fill>
-          <home-weather></home-weather>
-          <digital-clock></digital-clock>
-          <home-user-center></home-user-center>
-        </a-space>
-      </a-layout-sider>
       <a-layout-content>
         <acg-ratio-div :ratio="[2,1]">
           <div class="w-100 h-100"
             style="background-color: var(--color-fill-1)"></div>
         </acg-ratio-div>
       </a-layout-content>
+      <a-layout-sider :width="280"
+        class="ml-12">
+        <a-space direction="vertical"
+          size="medium"
+          class="px-4 sticky-t h-100"
+          style="top: 20px;"
+          fill>
+          <home-weather></home-weather>
+          <digital-clock></digital-clock>
+          <home-user-center></home-user-center>
+          <home-foundation></home-foundation>
+        </a-space>
+      </a-layout-sider>
     </a-layout>
   </div>
 </template>
@@ -29,17 +30,18 @@ import { defineComponent } from 'vue'
 import DigitalClock from './components/DigitalClock.vue'
 import HomeWeather from './components/HomeWeather.vue'
 import HomeUserCenter from './components/HomeUserCenter.vue'
+import HomeFoundation from './components/HomeFoundation.vue'
 
 export default defineComponent({
   name: 'AppHome',
 
-  components: { DigitalClock, HomeWeather, HomeUserCenter }
+  components: { DigitalClock, HomeWeather, HomeUserCenter, HomeFoundation }
 })
 </script>
 
 <style lang="scss">
 .app-home {
-  // height: 100%;
+  height: 100%;
   // overflow: auto;
 
   .home-layout {
@@ -56,6 +58,10 @@ export default defineComponent({
 
     .arco-layout-sider-children {
       overflow: inherit;
+
+      .arco-space-item:last-child {
+        flex-grow: 1;
+      }
     }
   }
 }

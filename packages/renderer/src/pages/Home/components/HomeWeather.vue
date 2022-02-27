@@ -6,20 +6,22 @@
         <div class="bg"
           :style="bgStyle"></div>
       </div>
-      <div class="sky layout-lr px-8">
+      <div class="sky layout-lr px-8 pt-6">
         <div class="weather">
           <div v-if="weatherIcon.day"
             class="day"
             :title="(isWeatherNotChange?'天气:':'白天:')+weather.daytype">
             <acg-icon :name="weatherIcon.day"
-              size="60"></acg-icon>
+              stroke="#000"
+              size="50"></acg-icon>
           </div>
           <div v-if="weatherIcon.night"
             v-show="!isWeatherNotChange"
             class="night"
             :title="`夜间:${weather.nighttype}`">
             <acg-icon :name="weatherIcon.night"
-              size="60"></acg-icon>
+              stroke="#000"
+              size="50"></acg-icon>
           </div>
         </div>
         <div class="base-info">
@@ -28,6 +30,7 @@
           <div class="shidu fs-16"
             title="湿度">
             <acg-icon name="shidu"
+              fill="currentColor"
               size="14"></acg-icon>
             <span class="ml-4">{{ weather.shidu }}</span>
           </div>
@@ -76,7 +79,12 @@ const nightWeathers: Record<string, string> = {
 const weathers: Record<string, string> = {
   晴: 'qingtian',
   雾: 'wu',
-  多云: 'duoyun'
+  多云: 'duoyun',
+  小雨: 'xiaoyu',
+  中雨: 'xiaoyu',
+  大雨: 'xiaoyu',
+  暴雨: 'baoyu',
+  雷阵雨: 'leizhenyu'
 }
 
 export default defineComponent({
@@ -181,9 +189,14 @@ export default defineComponent({
 
     async fetchWeather() {
       this.isLoading = true
-      this.weather = await this.$API.Outside.weather(
-        this.$global.config.weatherCity
-      )
+      try {
+        this.weather = await this.$API.Outside.weather(
+          this.$global.config.weatherCity
+        )
+      } catch (error) {
+        this.$message.error('天气获取失败！')
+      }
+
       this.isLoading = false
     },
 
@@ -211,7 +224,6 @@ export default defineComponent({
 .home-weather {
   position: relative;
   height: 120px;
-  padding-top: 40px;
   box-sizing: border-box;
 
   .bg-container {
@@ -227,7 +239,7 @@ export default defineComponent({
     position: absolute;
     top: 0;
     left: 0;
-    transition: left 0.15s;
+    transition: left 0.15s, background 0.15s;
     width: 160000%;
     height: 76px;
     background: linear-gradient(
@@ -258,6 +270,7 @@ export default defineComponent({
     line-height: 1;
     text-align: right;
     text-shadow: 0 0 5px var(--color-bg-1);
+    color: var(--app-color-common);
   }
 
   .wendu {
@@ -266,8 +279,9 @@ export default defineComponent({
 
   .earth-container {
     position: relative;
-    height: 100%;
+    height: calc(100% - 40px);
     width: 100%;
+    margin-top: 40px;
     border-radius: 50% 50% 4px 4px;
     background-color: var(--color-bg-3);
     box-shadow: 0 1px 1px var(--color-fill-2) inset,
