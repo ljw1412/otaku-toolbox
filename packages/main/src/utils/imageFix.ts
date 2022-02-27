@@ -14,7 +14,6 @@ const paramRegEx = /\{:(\w+)\}+/g
 
 function parseParamsReferer(url: string, referer: string) {
   if (!paramRegEx.test(referer)) return referer
-  console.log('[onBeforeSendHeaders]', url, paramRegEx.test(referer))
   const mUrl = new URL(url)
   const paramNames = Array.from(referer.matchAll(/\{:(\w+)\}+/g), m => m[1])
   paramNames.forEach(item => {

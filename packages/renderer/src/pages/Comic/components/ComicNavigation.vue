@@ -20,7 +20,7 @@
           class="btn-setting"
           type="text"
           shape="circle"
-          @click="navigate({ name: 'OriginManager',query:{type:'comic'} }, true, {resizable: false, singleInstance: true, title: '源管理'})">
+          @click="navigate({ name: 'OriginManager',query:{type:'comic-book'} }, true, {resizable: false, singleInstance: true, title: '源管理'})">
           <icon-settings />
         </a-button>
       </div>
