@@ -46,7 +46,7 @@ function showMessage() {
   }
   </style>
   <div style="position: absolute;left: 50%;top: 50%;transform: translate(-50%,-50%);">
-    <div style="padding: 50px; animation: contra-infinite-rotate 2s linear 0.3s ;">
+    <div style="padding: 50px; animation: contra-infinite-rotate 2s linear 0.3s ;color: #ffffff;">
       <svg aria-hidden="true" style="font-size: 200px;display: inline-block;width: 1em;height: 1em;vertical-align: -0.15em;overflow: hidden;fill: currentColor;stroke: currentColor;">
         <use xlink:href="#icon-flower-outline"></use>
       </svg>

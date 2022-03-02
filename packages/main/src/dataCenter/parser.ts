@@ -52,6 +52,36 @@ function formatQuery(ruleStr: string): DataCenter.Query | null {
   return null
 }
 
+function parseBase(el: Cheerio<Node>, modifier: string) {
+  let result: any = ''
+  let action = ''
+  if (modifier.startsWith('map')) {
+    const [, nextModifier] = modifier.split('-')
+    action = `获取每个元素[${modifier}]`
+    result = el
+      .map((i, el) => parseBase(cheerio(el), nextModifier).result)
+      .toArray()
+  } else if (modifier.startsWith('@')) {
+    const name = modifier.substr(1)
+    action = `获取元素[${name}]属性`
+    result = el.attr(name) || ''
+  } else if (modifier === 'text') {
+    action = '获取元素文本'
+    result = el.text()
+  } else if (modifier === 'html') {
+    action = '获取元素源码'
+    result = el.html() || ''
+  } else if (modifier === 'val') {
+    action = '获取元素的值'
+    let val = el.val() || ''
+    if (Array.isArray(val)) {
+      val = val[0]
+    }
+    result = val
+  }
+  return { action, result }
+}
+
 // 解析选择器
 function parseQuery($: CheerioAPI | Cheerio<Node>, _query: DataCenter.Query) {
   const { query, modifiers: _modifiers } = _query
@@ -74,32 +104,13 @@ function parseQuery($: CheerioAPI | Cheerio<Node>, _query: DataCenter.Query) {
 
   // 初次解析
   const modifier = modifiers.shift() as string
-  let result = ''
-  let action = ''
-  if (modifier.startsWith('@')) {
-    const name = modifier.substr(1)
-    action = `获取元素[${name}]属性`
-    result = el.attr(name) || ''
-  } else if (modifier === 'text') {
-    action = '获取元素文本'
-    result = el.text()
-  } else if (modifier === 'html') {
-    action = '获取元素源码'
-    result = el.html() || ''
-  } else if (modifier === 'val') {
-    action = '获取元素的值'
-    let val = el.val() || ''
-    if (Array.isArray(val)) {
-      val = val[0]
-    }
-    result = val
-  }
+  const { action, result } = parseBase(el, modifier)
   logger.info('[parseQuery]', modifier, `${action}结果:${result}`)
   return parseModifiers(result, modifiers)
 }
 
 // 解析修饰符
-function parseModifiers(str: string, modifiers: string[]): any {
+function parseModifiers(str: string | string[], modifiers: string[]): any {
   if (!str || !modifiers.length) return str
   const modifier = modifiers.shift() as string
   const result = modifierParser(str, modifier)

@@ -24,25 +24,21 @@
         "updateTime": "li:nth-child(5)|text"
       }
     },
-    {
-      "name": "全部分类"
-    }
+    { "name": "全部分类" }
   ],
   "details": {
     "url": "http://manhua.dmzj.com/{:path}",
     "mode": "html",
     "data": {
       "title": ".anim_title_text|text",
-      "author": ".anim-main_list tr:contains(作者) a|text|trim|split# ",
+      "author": ".anim-main_list tr:contains(作者) a|map-text",
       "status": ".anim-main_list tr:contains(状态) td|text|trim",
-      "tags": ".anim-main_list tr:contains(题材) td|text|trim|split#\u00A0",
-      "cover": "#cover_pic|@src"
+      "tags": ".anim-main_list tr:contains(题材) td a|map-text",
+      "cover": "#cover_pic|@src",
+      "desc": ".line_height_content|text|trim"
     },
     "items": ".cartoon_online_border li",
-    "itemData": {
-      "name": "a|text",
-      "path": "a|@href"
-    }
+    "itemData": { "name": "a|text", "path": "a|@href" }
   },
   "chapter": {
     "url": "http://manhua.dmzj.com/{:path}",

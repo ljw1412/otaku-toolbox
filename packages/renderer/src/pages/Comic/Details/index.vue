@@ -7,7 +7,7 @@
     <div class="comic-details-content">
       <div class="left">
         <acg-ratio-div :ratio="[3,4]"
-          class="skeleton-bg">
+          class="cover-container skeleton-bg">
           <a-image v-if="!loading"
             :src="info.cover"
             :preview="false"
@@ -18,7 +18,7 @@
         </acg-ratio-div>
       </div>
       <div class="right d-flex flex-column">
-        <div class="pt-12 mb-12">
+        <div class="pt-12 mb-8">
           <a-typography-title :heading="3"
             class="skeleton-bg my-0"
             style="margin-right: 60px; min-height: 35px;">
@@ -46,14 +46,19 @@
             </a-space>
           </div>
         </div>
-        <div class="chapter-grid py-12 app-no-drag">
+        <div class="chapter-grid pb-12 app-no-drag">
           <a-skeleton animation
             :loading="loading"
             style="padding-right: 42px;">
+            <a-skeleton-line :rows="1"
+              :line-height="24"
+              :line-spacing="8" />
             <a-skeleton-line :rows="3"
               :line-height="32"
               :line-spacing="4" />
           </a-skeleton>
+          <div v-show="!loading"
+            class="desc pr-32 pb-8">{{ info.desc }}</div>
           <a-space v-show="!loading"
             wrap
             size="mini">

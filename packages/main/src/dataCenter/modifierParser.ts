@@ -44,6 +44,13 @@ const modifierParsers = {
       return { result: [], error: true }
     }
   },
+  replace: {
+    inputType: 'string',
+    fn(str: string, modifier: string) {
+      const [, a, b] = modifier.split('#')
+      return { result: str.replace(new RegExp(a, 'g'), b), error: false }
+    }
+  },
   trim: {
     inputType: 'string',
     fn(str: string, modifier: string) {

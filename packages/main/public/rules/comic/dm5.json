@@ -46,10 +46,14 @@
     "mode": "html",
     "data": {
       "title": ".banner_detail_form .title|text|match#\\S+",
-      "cover": ".banner_detail_form .cover img|@src"
+      "author": ".banner_detail_form .subtitle a|map-text",
+      "status": ".banner_detail_form .tip .block:contains(状态) span|text|trim",
+      "tags": ".banner_detail_form .tip .block:contains(题材) a|map-text",
+      "cover": ".banner_detail_form .cover img|@src",
+      "desc": ".banner_detail_form .content|text|replace#\\[[+-].+?\\]#"
     },
     "items": ".detail-list-select li",
-    "itemData": { "name": "a|text", "path": "a|@href" }
+    "itemData": { "name": "a|text|trim|replace# +# ", "path": "a|@href" }
   },
   "chapter": {
     "url": "https://m.dm5.com{:path}",
