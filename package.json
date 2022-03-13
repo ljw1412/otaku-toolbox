@@ -54,7 +54,7 @@
   "dependencies": {
     "@arco-design/web-vue": "2.17.0",
     "@ljw1412/ionicons-sprite": "^1.0.1",
-    "@vueuse/core": "^7.6.2",
+    "@vueuse/core": "^8.0.0",
     "bilibili-live-ws": "^6.0.3",
     "buffer": "^6.0.3",
     "cheerio": "^1.0.0-rc.10",

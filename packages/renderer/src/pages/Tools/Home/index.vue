@@ -55,6 +55,13 @@ export default defineComponent({
           name: '直播',
           desc: '观看直播',
           to: { name: 'AppLive' }
+        },
+        {
+          icon: 'icon-find-replace',
+          name: 'OCR',
+          desc: '对图片中的文字进行识别',
+          to: { name: 'AppOCR' },
+          config: { resizable: true, minWidth: 1280, minHeight: 720 }
         }
       ]
     }

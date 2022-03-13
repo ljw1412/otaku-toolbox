@@ -106,6 +106,12 @@ const routes = [
         props: true,
         component: () => import('/@/pages/Tools/Live/singleRoom.vue'),
         meta: { title: '直播间', hideBackUp: true }
+      },
+      {
+        path: '/ocr',
+        name: 'AppOCR',
+        component: () => import('/@/pages/Tools/OCR/index.vue'),
+        meta: { title: 'OCR', hideBackUp: true }
       }
     ]
   }
