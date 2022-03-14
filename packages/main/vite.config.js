@@ -13,6 +13,12 @@ const PACKAGE_ROOT = __dirname
  */
 loadAndSetEnv(process.env.MODE, process.cwd())
 
+const chunksNameMap = {
+  '/node_modules/tesseract': 'tesseract',
+  '/node_modules/electron-devtools-installer': 'electron-devtools-installer',
+  '/node_modules/cheerio': 'cheerio'
+}
+
 /**
  * @see https://vitejs.dev/config/
  */
@@ -51,7 +57,14 @@ export default defineConfig({
         ...builtinModules
       ],
       output: {
-        entryFileNames: '[name].cjs'
+        entryFileNames: '[name].cjs',
+        manualChunks(id) {
+          for (const key of Object.keys(chunksNameMap)) {
+            if (id.includes(key)) {
+              return chunksNameMap[key]
+            }
+          }
+        }
       }
     },
     emptyOutDir: true
