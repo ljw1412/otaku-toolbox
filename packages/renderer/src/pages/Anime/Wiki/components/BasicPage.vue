@@ -1,22 +1,16 @@
 <template>
   <div class="basic-page">
-    <acg-gallery :images="data.cover"
-      :default-image="data.coverMin"
-      @change="handleImageChange"></acg-gallery>
+    <acg-gallery :images="data.cover" :default-image="data.coverMin" @change="handleImageChange"></acg-gallery>
     <div class="anime-data">
       <div class="data-header">
         <div class="core">
-          <a-typography-title :heading="3"
-            class="title"
-            copyable>{{ data.title }}</a-typography-title>
-          <a-typography-text class="original-title"
-            :copyable="!hasMoreTitle">{{ data.titleOriginal }}</a-typography-text>
-          <a-popover v-if="hasMoreTitle"
-            position="bottom"
-            title="更多名称"
-            mini>
-            <a-button size="mini"
-              style="margin-left:4px;margin-bottom:4px;">
+          <a-typography-title :heading="3" class="title" copyable>{{ data.title }}</a-typography-title>
+          <a-typography-text
+            class="original-title"
+            :copyable="!hasMoreTitle"
+          >{{ data.titleOriginal }}</a-typography-text>
+          <a-popover v-if="hasMoreTitle" position="bottom" title="更多名称" mini>
+            <a-button size="mini" style="margin-left:4px;margin-bottom:4px;">
               <template #icon>
                 <icon-down />
               </template>
@@ -24,67 +18,54 @@
             <template #content>
               <div class="anime-title-more">
                 <p>
-                  <a-typography-text class="title-item"
-                    copyable><span>{{data.titleOriginal}}</span></a-typography-text>
+                  <a-typography-text class="title-item" copyable>
+                    <span>{{ data.titleOriginal }}</span>
+                  </a-typography-text>
                 </p>
-                <p v-for="title of data.titleMore"
-                  :key="title">
-                  <a-typography-text class="title-item"
-                    copyable><span>{{title}}</span></a-typography-text>
+                <p v-for="title of data.titleMore" :key="title">
+                  <a-typography-text class="title-item" copyable>
+                    <span>{{ title }}</span>
+                  </a-typography-text>
                 </p>
               </div>
             </template>
           </a-popover>
-          <a-space class="tags"
-            style="display: flex;"
-            size="mini"
-            wrap>
-            <a-tag v-for="tag of data.tags"
-              :color="tag.color"
-              :key="tag._id">{{ tag.name }}</a-tag>
+          <a-space class="tags" style="display: flex;" size="mini" wrap>
+            <a-tag v-for="tag of data.tags" :color="tag.color" :key="tag._id">{{ tag.name }}</a-tag>
           </a-space>
         </div>
         <anime-rate :rating-site="data.ratingSite"></anime-rate>
       </div>
 
       <div class="data-main">
-        <a-typography-text type="secondary"
-          class="onair">
-          <span v-if="onair.time"
-            class="block-title">播出时间：</span>
+        <a-typography-text type="secondary" class="onair">
+          <span v-if="onair.time" class="block-title">播出时间：</span>
           <span>{{ onairStr }}</span>
         </a-typography-text>
 
-        <div v-if="data.markState.isBan"
-          class="info-block anime-alert">
+        <div v-if="data.markState.isBan" class="info-block anime-alert">
           <a-alert type="warning">该动画存在严重争议问题！</a-alert>
         </div>
 
-        <p class="data-block desc"
-          v-html="mDesc"></p>
+        <p class="data-block desc" v-html="mDesc"></p>
 
-        <div v-if="streamingPlatforms.length"
-          class="data-block streamings">
-          <a-space wrap
-            size="mini">
-            <acg-stream-item v-for="link of streamingPlatforms"
-              :key="link.url"
-              v-bind="link"></acg-stream-item>
+        <div v-if="streamingPlatforms.length" class="data-block streamings">
+          <a-space wrap size="mini">
+            <acg-stream-item v-for="link of streamingPlatforms" :key="link.url" v-bind="link"></acg-stream-item>
           </a-space>
         </div>
 
-        <div v-if="links.length"
-          class="data-block links">
-          <a-space wrap
-            size="mini">
-            <a-typography-text type="secondary"
-              class="block-title">相关链接：</a-typography-text>
-            <a-link v-for="link of links"
+        <div v-if="links.length" class="data-block links">
+          <a-space wrap size="mini">
+            <a-typography-text type="secondary" class="block-title">相关链接：</a-typography-text>
+            <a-link
+              v-for="link of links"
               :key="link.name"
               :href="link.url"
               :title="link.message || link.name"
               class="anime-link"
-              target="_blank">{{ link.name }}</a-link>
+              target="_blank"
+            >{{ link.name }}</a-link>
           </a-space>
         </div>
       </div>
@@ -95,7 +76,6 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
 import AnimeRate from './AnimeRate.vue'
-import { getLogoIcon } from '/@/utils/icons'
 import { contra } from '/@/utils/contra'
 import { onairMessage } from '/@/utils/dataFormat'
 
@@ -145,13 +125,6 @@ export default defineComponent({
   },
 
   methods: {
-    getLogoIcon(str: string) {
-      if (str.startsWith('http') || str.startsWith('//')) {
-        return str
-      }
-      return getLogoIcon(str)
-    },
-
     getTitle(link: BangumiStreaming) {
       let title = link.name
       if (link.region) {

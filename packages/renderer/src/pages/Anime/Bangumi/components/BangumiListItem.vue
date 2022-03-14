@@ -145,7 +145,6 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
-import { getLogoIcon } from '/@/utils/icons'
 import { contra } from '/@/utils/contra'
 import { onairMessage } from '/@/utils/dataFormat'
 
@@ -184,12 +183,6 @@ export default defineComponent({
   },
 
   methods: {
-    getLogoIcon(str: string) {
-      if (str.startsWith('http') || str.startsWith('//')) {
-        return str
-      }
-      return getLogoIcon(str)
-    },
     getTitle(link: BangumiStreaming) {
       let title = link.name
       if (link.region) {

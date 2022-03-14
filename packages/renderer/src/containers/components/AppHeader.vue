@@ -1,7 +1,7 @@
 <template>
   <header class="app-header app-drag d-flex">
     <div class="header-left flex-shrink-0 d-flex">
-      <img class="logo m-auto pl-10" height="30" src="../../../assets/logo-text.svg" />
+      <img class="logo m-auto pl-10" height="30" src="/logo-text.svg" />
       <span v-if="$global.env.DEV" class="dev-tip">开发版</span>
     </div>
     <header-center class="flex-grow-1">

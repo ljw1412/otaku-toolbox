@@ -1,28 +1,26 @@
-import Baha from '/@/../assets/icons/baha.ico'
-import Bangumi from '/@/../assets/icons/bangumi.ico'
-import Bilibili from '/@/../assets/icons/bilibili.svg'
-import YouTube from '/@/../assets/icons/youtube.svg'
-import YouKu from '/@/../assets/icons/youku.svg'
-import TV from '/@/../assets/icons/tv.svg'
-import IQiyi from '/@/../assets/icons/iqiyi.svg'
-import QQVideo from '/@/../assets/icons/qqvideo.svg'
-import Netflix from '/@/../assets/icons/netflix.svg'
+import mGlobal from '/@/global'
 
 const logoIcons = {
-  Baha,
-  Bangumi,
-  Bilibili,
-  YouKu,
-  TV,
-  YouTube,
-  QQVideo,
-  IQiyi,
-  Netflix
+  Baha: 'baha.ico',
+  Bangumi: 'bangumi.ico',
+  Bilibili: 'bilibili.svg',
+  YouTube: 'youtube.svg',
+  YouKu: 'youku.svg',
+  TV: 'tv.svg',
+  IQiyi: 'iqiyi.svg',
+  QQVideo: 'qqvideo.svg',
+  Netflix: 'netflix.svg'
+}
+
+function getPath() {
+  return mGlobal.env.DEV ? '/icons/' : 'icons/'
 }
 
 export function getLogoIcon(name: string) {
   if (name.startsWith('http') || name.startsWith('//')) return name
-  return logoIcons[name as keyof typeof logoIcons]
+  const icon = logoIcons[name as keyof typeof logoIcons]
+  if (!icon) return
+  return getPath() + icon
 }
 
 export default logoIcons

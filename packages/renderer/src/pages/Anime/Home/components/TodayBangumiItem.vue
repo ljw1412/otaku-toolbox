@@ -1,26 +1,25 @@
 <template>
-  <div class="today-bangumi-item"
+  <div
+    class="today-bangumi-item"
     :class="{ 'is-skeleton': skeleton }"
     :data-id="bangumi._id"
-    data-skeleton-animate>
-    <router-link target="_blank"
+    data-skeleton-animate
+  >
+    <router-link
+      target="_blank"
       :title="bangumi.title"
-      :to="{name:'AnimeWiki',params:{id:bangumi._id||'0'},query:{app:'otakutools'}}">
-      <a-card class="bangumi-card"
-        hoverable
-        :bordered="false">
+      :to="{ name: 'AnimeWiki', params: { id: bangumi._id || '0' }, query: { app: 'otakutools' } }"
+    >
+      <a-card class="bangumi-card" hoverable :bordered="false">
         <template #cover>
-          <acg-ratio-div class="skeleton-bg"
-            :ratio="[4,3]">
-            <img v-if="!skeleton"
-              :src="bangumi.coverMin"
-              loading="lazy">
+          <acg-ratio-div class="skeleton-bg" :ratio="[4, 3]">
+            <img v-if="!skeleton" :src="bangumi.coverMin" loading="lazy" />
           </acg-ratio-div>
         </template>
         <a-card-meta>
           <template #title>
             <a-space size="mini">
-              <a-tag class="skeleton-bg">{{onair.time || '??:??'}}</a-tag>
+              <a-tag class="skeleton-bg">{{ onair.time || '??:??' }}</a-tag>
               <div class="title skeleton-bg">{{ bangumi.title }}</div>
             </a-space>
           </template>
@@ -32,7 +31,6 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
-import { getLogoIcon } from '/@/utils/icons'
 
 export default defineComponent({
   name: 'TodayBangumiItem',
@@ -55,7 +53,6 @@ export default defineComponent({
   },
 
   methods: {
-    getLogoIcon,
     handleOnairClick(url?: string) {
       if (url) window.open(url, '_blank')
     }

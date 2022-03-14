@@ -1,20 +1,19 @@
 <template>
   <div class="app-about">
     <div class="d-inline-block">
-      <img class="logo mb-10"
-        height="60"
-        src="../../../../assets/logo-text.svg">
-      <p class="m-auto"
-        style="width:200px">
+      <img class="logo mb-10" height="60" src="/logo-text.svg" />
+      <p class="m-auto" style="width:200px">
         <a-button long>检查更新</a-button>
       </p>
       <p class="mt-20">版本: {{ appVersion }}</p>
-      <a-descriptions :data="descData"
+      <a-descriptions
+        :data="descData"
         title="组件版本"
         class="d-inline-block mt-20"
         size="small"
-        :align="{value:'center'}"
-        :column="1" />
+        :align="{ value: 'center' }"
+        :column="1"
+      />
     </div>
   </div>
 </template>
