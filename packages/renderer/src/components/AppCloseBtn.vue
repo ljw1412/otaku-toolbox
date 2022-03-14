@@ -7,7 +7,6 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { safeBoolean } from '/@/utils/helper'
-import { ipcSend } from '/@/utils/electron'
 
 export default defineComponent({
   name: 'AppCloseBtn',

@@ -60,7 +60,6 @@ import LiveRoom from './components/LiveRoom.vue'
 import MonitorEditorDialog from './components/MonitorEditorDialog.vue'
 import { defaultMonitor, getModeLiveCount } from './utils/data'
 import { only } from '/@/utils/object'
-import { ipcSend } from '/@/utils/electron'
 
 const STORE_KEY = 'MY_LIVE_MONITOR_LIST'
 
@@ -111,7 +110,7 @@ export default defineComponent({
           content: '当前监控台可能已经被删除！',
           okText: '关闭监控台',
           onOk: () => {
-            this.$API.Electron.win.close('close', 'child')
+            this.$API.Electron.win.control('close', 'child')
           }
         })
         return

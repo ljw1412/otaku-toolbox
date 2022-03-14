@@ -26,7 +26,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { ipcSend, ipcOn, ipcOff } from '/@/utils/electron'
+import { ipcOn, ipcOff } from '/@/utils/electron'
 import { safeBoolean } from '/@/utils/helper'
 
 export default defineComponent({
