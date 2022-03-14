@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { currentImage, store } from '../utils'
+import { currentImage } from '../utils'
 
 const rectList = computed(() =>
   currentImage.value ? currentImage.value.rectList : []

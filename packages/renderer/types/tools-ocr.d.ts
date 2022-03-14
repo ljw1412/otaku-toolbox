@@ -20,6 +20,7 @@ declare namespace ToolsOCR {
   }
 
   interface CroppedRect {
+    id?: number
     x: number
     y: number
     width: number

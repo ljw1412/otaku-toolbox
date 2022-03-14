@@ -1,4 +1,5 @@
 import { IpcRendererEvent } from 'electron'
+import * as logger from '/@/utils/logger'
 
 export function useElectron(): Readonly<ElectronApi> {
   return window.electron
@@ -22,6 +23,7 @@ export function ipcSend(
   const { ipcRenderer } = useElectron()
   data.tabId = window.tabId
   ipcRenderer.send(channel, type, data)
+  logger.message(channel, '<<<' + type, data)
 }
 
 export function ipcOn(
@@ -40,6 +42,7 @@ export function ipcOn(
     data: Record<string, any> = {}
   ) {
     console.log(type, data)
+    logger.message(channel, '>>>' + type, data)
 
     listener(event, type, data)
   })

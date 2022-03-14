@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import { computed, getCurrentInstance, reactive, ref, watch } from 'vue'
-import { currentImage } from '../utils'
+import { computed, getCurrentInstance, onBeforeUnmount, reactive, ref, watch } from 'vue'
+import { currentImage, allRectList } from '../utils'
 import {
   useMagicKeys, useMouse, useMousePressed, useElementBounding
 } from '@vueuse/core'
+import API from '/@/apis/index'
+import { ipcOff, ipcOn } from '/@/utils/electron'
 
 const vm = getCurrentInstance()
 const editorContainerEl = ref(null)
@@ -18,6 +20,7 @@ const useMessage = () => {
     return { error: () => { } }
   }
 }
+
 const editorRect = useElementBounding(editorContainerEl)
 const { space } = useMagicKeys()
 const { pressed } = useMousePressed({ target: editorContainerEl })
@@ -36,7 +39,10 @@ const tempRect = reactive({
 const previewRect = computed(() => {
   const { show, startX, startY, endX, endY, preview } = tempRect
   return {
-    show, preview, selected: false,
+    id: +new Date(),
+    show,
+    preview,
+    selected: false,
     x: Math.min(startX, endX),
     y: Math.min(startY, endY),
     width: Math.abs(startX - endX),
@@ -73,6 +79,12 @@ watch(pressed, (pressed) => {
           if (currentImage.value.rectList.length === 1) {
             currentImage.value.rectList[0].selected = true
           }
+          API.Electron.ocr.recognize({
+            lang: 'chi_sim',
+            id: previewRect.value.id,
+            image: previewRect.value.preview,
+            options: {}
+          })
         } else {
           useMessage().error('选取太小')
         }
@@ -96,8 +108,6 @@ watch([mouseX, mouseY], ([x, y]) => {
       // 画框
       tempRect.endX = x - tempInfo.imgX - editorRect.x.value
       tempRect.endY = y - tempInfo.imgY - editorRect.y.value
-
-      console.log(tempRect)
     }
   }
 })
@@ -110,6 +120,25 @@ watch(previewRect, (rect) => {
   canvasDom.height = rect.height
   canvasCtx!.drawImage(imgEl.value!, -rect.x, -rect.y)
   tempRect.preview = canvasDom.toDataURL()
+})
+
+// 后台消息监听事件
+function ocrListener(
+  event: Electron.IpcRendererEvent,
+  type: string,
+  data: Record<string, any>
+) {
+  if (type === 'recognize-result') {
+    const rect = allRectList.value.find(item => item.id === data.id)
+    if (rect) {
+      rect.text = data.data.text
+    }
+  }
+}
+ipcOn('ocr', ocrListener)
+
+onBeforeUnmount(() => {
+  ipcOff('ocr', ocrListener)
 })
 </script>
 

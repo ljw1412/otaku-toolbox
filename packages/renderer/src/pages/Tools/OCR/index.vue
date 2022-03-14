@@ -43,7 +43,7 @@ export default defineComponent({
   methods: {
     handleDragenter(e: DragEvent) {
       store.dragging = true
-      console.log('Dragenter', e)
+      // console.log('Dragenter', e)
     }
   }
 })

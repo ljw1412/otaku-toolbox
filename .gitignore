@@ -6,6 +6,7 @@ thumbs.db
 types/env.d.ts
 data/
 /plugins/
+/tessdata/
 packages/renderer/src/plugins/dev
 src.temp/
 .env.production

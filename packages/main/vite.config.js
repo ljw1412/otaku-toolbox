@@ -49,6 +49,7 @@ export default defineConfig({
     rollupOptions: {
       external: [
         'electron',
+        'tesseract.js',
         /**
          * semver can not be bundled
          * @see https://github.com/npm/node-semver/issues/381

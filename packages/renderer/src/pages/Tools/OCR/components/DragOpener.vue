@@ -16,7 +16,7 @@ const useMessage = () => {
 
 const handleDragleave = (e: DragEvent) => {
   emit('update:visible', false)
-  console.log('Dragleave', e)
+  // console.log('Dragleave', e)
 }
 
 const handleDrop = async (event: DragEvent) => {

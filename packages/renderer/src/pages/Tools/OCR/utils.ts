@@ -13,6 +13,11 @@ export const currentImage = computed(() =>
   store.imageFileList.find(item => item.selected)
 )
 
+export const allRectList = computed(() => {
+  const allRectList = store.imageFileList.map(item => item.rectList)
+  return ([] as ToolsOCR.CroppedRect[]).concat(...allRectList)
+})
+
 export function createImageItem(file: File) {
   return {
     file,

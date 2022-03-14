@@ -105,3 +105,15 @@ export const win = {
     ipcInvoke(this.channel, action, { title })
   }
 }
+
+export const ocr = {
+  channel: 'ocr',
+  recognize(params: {
+    id: number
+    lang: string
+    image: any
+    options: Record<string, any>
+  }) {
+    ipcSend(this.channel, 'recognize', params)
+  }
+}
