@@ -45,7 +45,7 @@ const listener: IpcListener = (e, type, data) => {
     closeApp(mWin, data.mode)
   } else if (type === 'hide') {
     mWin.hide()
-  } else if (type === 'built-in-browser') {
+  } else if (type === 'openInnerBrowser') {
     if (typeof data === 'object' && data.url) {
       createBuiltInBrowser(data)
     }

@@ -2,43 +2,48 @@
   <div class="app-live">
     <header>
       <a-space>
-        <a-button type="primary"
-          @click="isDisplayAddRoomDialog = true">搜索直播间</a-button>
+        <a-button type="primary" @click="isDisplayAddRoomDialog = true">搜索直播间</a-button>
         <live-monitor-list></live-monitor-list>
       </a-space>
       <a-space>
-        <a-button :loading="loading"
-          @click="updateRoomStatus">刷新<span v-if="!loading">({{ downCounter }})</span></a-button>
-        <a-radio-group v-model="coverType"
-          type="button">
+        <a-button :loading="loading" @click="updateRoomStatus">
+          刷新
+          <span v-if="!loading">({{ downCounter }})</span>
+        </a-button>
+        <a-radio-group v-model="coverType" type="button">
           <a-radio value="cover_from_user">封面</a-radio>
           <a-radio value="keyframe">关键帧</a-radio>
         </a-radio-group>
       </a-space>
     </header>
     <main>
-      <live-card v-for="item of sortedList"
+      <live-card
+        v-for="item of sortedList"
         :key="item.room_id"
         :info="item"
         :cover-type="coverType"
-        @mousedown.right="handleLiveCardRightMouseDown(item,$event)"></live-card>
-      <app-context-menu v-model:visible="liveRoomContextMenu.isDisplay"
+        @mousedown.right="handleLiveCardRightMouseDown(item, $event)"
+      ></live-card>
+      <app-context-menu
+        v-model:visible="liveRoomContextMenu.isDisplay"
         :menus="liveRoomContextMenu.list"
         v-bind="liveRoomContextMenu.position"
-        @menu-item-click="handleMenuItemClick"></app-context-menu>
+        @menu-item-click="handleMenuItemClick"
+      ></app-context-menu>
     </main>
 
-    <add-room-dialog v-model="isDisplayAddRoomDialog"
+    <add-room-dialog
+      v-model="isDisplayAddRoomDialog"
       :current-list="list"
       @add="handleRoomAdd"
-      @enter="handleRoomEnter"></add-room-dialog>
+      @enter="handleRoomEnter"
+    ></add-room-dialog>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { useInterval, useLocalStorage } from '@vueuse/core'
-import { openVueView } from '/@/utils/electron'
 import * as BLive from './utils/blive'
 import { only } from '/@/utils/object'
 import AddRoomDialog from './components/AddRoomDialog.vue'
@@ -60,7 +65,7 @@ export default defineComponent({
     return {
       loading: false,
       isDisplayAddRoomDialog: false,
-      coverType: 'keyframe',
+      coverType: 'keyframe' as 'cover_from_user' | 'keyframe',
       list: [] as LiveInfo[],
       liveRoomContextMenu: {
         isDisplay: false,
@@ -164,7 +169,7 @@ export default defineComponent({
     },
 
     handleRoomEnter(room: LiveInfo) {
-      openVueView(
+      this.$API.Electron.win.openVue(
         {
           name: 'SingleLiveRoom',
           query: { uid: room.uid },

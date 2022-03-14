@@ -1,45 +1,42 @@
 <template>
   <a-layout class="app-setting">
     <header class="app-setting-header app-drag">
-      <app-close-btn size="mini"
-        fixed="tr" />
+      <app-close-btn size="mini" fixed="tr" />
     </header>
 
-    <a-layout-sider class="setting-tabs app-drag"
-      :width="150">
-      <a-typography-title :heading="4"
-        style="margin-left: 16px;">设置</a-typography-title>
-      <a-tabs v-model:active-key="tabKey"
-        class="app-no-drag"
-        type="text"
-        position="left">
-        <a-tab-pane v-for="tab of tabs"
-          :key="tab.key"
-          :title="tab.title"></a-tab-pane>
+    <a-layout-sider class="setting-tabs app-drag" :width="150">
+      <a-typography-title :heading="4" style="margin-left: 16px;">设置</a-typography-title>
+      <a-tabs v-model:active-key="tabKey" class="app-no-drag" type="text" position="left">
+        <a-tab-pane v-for="tab of tabs" :key="tab.key" :title="tab.title"></a-tab-pane>
       </a-tabs>
     </a-layout-sider>
 
-    <a-layout-content class="setting-config"
+    <a-layout-content
+      class="setting-config"
       :style="{
         backgroundColor: tabConfig.bgColor,
         color: tabConfig.color
-      }">
-      <a-typography-title :heading="5"
-        style="margin-top: 0; color: inherit;">{{ subTitle }}</a-typography-title>
+      }"
+    >
+      <a-typography-title :heading="5" style="margin-top: 0; color: inherit;">{{ subTitle }}</a-typography-title>
       <a-form :model="config">
-        <a-form-item v-for="item of options"
+        <a-form-item
+          v-for="item of options"
           :key="item.key"
           :field="item.key"
           :label="item.label"
           :help="item.tip"
-          :label-col-props="{span: 6, offset: 0}"
-          :wrapper-col-props="{span: 18, offset: 0}"
-          v-bind="item.formItemProps">
-          <config-item v-model="config[item.key]"
+          :label-col-props="{ span: 6, offset: 0 }"
+          :wrapper-col-props="{ span: 18, offset: 0 }"
+          v-bind="item.formItemProps"
+        >
+          <config-item
+            v-model="config[item.key]"
             :value="item.value"
             :type="item.type"
             :props="item.props"
-            @change="handleConfigChange(item.key,$event)"></config-item>
+            @change="handleConfigChange(item.key, $event)"
+          ></config-item>
         </a-form-item>
       </a-form>
     </a-layout-content>
@@ -48,7 +45,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { getAppConfig, ipcInvoke, setAppConfigOption } from '/@/utils/electron'
+import { ipcInvoke } from '/@/utils/electron'
 import ConfigItem from './components/ConfigItem.vue'
 
 interface SettingTab {
@@ -154,16 +151,14 @@ export default defineComponent({
   },
 
   methods: {
-    getConfig() {
-      getAppConfig().then(config => {
-        console.log(config)
-        this.config = config
-      })
+    async getConfig() {
+      this.config = await this.$API.Electron.config.get()
     },
 
-    setOption(key: string, value: any) {
+    async setOption(key: string, value: any) {
       if (typeof value === 'boolean') {
-        setAppConfigOption({ [key]: value }).then(this.getConfig)
+        await this.$API.Electron.config.set({ [key]: value })
+        this.getConfig()
       }
     },
 
@@ -210,7 +205,7 @@ export default defineComponent({
       font-weight: bold;
 
       &::before {
-        content: '';
+        content: "";
         position: absolute;
         left: 0;
         top: 50%;

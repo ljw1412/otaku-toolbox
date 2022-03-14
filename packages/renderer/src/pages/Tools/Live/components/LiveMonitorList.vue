@@ -1,21 +1,20 @@
 <template>
   <a-space class="live-monitor-list">
-    <a-popover v-for="(monitor,index) of monitors"
-      :key="monitor.id"
-      class="live-monitor-preview">
+    <a-popover v-for="(monitor, index) of monitors" :key="monitor.id" class="live-monitor-preview">
       <a-button @click="handleToTestMultiRoom(monitor)">{{ monitor.name }}</a-button>
 
       <template #title>
         <div class="layout-lr">
           <div class="title">{{ monitor.name }}</div>
           <div class="extra">
-            <a-link class="mr-4"
-              @click="handleMonitorEdit(monitor)">
+            <a-link class="mr-4" @click="handleMonitorEdit(monitor)">
               <icon-edit />
             </a-link>
-            <a-popconfirm :content="`确认删除监控台[${monitor.name}]吗?`"
+            <a-popconfirm
+              :content="`确认删除监控台[${monitor.name}]吗?`"
               position="br"
-              @ok="handleMonitorDelete(monitor,index)">
+              @ok="handleMonitorDelete(monitor, index)"
+            >
               <a-link status="danger">
                 <icon-close-circle-fill class="monitor-remove" />
               </a-link>
@@ -24,21 +23,22 @@
         </div>
       </template>
       <template #content>
-        <div class="live-monitor-grid live-monitor-template"
-          :data-type="monitor.mode">
-          <div v-for="i of getModeLiveCount(monitor.mode)"
+        <div class="live-monitor-grid live-monitor-template" :data-type="monitor.mode">
+          <div
+            v-for="i of getModeLiveCount(monitor.mode)"
             :key="monitor.roomList[i - 1].room_id"
-            class="room-item layout-center text-center">{{ monitor.roomList[i - 1].uname }}</div>
+            class="room-item layout-center text-center"
+          >{{ monitor.roomList[i - 1].uname }}</div>
         </div>
       </template>
     </a-popover>
-    <a-button v-if="monitors.length <= 5"
-      type="outline"
-      @click="handleMonitorAdd">添加监控台</a-button>
+    <a-button v-if="monitors.length <= 5" type="outline" @click="handleMonitorAdd">添加监控台</a-button>
   </a-space>
-  <monitor-editor-dialog v-model="isDisplayEdit"
+  <monitor-editor-dialog
+    v-model="isDisplayEdit"
     :current-monitor="currentMonitor"
-    @save="handleMonitorSave"></monitor-editor-dialog>
+    @save="handleMonitorSave"
+  ></monitor-editor-dialog>
 </template>
 
 <script lang="ts">
@@ -46,7 +46,6 @@ import { useLocalStorage } from '@vueuse/core'
 import { defineComponent } from 'vue'
 import { defaultMonitor, getModeLiveCount } from '../utils/data'
 import MonitorEditorDialog from './MonitorEditorDialog.vue'
-import { openVueView } from '/@/utils/electron'
 
 export default defineComponent({
   name: 'LiveMonitorList',
@@ -92,7 +91,7 @@ export default defineComponent({
     },
 
     handleToTestMultiRoom(monitor: LiveMonitor) {
-      openVueView(
+      this.$API.Electron.win.openVue(
         {
           name: 'MultiLiveRoom',
           params: { monitorId: monitor.id }

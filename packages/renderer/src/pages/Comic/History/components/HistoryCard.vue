@@ -1,19 +1,18 @@
 <template>
-  <a-card class="comic-history-card"
+  <a-card
+    class="comic-history-card"
     hoverable
     :bordered="false"
     :body-style="{ padding: '4px 8px' }"
-    @click="handleCardClick">
+    @click="handleCardClick"
+  >
     <template #cover>
-      <acg-ratio-div :ratio="[3,4]">
-        <img :src="history.cover"
-          loading="lazy"
-          :class="{'filter-gray': !originName}">
+      <acg-ratio-div :ratio="[3, 4]">
+        <img :src="history.cover" loading="lazy" :class="{ 'filter-gray': !originName }" />
       </acg-ratio-div>
     </template>
 
-    <h5 class="title multi-text-truncate color-text-1"
-      data-line="2">{{ history.title }}</h5>
+    <h5 class="title multi-text-truncate color-text-1" data-line="2">{{ history.title }}</h5>
     <div class="description mt-8">
       <div>看到{{ history.name }} 第{{ history.index }}页</div>
       <div class="mt-4">{{ historyTime }}</div>
@@ -27,7 +26,6 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
 import { comicStore } from '/@/stores'
-import { openVueView } from '/@/utils/electron'
 
 export default defineComponent({
   name: 'ComicHistoryCard',
@@ -54,12 +52,10 @@ export default defineComponent({
         this.$message.error('源不存在，无法阅读！')
         return
       }
-      openVueView(
+      this.$API.Electron.win.openVue(
         {
           name: 'ComicDetails',
-          params: {
-            namespace: this.history.namespace
-          },
+          params: { namespace: this.history.namespace },
           query: { path: this.history.ppath }
         },
         { width: 960, height: 520, resizable: false }

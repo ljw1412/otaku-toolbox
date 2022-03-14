@@ -1,20 +1,23 @@
 <template>
   <div class="app-controls app-no-drag d-flex align-items-center">
     <slot></slot>
-    <div v-if="minimizable && minimizableOfMeta"
+    <div
+      v-if="minimizable && minimizableOfMeta"
       class="app-control-btn btn-min"
-      @click="windowAction('min')">
+      @click="windowAction('min')"
+    >
       <icon-minus />
       <!-- <acg-icon name="remove"></acg-icon> -->
     </div>
-    <div v-if="maximizable && maximizableOfMeta"
+    <div
+      v-if="maximizable && maximizableOfMeta"
       class="app-control-btn btn-max"
-      @click="windowAction('max')">
-      <component :is="isMaximized?'icon-shrink':'icon-expand'"></component>
+      @click="windowAction('max')"
+    >
+      <component :is="isMaximized ? 'icon-shrink' : 'icon-expand'"></component>
       <!-- <acg-icon :name="isMaximized?'copy-outline':'stop-outline'"></acg-icon> -->
     </div>
-    <div class="app-control-btn btn-close"
-      @click="windowAction('close')">
+    <div class="app-control-btn btn-close" @click="windowAction('close')">
       <icon-close />
       <!-- <acg-icon name="close"></acg-icon> -->
     </div>
@@ -23,7 +26,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { ipcSend, ipcOn, ipcOff, openAppSystemWindow } from '/@/utils/electron'
+import { ipcSend, ipcOn, ipcOff } from '/@/utils/electron'
 import { safeBoolean } from '/@/utils/helper'
 
 export default defineComponent({
@@ -65,9 +68,9 @@ export default defineComponent({
         action = 'hide'
       }
       if (action === 'close' && this.mode === 'main') {
-        openAppSystemWindow('退出程序')
+        this.$API.Electron.win.openAppSystem('退出程序')
       } else {
-        ipcSend('window.action', action, { mode: this.mode })
+        this.$API.Electron.win.control(action, this.mode)
       }
     }
   }

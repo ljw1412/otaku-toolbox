@@ -3,8 +3,8 @@ declare interface AcgAppConfig {
   use_system_browser: boolean
 }
 
-interface NewBrowerConfig {
-  url: string
+interface NewBrowerConfigBase {
+  url?: string
   title?: string
   width?: number
   height?: number
@@ -21,6 +21,10 @@ interface NewBrowerConfig {
   modal?: boolean
   autoShow?: boolean
   alwaysOnTop?: boolean
+}
+
+interface NewBrowerConfig extends NewBrowerConfigBase {
+  url: string
 }
 
 interface ToolPluginBase {

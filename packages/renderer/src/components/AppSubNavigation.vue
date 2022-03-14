@@ -2,34 +2,33 @@
   <div class="app-sub-navigation">
     <div class="navigation page-container">
       <div class="navigation-list">
-        <div v-for="item of navigations"
+        <div
+          v-for="item of navigations"
           :key="item.name"
           class="navigation-item"
-          :class="{active: getActiveItem(item)}"
-          @click="navigate(item)">
+          :class="{ active: getActiveItem(item) }"
+          @click="navigate(item)"
+        >
           <span>{{ item.name }}</span>
-          <acg-icon v-if="item.url"
-            name="open-outline"
-            class="ml-4"></acg-icon>
+          <acg-icon v-if="item.url" name="open-outline" class="ml-4"></acg-icon>
         </div>
       </div>
-      <div v-if="!$slots.right"
-        class="navigation-right">
+      <div v-if="!$slots.right" class="navigation-right">
         <slot name="right">
           <div class="navigation-helper">
-            <div v-for="item of rightLinks"
-              :key="item.name"
-              class="helper-item">
+            <div v-for="item of rightLinks" :key="item.name" class="helper-item">
               <span @click="open(item)">{{ item.name }}</span>
             </div>
           </div>
-          <a-input-search v-if="hasSearch"
+          <a-input-search
+            v-if="hasSearch"
             v-model="text"
             style="width: 200px;"
             size="small"
             allow-clear
-            @press-enter="$emit('search',text)"
-            @search="$emit('search',text)"></a-input-search>
+            @press-enter="$emit('search', text)"
+            @search="$emit('search', text)"
+          ></a-input-search>
         </slot>
       </div>
     </div>
@@ -38,8 +37,6 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
-import { getPageUrl } from '/@/utils/helper'
-import { createBrowser } from '/@/utils/electron'
 import { setNavigationCache } from '../utils/cache'
 
 export default defineComponent({
@@ -86,19 +83,13 @@ export default defineComponent({
         window.open(item.url, '_blank')
         return
       } else if (item.to && item.to.name) {
-        try {
-          const route = this.$router.resolve(item.to)
-          createBrowser({
-            title: item.name,
-            url: getPageUrl(route.href),
-            width: 1280,
-            height: 720,
-            minWidth: 1280,
-            minHeight: 720
-          })
-        } catch (error) {
-          console.error(error)
-        }
+        this.$API.Electron.win.openVue(item.to, {
+          title: item.name,
+          width: 1280,
+          height: 720,
+          minWidth: 1280,
+          minHeight: 720
+        })
       }
     },
 
@@ -182,7 +173,7 @@ export default defineComponent({
         }
 
         &:not(:first-child)::before {
-          content: '|';
+          content: "|";
           padding: 10px;
           opacity: 0.5;
         }

@@ -1,34 +1,32 @@
 <template>
-  <a-modal v-model:visible="mVisible"
+  <a-modal
+    v-model:visible="mVisible"
     :mask-closable="false"
     title="百宝箱插件库"
     class="plugin-lib-dialog"
     :width="800"
-    :footer="false">
-
-    <a-button-group v-if="$global.env.DEV"
-      class="mb-12 w-100">
-      <a-input v-model="inputPluginDevUrl"
-        placeholder="请输入插件开发服务地址(比如：“http://127.0.0.1:3000”)">
+    :footer="false"
+  >
+    <a-button-group v-if="$global.env.DEV" class="mb-12 w-100">
+      <a-input v-model="inputPluginDevUrl" placeholder="请输入插件开发服务地址(比如：“http://127.0.0.1:3000”)">
         <template #prepend>插件开发服务地址</template>
       </a-input>
-      <a-button type="primary"
-        @click="handleSavePluginDevUrlClick">保存</a-button>
-      <a-button :disabled="notDevServer"
-        @click="handleCreateDevList">刷新服务列表</a-button>
+      <a-button type="primary" @click="handleSavePluginDevUrlClick">保存</a-button>
+      <a-button :disabled="notDevServer" @click="handleCreateDevList">刷新服务列表</a-button>
     </a-button-group>
 
-    <a-list :data="mList"
-      :max-height="500">
+    <a-list :data="mList" :max-height="500">
       <template #item="{ item, index }">
         <a-list-item :key="index">
           <a-list-item-meta :description="item.desc">
             <template #title>
-              <a-tag v-if="item.isDev"
+              <a-tag
+                v-if="item.isDev"
                 color="orange"
                 size="small"
                 style="vertical-align: bottom;"
-                class="mr-4">开发版</a-tag>
+                class="mr-4"
+              >开发版</a-tag>
               <span class="d-inline-block">{{ item.name }} ({{ item.plugin }}@{{ item.version }})</span>
             </template>
             <template #avatar>
@@ -39,15 +37,14 @@
           </a-list-item-meta>
           <template #actions>
             <a-button-group>
-              <a-button v-if="!item.isAdded"
-                type="primary"
-                @click="addPlugin(item)">添加</a-button>
+              <a-button v-if="!item.isAdded" type="primary" @click="addPlugin(item)">添加</a-button>
               <template v-else>
-                <a-button type="primary"
+                <a-button
+                  type="primary"
                   :disabled="!item.isNeedUpdate"
-                  @click="updatePlugin(item)">更新</a-button>
-                <a-button status="danger"
-                  @click="removePlugin(item)">删除</a-button>
+                  @click="updatePlugin(item)"
+                >更新</a-button>
+                <a-button status="danger" @click="removePlugin(item)">删除</a-button>
               </template>
             </a-button-group>
           </template>
@@ -59,7 +56,7 @@
 
 <script lang="ts">
 import { defineComponent, toRaw } from 'vue'
-import { checkWinExists, ipcInvoke } from '/@/utils/electron'
+import { ipcInvoke } from '/@/utils/electron'
 import { only } from '/@/utils/object'
 import { pluginStore } from '/@/stores/index'
 
@@ -181,7 +178,7 @@ export default defineComponent({
     },
 
     async checkPluginWin(plugin: ToolPluginBase) {
-      const isExists = await checkWinExists(plugin.name)
+      const isExists = await this.$API.Electron.win.checkExists(plugin.name)
       if (isExists) {
         return new Promise((resolve, reject) => {
           this.$modal.warning({
@@ -189,7 +186,7 @@ export default defineComponent({
             content: '插件页面正在使用中，是否强制关闭后，继续操作？',
             hideCancel: false,
             onOk: () => {
-              ipcInvoke('window.action', 'close', { title: plugin.name })
+              this.$API.Electron.win.controlOther('close', plugin.name)
               resolve(true)
             },
             onCancel: () => reject

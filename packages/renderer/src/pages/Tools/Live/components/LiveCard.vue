@@ -1,34 +1,31 @@
 <template>
-  <a-card class="live-card"
-    :class="{'not-living': info.live_status !== 1}"
-    :body-style="{padding:0}"
+  <a-card
+    class="live-card"
+    :class="{ 'not-living': info.live_status !== 1 }"
+    :body-style="{ padding: 0 }"
     draggable="true"
     @dragstart="handleDragStart"
-    @click="gotoLiveRoom">
-    <acg-ratio-div :ratio="[16,9]">
+    @click="gotoLiveRoom"
+  >
+    <acg-ratio-div :ratio="[16, 9]">
       <div class="room-info">
         <div class="status">
-          <a-badge :status="badgeStatus"
-            :text="statusStr" />
+          <a-badge :status="badgeStatus" :text="statusStr" />
         </div>
         <div class="uname">
-          <a-avatar v-if="info.face"
-            :size="28">
-            <img :src="info.face">
+          <a-avatar v-if="info.face" :size="28">
+            <img :src="info.face" />
           </a-avatar>
           <span class="ml-4">{{ info.uname }}</span>
         </div>
       </div>
-      <img class="cover"
-        :src="info[coverType]"
-        loading="lazy">
+      <img class="cover" :src="info[coverType]" loading="lazy" />
     </acg-ratio-div>
   </a-card>
 </template>
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
-import { openVueView } from '/@/utils/electron'
 
 export default defineComponent({
   name: 'LiveCard',
@@ -63,7 +60,7 @@ export default defineComponent({
 
   methods: {
     gotoLiveRoom() {
-      openVueView(
+      this.$API.Electron.win.openVue(
         {
           name: 'SingleLiveRoom',
           query: { uid: this.info.uid },

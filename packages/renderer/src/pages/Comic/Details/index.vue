@@ -1,73 +1,60 @@
 <template>
-  <div class="comic-details app-drag"
-    :class="{ 'is-skeleton': loading }"
-    data-skeleton-animate>
+  <div class="comic-details app-drag" :class="{ 'is-skeleton': loading }" data-skeleton-animate>
     <app-close-btn fixed="tr"></app-close-btn>
 
     <div class="comic-details-content">
       <div class="left">
-        <acg-ratio-div :ratio="[3,4]"
-          class="cover-container skeleton-bg">
-          <a-image v-if="!loading"
+        <acg-ratio-div :ratio="[3, 4]" class="cover-container skeleton-bg">
+          <a-image
+            v-if="!loading"
             :src="info.cover"
             :preview="false"
             show-loader
             loading="lazy"
             width="100%"
-            height="100%" />
+            height="100%"
+          />
         </acg-ratio-div>
       </div>
       <div class="right d-flex flex-column">
         <div class="pt-12 mb-8">
-          <a-typography-title :heading="3"
+          <a-typography-title
+            :heading="3"
             class="skeleton-bg my-0"
-            style="margin-right: 60px; min-height: 35px;">
+            style="margin-right: 60px; min-height: 35px;"
+          >
             <span v-show="!loading">{{ info.title }}</span>
           </a-typography-title>
 
           <div class="mt-4">
-            <a-skeleton animation
-              class="w-50"
-              :loading="loading">
-              <a-skeleton-line :rows="1"
-                :line-height="24"
-                :line-spacing="4" />
+            <a-skeleton animation class="w-50" :loading="loading">
+              <a-skeleton-line :rows="1" :line-height="24" :line-spacing="4" />
             </a-skeleton>
-            <a-space v-show="!loading"
-              size="mini">
-              <a-typography-text type="secondary"
-                class="mr-8">{{ author }}</a-typography-text>
-              <a-tag v-if="info.status"
-                :color="info.status.includes('完')?'red':'green'">{{ info.status }}</a-tag>
-              <a-tag v-for="tag of tags"
-                :key="tag"
-                color="arcoblue"
-                size="mini">{{ tag }}</a-tag>
+            <a-space v-show="!loading" size="mini">
+              <a-typography-text type="secondary" class="mr-8">{{ author }}</a-typography-text>
+              <a-tag
+                v-if="info.status"
+                :color="info.status.includes('完') ? 'red' : 'green'"
+              >{{ info.status }}</a-tag>
+              <a-tag v-for="tag of tags" :key="tag" color="arcoblue" size="mini">{{ tag }}</a-tag>
             </a-space>
           </div>
         </div>
         <div class="chapter-grid pb-12 app-no-drag">
-          <a-skeleton animation
-            :loading="loading"
-            style="padding-right: 42px;">
-            <a-skeleton-line :rows="1"
-              :line-height="24"
-              :line-spacing="8" />
-            <a-skeleton-line :rows="3"
-              :line-height="32"
-              :line-spacing="4" />
+          <a-skeleton animation :loading="loading" style="padding-right: 42px;">
+            <a-skeleton-line :rows="1" :line-height="24" :line-spacing="8" />
+            <a-skeleton-line :rows="3" :line-height="32" :line-spacing="4" />
           </a-skeleton>
-          <div v-show="!loading"
-            class="desc pr-32 pb-8">{{ info.desc }}</div>
-          <a-space v-show="!loading"
-            wrap
-            size="mini">
-            <a-button v-for="chapter of chapterList"
+          <div v-show="!loading" class="desc pr-32 pb-8">{{ info.desc }}</div>
+          <a-space v-show="!loading" wrap size="mini">
+            <a-button
+              v-for="chapter of chapterList"
               :key="chapter.path"
               :title="chapter.name"
-              :type="history.path===chapter.path?'primary':undefined"
+              :type="history.path === chapter.path ? 'primary' : undefined"
               class="btn-chapter"
-              @click="handleChapterClick(chapter)">{{ chapter.name }}</a-button>
+              @click="handleChapterClick(chapter)"
+            >{{ chapter.name }}</a-button>
           </a-space>
         </div>
       </div>
@@ -75,36 +62,37 @@
 
     <div class="comic-details-toolbar layout-lr">
       <a-space class="left app-no-drag">
-        <a-link v-if="info.url"
-          key="origin"
-          :href="info.url"
-          class="btn-action"
-          target="_blank">
+        <a-link v-if="info.url" key="origin" :href="info.url" class="btn-action" target="_blank">
           <icon-desktop class="icon" />
           <div class="name">原网址</div>
         </a-link>
-        <a-link key="favorite"
+        <a-link
+          key="favorite"
           class="btn-action"
           target="_blank"
           :disabled="loading"
-          @click="action('favorite')">
-          <component :is="isFavorited ? 'icon-star-fill' : 'icon-star'"
-            class="icon"></component>
+          @click="action('favorite')"
+        >
+          <component :is="isFavorited ? 'icon-star-fill' : 'icon-star'" class="icon"></component>
           <div class="name">收藏</div>
         </a-link>
-        <a-link key="download"
+        <a-link
+          key="download"
           class="btn-action"
           target="_blank"
           :disabled="loading"
-          @click="action('download')">
+          @click="action('download')"
+        >
           <icon-download class="icon" />
           <div class="name">下载</div>
         </a-link>
       </a-space>
       <div class="right app-no-drag">
-        <a-button :disabled="loading || !chapterList.length"
+        <a-button
+          :disabled="loading || !chapterList.length"
           type="primary"
-          @click="handleReadClick">{{ history.path? '继续阅读':'开始阅读' }}</a-button>
+          @click="handleReadClick"
+        >{{ history.path ? '继续阅读' : '开始阅读' }}</a-button>
       </div>
     </div>
   </div>
@@ -112,7 +100,7 @@
 
 <script lang="ts">
 import { defineComponent, toRaw } from 'vue'
-import { ipcOff, ipcOn, ipcSend, openVueView } from '/@/utils/electron'
+import { ipcOff, ipcOn, ipcSend } from '/@/utils/electron'
 import ComicMixin from '/@/mixins/comic'
 import { nin } from '/@/utils/object'
 
@@ -178,7 +166,7 @@ export default defineComponent({
 
   methods: {
     close() {
-      ipcSend('window.action', 'close', { mode: 'child' })
+      this.$API.Electron.win.control('close', 'child')
     },
 
     handleWindowMessage(
@@ -221,7 +209,7 @@ export default defineComponent({
     },
 
     handleChapterClick(chapter: { name: string; path: string }) {
-      openVueView(
+      this.$API.Electron.win.openVue(
         {
           name: 'ComicReader',
           params: { namespace: this.$route.params.namespace },

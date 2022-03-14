@@ -1,21 +1,12 @@
 <template>
-  <a-tooltip :content="desc"
-    mini
-    position="bottom">
-    <a-card class="tool-card"
-      hoverable
-      :bordered="false"
-      @click="handleCardClick">
+  <a-tooltip :content="desc" mini position="bottom">
+    <a-card class="tool-card" hoverable :bordered="false" @click="handleCardClick">
       <template #cover>
-        <component :is="iconType"
-          class="icon"
-          v-bind="iconProps"></component>
+        <component :is="iconType" class="icon" v-bind="iconProps"></component>
       </template>
       <a-card-meta :title="name">
         <template #description>
-          <a-tag v-if="isDev"
-            color="orange"
-            size="small">开发版</a-tag>
+          <a-tag v-if="isDev" color="orange" size="small">开发版</a-tag>
         </template>
       </a-card-meta>
     </a-card>
@@ -24,7 +15,6 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { openVueView } from '/@/utils/electron'
 
 export default defineComponent({
   name: 'ToolCard',
@@ -53,8 +43,7 @@ export default defineComponent({
 
   methods: {
     handleCardClick() {
-      openVueView(
-        this.to,
+      this.$API.Electron.win.openVue(this.to,
         Object.assign(
           {
             resizable: false,

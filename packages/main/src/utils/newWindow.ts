@@ -36,9 +36,8 @@ export default function(browerWindow: BrowserWindow | BrowserView): void {
           serachParams = qs.parse(temp[1])
         }
 
-        if (acgAppConfig.use_system_browser) {
-          openExternal(url)
-        } else if (serachParams.app === 'otakutools') {
+        // query带app=otakutools的用内置浏览器打开
+        if (serachParams.app === 'otakutools') {
           let appConfig = { minWidth: 1280, minHeight: 720 }
           if (serachParams['app-config']) {
             try {
@@ -49,6 +48,8 @@ export default function(browerWindow: BrowserWindow | BrowserView): void {
           }
           url = temp[0] + '?' + qs.stringify(nin(serachParams, 'app-config'))
           createBrowser({ ...appConfig, url })
+        } else if (acgAppConfig.use_system_browser) {
+          openExternal(url)
         } else {
           createBuiltInBrowser({ url })
         }

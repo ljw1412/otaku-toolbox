@@ -1,24 +1,27 @@
 <template>
   <div class="app-mini-header app-drag layout-lr">
     <div class="header-left pl-12 fs-14">
-      <slot name="title"
-        :title="title">
+      <slot name="title" :title="title">
         <span class="title">{{ title }}</span>
       </slot>
     </div>
     <div class="header-right pr-4">
       <app-controls>
         <template v-if="$route.meta.hasView">
-          <div v-if="$route.meta.hasView && $global.config.allowDevTools"
+          <div
+            v-if="$route.meta.hasView && $global.config.allowDevTools"
             title="开发者工具"
             class="app-control-btn btn-developer-tools"
-            @click="toggleDevTools">
+            @click="toggleDevTools"
+          >
             <icon-code-square />
           </div>
-          <div v-if="$route.query.outlink"
+          <div
+            v-if="$route.query.outlink"
             class="app-control-btn btn-system-browser"
             title="以系统浏览器方式打开"
-            @click="openSystemBrower">
+            @click="openSystemBrower"
+          >
             <icon-desktop />
           </div>
           <a-divider direction="vertical" />
@@ -31,7 +34,6 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import AppControls from '/@/components/AppControls.vue'
-import { ipcSend, openSystemBrower } from '/@/utils/electron'
 
 export default defineComponent({
   name: 'AppMiniHeader',
@@ -42,11 +44,13 @@ export default defineComponent({
 
   methods: {
     openSystemBrower() {
-      openSystemBrower(this.$route.query.outlink as string)
+      this.$API.Electron.win.open(
+        this.$route.query.outlink as string, { useSystemBrowser: true }
+      )
     },
 
     toggleDevTools() {
-      ipcSend('window.action', 'toggleDevTools')
+      this.$API.Electron.win.control('toggleDevTools')
     }
   }
 })

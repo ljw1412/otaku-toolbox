@@ -1,7 +1,5 @@
 <template>
-  <div class="app-close-btn layout-center app-no-drag"
-    :class="mClass"
-    @click="close">
+  <div class="app-close-btn layout-center app-no-drag" :class="mClass" @click="close">
     <icon-close />
   </div>
 </template>
@@ -47,9 +45,10 @@ export default defineComponent({
 
   methods: {
     close() {
-      ipcSend('window.action', this.hidableOfMeta ? 'hide' : 'close', {
-        mode: this.mode
-      })
+      this.$API.Electron.win.control(
+        this.hidableOfMeta ? 'hide' : 'close',
+        this.mode
+      )
     }
   }
 })

@@ -1,39 +1,42 @@
 <template>
   <div class="comic-navigation">
     <header>
-      <div v-tooltip-parent
-        class="comic-menu">
-        <div v-for="item of menu"
+      <div v-tooltip-parent class="comic-menu">
+        <div
+          v-for="item of menu"
           :key="item.name"
           v-tooltip.arrow.bottom="item.name"
           class="menu-item"
           :class="{ active: $route.name === item.component }"
-          @click="navigate({ name: item.component })">
+          @click="navigate({ name: item.component })"
+        >
           <component :is="item.icon"></component>
         </div>
       </div>
       <div class="origin-search">
-        <a-input-search v-model="text"
-          allow-clear
-          placeholder="搜索源"></a-input-search>
-        <a-button v-tooltip="{content:'设置',placement:'right',offset:[0,10]}"
+        <a-input-search v-model="text" allow-clear placeholder="搜索源"></a-input-search>
+        <a-button
+          v-tooltip="{ content: '设置', placement: 'right', offset: [0, 10] }"
           class="btn-setting"
           type="text"
           shape="circle"
-          @click="navigate({ name: 'OriginManager',query:{type:'comic-book'} }, true, {resizable: false, singleInstance: true, title: '源管理'})">
+          @click="openOriginManager"
+        >
           <icon-settings />
         </a-button>
       </div>
     </header>
     <main>
       <div class="comic-origin-list">
-        <div v-for="(item,i) of searchResultList"
+        <div
+          v-for="(item, i) of searchResultList"
           :key="i"
           class="comic-origin-item"
           :class="{ active: getOriginActive(item.namespace) }"
-          @click="handleOriginClick(item)">
+          @click="handleOriginClick(item)"
+        >
           <div class="icon">
-            <img :src="item.icon">
+            <img :src="item.icon" />
           </div>
           <div class="title">{{ item.name }}</div>
         </div>
@@ -50,7 +53,6 @@ import { defineComponent } from 'vue'
 import { RouteLocationRaw } from 'vue-router'
 import { comicStore } from '/@/stores'
 import { setNavigationCache } from '/@/utils/cache'
-import { openVueView } from '/@/utils/electron'
 
 export default defineComponent({
   name: 'ComicNavigation',
@@ -110,17 +112,16 @@ export default defineComponent({
       }
     },
 
-    navigate(
-      route: RouteLocationRaw,
-      isNew = false,
-      config: Record<string, any> = {}
-    ) {
-      if (isNew) {
-        openVueView(route, config)
-        return
-      }
+    navigate(route: RouteLocationRaw) {
       this.$router.replace(route)
       this.setCache(route)
+    },
+
+    openOriginManager() {
+      this.$API.Electron.win.openVue(
+        { name: 'OriginManager', query: { type: 'comic-book' } },
+        { resizable: false, singleInstance: true, title: '源管理' }
+      )
     },
 
     getOriginActive(namespace: string) {

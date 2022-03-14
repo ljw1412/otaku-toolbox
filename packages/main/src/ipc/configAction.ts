@@ -10,7 +10,7 @@ function bind(): void {
       return config
     } else if (type === 'setOption') {
       setConfig(data)
-      return data
+      return Object.assign({ success: true }, data)
     }
   })
 }

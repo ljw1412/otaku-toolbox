@@ -3,15 +3,12 @@
     <app-mini-header class="flex-shrink-0">
       <template #title>
         <a-button-group class="mr-8 app-no-drag">
-          <a-button v-show="false"
-            size="mini"
-            @click="isCollapsed = !isCollapsed">
+          <a-button v-show="false" size="mini" @click="isCollapsed = !isCollapsed">
             <template #icon>
-              <component :is="isCollapsed?'icon-down':'icon-up'"></component>
+              <component :is="isCollapsed ? 'icon-down' : 'icon-up'"></component>
             </template>
           </a-button>
-          <a-button size="mini"
-            @click="isDisplayEdit = true">
+          <a-button size="mini" @click="isDisplayEdit = true">
             <template #icon>
               <icon-settings />
             </template>
@@ -21,29 +18,36 @@
       </template>
     </app-mini-header>
 
-    <div v-show="!isCollapsed"
-      class="live-room-list"></div>
+    <div v-show="!isCollapsed" class="live-room-list"></div>
 
-    <div class="live-multi-room live-monitor-template"
+    <div
+      class="live-multi-room live-monitor-template"
       :data-type="monitor.mode"
-      @dragleave="handleDragleave">
-      <div v-for="index of count"
+      @dragleave="handleDragleave"
+    >
+      <div
+        v-for="index of count"
         :key="index"
         :data-index="index"
         class="room-item"
-        :class="{dragging: highlightIndex === index}"
-        @dragover="handleItemDragover($event,index)"
-        @drop="handleItemDrop($event,index)">
-        <live-room v-if="roomidList[index - 1]"
+        :class="{ dragging: highlightIndex === index }"
+        @dragover="handleItemDragover($event, index)"
+        @drop="handleItemDrop($event, index)"
+      >
+        <live-room
+          v-if="roomidList[index - 1]"
           :key="roomidList[index - 1]"
           :room-id="roomidList[index - 1]"
           :config="monitor.roomConfigList[index - 1]"
-          @close="handleRoomClose(index - 1)"></live-room>
+          @close="handleRoomClose(index - 1)"
+        ></live-room>
       </div>
 
-      <monitor-editor-dialog v-model="isDisplayEdit"
+      <monitor-editor-dialog
+        v-model="isDisplayEdit"
         :current-monitor="monitor"
-        @save="handleMonitorSave"></monitor-editor-dialog>
+        @save="handleMonitorSave"
+      ></monitor-editor-dialog>
     </div>
   </div>
 </template>
@@ -107,7 +111,7 @@ export default defineComponent({
           content: '当前监控台可能已经被删除！',
           okText: '关闭监控台',
           onOk: () => {
-            ipcSend('window.action', 'close', { mode: 'child' })
+            this.$API.Electron.win.close('close', 'child')
           }
         })
         return
@@ -188,12 +192,12 @@ export default defineComponent({
     border: 0.5px solid rgba(200, 200, 200, 0.1);
 
     @for $i from 1 through 9 {
-      &[data-index='#{$i}']::before {
+      &[data-index="#{$i}"]::before {
         position: absolute;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        content: '#{$i}';
+        content: "#{$i}";
         text-align: center;
         font-size: 36px;
         color: #ffffff;

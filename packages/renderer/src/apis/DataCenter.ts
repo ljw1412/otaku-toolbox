@@ -1,14 +1,11 @@
 import { toRaw } from 'vue'
-import { useElectron } from '/@/utils/electron'
+import { ipcInvoke } from '/@/utils/electron'
 import * as logger from '/@/utils/logger'
-
-const { ipcRenderer } = useElectron()
 
 const channel = 'data-center'
 
 async function invoke(action: string, params: Record<string, any> = {}) {
-  params.tabId = window.tabId
-  const result = await ipcRenderer.invoke(channel, action, params)
+  const result = await ipcInvoke(channel, action, params)
   logger.message(channel, action, '参数:', params, '结果:', result)
   return result
 }
