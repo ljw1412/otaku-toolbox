@@ -1,6 +1,6 @@
 import { app, ipcMain } from 'electron'
 import { join } from 'path'
-import request from '../dataCenter/request'
+import request from '../utils/request'
 import fs from 'fs'
 const fsp = fs.promises
 

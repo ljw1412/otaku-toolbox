@@ -115,5 +115,8 @@ export const ocr = {
     options: Record<string, any>
   }) {
     ipcSend(this.channel, 'recognize', params)
+  },
+  lang(action: string, data: ToolsOCR.LangItem) {
+    ipcSend(this.channel, action, data)
   }
 }

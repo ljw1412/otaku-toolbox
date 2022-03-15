@@ -1,4 +1,4 @@
-import request from './request'
+import request from '../utils/request'
 import cheerio, { CheerioAPI, Cheerio, Node } from 'cheerio'
 import Logger from '../utils/logger'
 import modifierParser from './modifierParser'

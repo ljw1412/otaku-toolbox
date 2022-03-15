@@ -30,4 +30,14 @@ declare namespace ToolsOCR {
     text: string
     translation: string
   }
+
+  interface LangItem {
+    language: string
+    short: string
+    code: string
+    file: string[]
+
+    allowVertical?: boolean
+    downloading?: boolean
+  }
 }

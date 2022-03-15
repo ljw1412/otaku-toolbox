@@ -1,5 +1,6 @@
 import config from './config'
 import proxy from './proxy'
+import constants from './constants'
 import {
   title,
   setTitle,
@@ -10,6 +11,7 @@ import {
 } from './assist'
 
 const props = {
+  constants,
   title,
   config,
   breakpoints,

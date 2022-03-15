@@ -41,7 +41,6 @@ export function ipcOn(
     type: string,
     data: Record<string, any> = {}
   ) {
-    console.log(type, data)
     logger.message(channel, '>>>' + type, data)
 
     listener(event, type, data)

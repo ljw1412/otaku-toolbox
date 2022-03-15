@@ -3,7 +3,7 @@ import IpcConfigAction from './configAction'
 import IpcMessageAction from './messageAction'
 import IpcShellAction from './shellAction'
 import IpcToolPlugin from './toolPlugin'
-import IpcOCR from './ocr'
+import IpcOCR from './ocr/index'
 
 const IpcActions = [
   IpcWindowAction,

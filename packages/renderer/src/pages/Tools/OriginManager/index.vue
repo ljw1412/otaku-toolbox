@@ -1,13 +1,13 @@
 <template>
   <a-layout class="origin-manager">
-    <a-layout-sider class="user-select-none app-drag"
-      style="z-index: 100;">
+    <a-layout-sider class="user-select-none app-drag" style="z-index: 100;">
       <a-typography-title style="padding-left: 16px">源管理</a-typography-title>
-      <a-menu v-model:selected-keys="menuKeys"
+      <a-menu
+        v-model:selected-keys="menuKeys"
         class="app-no-drag"
-        @menu-item-click="handleMenuChange">
-        <a-menu-item v-for="item of menuList"
-          :key="item.type">
+        @menu-item-click="handleMenuChange"
+      >
+        <a-menu-item v-for="item of menuList" :key="item.type">
           <template #icon>
             <component :is="item.icon"></component>
           </template>
@@ -17,13 +17,15 @@
     </a-layout-sider>
 
     <a-layout-content>
-      <a-page-header class="app-drag pl-12 pb-2"
-        :title="typeTitle"
-        :show-back="false"></a-page-header>
+      <a-page-header class="app-drag pl-12 pb-2" :title="typeTitle" :show-back="false"></a-page-header>
 
-      <origin-list class="mt-8"
+      <origin-list
+        v-if="!menuComponent"
+        class="mt-8"
         :allow-create="listAllowCreate"
-        :type="listType"></origin-list>
+        :type="listType"
+      ></origin-list>
+      <component :is="menuComponent" v-else></component>
     </a-layout-content>
 
     <app-close-btn fixed="tr"></app-close-btn>
@@ -31,8 +33,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { Component, defineComponent, markRaw } from 'vue'
 import OriginList from './components/OriginList.vue'
+import OcrLangList from './components/OcrLangList.vue'
 
 interface OriginMenuItem {
   name: string
@@ -40,6 +43,7 @@ interface OriginMenuItem {
   type: string
   allowCreate: boolean
   typeList?: { label: string; value: string }[]
+  component?: Component
 }
 
 export default defineComponent({
@@ -67,6 +71,11 @@ export default defineComponent({
           icon: 'icon-book',
           type: 'comic-book',
           allowCreate: false
+        }, {
+          name: 'OCR语言模型',
+          icon: 'icon-language',
+          type: 'ocr-lang',
+          component: markRaw(OcrLangList)
         }
       ] as OriginMenuItem[]
     }
@@ -79,6 +88,11 @@ export default defineComponent({
 
     typeTitle(): string {
       return (this.currentMenu ? this.currentMenu.name : '') + '源'
+    },
+
+    menuComponent(): Component | undefined {
+      if (!this.currentMenu) return
+      return this.currentMenu.component
     },
 
     listType(): string | { label: string; value: string }[] {

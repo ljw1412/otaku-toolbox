@@ -128,17 +128,17 @@ function ocrListener(
   type: string,
   data: Record<string, any>
 ) {
-  if (type === 'recognize-result') {
+  if (type === 'result') {
     const rect = allRectList.value.find(item => item.id === data.id)
     if (rect) {
       rect.text = data.data.text
     }
   }
 }
-ipcOn('ocr', ocrListener)
+ipcOn('ocr-recognize', ocrListener)
 
 onBeforeUnmount(() => {
-  ipcOff('ocr', ocrListener)
+  ipcOff('ocr-recognize', ocrListener)
 })
 </script>
 
