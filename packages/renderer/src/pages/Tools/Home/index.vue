@@ -1,12 +1,8 @@
 <template>
   <div class="app-tools">
-    <a-page-header title="百宝箱"
-      class="tools-header"
-      :show-back="false">
+    <a-page-header title="百宝箱" class="tools-header" :show-back="false">
       <template #extra>
-        <a-tooltip mini
-          content="百宝箱插件库"
-          position="left">
+        <a-tooltip mini content="百宝箱插件库" position="left">
           <a-button @click="isDisplayPluginDialog = true">
             <template #icon>
               <icon-apps />
@@ -17,12 +13,8 @@
     </a-page-header>
 
     <a-space wrap>
-      <tool-card v-for="tool of toolList"
-        :key="tool.name"
-        v-bind="tool"></tool-card>
-      <tool-card v-for="tool of toolPluginList"
-        :key="tool.plugin"
-        v-bind="tool"></tool-card>
+      <tool-card v-for="tool of toolList" :key="tool.name" v-bind="tool"></tool-card>
+      <tool-card v-for="tool of toolPluginList" :key="tool.plugin" :is-plugin="true" v-bind="tool"></tool-card>
     </a-space>
 
     <plugin-lib-dialog v-model="isDisplayPluginDialog"></plugin-lib-dialog>

@@ -4,6 +4,10 @@
       <template #cover>
         <component :is="iconType" class="icon" v-bind="iconProps"></component>
       </template>
+      <div v-if="isPlugin" class="plugin-tag">
+        <icon-thunderbolt size="18" />
+        <div class="bg"></div>
+      </div>
       <a-card-meta :title="name">
         <template #description>
           <a-tag v-if="isDev" color="orange" size="small">开发版</a-tag>
@@ -21,6 +25,7 @@ export default defineComponent({
 
   props: {
     isDev: { type: Boolean, default: false },
+    isPlugin: Boolean,
     icon: { type: String, default: 'icon-common' },
     name: { type: String, default: '' },
     desc: { type: String, default: '' },
@@ -45,11 +50,7 @@ export default defineComponent({
     handleCardClick() {
       this.$API.Electron.win.openVue(this.to,
         Object.assign(
-          {
-            resizable: false,
-            singleInstance: true,
-            title: this.name
-          },
+          { resizable: false, singleInstance: true, title: this.name },
           this.config
         )
       )
@@ -64,6 +65,7 @@ export default defineComponent({
   width: 160px;
   height: 160px;
   text-align: center;
+  box-shadow: 1px 1px 3px var(--color-fill-3);
 
   .arco-card-cover {
     display: flex;
@@ -73,6 +75,34 @@ export default defineComponent({
 
   .icon {
     font-size: 60px;
+  }
+
+  .plugin-tag {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 42px;
+    height: 42px;
+    overflow: hidden;
+
+    .arco-icon {
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      z-index: 1;
+      color: #fff;
+    }
+
+    .bg {
+      position: absolute;
+      top: -14px;
+      right: -14px;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      background-color: var(--app-color-common);
+      z-index: 0;
+    }
   }
 }
 </style>
