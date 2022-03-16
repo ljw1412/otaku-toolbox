@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { getCurrentInstance } from 'vue'
-import { store, createImageItem } from '../utils'
+import { state, createImageItem } from '../utils'
 
 const vm = getCurrentInstance()
 const props = defineProps<{ visible: boolean }>()
@@ -29,9 +29,9 @@ const handleDrop = async (event: DragEvent) => {
       console.error('Master! 我无法识别该文件类型！', file)
       useMessage().error('Master! 我无法识别该文件类型！')
     } else {
-      store.imageFileList.push(createImageItem(file))
-      if (store.layout.guide.show) {
-        store.layout.guide.show = false
+      state.imageFileList.push(createImageItem(file))
+      if (state.layout.guide.show) {
+        state.layout.guide.show = false
       }
     }
   } else {

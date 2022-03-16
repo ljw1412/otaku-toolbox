@@ -3,6 +3,8 @@ import { onBeforeUnmount, reactive, ref, toRaw } from 'vue'
 import API from '/@/apis/index'
 import mGlobal from '/@/global'
 import { ipcOff, ipcOn } from '/@/utils/electron'
+import { ocrStore } from '/@/stores'
+import { nin } from '/@/utils/object'
 
 const langList = reactive(mGlobal.constants.orcLang.map(item => {
   return { ...item, downloading: false }
@@ -22,8 +24,17 @@ const langAction = {
     item.file = toRaw(item.file)
     API.Electron.ocr.lang('download', toRaw(item))
   },
-  hidden: (item: ToolsOCR.LangItem) => { },
-  delete: (item: ToolsOCR.LangItem) => { },
+  // hidden: (item: ToolsOCR.LangItem) => {},
+  delete: (item: ToolsOCR.LangItem) => {
+    const i = ocrStore.list.findIndex(lang => lang.code === item.code)
+    if (~i) {
+      ocrStore.list.splice(i, 1)
+    }
+  },
+}
+
+function isDownloaded(item: ToolsOCR.LangItem) {
+  return ocrStore.list.some(lang => lang.code === item.code)
 }
 
 function ocrListener(
@@ -34,6 +45,10 @@ function ocrListener(
     changeLangState(data.code, 'downloading', false)
   } else if (type === 'success') {
     changeLangState(data.code, 'downloading', false)
+
+    if (ocrStore.list.every(item => item.code !== data.code)) {
+      ocrStore.list.push(nin(data, 'langData') as ToolsOCR.LangItem)
+    }
   }
 }
 
@@ -64,16 +79,16 @@ onBeforeUnmount(() => {
             <a-tag v-if="record.allowVertical">支持垂直</a-tag>
           </template>
         </a-table-column>
-        <a-table-column title="操作">
+        <a-table-column title="操作" :width="180">
           <template #cell="{ record }">
             <a-button-group>
               <a-button
-                type="primary"
                 size="mini"
+                :type="isDownloaded(record) ? 'outline' : 'primary'"
                 :loading="record.downloading"
                 @click="langAction['download'](record)"
-              >下载</a-button>
-              <a-button type="dashed" size="mini" @click="langAction['hidden'](record)">隐藏</a-button>
+              >{{ isDownloaded(record) ? '重下' : '下载' }}</a-button>
+              <!-- <a-button type="dashed" size="mini" @click="langAction['hidden'](record)">隐藏</a-button> -->
               <a-button status="danger" size="mini" @click="langAction['delete'](record)">删除</a-button>
             </a-button-group>
           </template>

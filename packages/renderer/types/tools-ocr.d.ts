@@ -27,6 +27,8 @@ declare namespace ToolsOCR {
     height: number
     preview: string
     selected: boolean
+    lang: string
+    vertical: boolean
     text: string
     translation: string
   }

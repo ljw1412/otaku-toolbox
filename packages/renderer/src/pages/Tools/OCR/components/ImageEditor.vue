@@ -1,15 +1,16 @@
 <script setup lang="ts">
 import { computed, getCurrentInstance, onBeforeUnmount, reactive, ref, watch } from 'vue'
-import { currentImage, allRectList } from '../utils'
+import { currentImage, allRectList, state } from '../utils'
 import {
   useMagicKeys, useMouse, useMousePressed, useElementBounding
 } from '@vueuse/core'
 import API from '/@/apis/index'
 import { ipcOff, ipcOn } from '/@/utils/electron'
+import { ocrStore } from '/@/stores'
 
 const vm = getCurrentInstance()
 const editorContainerEl = ref(null)
-const editorEl = ref(null)
+const editorEl = ref<HTMLElement | null>(null)
 const imgEl = ref(null)
 const isDrag = ref(false)
 
@@ -47,6 +48,8 @@ const previewRect = computed(() => {
     y: Math.min(startY, endY),
     width: Math.abs(startX - endX),
     height: Math.abs(startY - endY),
+    lang: ocrStore.defaultLang,
+    vertical: false,
     text: '',
     translation: ''
   }
@@ -97,7 +100,6 @@ watch(pressed, (pressed) => {
     }
   }
 })
-
 watch([mouseX, mouseY], ([x, y]) => {
   if (currentImage.value && pressed.value) {
     if (isDrag.value) {
@@ -111,6 +113,21 @@ watch([mouseX, mouseY], ([x, y]) => {
     }
   }
 })
+
+watch(() => state.targetId, (id: number) => {
+  if (id && currentImage.value && editorEl.value) {
+    const rect = currentImage.value.rectList[id - 1]
+    if (!rect) return
+    const editorWidth = editorEl.value.offsetWidth
+    const editorHeight = editorEl.value.offsetHeight
+    currentImage.value.x = (editorWidth - rect.width) / 2 - rect.x
+    currentImage.value.y = (editorHeight - rect.height) / 2 - rect.y
+  }
+})
+
+const handleRectRightMousedown = (e: MouseEvent, item: ToolsOCR.CroppedRect) => {
+  console.log(e, item)
+}
 
 // 实时生成切图图片
 const canvasDom = document.createElement('canvas')
@@ -158,7 +175,7 @@ onBeforeUnmount(() => {
         :style="{ left: currentImage.x + 'px', top: currentImage.y + 'px' }"
       >
         <img ref="imgEl" :src="currentImage.url" />
-        <svg width="100%" height="100%">
+        <svg width="100%" height="100%" @mousedown.right.stop>
           <template v-for="(item, i) of currentImage.rectList" :key="`crop-${i + 1}`">
             <rect
               :x="item.x"
@@ -167,6 +184,9 @@ onBeforeUnmount(() => {
               :height="item.height"
               :data-name="`crop-rect-${i + 1}`"
               class="crop-rect"
+              :class="{ vertical: item.vertical }"
+              @mousedown.right.stop="handleRectRightMousedown($event, item)"
+              @mousedown.left.stop
             />
             <text
               :x="item.x + 2"
@@ -219,6 +239,16 @@ onBeforeUnmount(() => {
     stroke-width: 2;
     fill-opacity: 0.05;
     stroke-opacity: 0.6;
+
+    &.vertical {
+      fill: pink;
+      stroke: blue;
+    }
+
+    &:hover {
+      fill-opacity: 0.2;
+      stroke-opacity: 1;
+    }
   }
 
   .crop-text {

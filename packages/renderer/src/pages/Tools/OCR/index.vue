@@ -1,10 +1,10 @@
 <template>
   <div
     class="app-ocr w-100 h-100 overflow-hidden"
-    :class="{ dragging: store.dragging }"
+    :class="{ dragging: state.dragging }"
     @dragenter="handleDragenter"
   >
-    <DragOpener v-model:visible="store.dragging"></DragOpener>
+    <DragOpener v-model:visible="state.dragging"></DragOpener>
     <FileOpner></FileOpner>
     <ImagesPanel></ImagesPanel>
     <div class="d-flex h-100">
@@ -21,7 +21,7 @@ import ImagesPanel from './components/ImagesPanel.vue'
 import ImageEditor from './components/ImageEditor.vue'
 import OcrSider from './components/OcrSider.vue'
 import DragOpener from './components/DragOpener.vue'
-import { store } from './utils'
+import { state } from './utils'
 
 export default defineComponent({
   name: 'AppOCR',
@@ -35,14 +35,14 @@ export default defineComponent({
   },
 
   computed: {
-    store() {
-      return store
+    state() {
+      return state
     }
   },
 
   methods: {
     handleDragenter(e: DragEvent) {
-      store.dragging = true
+      state.dragging = true
       // console.log('Dragenter', e)
     }
   }

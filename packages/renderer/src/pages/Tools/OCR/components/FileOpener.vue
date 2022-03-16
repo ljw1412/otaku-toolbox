@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { useFileSystemAccess } from '@vueuse/core'
 import { computed, watch } from 'vue'
-import { store, createImageItem } from '../utils'
+import { state, createImageItem } from '../utils'
 
-const show = computed(() => store.layout.guide.show)
+const show = computed(() => state.layout.guide.show)
 
 const fs = useFileSystemAccess({
   dataType: 'Blob',
@@ -14,11 +14,14 @@ const fs = useFileSystemAccess({
 watch(
   () => fs.file.value!,
   (file: File) => {
-    store.imageFileList.push(createImageItem(file))
-    store.layout.guide.show = false
-    store.layout.guide.allowClose = !!store.imageFileList.length
+    state.imageFileList.push(createImageItem(file))
+    state.layout.guide.show = false
   }
 )
+
+watch(show, (show: boolean) => {
+  if (show) { state.layout.guide.allowClose = !!state.imageFileList.length }
+})
 
 const handleImageOpen = () => fs.open()
 </script>
@@ -36,12 +39,12 @@ const handleImageOpen = () => fs.open()
         <div>打开文件夹</div>
       </a-link>
       <a-button
-        v-if="store.layout.guide.allowClose"
+        v-if="state.layout.guide.allowClose"
         size="large"
         status="danger"
         class="btn-close"
-        @click="store.layout.guide.show = false"
-      >关闭</a-button>
+        @click="state.layout.guide.show = false"
+      >取消</a-button>
     </div>
   </div>
 </template>

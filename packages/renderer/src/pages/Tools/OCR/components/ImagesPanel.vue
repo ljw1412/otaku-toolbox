@@ -1,18 +1,18 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { store } from '../utils'
+import { state } from '../utils'
 
 const show = computed({
   get() {
-    return store.layout.imagePanel.show
+    return state.layout.imagePanel.show
   }, set(value: boolean) {
-    store.layout.imagePanel.show = value
+    state.layout.imagePanel.show = value
   }
 })
 
 const handleImageSelect = (item: ToolsOCR.ImageFileItem) => {
   if (item.selected) return
-  store.imageFileList.forEach(imgItem => {
+  state.imageFileList.forEach(imgItem => {
     imgItem.selected = item === imgItem
   })
 }
@@ -27,11 +27,11 @@ const handleImageSelect = (item: ToolsOCR.ImageFileItem) => {
     </a-button>
     <transition name="acg-slide-left">
       <div v-show="show" class="panel">
-        <header>图片列表({{ store.imageFileList.length }})</header>
+        <header>图片列表({{ state.imageFileList.length }})</header>
         <main>
           <ul class="image-list">
             <li
-              v-for="item of store.imageFileList"
+              v-for="item of state.imageFileList"
               :key="item.name"
               :title="item.name"
               :class="{ 'is-selected': item.selected }"
@@ -46,7 +46,7 @@ const handleImageSelect = (item: ToolsOCR.ImageFileItem) => {
           </ul>
         </main>
         <footer>
-          <a-button long @click="store.layout.guide.show = true">+</a-button>
+          <a-button long @click="state.layout.guide.show = true">+</a-button>
         </footer>
       </div>
     </transition>

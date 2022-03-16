@@ -1,20 +1,22 @@
 import { computed, reactive } from 'vue'
 
-export const store = reactive({
+export const state = reactive({
   layout: {
     imagePanel: { show: true },
     guide: { show: true, allowClose: false }
   },
   dragging: false,
+  // 定位目标
+  targetId: 0,
   imageFileList: [] as ToolsOCR.ImageFileItem[]
 })
 
 export const currentImage = computed(() =>
-  store.imageFileList.find(item => item.selected)
+  state.imageFileList.find(item => item.selected)
 )
 
 export const allRectList = computed(() => {
-  const allRectList = store.imageFileList.map(item => item.rectList)
+  const allRectList = state.imageFileList.map(item => item.rectList)
   return ([] as ToolsOCR.CroppedRect[]).concat(...allRectList)
 })
 
@@ -23,7 +25,7 @@ export function createImageItem(file: File) {
     file,
     url: URL.createObjectURL(file),
     name: file.name,
-    selected: !store.imageFileList.length,
+    selected: !state.imageFileList.length,
     x: 0,
     y: 0,
     scale: 1,

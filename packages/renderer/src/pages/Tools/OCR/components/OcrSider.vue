@@ -1,16 +1,25 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import { currentImage } from '../utils'
+import { computed, nextTick } from 'vue'
+import { currentImage, state } from '../utils'
+import { ocrStore } from '/@/stores'
 
-const rectList = computed(() =>
-  currentImage.value ? currentImage.value.rectList : []
-)
-
+const rectList = computed(() => currentImage.value ? currentImage.value.rectList : [])
+const langList = computed(() => ocrStore.list || [])
 const selectedCrop = computed(() => rectList.value.find(item => item.selected))
 
 const handleItemClick = (item: ToolsOCR.CroppedRect) => {
   if (item.selected) return
   rectList.value.forEach(rect => { rect.selected = item === rect })
+}
+
+function getAllowVertical(code: string) {
+  const lang = langList.value.find(item => item.code === code)
+  return !!lang && lang.allowVertical
+}
+
+function handleLocationRect(id: number) {
+  state.targetId = 0
+  nextTick(() => { state.targetId = id })
 }
 </script>
 
@@ -40,6 +49,27 @@ const handleItemClick = (item: ToolsOCR.CroppedRect) => {
           <span class="m-auto">{{ i + 1 }}</span>
         </div>
         <div class="image-preview">
+          <div class="lang-state">
+            <a-link class="flex-shrink-0 mr-4" @click="handleLocationRect(i + 1)">
+              <icon-location />
+            </a-link>
+            <a-select v-model="item.lang" size="mini" class="flex-shrink-0" style="width: 120px;">
+              <a-option
+                v-for="lang of langList"
+                :key="lang.code"
+                :value="lang.code"
+                :label="lang.language"
+              ></a-option>
+            </a-select>
+            <a-link
+              v-if="getAllowVertical(item.lang)"
+              class="flex-shrink-0"
+              @click="item.vertical = !item.vertical"
+            >
+              <component :is="item.vertical ? 'icon-drag-dot-vertical' : 'icon-drag-dot'" size="14"></component>
+              {{ item.vertical ? '垂直文本' : '水平文本' }}
+            </a-link>
+          </div>
           <img :src="item.preview" />
         </div>
       </div>
@@ -92,7 +122,7 @@ const handleItemClick = (item: ToolsOCR.CroppedRect) => {
 
     .crop-item {
       display: flex;
-      height: 60px;
+      height: 80px;
       margin-bottom: 2px;
       cursor: pointer;
 
@@ -106,7 +136,20 @@ const handleItemClick = (item: ToolsOCR.CroppedRect) => {
       }
 
       .image-preview {
+        display: flex;
+        flex-direction: column;
         flex-grow: 1;
+        > img {
+          flex-grow: 1;
+          width: unset;
+          background-color: var(--color-fill-1);
+        }
+
+        .lang-state {
+          flex-shrink: 0;
+          display: flex;
+          align-items: center;
+        }
       }
     }
   }
