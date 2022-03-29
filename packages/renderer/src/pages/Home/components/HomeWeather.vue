@@ -1,55 +1,51 @@
 <template>
   <div class="home-weather">
-    <a-spin :loading="isLoading"
-      class="h-100 w-100">
+    <a-spin :loading="isLoading" class="h-100 w-100">
       <div class="bg-container">
-        <div class="bg"
-          :style="bgStyle"></div>
+        <div class="bg" :style="bgStyle"></div>
       </div>
       <div class="sky layout-lr px-8 pt-6">
         <div class="weather">
-          <div v-if="weatherIcon.day"
+          <div
+            v-if="weatherIcon.day"
             class="day"
-            :title="(isWeatherNotChange?'天气:':'白天:')+weather.daytype">
-            <acg-icon :name="weatherIcon.day"
-              stroke="#000"
-              size="50"></acg-icon>
+            :title="(isWeatherNotChange ? '天气:' : '白天:') + weather.daytype"
+          >
+            <acg-icon :name="weatherIcon.day" stroke="#000" size="50"></acg-icon>
           </div>
-          <div v-if="weatherIcon.night"
+          <div
+            v-if="weatherIcon.night"
             v-show="!isWeatherNotChange"
             class="night"
-            :title="`夜间:${weather.nighttype}`">
-            <acg-icon :name="weatherIcon.night"
-              stroke="#000"
-              size="50"></acg-icon>
+            :title="`夜间:${weather.nighttype}`"
+          >
+            <acg-icon :name="weatherIcon.night" stroke="#000" size="50"></acg-icon>
           </div>
         </div>
         <div class="base-info">
-          <div class="wendu fs-36"
-            title="温度">{{ weather.wendu }}℃</div>
-          <div class="shidu fs-16"
-            title="湿度">
-            <acg-icon name="shidu"
-              fill="currentColor"
-              size="14"></acg-icon>
+          <div class="wendu fs-36" title="温度">{{ weather.wendu }}℃</div>
+          <div class="shidu fs-16" title="湿度">
+            <acg-icon name="shidu" fill="currentColor" size="14"></acg-icon>
             <span class="ml-4">{{ weather.shidu }}</span>
           </div>
         </div>
       </div>
       <div class="earth-container pt-16 px-8 text-center">
         <div class="city layout-center">
-          <a-input v-if="isEdit"
+          <a-input
+            v-if="isEdit"
             ref="cityInput"
             v-model="inputCity"
             style="width:80%;"
             class="text-center"
             @blur="isEdit = false"
-            @press-enter="handleCityChange"></a-input>
-          <div v-else
-            class="city-text"
-            @click="isEdit = true">{{
-               isCityError ? '无效城市': ( weather.city || '城市' ) 
-            }}</div>
+            @press-enter="handleCityChange"
+          ></a-input>
+          <div v-else class="city-text" @click="isEdit = true">
+            {{
+              isCityError ? '无效城市' : (weather.city || '城市')
+            }}
+          </div>
         </div>
         <div class="sun fs-20 mt-8">
           <acg-icon name="richu"></acg-icon>
@@ -58,10 +54,8 @@
           <acg-icon name="rila"></acg-icon>
           <span class="ml-4 fs-14">{{ weather.sunset_1 }}</span>
         </div>
-        <div v-show="!isEdit"
-          class="optional">
-          <icon-refresh size="16px"
-            @click="iniWeather" />
+        <div v-show="!isEdit" class="optional">
+          <icon-refresh size="16px" @click="iniWeather" />
         </div>
       </div>
     </a-spin>
@@ -79,6 +73,7 @@ const nightWeathers: Record<string, string> = {
 const weathers: Record<string, string> = {
   晴: 'qingtian',
   雾: 'wu',
+  阴: 'yintian',
   多云: 'duoyun',
   小雨: 'xiaoyu',
   中雨: 'xiaoyu',
@@ -180,7 +175,7 @@ export default defineComponent({
   },
 
   methods: {
-    getDayMinute() {},
+    getDayMinute() { },
 
     async fetchIpInfo() {
       const { city } = await this.$API.Outside.ipInfo()

@@ -62,8 +62,8 @@ export default defineComponent({
 <style lang="scss">
 .tool-card {
   cursor: pointer;
-  width: 160px;
-  height: 160px;
+  width: 158px;
+  height: 158px;
   text-align: center;
   box-shadow: 1px 1px 3px var(--color-fill-3);
 

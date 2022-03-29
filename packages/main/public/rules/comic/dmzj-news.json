@@ -1,0 +1,23 @@
+{
+  "name": "动漫之家",
+  "namespace": "dmzj",
+  "url": "https://news.dmzj.com/manhuaqingbao/",
+  "type": "comic-news",
+  "version": 0,
+  "news": {
+    "url": "https://news.dmzj.com/manhuaqingbao/p{:page}.html",
+    "mode": "html",
+    "data": {
+      "pageTotal": "#page > a:last-child|@href|match#\\d+"
+    },
+    "items": ".briefnews_con_li",
+    "itemData": {
+      "id": ".li_img_de > h3 > a|@href|match#\\d+",
+      "url": ".li_img_de > h3 > a|@href",
+      "title": ".li_img_de > h3 > a|text",
+      "desc": ".li_img_de > .com_about|text",
+      "cover": ".li_content_img img|@src",
+      "updateTime": ".li_img_de > .head_con_p_o > span:first-child|text"
+    }
+  }
+}

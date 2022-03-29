@@ -1,23 +1,64 @@
 {
   "name": "动漫之家",
   "namespace": "dmzj",
-  "url": "https://news.dmzj.com/manhuaqingbao/",
-  "type": "comic-news",
+  "icon": "http://manhua.dmzj.com/favicon.ico",
+  "url": "http://manhua.dmzj.com",
+  "type": "comic-book",
   "version": 0,
-  "news": {
-    "url": "https://news.dmzj.com/manhuaqingbao/p{:page}.html",
+  "pages": [
+    {
+      "name": "漫画更新",
+      "url": "http://manhua.dmzj.com/update_{:page}.shtml",
+      "mode": "html",
+      "data": { "pageTotal": ".pages .pselected:last|@href|match#\\d+" },
+      "items": ".newpic_content .boxdiv1",
+      "itemData": {
+        "id": ".pictext .pictextst|@href",
+        "path": ".pictext .pictextst|@href",
+        "title": ".pictext .pictextst|text",
+        "cover": ".picborder img|@src",
+        "author": ".pictextli|text",
+        "message": "li:nth-child(3)|text",
+        "type": "li:nth-child(2)|text",
+        "status": "li:nth-child(4)|text",
+        "updateTime": "li:nth-child(5)|text"
+      }
+    },
+    { "name": "全部分类" }
+  ],
+  "search": {
+    "url": "http://sacg.dmzj.com/comicsum/search.php?s=${keyword}",
+    "mode": "js",
+    "itemData": "",
+    "items": {
+      "id": "id",
+      "path": "comic_url",
+      "title": "comic_name",
+      "cover": "comic_cover",
+      "author": "comic_author",
+      "status": "status"
+    }
+  },
+  "details": {
+    "url": "http://manhua.dmzj.com/{:path}",
     "mode": "html",
     "data": {
-      "pageTotal": "#page > a:last-child|@href|match#\\d+"
+      "title": ".anim_title_text|text",
+      "author": ".anim-main_list tr:contains(作者) a|map-text",
+      "status": ".anim-main_list tr:contains(状态) td|text|trim",
+      "tags": ".anim-main_list tr:contains(题材) td a|map-text",
+      "cover": "#cover_pic|@src",
+      "desc": ".line_height_content|text|trim"
     },
-    "items": ".briefnews_con_li",
-    "itemData": {
-      "id": ".li_img_de > h3 > a|@href|match#\\d+",
-      "url": ".li_img_de > h3 > a|@href",
-      "title": ".li_img_de > h3 > a|text",
-      "desc": ".li_img_de > .com_about|text",
-      "cover": ".li_content_img img|@src",
-      "updateTime": ".li_img_de > .head_con_p_o > span:first-child|text"
+    "items": ".cartoon_online_border li",
+    "itemData": { "name": "a|text", "path": "a|@href" }
+  },
+  "chapter": {
+    "url": "http://manhua.dmzj.com/{:path}",
+    "mode": "html",
+    "data": {
+      "imageOrigin": "=http://images.dmzj.com/",
+      "list": "script:contains(g_comic_id)|html|match#eval.+\\n|append#return pages;|function|eval"
     }
   }
 }

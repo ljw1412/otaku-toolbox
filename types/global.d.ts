@@ -21,6 +21,7 @@ interface NewBrowerConfigBase {
   modal?: boolean
   autoShow?: boolean
   alwaysOnTop?: boolean
+  webview?: boolean
 }
 
 interface NewBrowerConfig extends NewBrowerConfigBase {
@@ -59,7 +60,7 @@ declare namespace DataCenter {
 
   interface RulePageParams {
     url: string
-    mode: 'html' | 'json'
+    mode: 'html' | 'json' | 'js'
     data?: {
       pageTotal?: string | number
       [key: string]: string

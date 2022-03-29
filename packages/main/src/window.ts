@@ -99,6 +99,7 @@ export function createBrowser(config: NewBrowerConfig): BrowserWindow {
       contextIsolation: env.MODE !== 'test', // Spectron tests can't work with contextIsolation: true
       enableRemoteModule: env.MODE === 'test', // Spectron tests can't work with enableRemoteModule: false
       webSecurity: false,
+      webviewTag: config.webview,
       allowRunningInsecureContent: true
     }
   })
