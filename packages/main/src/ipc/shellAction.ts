@@ -1,6 +1,6 @@
-import { app } from 'electron'
+import { app, dialog, ipcMain, shell } from 'electron'
+import fsp from 'fs/promises'
 import path from 'path'
-import { ipcMain, shell } from 'electron'
 
 const env = import.meta.env
 const DesktopDir = app.getPath('desktop')
@@ -16,6 +16,20 @@ function bind(): void {
       return shell.writeShortcutLink(shortcutLinkPath, 'create', {
         target: appPath
       })
+    } else if (type === 'saveFile') {
+      try {
+        const { content = '', filters } = data
+        const result = await dialog.showSaveDialog({
+          title: '保存文件',
+          filters
+        })
+        if (!result.canceled && result.filePath) {
+          await fsp.writeFile(result.filePath, content)
+        }
+        return result
+      } catch (error) {
+        return { err: true, error }
+      }
     }
   })
 }

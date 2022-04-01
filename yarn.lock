@@ -14,10 +14,10 @@
   dependencies:
     color "^3.1.3"
 
-"@arco-design/web-vue@2.17.0":
-  version "2.17.0"
-  resolved "https://registry.npmmirror.com/@arco-design/web-vue/-/web-vue-2.17.0.tgz#75acc63044120cab1ff8ccf4298d990e3b8faf3c"
-  integrity sha512-V0rJ219z4ARZNbM/1zwKSXEswxwtIY2FgNWEcBfoOEuZiD0WUVRs0GxQegnhwafM7uCxJtiQLzgYZI7NzONsCA==
+"@arco-design/web-vue@^2.21.2":
+  version "2.21.2"
+  resolved "https://registry.npmmirror.com/@arco-design/web-vue/-/web-vue-2.21.2.tgz#9c88fe306b665026f05c1651b346f83a37de6fae"
+  integrity sha512-sMeHVF/PCMx8yWJDvmr1y7fsCwyK3GQtEVWQEp72/eG7wpqTmDOKUb07xtEVA3TQ2OhNbvHS5RBMmB4fWtDHCg==
   dependencies:
     "@arco-design/color" "^0.4.0"
     b-tween "^0.3.3"
