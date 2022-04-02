@@ -2,6 +2,7 @@
 import { computed, nextTick } from 'vue'
 import { currentImage, state } from '../utils'
 import { ocrStore } from '/@/stores'
+import API from '/@/apis/index'
 
 const rectList = computed(() => currentImage.value ? currentImage.value.rectList : [])
 const langList = computed(() => ocrStore.list || [])
@@ -20,6 +21,25 @@ function getAllowVertical(code: string) {
 function handleLocationRect(id: number) {
   state.targetId = 0
   nextTick(() => { state.targetId = id })
+}
+
+function recognize(item: ToolsOCR.CroppedRect) {
+  API.Electron.ocr.recognize({
+    lang: item.lang + (item.vertical ? '_vert' : ''),
+    id: item.id!,
+    image: item.preview,
+    options: {}
+  })
+}
+
+function handleLanguageChange(item: ToolsOCR.CroppedRect) {
+  console.log(item)
+  recognize(item)
+}
+
+function handleVerticalChange(item: ToolsOCR.CroppedRect) {
+  item.vertical = !item.vertical
+  recognize(item)
 }
 </script>
 
@@ -53,7 +73,13 @@ function handleLocationRect(id: number) {
             <a-link class="flex-shrink-0 mr-4" @click="handleLocationRect(i + 1)">
               <icon-location />
             </a-link>
-            <a-select v-model="item.lang" size="mini" class="flex-shrink-0" style="width: 120px;">
+            <a-select
+              v-model="item.lang"
+              size="mini"
+              class="flex-shrink-0"
+              style="width: 120px;"
+              @change="handleLanguageChange(item)"
+            >
               <a-option
                 v-for="lang of langList"
                 :key="lang.code"
@@ -64,7 +90,7 @@ function handleLocationRect(id: number) {
             <a-link
               v-if="getAllowVertical(item.lang)"
               class="flex-shrink-0"
-              @click="item.vertical = !item.vertical"
+              @click="handleVerticalChange(item)"
             >
               <component :is="item.vertical ? 'icon-drag-dot-vertical' : 'icon-drag-dot'" size="14"></component>
               {{ item.vertical ? '垂直文本' : '水平文本' }}
