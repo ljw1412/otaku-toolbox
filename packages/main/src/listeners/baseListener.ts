@@ -18,4 +18,16 @@ export default function baseListerner(win: BrowserWindow) {
       tabId: e.sender.id
     })
   })
+
+  win.on('focus', (e: IpcMainEvent) => {
+    win.webContents.executeJavaScript(
+      'document.body.setAttribute("app-status","focus")'
+    )
+  })
+
+  win.on('blur', (e: IpcMainEvent) => {
+    win.webContents.executeJavaScript(
+      'document.body.removeAttribute("app-status")'
+    )
+  })
 }

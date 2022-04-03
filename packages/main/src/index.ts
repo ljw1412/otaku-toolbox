@@ -55,6 +55,7 @@ const createWindow = async () => {
       contextIsolation: env.MODE !== 'test', // Spectron tests can't work with contextIsolation: true
       enableRemoteModule: env.MODE === 'test', // Spectron tests can't work with enableRemoteModule: false
       webSecurity: false,
+      disableHtmlFullscreenWindowResize: true,
       allowRunningInsecureContent: true
     }
   })

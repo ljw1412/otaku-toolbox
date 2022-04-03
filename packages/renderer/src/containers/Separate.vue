@@ -1,12 +1,10 @@
 <template>
   <div class="app-container container-separate">
     <app-mini-header :title="mTitle"></app-mini-header>
-    <main id="app-main"
-      class="app-main">
+    <main id="app-main" class="app-main">
       <router-view />
     </main>
-    <acg-back-top v-if="!hideBackUp"
-      target="#app-main"></acg-back-top>
+    <acg-back-top v-if="!hideBackUp" target="#app-main"></acg-back-top>
   </div>
 </template>
 
@@ -69,6 +67,7 @@ export default defineComponent({
 <style lang="scss">
 .container-separate {
   .app-main {
+    box-sizing: border-box;
     position: relative;
     height: calc(100% - var(--app-header-mini-height));
     overflow: auto;

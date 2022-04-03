@@ -1,7 +1,7 @@
 <template>
   <a-layout class="app-setting">
     <header class="app-setting-header app-drag">
-      <app-close-btn size="mini" fixed="tr" />
+      <app-close-btn size="mini" fixed="tr" style="top:1px; right:1px;" />
     </header>
 
     <a-layout-sider class="setting-tabs app-drag" :width="150">
@@ -176,6 +176,7 @@ export default defineComponent({
   position: relative;
   height: 100%;
   overflow: hidden;
+  box-sizing: border-box;
 
   * {
     box-sizing: border-box;

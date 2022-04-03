@@ -11,6 +11,18 @@
   --skin-purple: #673ab7;
   --skin-indigo: #3f51b5;
   --skin-blue-grey: #607d8b;
+  --skin-rgb-cyan: 0, 189, 214;
+  --skin-rgb-blue: 33, 150, 243;
+  --skin-rgb-dark: 27, 27, 27;
+  --skin-rgb-red: 244, 67, 54;
+  --skin-rgb-orange: 235, 154, 24;
+  --skin-rgb-pink: 251, 114, 153;
+  --skin-rgb-green: 76, 175, 80;
+  --skin-rgb-teal: 0, 150, 136;
+  --skin-rgb-brown: 121, 85, 72;
+  --skin-rgb-purple: 103, 58, 183;
+  --skin-rgb-indigo: 63, 81, 181;
+  --skin-rgb-blue-grey: 96, 125, 139;
   --white-rgb: 255, 255, 255;
   --black-rgb: 0, 0, 0;
 }
@@ -19,6 +31,7 @@ body {
   --color-text-0: #000000;
 
   --app-theme: var(--skin-blue);
+  --app-theme-rgb: var(--skin-rgb-blue);
   --app-color-common: var(--app-theme);
 
   --app-header-bg: var(--app-theme);
@@ -43,6 +56,7 @@ body[arco-theme='dark'] {
   --color-text-0: #ffffff;
 
   --app-theme: var(--skin-dark);
+  --app-theme-rgb: var(--skin-rgb-dark);
   --app-color-common: #e4a329;
 
   --app-header-center-bg: rgba(255, 255, 255, 0.05);
@@ -59,40 +73,50 @@ body[arco-theme='dark'] {
 
 body[arco-theme='cyan'] {
   --app-theme: var(--skin-cyan);
+  --app-theme-rgb: var(--skin-rgb-cyan);
 }
 
 body[arco-theme='teal'] {
   --app-theme: var(--skin-teal);
+  --app-theme-rgb: var(--skin-rgb-teal);
 }
 
 body[arco-theme='red'] {
   --app-theme: var(--skin-red);
+  --app-theme-rgb: var(--skin-rgb-red);
 }
 
 body[arco-theme='orange'] {
   --app-theme: var(--skin-orange);
+  --app-theme-rgb: var(--skin-rgb-orange);
 }
 
 body[arco-theme='pink'] {
   --app-theme: var(--skin-pink);
+  --app-theme-rgb: var(--skin-rgb-pink);
 }
 
 body[arco-theme='green'] {
   --app-theme: var(--skin-green);
+  --app-theme-rgb: var(--skin-rgb-green);
 }
 
 body[arco-theme='brown'] {
   --app-theme: var(--skin-brown);
+  --app-theme-rgb: var(--skin-rgb-brown);
 }
 
 body[arco-theme='purple'] {
   --app-theme: var(--skin-purple);
+  --app-theme-rgb: var(--skin-rgb-purple);
 }
 
 body[arco-theme='indigo'] {
   --app-theme: var(--skin-indigo);
+  --app-theme-rgb: var(--skin-rgb-indigo);
 }
 
 body[arco-theme='blue-grey'] {
   --app-theme: var(--skin-blue-grey);
+  --app-theme-rgb: var(--skin-rgb-blue-grey);
 }

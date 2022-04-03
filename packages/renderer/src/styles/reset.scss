@@ -28,6 +28,23 @@ body {
     sans-serif !important;
 }
 
+.app-container .app-main,
+.app-setting {
+  border: 1px solid rgba(var(--app-theme-rgb), 0.25);
+  transition: border-color 0.15s;
+}
+
+.app-container .app-main {
+  border-top: none;
+}
+
+body[app-status='focus'] {
+  .app-container .app-main,
+  .app-setting {
+    border-color: var(--app-theme);
+  }
+}
+
 ::-webkit-scrollbar {
   width: var(--scroll-bar-width);
   height: var(--scroll-bar-width);

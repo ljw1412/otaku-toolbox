@@ -1,26 +1,25 @@
 <template>
   <div class="app-container container-main">
     <app-header></app-header>
-    <main id="app-main"
+    <main
+      id="app-main"
       class="app-main"
       :data-module="$route.meta.module || 'other'"
-      :class="{'hide-helper':$route.meta.hideHelper}">
-      <router-view v-slot="{ Component,route }"
-        name="helper">
+      :class="{ 'hide-helper': $route.meta.hideHelper }"
+    >
+      <router-view v-slot="{ Component, route }" name="helper">
         <keep-alive>
-          <component :is="Component"
-            :key="route.meta.module+'helper'" />
+          <component :is="Component" :key="route.meta.module + 'helper'" />
         </keep-alive>
       </router-view>
-      <div :id="moduleMain"
-        v-watch-scroll="$route.name"
-        class="app-main-body"
-        :class="moduleMain">
+      <div :id="moduleMain" v-watch-scroll="$route.name" class="app-main-body" :class="moduleMain">
         <router-view v-slot="{ Component, route }">
           <keep-alive exclude="AppPageError">
-            <component :is="Component"
+            <component
+              :is="Component"
               :key="getComponentKey(route)"
-              :class="{'page-container': route.meta.pageContainer}" />
+              :class="{ 'page-container': route.meta.pageContainer }"
+            />
           </keep-alive>
         </router-view>
       </div>
@@ -59,10 +58,11 @@ export default defineComponent({
 <style lang="scss">
 .container-main {
   .app-main {
+    box-sizing: border-box;
     height: calc(100% - var(--app-header-height));
     overflow: hidden;
 
-    &[data-module='home'] {
+    &[data-module="home"] {
       .app-main-body {
         height: 100%;
         overflow-y: scroll;
@@ -70,8 +70,8 @@ export default defineComponent({
       }
     }
 
-    &[data-module='anime'],
-    &[data-module='game'] {
+    &[data-module="anime"],
+    &[data-module="game"] {
       .app-main-body {
         box-sizing: border-box;
         height: calc(100% - var(--app-sub-navigation-height));
@@ -87,7 +87,7 @@ export default defineComponent({
       }
     }
 
-    &[data-module='comic'] {
+    &[data-module="comic"] {
       box-sizing: border-box;
       position: relative;
       // height: 100%;
