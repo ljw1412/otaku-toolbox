@@ -26,6 +26,7 @@ import { defineComponent } from 'vue'
 import ToolCard from './components/ToolCard.vue'
 import PluginLibDialog from './components/PluginLibDialog.vue'
 import { pluginStore } from '/@/stores/index'
+import { only } from '/@/utils/object'
 
 export default defineComponent({
   name: 'AppTools',
@@ -66,12 +67,7 @@ export default defineComponent({
           ...plugin,
           to: {
             name: 'PluginPage',
-            query: {
-              title: plugin.name,
-              plugin: plugin.plugin,
-              isDev: plugin.isDev,
-              css: plugin.css
-            }
+            query: only(plugin, 'name plugin version isDev css icon')
           }
         }
       })

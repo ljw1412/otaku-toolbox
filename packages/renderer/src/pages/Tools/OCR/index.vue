@@ -4,6 +4,7 @@
     :class="{ dragging: state.dragging }"
     @dragenter="handleDragenter"
   >
+    <Preset></Preset>
     <DragOpener v-model:visible="state.dragging"></DragOpener>
     <FileOpner></FileOpner>
     <ImagesPanel></ImagesPanel>
@@ -16,6 +17,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import Preset from './components/Preset.vue'
 import FileOpner from './components/FileOpener.vue'
 import ImagesPanel from './components/ImagesPanel.vue'
 import ImageEditor from './components/ImageEditor.vue'
@@ -27,6 +29,7 @@ export default defineComponent({
   name: 'AppOCR',
 
   components: {
+    Preset,
     FileOpner,
     ImagesPanel,
     ImageEditor,

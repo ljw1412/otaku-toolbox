@@ -1,18 +1,19 @@
 <template>
   <div class="plugin-page">
-    <app-mini-header v-if="!$route.query.hideHeader"
-      :title="mTitle"></app-mini-header>
-    <main v-show="!incomplete"
-      id="plugin-main"></main>
-    <div v-if="incomplete"
-      class="plugin-error d-flex">
-      <a-card :bordered="false"
-        class="mx-auto mt-20"
-        style="width:400px;height:130px">
+    <app-mini-header v-if="!$route.query.hideHeader" :title="mTitle">
+      <template #title>
+        <component :is="icon" v-if="icon" :size="16" class="mr-4"></component>
+        <span class="title">{{ mTitle }}</span>
+        <span v-if="version" class="version mx-4">[Ver.{{ version }}]</span>
+        <a-tag v-if="isDev" color="orange" size="small">开发版</a-tag>
+      </template>
+    </app-mini-header>
+    <main v-show="!incomplete" id="plugin-main"></main>
+    <div v-if="incomplete" class="plugin-error d-flex">
+      <a-card :bordered="false" class="mx-auto mt-20" style="width:400px;height:130px">
         <h3>错误</h3>
         <p class="mb-20">检测到插件文件不完整</p>
-        <a-button :loading="downloading"
-          @click="fix">尝试修复</a-button>
+        <a-button :loading="downloading" @click="fix">尝试修复</a-button>
       </a-card>
     </div>
   </div>
@@ -38,8 +39,18 @@ export default defineComponent({
   },
 
   computed: {
+    isDev() {
+      return (this.$route.query.isDev || false) as boolean
+    },
+    version() {
+      return (this.$route.query.version || '') as string
+    },
     mTitle() {
-      return this.$route.query.title || ''
+      return (this.$route.query.title || this.$route.query.name || '') as string
+    },
+    icon() {
+      const icon = (this.$route.query.icon || '') as string
+      return icon.startsWith('icon-') ? icon : ''
     }
   },
 
@@ -85,7 +96,7 @@ export default defineComponent({
         return URL.createObjectURL(blob)
       } catch (error) {
         this.incomplete = true
-        throw new Error(error)
+        throw error
       }
     },
 

@@ -48,7 +48,13 @@ export default defineComponent({
 
   methods: {
     handleCardClick() {
-      this.$API.Electron.win.openVue(this.to,
+      const to = Object.assign({}, this.to)
+      if (this.icon && this.iconType !== 'AImage') {
+        if (!to.query) to.query = {}
+        if (!to.query.icon) to.query.icon = this.icon
+      }
+
+      this.$API.Electron.win.openVue(to,
         Object.assign(
           { resizable: false, singleInstance: true, title: this.name },
           this.config

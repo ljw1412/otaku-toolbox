@@ -1,6 +1,11 @@
 <template>
   <div class="app-container container-separate">
-    <app-mini-header :title="mTitle"></app-mini-header>
+    <app-mini-header>
+      <template #title>
+        <component :is="icon" v-if="icon" :size="16" class="mr-4"></component>
+        <span class="title">{{ mTitle }}</span>
+      </template>
+    </app-mini-header>
     <main id="app-main" class="app-main">
       <router-view />
     </main>
@@ -26,6 +31,10 @@ export default defineComponent({
   computed: {
     hideBackUp() {
       return this.$route.meta.hideBackUp
+    },
+    icon() {
+      const icon = (this.$route.query.icon || '') as string
+      return icon.startsWith('icon-') ? icon : ''
     },
     mTitle(): string {
       return (
