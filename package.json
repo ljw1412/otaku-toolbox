@@ -53,7 +53,7 @@
     "vue-tsc": "^0.1.6"
   },
   "dependencies": {
-    "@arco-design/web-vue": "^2.21.2",
+    "@arco-design/web-vue": "^2.22.1",
     "@ljw1412/ionicons-sprite": "^1.0.1",
     "@vueuse/core": "^8.0.0",
     "bilibili-live-ws": "^6.0.3",
