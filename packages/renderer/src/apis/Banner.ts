@@ -13,7 +13,7 @@ export async function listBanner(
     index: number
     size: number
   },
-  where?: string
+  where = 'PCAPP'
 ): Promise<{ list: Banner[]; total: number }> {
   return apiGet(API_BASE, { data: { ...page, where } })
 }

@@ -1,20 +1,19 @@
 <template>
-  <div v-watch-scroll
-    class="app-home">
+  <div v-watch-scroll class="app-home">
     <a-layout class="home-layout">
       <a-layout-content>
-        <acg-ratio-div :ratio="[2,1]">
-          <div class="w-100 h-100"
-            style="background-color: var(--color-fill-1)"></div>
+        <acg-ratio-div :ratio="[2, 1]">
+          <home-carousel></home-carousel>
         </acg-ratio-div>
       </a-layout-content>
-      <a-layout-sider :width="280"
-        class="ml-12">
-        <a-space direction="vertical"
+      <a-layout-sider :width="280" class="ml-12">
+        <a-space
+          direction="vertical"
           size="medium"
           class="px-4 sticky-t h-100"
           style="top: 20px;"
-          fill>
+          fill
+        >
           <home-weather></home-weather>
           <digital-clock></digital-clock>
           <home-user-center></home-user-center>
@@ -28,14 +27,16 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import DigitalClock from './components/DigitalClock.vue'
+
 import HomeWeather from './components/HomeWeather.vue'
 import HomeUserCenter from './components/HomeUserCenter.vue'
 import HomeFoundation from './components/HomeFoundation.vue'
+import HomeCarousel from './components/HomeCarousel.vue'
 
 export default defineComponent({
   name: 'AppHome',
 
-  components: { DigitalClock, HomeWeather, HomeUserCenter, HomeFoundation }
+  components: { DigitalClock, HomeWeather, HomeUserCenter, HomeFoundation, HomeCarousel }
 })
 </script>
 

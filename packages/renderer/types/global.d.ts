@@ -174,10 +174,12 @@ declare global {
     enabled: boolean
     // 哪里，比如:'home','news'
     where: string
+    // 路由模式
+    routeMode: string
     // 地址
     url: string
     // vue路由
-    vueRoute: string
+    vueRoute: Record<string, any>
 
     expired?: boolean
     bgColor?: string
