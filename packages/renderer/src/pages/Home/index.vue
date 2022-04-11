@@ -53,6 +53,10 @@ export default defineComponent({
     padding: 20px 20px;
   }
 
+  .arco-layout-content {
+    overflow-x: initial !important;
+  }
+
   .arco-layout-sider {
     background: none;
     box-shadow: none;

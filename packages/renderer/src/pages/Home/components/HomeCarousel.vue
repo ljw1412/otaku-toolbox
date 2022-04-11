@@ -35,7 +35,11 @@ export default defineComponent({
   data() {
     return {
       loading: false,
-      list: [] as Banner[]
+      list: [{
+        title: '欢迎来到御宅世界',
+        desc: 'Welcome To Otaku World',
+        bgColor: ''
+      }] as Banner[]
     }
   },
 
@@ -56,13 +60,15 @@ export default defineComponent({
         this.list = list
       } catch (error) {
         console.error(error)
-        this.$message.error('[首页] 轮播图与母星的通信被中断！')
+        this.$message.error('[首页-轮播图] 与母星的通信被中断！')
       }
       this.loading = false
     },
 
     refresh() {
-      this.fetchList()
+      if (!this.loading) {
+        this.fetchList()
+      }
     },
 
     navigate(banner: Banner) {
@@ -92,18 +98,18 @@ export default defineComponent({
 
   .info {
     position: absolute;
-    bottom: 0.16rem;
-    left: 0.16rem;
+    bottom: 16px;
+    left: 16px;
     z-index: 0;
     text-shadow: 0 0 4px #000000;
     color: #ffffff;
 
     .info-title {
-      font-size: 0.36rem;
+      font-size: 32px;
     }
 
     .info-desc {
-      font-size: 0.28rem;
+      font-size: 24px;
     }
   }
 

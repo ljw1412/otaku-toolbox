@@ -65,6 +65,7 @@ export default defineComponent({
     &[data-module="home"] {
       .app-main-body {
         height: 100%;
+        padding-left: var(--scroll-bar-width);
         overflow-y: scroll;
         overflow-x: hidden;
       }
