@@ -2,15 +2,12 @@
   <div class="anime-rate">
     <div class="the-site">
       <p class="score">暂不支持</p>
-      <a-rate :default-value="5"
-        readonly />
+      <a-rate :default-value="5" readonly />
     </div>
     <div class="other-site">
       <a-space size="medium">
-        <span v-for="(rating,key) of siteRating"
-          :key="key"
-          :title="rating.name+'评分'">
-          <img :src="rating.icon">
+        <span v-for="(rating, key) of siteRating" :key="key" :title="rating.name + '评分'">
+          <img :src="rating.icon" />
           <span>{{ rating.score }}</span>
         </span>
       </a-space>
@@ -73,6 +70,7 @@ export default defineComponent({
 
   methods: {
     async fetchOtherSiteRating(config: Record<string, any>, id: string) {
+      if (!id) return
       const url = config.url.replace('{:id}', id)
       const result = await this.apiGet(url)
       const pathList = config.resultPath.split('.') as string[]
