@@ -18,8 +18,9 @@ import ComicFavourite from '/@/pages/Comic/Favourite/index.vue'
 import ComicHistory from '/@/pages/Comic/History/index.vue'
 import ComicSearch from '/@/pages/Comic/Search/index.vue'
 
-// import AppGameHelper from '/@/pages/Game/Helper.vue'
+import AppGameHelper from '/@/pages/Game/Helper.vue'
 import GameHome from '/@/pages/Game/Home/index.vue'
+import GameList from '/@/pages/Game/List/index.vue'
 
 import AppTools from '/@/pages/Tools/Home/index.vue'
 
@@ -102,12 +103,17 @@ const comicRoutes = createRoutes('comic', {
 
 const gameRoutes = createRoutes('game', {
   pageContainer: true,
-  // helper: AppGameHelper,
+  helper: AppGameHelper,
   routes: [
     {
       path: 'home',
       name: 'GameHome',
       component: GameHome
+    },
+    {
+      path: 'list/:namespace',
+      name: 'GameList',
+      component: GameList
     }
   ]
 })

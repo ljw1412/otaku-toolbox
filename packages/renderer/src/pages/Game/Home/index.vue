@@ -1,13 +1,6 @@
 <template>
   <div class="game-home">
-    <app-news title="游戏资讯"
-      type="game-news"
-      :skeleton-count="6"
-      :origin-list="[
-        { value: 'dmzj', label: '动漫之家' },
-        { value: 'ali213', label: '游侠网' },
-        { value: '3dm', label: '3DM' },
-      ]"></app-news>
+    <app-news title="游戏资讯" type="game-news" :skeleton-count="6"></app-news>
   </div>
 </template>
 

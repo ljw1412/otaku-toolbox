@@ -4,12 +4,16 @@ const logoIcons = {
   Baha: 'baha.ico',
   Bangumi: 'bangumi.ico',
   Bilibili: 'bilibili.svg',
+  Desney: 'desney.svg',
   YouTube: 'youtube.svg',
   YouKu: 'youku.svg',
   TV: 'tv.svg',
   IQiyi: 'iqiyi.svg',
   QQVideo: 'qqvideo.svg',
-  Netflix: 'netflix.svg'
+  Netflix: 'netflix.svg',
+  Viu: 'viu.png',
+  MyTVSuper: 'mytvsuper.png',
+  Nowplayer: 'nowplayer.svg'
 }
 
 function getPath() {

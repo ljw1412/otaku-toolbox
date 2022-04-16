@@ -1,21 +1,19 @@
 <template>
-  <app-sub-navigation class="game-header"
-    :navigations="navigations"
-    :right-links="rightLinks"></app-sub-navigation>
+  <game-sub-navigation></game-sub-navigation>
   <acg-back-top target="#game-main"></acg-back-top>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import AppSubNavigation from '/@/components/AppSubNavigation.vue'
+import GameSubNavigation from './components/GameSubNavigation.vue'
 
 export default defineComponent({
   name: 'GameHelper',
-  components: { AppSubNavigation },
+  components: { GameSubNavigation },
   data() {
     return {
       navigations: [
-        { name: '推荐', to: { name: 'GameHome' } }
+        { name: '资讯', to: { name: 'GameHome' } }
       ] as PageNavigationItem[],
       rightLinks: []
     }

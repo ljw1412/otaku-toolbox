@@ -71,7 +71,14 @@ export default defineComponent({
           icon: 'icon-book',
           type: 'comic-book',
           allowCreate: false
-        }, {
+        },
+        {
+          name: '游戏',
+          icon: 'icon-trophy',
+          type: 'game-resource',
+          allowCreate: false
+        },
+        {
           name: 'OCR语言模型',
           icon: 'icon-language',
           type: 'ocr-lang',
