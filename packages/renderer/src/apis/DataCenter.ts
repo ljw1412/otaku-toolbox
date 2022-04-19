@@ -15,7 +15,8 @@ export async function saveRule(rule: Record<string, any>) {
 }
 
 export async function removeRule(rule: Record<string, any>) {
-  return await invoke('removeRule', { rule: toRaw(rule) })
+  const data = { type: rule.type, namespace: rule.namespace }
+  return await invoke('removeRule', { rule: data })
 }
 
 export async function listRules(type = '') {

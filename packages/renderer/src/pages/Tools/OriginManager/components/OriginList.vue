@@ -133,7 +133,7 @@ export default defineComponent({
         const ruleList: RuleManagerItem[] = await this.apiGet(url)
         ruleList.forEach(item => {
           item.version_new = item.version
-          item.downloadPath = url.replace('/list.json', `/${item.name}.json`)
+          item.downloadPath = url.replace('/list.json', `/${item.namespace}.json`)
         })
         this.netRules[type] = ruleList
       } catch (error: any) {

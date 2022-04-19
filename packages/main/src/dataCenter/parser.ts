@@ -56,7 +56,8 @@ function parseBase(el: Cheerio<Node>, modifier: string) {
   let result: any = ''
   let action = ''
   if (modifier.startsWith('map')) {
-    const [, nextModifier] = modifier.split('-')
+    const spIndex = modifier.indexOf('-')
+    const nextModifier = modifier.substr(spIndex + 1)
     action = `获取每个元素[${modifier}]`
     result = el
       .map((i, el) => parseBase(cheerio(el), nextModifier).result)

@@ -10,7 +10,7 @@
     >
       <template #columns>
         <a-table-column title="名称" data-index="name" :width="160"></a-table-column>
-        <a-table-column title="命名空间" data-index="namespace" :width="100"></a-table-column>
+        <a-table-column title="命名空间" data-index="namespace" :width="120"></a-table-column>
         <a-table-column title="版本" data-index="version" :width="160"></a-table-column>
         <a-table-column title="类型" data-index="type" :width="140"></a-table-column>
         <a-table-column title="网址" data-index="url"></a-table-column>
