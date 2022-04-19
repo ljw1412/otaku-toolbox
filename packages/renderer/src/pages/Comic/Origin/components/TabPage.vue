@@ -1,21 +1,19 @@
 <template>
   <div class="comic-origin-tab-page">
-    <acg-api-result :loading="isLoading"
-      :error="isError"
-      @retry="runRule"></acg-api-result>
+    <acg-api-result :loading="isLoading" :error="isError" @retry="runRule"></acg-api-result>
 
     <div class="comic-list py-6">
-      <comic-card v-for="item of list"
-        :key="item.id"
-        :info="item"></comic-card>
+      <comic-card v-for="item of list" :key="item.id" :info="item"></comic-card>
     </div>
-    <a-pagination v-model:current="page.index"
+    <a-pagination
+      v-model:current="page.index"
       :total="page.total"
       :page-size="page.size"
       style="justify-content: flex-end;"
       class="bg-app sticky-b pt-4 w-100"
-      :class="{'position-absolute': isLoading || isError}"
-      @change="handlePageChange" />
+      :class="{ 'pagination-absolute': isLoading || isError }"
+      @change="handlePageChange"
+    />
   </div>
 </template>
 
@@ -85,6 +83,11 @@ export default defineComponent({
       margin-right: var(--comic-card-gap);
       margin-bottom: var(--comic-card-gap);
     }
+  }
+
+  .pagination-absolute {
+    position: absolute !important;
+    bottom: 1px;
   }
 }
 </style>
