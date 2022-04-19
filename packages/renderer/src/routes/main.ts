@@ -113,7 +113,8 @@ const gameRoutes = createRoutes('game', {
     {
       path: 'list/:namespace',
       name: 'GameList',
-      component: GameList
+      component: GameList,
+      props: true
     }
   ]
 })

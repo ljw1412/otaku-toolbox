@@ -53,7 +53,7 @@ declare namespace DataCenter {
     name: string
     namespace: string
     type: string
-    version: string
+    version: string | number
     icon?: string
     url?: string
   }
@@ -93,4 +93,11 @@ declare namespace DataCenter {
     page?: number | string
     [key: string]: number | string
   }
+}
+
+interface RuleManagerItem extends DataCenter.RuleBase {
+  downloadPath?: string
+  downloading?: boolean
+  version_new?: string | number
+  isDownloaded?: boolean
 }

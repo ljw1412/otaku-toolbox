@@ -1,5 +1,6 @@
 import Favorites from '/@/IDB/comic/Favorites'
 import History from '/@/IDB/comic/History'
+import API from '/@/apis/index'
 
 declare global {
   interface IDBTables {
@@ -11,6 +12,7 @@ declare global {
     $theme: ThemeHelper
     $dayjs: dayjs
     $db: IDBTables
+    $API: API
 
     usePlugin: () => Record<string, any>
   }

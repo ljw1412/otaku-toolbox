@@ -34,6 +34,10 @@ Object.assign(app.config.globalProperties, ApiFetch, {
   $global: mGlobal
 })
 
+if (import.meta.env.MODE === 'development') {
+  window.$API = API
+}
+
 app
   .use(router)
   .use(ArcoVue)

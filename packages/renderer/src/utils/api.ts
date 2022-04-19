@@ -50,11 +50,17 @@ function createFetch(method: string) {
     }, config.timeout)
 
     return fetch(url, mConfig)
-      .then(resp => {
-        const json = resp.json()
+      .then(async resp => {
         if (resp.status >= 400) {
-          return Promise.reject(json)
+          const text = await resp.text()
+          try {
+            const json = JSON.parse(text)
+            return Promise.reject(json)
+          } catch (error) {
+            return Promise.reject(new Error(text))
+          }
         }
+        const json = resp.json()
         return json
       })
       .catch(e => {

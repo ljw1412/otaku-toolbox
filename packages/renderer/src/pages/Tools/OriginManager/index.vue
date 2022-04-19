@@ -13,6 +13,13 @@
           </template>
           {{ item.name }}
         </a-menu-item>
+        <a-divider />
+        <a-menu-item v-for="item of menuList2" :key="item.type">
+          <template #icon>
+            <component :is="item.icon"></component>
+          </template>
+          {{ item.name }}
+        </a-menu-item>
       </a-menu>
     </a-layout-sider>
 
@@ -34,6 +41,7 @@
 
 <script lang="ts">
 import { Component, defineComponent, markRaw } from 'vue'
+import RuleTester from './components/RuleTester.vue'
 import OriginList from './components/OriginList.vue'
 import OcrLangList from './components/OcrLangList.vue'
 
@@ -41,7 +49,7 @@ interface OriginMenuItem {
   name: string
   icon: string
   type: string
-  allowCreate: boolean
+  allowCreate?: boolean
   typeList?: { label: string; value: string }[]
   component?: Component
 }
@@ -84,17 +92,32 @@ export default defineComponent({
           type: 'ocr-lang',
           component: markRaw(OcrLangList)
         }
+      ] as OriginMenuItem[],
+      menuList2: [
+        {
+          name: '规则测试',
+          icon: 'icon-branch',
+          type: 'rule-tester',
+          component: markRaw(RuleTester)
+        }
       ] as OriginMenuItem[]
     }
   },
 
   computed: {
+    allMenuList(): OriginMenuItem[] {
+      return ([] as OriginMenuItem[]).concat(this.menuList, this.menuList2)
+    },
+
     currentMenu(): OriginMenuItem | undefined {
-      return this.menuList.find(item => item.type === this.menuKeys[0])
+      return this.allMenuList.find(item => item.type === this.menuKeys[0])
     },
 
     typeTitle(): string {
-      return (this.currentMenu ? this.currentMenu.name : '') + '源'
+      const type = this.currentMenu ? this.currentMenu.type : ''
+      const name = this.currentMenu ? this.currentMenu.name : ''
+      if (['rule-tester'].includes(type)) return name
+      return name + '源'
     },
 
     menuComponent(): Component | undefined {
@@ -110,7 +133,7 @@ export default defineComponent({
 
     listAllowCreate(): boolean {
       if (!this.currentMenu) return false
-      return this.currentMenu.allowCreate
+      return this.currentMenu.allowCreate || false
     }
   },
 

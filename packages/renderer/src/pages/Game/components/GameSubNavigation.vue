@@ -64,19 +64,25 @@ export default defineComponent({
     return {
       isDisplayMore: false,
       baseNavigations: [{ name: '资讯', to: { name: 'GameHome' } }] as PageNavigationItem[],
-      webNavigations: [
-        {
-          name: '测试资源页',
-          to: { name: 'GameList', params: { namespace: 'test' } }
-        },
-        {
-          name: '测试资源页2',
-          to: { name: 'GameList', params: { namespace: 'test2' } }
-        }] as PageNavigationItem[]
+      webNavigations: [] as PageNavigationItem[]
     }
   },
 
+  activated() {
+    this.fecthGameRuleList()
+  },
+
   methods: {
+    async fecthGameRuleList() {
+      const list: RuleManagerItem[] = await this.$API.DataCenter.listRules('game-resource')
+      this.webNavigations = list.map(item => {
+        return {
+          name: item.name,
+          to: { name: 'GameList', params: { namespace: item.namespace }, query: { title: item.name } }
+        }
+      })
+    },
+
     setCache(item: PageNavigationItem) {
       const module = this.$route.meta.module as string
       if (module && item.to && item.to.name) {
