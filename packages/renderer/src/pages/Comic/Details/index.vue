@@ -31,7 +31,7 @@
               <a-skeleton-line :rows="1" :line-height="24" :line-spacing="4" />
             </a-skeleton>
             <a-space v-show="!loading" size="mini">
-              <a-typography-text type="secondary" class="mr-8">{{ author }}</a-typography-text>
+              <a-typography-text v-if="author" type="secondary" class="mr-8">{{ author }}</a-typography-text>
               <a-tag
                 v-if="info.status"
                 :color="info.status.includes('完') ? 'red' : 'green'"

@@ -85,6 +85,7 @@ declare namespace DataCenter {
   type Rule = NewsRule & ComicRule & RulePageParams
 
   interface RunnerOptions {
+    requestData?: Record<string, any>
     replacer?: Replacer
     proxy?: string
   }

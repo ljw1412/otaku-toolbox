@@ -84,7 +84,7 @@ export default defineComponent({
           rule.version_new = item.version_new
           list.push(rule)
         } else {
-          item.version = -1
+          if (item.version > -1) item.version = -1
           list.push(item)
         }
       })
@@ -184,6 +184,7 @@ export default defineComponent({
     ) {
       if (action === 'reomve') {
         this.$modal.open({
+          simple: true,
           title: '删除确认',
           content: `确认要删除【源: ${record.name}】吗？`,
           onOk: () => {

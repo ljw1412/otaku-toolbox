@@ -24,7 +24,8 @@
                 :loading="record.downloading"
                 @click="handleDownload(record)"
               >{{ record.version === -1 ? '添加' : '更新' }}</a-button>
-              <template v-if="record.version !== -1">
+              <span v-if="record.version === -999">开发中……</span>
+              <template v-if="record.version > -1">
                 <a-button size="small" :disabled="notEdit" @click="handleAction('edit', record)">编辑</a-button>
                 <a-button status="danger" size="small" @click="handleAction('reomve', record)">删除</a-button>
               </template>
