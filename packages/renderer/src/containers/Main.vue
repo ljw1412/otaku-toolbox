@@ -33,15 +33,22 @@ import AppHeader from './components/AppHeader.vue'
 
 export default defineComponent({
   name: 'AppMainContainer',
+
   components: {
     AppHeader
   },
+
   computed: {
     moduleMain() {
       const module = this.$route.meta.module || 'other'
       return `${module}-main`
     }
   },
+
+  created() {
+    document.body.setAttribute('app-module', 'main')
+  },
+
   methods: {
     getComponentKey(route: any) {
       if (route) {
@@ -115,7 +122,7 @@ export default defineComponent({
   }
 }
 
-body .arco-message-list-top {
+body[app-module="main"] .arco-message-list-top {
   top: 70px;
 }
 </style>

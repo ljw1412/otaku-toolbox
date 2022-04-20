@@ -1,23 +1,19 @@
 <template>
   <div class="comic-origin">
-    <a-page-header :title="rule.name"
-      class="comic-header"
-      :show-back="false">
+    <a-page-header :title="rule.name" class="comic-header" :show-back="false">
       <template #extra>
-        <a-radio-group v-model="tab"
-          type="button">
-          <a-radio v-for="page of rule.pages"
-            :key="page.name"
-            :value="page.name">{{ page.name }}</a-radio>
+        <a-radio-group v-model="tab" type="button">
+          <a-radio v-for="page of rule.pages" :key="page.name" :value="page.name">{{ page.name }}</a-radio>
         </a-radio-group>
       </template>
     </a-page-header>
 
-    <tab-page v-for="page of loadedTabPageList"
+    <tab-page
+      v-for="page of loadedTabPageList"
       v-show="page.name === tab"
       :key="page.name"
-      :rule="page"></tab-page>
-
+      :rule="page"
+    ></tab-page>
   </div>
 </template>
 
@@ -40,8 +36,8 @@ export default defineComponent({
   },
 
   computed: {
-    tabPageList() {
-      return this.rule.pages || []
+    tabPageList(): DataCenter.Rule[] {
+      return (this.rule.pages as DataCenter.Rule[]) || []
     },
 
     loadedTabPageList() {

@@ -46,8 +46,14 @@ router.beforeEach((to, from, next) => {
 
 if (import.meta.env.MODE === 'development') {
   router.afterEach((to, from) => {
-    const tofrom = ['\n[To]', to, '\n[From]', from]
-    console.log(`[Current] ${window.location.href}`, ...tofrom)
+    const tofrom = ['[To]', to, '\n[From]', from]
+    console.groupCollapsed(
+      '%c[CurrentRoute]',
+      'color: #168cff;',
+      window.location.href
+    )
+    console.log(...tofrom)
+    console.groupEnd()
   })
 }
 

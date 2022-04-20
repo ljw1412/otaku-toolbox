@@ -69,7 +69,11 @@ export default defineComponent({
 
   computed: {
     currentNetRuleList() {
-      return this.netRules[this.getType()] || []
+      const type = this.getType()
+      if (type === 'news') {
+        return this.netRules[this.mType] || []
+      }
+      return this.netRules[type] || []
     },
 
     finalRuleList() {
@@ -114,11 +118,12 @@ export default defineComponent({
   methods: {
     getType() {
       let type = ''
-        ;['anime', 'comic', 'game'].forEach(item => {
-          if (this.mType.includes(item)) {
-            type = item
-          }
-        })
+      for (let name of ['news', 'anime', 'comic', 'game']) {
+        if (this.mType.includes(name)) {
+          type = name
+          break
+        }
+      }
       return type
     },
 
@@ -133,9 +138,20 @@ export default defineComponent({
         const ruleList: RuleManagerItem[] = await this.apiGet(url)
         ruleList.forEach(item => {
           item.version_new = item.version
-          item.downloadPath = url.replace('/list.json', `/${item.namespace}.json`)
+          const filename = type === 'news' ? `${item.type}-${item.namespace}` : item.namespace
+          item.downloadPath = url.replace('/list.json', `/${filename}.json`)
         })
-        this.netRules[type] = ruleList
+        if (type === 'news') {
+          ruleList.forEach(item => {
+            if (!this.netRules[item.type]) {
+              this.netRules[item.type] = [item]
+            } else {
+              this.netRules[item.type].push(item)
+            }
+          })
+        } else {
+          this.netRules[type] = ruleList
+        }
       } catch (error: any) {
         this.$message.error(error.message)
       }

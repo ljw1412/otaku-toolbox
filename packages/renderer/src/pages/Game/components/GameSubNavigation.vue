@@ -35,6 +35,11 @@
 
     <transition>
       <div v-show="isDisplayMore" class="more-panel">
+        <a-result v-if="!webNavigations.length" title="您还未添加游戏资源的源" subtitle="请先前往源管理进行添加">
+          <template #extra>
+            <a-button type="primary" @click="openOriginManager">前往源管理</a-button>
+          </template>
+        </a-result>
         <div class="navigation-list web-navigation">
           <div
             v-for="item of webNavigations"

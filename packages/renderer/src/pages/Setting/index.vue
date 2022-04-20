@@ -146,7 +146,15 @@ export default defineComponent({
     }
   },
 
+  watch: {
+    tabKey(tabKey: string) {
+      this.updateRouteQuery({ tabKey })
+    }
+  },
+
   created() {
+    const { tabKey = 'regular' } = this.$route.query
+    if (tabKey) this.tabKey = tabKey as string
     this.getConfig()
   },
 
@@ -160,6 +168,10 @@ export default defineComponent({
         await this.$API.Electron.config.set({ [key]: value })
         this.getConfig()
       }
+    },
+
+    updateRouteQuery(query: Record<string, any>) {
+      this.$router.replace({ query })
     },
 
     handleConfigChange(key: string, value: any) {

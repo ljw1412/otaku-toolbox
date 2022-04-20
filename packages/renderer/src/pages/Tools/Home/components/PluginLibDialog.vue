@@ -7,14 +7,6 @@
     :width="800"
     :footer="false"
   >
-    <a-button-group v-if="$global.env.DEV" class="mb-12 w-100">
-      <a-input v-model="inputPluginDevUrl" placeholder="请输入插件开发服务地址(比如：“http://127.0.0.1:3000”)">
-        <template #prepend>插件开发服务地址</template>
-      </a-input>
-      <a-button type="primary" @click="handleSavePluginDevUrlClick">保存</a-button>
-      <a-button :disabled="notDevServer" @click="handleCreateDevList">刷新服务列表</a-button>
-    </a-button-group>
-
     <a-list :data="mList" :max-height="500">
       <template #item="{ item, index }">
         <a-list-item :key="index">
@@ -89,10 +81,6 @@ export default defineComponent({
 
     mList() {
       return [...this.devList, ...this.list]
-    },
-
-    notDevServer() {
-      return !pluginStore.devUrl
     }
   },
 
@@ -110,25 +98,6 @@ export default defineComponent({
   },
 
   methods: {
-    handleSavePluginDevUrlClick() {
-      pluginStore.devUrl = this.inputPluginDevUrl
-      this.$message.info('插件开发服务地址保存成功')
-      this.fetchDevPluginList()
-    },
-
-    async handleCreateDevList() {
-      if (pluginStore.devUrl) {
-        try {
-          const { message } = await this.apiGet(
-            `${pluginStore.devUrl}/create-list`
-          )
-          this.$message.info(message)
-          this.fetchDevPluginList()
-        } catch (error) {
-          this.$message.error('创建列表失败，连接插件开发服务失败！')
-        }
-      }
-    },
 
     async fetchDevPluginList() {
       if (!this.$global.env.DEV) return
