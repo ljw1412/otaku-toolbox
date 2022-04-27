@@ -1,34 +1,37 @@
 <template>
-  <a-card class="bangumi-filter"
-    :bordered="false">
+  <a-card class="bangumi-filter" :bordered="false">
+    <slot name="header"></slot>
+
     <div style="margin-bottom: -4px;">
-      <a-space wrap
-        size="mini">
+      <a-space wrap size="mini" class="filter-group">
         <span class="filter-title">分组：</span>
-        <a-radio-group v-model="groupBy"
-          type="button"
-          size="small"
-          @change="handleGroupByChange">
-          <a-radio v-for="group of groupList"
+        <a-radio-group v-model="groupBy" type="button" size="small" @change="handleGroupByChange">
+          <a-radio
+            v-for="group of groupList"
             :key="group.value"
-            :value="group.value">{{group.label}}</a-radio>
+            :value="group.value"
+          >{{ group.label }}</a-radio>
         </a-radio-group>
       </a-space>
 
-      <a-space v-for="tagGroup of tagGroupList"
+      <a-space
+        v-for="tagGroup of tagGroupList"
         :key="tagGroup._id"
         wrap
-        size="mini">
-        <span class="filter-title">{{tagGroup.name}}：</span>
-        <template v-for="tag of tagGroup.tags"
-          :key="tag._id">
-          <a-tag v-if="tag._id === 'all' || this.tagCount[tag._id]"
+        size="mini"
+        class="filter-group"
+      >
+        <span class="filter-title">{{ tagGroup.name }}：</span>
+        <template v-for="tag of tagGroup.tags" :key="tag._id">
+          <a-tag
+            v-if="tag._id === 'all' || tagCount[tag._id]"
             checkable
             :checked="tag.selected"
-            :color="tag.selected?tag.color:undefined"
-            @check="handleTagCheck(tag,tagGroup)">
+            :color="tag.selected ? tag.color : undefined"
+            @check="handleTagCheck(tag, tagGroup)"
+          >
             <span>{{ tag.name }}</span>
-            <template v-if="tagCount[tag._id]!==undefined">({{ tagCount[tag._id] }})</template>
+            <template v-if="tagCount[tag._id] !== undefined">({{ tagCount[tag._id] }})</template>
           </a-tag>
         </template>
       </a-space>
@@ -131,6 +134,9 @@ export default defineComponent({
   padding-left: 4px;
   .arco-space {
     display: flex;
+  }
+  .filter-group:not(:last-child) {
+    margin-bottom: 8px;
   }
 
   .filter-title {

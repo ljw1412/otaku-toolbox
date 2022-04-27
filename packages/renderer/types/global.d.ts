@@ -152,6 +152,7 @@ declare global {
     name: string
     type: string
     code: string
+    cover: string
     tags: Tag[]
     isEdit: boolean
     isAdd: boolean

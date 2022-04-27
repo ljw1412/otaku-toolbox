@@ -1,26 +1,32 @@
 <template>
-  <div class="anime-bangumi"
-    :class="{'page-container':$route.meta.separate}">
-    <h1 class="page-title">{{ title }}<span v-show="total">[{{total}}部]</span></h1>
-    <div v-show="bangumiList.length"
-      class="anime-bangumi-header mb-20">
-      <bangumi-filter :animes="bangumiList"
+  <div class="anime-bangumi" :class="{ 'page-container': $route.meta.separate }">
+    <div v-show="bangumiList.length" class="anime-bangumi-header mb-20">
+      <acg-ratio-div class="cover" :ratio="[16, 10]">
+        <img :src="currentSTopic.cover" />
+      </acg-ratio-div>
+
+      <bangumi-filter
+        :animes="bangumiList"
         @change="handleFilterChange"
-        @group-by-change="handleFilterGroupByChange"></bangumi-filter>
+        @group-by-change="handleFilterGroupByChange"
+      >
+        <template #header>
+          <h1 class="page-title">
+            {{ title }}
+            <span v-show="total">[{{ total }}部]</span>
+          </h1>
+        </template>
+      </bangumi-filter>
     </div>
     <template v-if="code && !isLoading">
-      <bangumi-grid :anime-group-list="bangumiGroupList"
-        class="mb-20"></bangumi-grid>
-      <bangumi-list :animes="filterBangumiList"
-        class="mb-20"></bangumi-list>
+      <bangumi-grid :anime-group-list="bangumiGroupList" class="mb-20"></bangumi-grid>
+      <bangumi-list :animes="filterBangumiList" class="mb-20"></bangumi-list>
     </template>
     <div v-else>
-      <acg-api-result :error="isError"
-        @retry="retry"></acg-api-result>
+      <acg-api-result :error="isError" @retry="retry"></acg-api-result>
     </div>
 
-    <special-topic-switch :code="code"
-      :list="specialTopicList"></special-topic-switch>
+    <special-topic-switch :code="code" :list="specialTopicList"></special-topic-switch>
   </div>
 </template>
 
@@ -54,12 +60,15 @@ export default defineComponent({
   },
 
   computed: {
+    currentSTopic() {
+      return this.specialTopicList.find(
+        (item) => item.code === this.code
+      ) || { cover: '', name: '' }
+    },
+
     title(): string {
-      const current = this.specialTopicList.find(
-        item => item.code === this.code
-      )
-      if (!current) return ''
-      return current.name
+      if (!this.currentSTopic) return ''
+      return this.currentSTopic.name
     },
 
     total() {
@@ -255,6 +264,22 @@ export default defineComponent({
   --list-item-gallery-item-size: 80px;
   --list-item-link-icon-size: 4em;
 
+  .anime-bangumi-header {
+    display: flex;
+    margin-top: 20px;
+
+    .cover {
+      width: 40%;
+      flex-grow: 1;
+    }
+
+    .bangumi-filter {
+      width: 60%;
+      box-sizing: border-box;
+      flex-shrink: 0;
+    }
+  }
+
   .page-title {
     margin: 16px 0;
     font-size: 32px;
@@ -267,7 +292,7 @@ export default defineComponent({
 
   .acg-area-header {
     .left::before {
-      content: '';
+      content: "";
       width: 4px;
       height: 18px;
       margin-top: 3px;
@@ -288,45 +313,6 @@ export default defineComponent({
     --list-item-info-font-size: 14px;
     --list-item-info-min-font-size: 12px;
     --list-item-gallery-item-size: 64px;
-  }
-}
-
-@media (max-width: 1199.9px) {
-  .anime-bangumi {
-    --grid-item-size: 150px;
-    --list-item-info-font-size: 13px;
-    --list-item-info-min-font-size: 12px;
-  }
-}
-
-@media (max-width: 991.9px) {
-  .anime-bangumi {
-    --list-item-header-height: 100px;
-    --list-item-gallery-item-size: 1rem;
-    --list-item-link-icon-size: 3em;
-  }
-}
-
-@media (max-width: 767.9px) {
-  .anime-bangumi {
-    --grid-item-size: 100%;
-
-    .anime-grid {
-      display: flex;
-      padding-left: 8px;
-      .arco-space-item {
-        width: calc(33.33% - 8px);
-      }
-      .anime-title {
-        font-size: 14px;
-        padding: 3px 3px 0;
-      }
-      .anime-airdate {
-        font-size: 12px;
-        line-height: 20px;
-        height: 20px;
-      }
-    }
   }
 }
 </style>
