@@ -53,6 +53,7 @@ import { defineComponent } from 'vue'
 import { RouteLocationRaw } from 'vue-router'
 import { comicStore } from '/@/stores'
 import { setNavigationCache } from '/@/utils/cache'
+import { ipcOff, ipcOn } from '/@/utils/electron'
 
 export default defineComponent({
   name: 'ComicNavigation',
@@ -100,8 +101,16 @@ export default defineComponent({
     }
   },
 
-  created() {
+  activated() {
     comicStore.updateOriginList()
+  },
+
+  mounted() {
+    ipcOn('window.message', this.messageListener)
+  },
+
+  unmounted() {
+    ipcOff('window.message', this.messageListener)
   },
 
   methods: {
@@ -109,6 +118,19 @@ export default defineComponent({
       const module = this.$route.meta.module as string
       if (module && route) {
         setNavigationCache(module, route)
+      }
+    },
+
+    async messageListener(e: Event, type: string, data: Record<string, any>) {
+      if (type === 'origin-updated') {
+        if (data.type === 'comic') {
+          await comicStore.updateOriginList()
+          const currentExists = this.list.find(item => item.namespace === this.$route.params.namespace)
+          if (!currentExists) {
+            this.$router.replace({ name: 'ComicHome' })
+            this.setCache({ name: 'ComicHome' })
+          }
+        }
       }
     },
 

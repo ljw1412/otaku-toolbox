@@ -38,6 +38,7 @@ import { defineComponent, PropType } from 'vue'
 import CreateRuleDrawer from './CreateRule.vue'
 import TableOrigin from './TableOrigin.vue'
 import { pluginStore } from '/@/stores/index'
+import { ipcSend } from '/@/utils/electron'
 
 
 export default defineComponent({
@@ -189,6 +190,7 @@ export default defineComponent({
           content: `确认要删除【源: ${record.name}】吗？`,
           onOk: () => {
             this.removeRule(record)
+            ipcSend('window.message', 'origin-updated', { type: this.getType() })
           }
         })
       } else if (action === 'edit') {
@@ -196,6 +198,7 @@ export default defineComponent({
         this.isDisplayCreate = true
       } else if (action === 'update') {
         this.fetchRuleList()
+        ipcSend('window.message', 'origin-updated', { type: this.getType() })
       }
     }
   }
