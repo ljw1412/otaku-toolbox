@@ -52,7 +52,6 @@ export default defineComponent({
 
   watch: {
     isDisplaySwitch(val: boolean) {
-      // this.$global.isBodyLocked.value = val
       if (val) {
         const activeEl = document.querySelector('.stopic-switch-picker .stopic-item.active')
         if (activeEl) {
@@ -62,10 +61,6 @@ export default defineComponent({
         }
       }
     }
-  },
-
-  unmounted() {
-    // this.$global.isBodyLocked.value = false
   }
 })
 </script>
@@ -92,7 +87,7 @@ export default defineComponent({
 
 .stopic-switch-picker {
   --stopic-item-wrap-width: 25%;
-  --stopic-item-font-size: 24px;
+  --stopic-item-font-size: 34px;
   --stopic-list-padding: 64px;
   --stopic-item-padding: 12px;
 
@@ -100,9 +95,10 @@ export default defineComponent({
   left: 0;
   top: var(--app-header-height);
   width: 100%;
-  height: 100%;
+  height: calc(100% - var(--app-header-height));
   z-index: 600;
   background-color: var(--color-mask-bg);
+  backdrop-filter: blur(5px);
 
   .stopic-list {
     position: absolute;
@@ -160,29 +156,28 @@ export default defineComponent({
       text-shadow: 1px 0 2px #000000, 0 1px 2px #000000, 0 -1px 2px #000000,
         -1px 0 2px #000000;
       font-weight: bold;
+      transition: font-size 0.2s;
     }
+  }
+}
+
+@media (min-width: 1750px) {
+  .stopic-switch-picker {
+    --stopic-item-wrap-width: 16.66%;
+    --stopic-item-font-size: 30px;
+  }
+}
+
+@media (max-width: 1599.9px) {
+  .stopic-switch-picker {
+    --stopic-item-font-size: 30px;
   }
 }
 
 @media (max-width: 1199.9px) {
   .stopic-switch-picker {
     --stopic-item-wrap-width: 33.33%;
-    --stopic-item-font-size: 24px;
-  }
-}
-
-@media (max-width: 991.9px) {
-  .stopic-switch-picker {
-    --stopic-item-wrap-width: 50%;
-    --stopic-item-font-size: 24px;
-  }
-}
-
-@media (max-width: 767.9px) {
-  .stopic-switch-picker {
-    --stopic-item-wrap-width: 100%;
-    --stopic-item-font-size: 20px;
-    --stopic-list-padding: 28px;
+    --stopic-item-font-size: 28px;
   }
 }
 </style>
