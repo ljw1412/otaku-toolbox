@@ -1,7 +1,7 @@
 <template>
   <div class="anime-bangumi" :class="{ 'page-container': $route.meta.separate }">
     <div v-show="bangumiList.length" class="anime-bangumi-header mb-20">
-      <acg-ratio-div class="cover" :ratio="[16, 10]">
+      <acg-ratio-div class="cover" :ratio="[4, 3]">
         <img :src="currentSTopic.cover" />
       </acg-ratio-div>
 
