@@ -87,6 +87,17 @@ export default defineComponent({
     }
   },
 
+  watch: {
+    animes() {
+      this.tagGroupList.forEach(item => {
+        item.tags.forEach(tag => {
+          tag.selected = true
+        })
+      })
+      this.$emit('change', this.selectedTagList)
+    }
+  },
+
   mounted() {
     this.fetchTagGroupList()
   },
@@ -112,17 +123,6 @@ export default defineComponent({
         t.selected = tag._id === 'all'
       })
       tag.selected = true
-      this.$emit('change', this.selectedTagList)
-    }
-  },
-
-  watch: {
-    animes() {
-      this.tagGroupList.forEach(item => {
-        item.tags.forEach(tag => {
-          tag.selected = true
-        })
-      })
       this.$emit('change', this.selectedTagList)
     }
   }

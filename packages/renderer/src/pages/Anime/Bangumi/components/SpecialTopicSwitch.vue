@@ -61,6 +61,10 @@ export default defineComponent({
         }
       }
     }
+  },
+
+  deactivated() {
+    this.isDisplaySwitch = false
   }
 })
 </script>
@@ -99,6 +103,7 @@ export default defineComponent({
   z-index: 600;
   background-color: var(--color-mask-bg);
   backdrop-filter: blur(5px);
+  will-change: opacity;
 
   .stopic-list {
     position: absolute;
@@ -124,10 +129,28 @@ export default defineComponent({
       width: 100%;
       height: 100%;
       padding: var(--stopic-item-padding);
+      transition: padding 0.3s ease-in-out;
+      will-change: padding;
+
+      img {
+        opacity: 0.5;
+        transition: opacity 0.3s ease-in;
+        will-change: opacity;
+      }
+
+      &:hover {
+        padding: 0;
+        img {
+          opacity: 1;
+        }
+      }
 
       &.active {
         .stopic-item-body {
           border-color: var(--app-color-common);
+        }
+        img {
+          opacity: 1;
         }
         .stopic-title {
           color: var(--app-color-common);
@@ -157,14 +180,15 @@ export default defineComponent({
         -1px 0 2px #000000;
       font-weight: bold;
       transition: font-size 0.2s;
+      will-change: font-size;
     }
   }
 }
 
 @media (min-width: 1750px) {
   .stopic-switch-picker {
-    --stopic-item-wrap-width: 16.66%;
-    --stopic-item-font-size: 30px;
+    --stopic-item-wrap-width: 20%;
+    --stopic-item-font-size: 32px;
   }
 }
 
