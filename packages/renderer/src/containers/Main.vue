@@ -69,7 +69,8 @@ export default defineComponent({
     height: calc(100% - var(--app-header-height));
     overflow: hidden;
 
-    &[data-module="home"] {
+    &[data-module="home"],
+    &[data-module="tools"] {
       .app-main-body {
         height: 100%;
         padding-left: var(--scroll-bar-width);

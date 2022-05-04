@@ -1,6 +1,6 @@
 <template>
   <div class="app-tools">
-    <a-page-header title="百宝箱" class="tools-header" :show-back="false">
+    <a-page-header title="百宝箱" class="tools-header sticky-t bg-app" :show-back="false">
       <template #extra>
         <a-tooltip mini content="百宝箱插件库" position="left">
           <a-button @click="isDisplayPluginDialog = true">
@@ -12,10 +12,10 @@
       </template>
     </a-page-header>
 
-    <a-space wrap>
+    <div class="tools-grid">
       <tool-card v-for="tool of toolList" :key="tool.name" v-bind="tool"></tool-card>
       <tool-card v-for="tool of toolPluginList" :key="tool.plugin" :is-plugin="true" v-bind="tool"></tool-card>
-    </a-space>
+    </div>
 
     <plugin-lib-dialog v-model="isDisplayPluginDialog"></plugin-lib-dialog>
   </div>
@@ -77,4 +77,15 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
+.app-tools {
+  --tool-card-size: 158px;
+
+  .tools-grid {
+    display: grid;
+    padding-top: 4px;
+    grid-template-columns: repeat(auto-fill, var(--tool-card-size));
+    grid-gap: 8px;
+    justify-content: center;
+  }
+}
 </style>

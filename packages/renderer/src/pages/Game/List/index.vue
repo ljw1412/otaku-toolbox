@@ -1,6 +1,27 @@
 <template>
   <div class="game-list">
-    <a-page-header :title="mTitle" :show-back="false"></a-page-header>
+    <a-page-header :title="mTitle" :show-back="false" class="game-list-header sticky-t bg-app"></a-page-header>
+    <div class="list">
+      <div v-for="item of list" :key="item.id" class="game-item">
+        <a-card class="game-card" :bordered="false" hoverable @click="handleCardClick(item)">
+          <template #cover>
+            <acg-ratio-div :ratio="[16, 9]">
+              <img :src="item.cover" />
+            </acg-ratio-div>
+          </template>
+          <a-card-meta :title="item.title"></a-card-meta>
+        </a-card>
+      </div>
+    </div>
+    <div class="bg-app sticky-b w-100 py-6">
+      <a-pagination
+        v-model:current="page.index"
+        :total="page.total"
+        :page-size="page.size"
+        style="justify-content: flex-end;"
+        @change="handlePageChange"
+      />
+    </div>
   </div>
 </template>
 
@@ -17,7 +38,7 @@ export default defineComponent({
   data() {
     return {
       title: '',
-      list: [],
+      list: [] as Record<string, any>[],
       page: { index: 1, size: 1, total: 0 }
     }
   },
@@ -36,7 +57,6 @@ export default defineComponent({
 
   activated() {
     this.fetchData()
-    console.log('!!')
   },
 
   methods: {
@@ -44,15 +64,45 @@ export default defineComponent({
       if (!this.namespace) return
       const rule = await this.$API.DataCenter.showRule('game-resource', this.namespace)
       if (rule) {
-        const { list, count } = await this.$API.DataCenter.runRule(rule.pages[0])
+        const { list, pageTotal } = await this.$API.DataCenter.runRule(rule.pages[0], this.page.index)
         this.list = list
-        this.page.total = count
+        this.page.total = pageTotal
       }
+    },
+
+    handleCardClick(item: Record<string, any>) {
+      window.open(item.url, '_blank')
+    },
+
+    handlePageChange() {
+      this.fetchData()
+      const scrollView = document.querySelector('#game-main')
+      if (scrollView) scrollView.scrollTo(0, 0)
     }
   }
 })
 </script>
 
 <style lang="scss">
+.game-list {
+  display: flex;
+  flex-direction: column;
+
+  .list {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .game-item {
+    flex-shrink: 0;
+    width: 25%;
+    padding: 6px;
+    box-sizing: border-box;
+  }
+
+  .game-card {
+    cursor: pointer;
+  }
+}
 </style>
 

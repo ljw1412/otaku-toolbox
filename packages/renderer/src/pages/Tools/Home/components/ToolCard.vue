@@ -68,10 +68,14 @@ export default defineComponent({
 <style lang="scss">
 .tool-card {
   cursor: pointer;
-  width: 158px;
-  height: 158px;
+  width: var(--tool-card-size);
+  height: var(--tool-card-size);
   text-align: center;
   box-shadow: 1px 1px 3px var(--color-fill-3);
+
+  &:hover {
+    box-shadow: 0 4px 10px rgba(var(--app-color-common-rgb), 0.4) !important;
+  }
 
   .arco-card-cover {
     display: flex;
