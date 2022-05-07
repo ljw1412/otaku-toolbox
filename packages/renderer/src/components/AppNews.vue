@@ -1,58 +1,47 @@
 <template>
   <div class="app-news">
-    <a-page-header :title="title"
-      :class="{'sticky-t bg-app':!mini}"
-      :show-back="false">
+    <a-page-header :title="title" :class="{ 'sticky-t bg-app': !mini }" :show-back="false">
       <template #subtitle>
-        <a-select v-model="origin"
-          style="width: 140px;"
-          size="small"
-          @change="handleOriginChange">
-          <a-option v-for="option of originList"
+        <a-select v-model="origin" style="width: 140px;" size="small" @change="handleOriginChange">
+          <a-option
+            v-for="option of originList"
             :key="option.namespace"
             :value="option.namespace"
-            :label="option.name"></a-option>
+            :label="option.name"
+          ></a-option>
         </a-select>
       </template>
       <template #extra>
-        <a-button v-if="mini"
-          :loading="isLoading"
-          @click="fetchNewsData">刷新</a-button>
-        <a-pagination v-else
+        <a-button v-if="mini" :loading="isLoading" @click="fetchNewsData">刷新</a-button>
+        <a-pagination
+          v-else
           v-model:current="page.index"
           :total="page.total"
           :page-size="page.size"
-          @change="handlePageChange" />
+          @change="handlePageChange"
+        />
       </template>
     </a-page-header>
 
-    <acg-api-result :loading="false"
-      :error="isError"
-      @retry="fetchNewsData"></acg-api-result>
+    <acg-api-result :loading="false" :error="isError" @retry="fetchNewsData"></acg-api-result>
     <div class="news-list">
-      <a-card v-for="item of mNews"
+      <a-card
+        v-for="item of mNews"
         :key="item.id"
         :bordered="false"
-        :body-style="{padding:0}"
+        :body-style="{ padding: 0 }"
         :class="{ 'is-skeleton': isSkeleton }"
         data-skeleton-animate
         hoverable
         class="news-item"
-        @click="handleNewsClick(item.url)">
-        <div class="news-item-container"
-          :title="item.title">
+        @click="handleNewsClick(item.url)"
+      >
+        <div class="news-item-container" :title="item.title">
           <div class="cover skeleton-bg">
-            <img v-if="!isSkeleton"
-              :src="item.cover"
-              loading="lazy" />
+            <img v-if="!isSkeleton" :src="item.cover" loading="lazy" />
           </div>
-          <div class="title text-truncate skeleton-bg">
-            {{ item.title }}
-          </div>
-          <div class="content skeleton-bg"
-            :ellipsis="{ rows:3 }">
-            {{ item.desc }}
-          </div>
+          <div class="title text-truncate skeleton-bg">{{ item.title }}</div>
+          <div class="content skeleton-bg" :ellipsis="{ rows: 3 }">{{ item.desc }}</div>
           <div class="footer">
             <div class="update-time skeleton-bg">{{ item.updateTime }}</div>
           </div>
@@ -155,23 +144,24 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-@import '../styles/scss/index';
+@import "../styles/scss/index";
 
 .app-news {
   .news-list {
     display: grid;
     grid-template-columns: 50% 50%;
-    grid-column-gap: 30px;
+    grid-column-gap: 16px;
 
     box-sizing: border-box;
-    padding: 0 15px;
-    margin: 0 -15px;
+    padding: 0 8px;
+    margin: 0 -16px;
     width: 100%;
+    padding-top: 4px;
 
     .news-item {
       cursor: pointer;
       overflow: hidden;
-      margin-bottom: 30px;
+      margin-bottom: 16px;
 
       &.arco-card {
         transition-property: box-shadow, transform;
@@ -229,6 +219,15 @@ export default defineComponent({
           }
         }
       }
+    }
+  }
+}
+
+@media (min-width: 1750px) {
+  .app-news {
+    .news-list {
+      grid-template-columns: repeat(3, 33.33%);
+      margin: 0 -32px;
     }
   }
 }

@@ -90,4 +90,16 @@ export default defineComponent({
     bottom: 1px;
   }
 }
+
+@media (min-width: 1800px) {
+  .comic-origin-tab-page {
+    --comic-card-width: calc(12.5% - var(--comic-card-gap));
+  }
+}
+
+@media (min-width: 1600px) and (max-width: 1799.99px) {
+  .comic-origin-tab-page {
+    --comic-card-width: calc(16.66% - var(--comic-card-gap));
+  }
+}
 </style>
