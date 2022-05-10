@@ -6,6 +6,7 @@ import AppInject from '/@/inject'
 import * as electron from '/@/utils/electron'
 import * as DataCenter from '/@/apis/DataCenter'
 import * as VueUse from '@vueuse/core'
+import * as logger from '/@/utils/logger'
 
 window.usePlugin = () => {
   return {
@@ -25,6 +26,7 @@ window.usePlugin = () => {
     appUnMount(app: Vue.App) {
       app.unmount()
     },
-    DataCenter
+    DataCenter,
+    logger
   }
 }

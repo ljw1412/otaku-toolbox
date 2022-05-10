@@ -40,7 +40,7 @@ export default defineComponent({
 
     iconProps() {
       if (this.iconType === 'AImage') {
-        return { src: this.icon }
+        return { src: this.icon, class: 'image-icon', preview: false }
       }
       return {}
     }
@@ -85,6 +85,17 @@ export default defineComponent({
 
   .icon {
     font-size: 60px;
+
+    &.image-icon {
+      width: 50px;
+      margin: auto;
+      margin-top: 20px;
+      box-sizing: border-box;
+      img {
+        width: 100%;
+        height: 100%;
+      }
+    }
   }
 
   .plugin-tag {

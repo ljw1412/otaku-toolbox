@@ -39,6 +39,9 @@ export default defineComponent({
   },
 
   computed: {
+    currentPlugin() {
+      return pluginStore.list.find(item => item.plugin === this.$route.query.plugin)
+    },
     isDev() {
       return (this.$route.query.isDev || false) as boolean
     },
@@ -61,7 +64,8 @@ export default defineComponent({
   methods: {
     async init() {
       this.incomplete = false
-      const { isDev, plugin: pluginName, css } = this.$route.query
+      if (!this.currentPlugin) { return }
+      const { isDev, plugin: pluginName, css } = this.currentPlugin
       const getUrl = isDev ? this.getDevPluginUrl : this.getPluginUrl
       const loadList: ['.js'] | ['.js', '.css'] = css
         ? ['.js', '.css']
