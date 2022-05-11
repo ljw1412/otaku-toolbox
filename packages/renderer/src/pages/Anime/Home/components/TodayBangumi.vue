@@ -9,15 +9,14 @@
       </template>
     </a-page-header>
 
-    <div v-watch-scroll
-      class="today-bangumi-list pt-6">
-      <today-bangumi-item v-for="(bangumi,i) of mBangumiList"
+    <div v-watch-scroll class="today-bangumi-list pt-6 px-8">
+      <today-bangumi-item
+        v-for="(bangumi, i) of mBangumiList"
         :key="bangumi.title || `bangumi-${i}`"
         :bangumi="bangumi"
-        :skeleton="isSkeleton"></today-bangumi-item>
-      <acg-api-result :loading="false"
-        :error="isError"
-        @retry="fetchTodayBangumiList"></acg-api-result>
+        :skeleton="isSkeleton"
+      ></today-bangumi-item>
+      <acg-api-result :loading="false" :error="isError" @retry="fetchTodayBangumiList"></acg-api-result>
     </div>
   </div>
 </template>
