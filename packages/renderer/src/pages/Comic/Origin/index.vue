@@ -1,10 +1,22 @@
 <template>
   <div class="comic-origin">
     <a-page-header :title="rule.name" class="comic-header" :show-back="false">
+      <template v-if="tab === '搜索'" #subtitle>搜索：{{ searchKeyword }}</template>
       <template #extra>
-        <a-radio-group v-model="tab" type="button">
-          <a-radio v-for="page of rule.pages" :key="page.name" :value="page.name">{{ page.name }}</a-radio>
-        </a-radio-group>
+        <a-space>
+          <a-input-search
+            v-if="rule.search"
+            v-model="keyword"
+            style="width: 140px;"
+            size="small"
+            placeholder="关键词搜索"
+            @press-enter="search"
+            @search="search"
+          ></a-input-search>
+          <a-radio-group v-model="tab" type="button">
+            <a-radio v-for="page of rule.pages" :key="page.name" :value="page.name">{{ page.name }}</a-radio>
+          </a-radio-group>
+        </a-space>
       </template>
     </a-page-header>
 
@@ -13,6 +25,7 @@
       v-show="page.name === tab"
       :key="page.name"
       :rule="page"
+      :keyword="searchKeyword"
     ></tab-page>
   </div>
 </template>
@@ -31,13 +44,22 @@ export default defineComponent({
 
   data() {
     return {
-      tab: ''
+      tab: '',
+      keyword: '',
+      searchKeyword: ''
     }
   },
 
   computed: {
-    tabPageList(): DataCenter.Rule[] {
-      return (this.rule.pages as DataCenter.Rule[]) || []
+    tabPageList(): DataCenter.RulePageParams[] {
+      const list = [] as DataCenter.RulePageParams[]
+      if (this.rule.pages) {
+        list.push(...(this.rule.pages || []))
+      }
+      if (this.rule.search) {
+        list.push(this.rule.search)
+      }
+      return list
     },
 
     loadedTabPageList() {
@@ -68,6 +90,12 @@ export default defineComponent({
           this.tabPageList[0].loaded = true
         }
       })
+    },
+    search() {
+      if (this.keyword.trim()) {
+        this.searchKeyword = this.keyword
+        this.tab = '搜索'
+      }
     }
   }
 })

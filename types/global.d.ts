@@ -67,6 +67,8 @@ declare namespace DataCenter {
     }
     items: string
     itemData: Record<string, string>
+    extends?: string
+    name: string
 
     // 前端tab懒加载
     loaded?: boolean
@@ -77,9 +79,10 @@ declare namespace DataCenter {
   }
 
   interface ComicRule extends RuleBase {
-    pages: (RulePageParams & { name: string })[]
+    pages: RulePageParams[]
     details: RulePageParams
     chapter: RulePageParams
+    search: RulePageParams
   }
 
   type Rule = NewsRule & ComicRule & RulePageParams

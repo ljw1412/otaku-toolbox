@@ -27,7 +27,8 @@ export default defineComponent({
   components: { ComicCard },
 
   props: {
-    rule: { type: Object as PropType<DataCenter.Rule>, default: () => ({}) }
+    keyword: { type: String, default: '' },
+    rule: { type: Object as PropType<DataCenter.RulePageParams>, default: () => ({}) }
   },
   data() {
     return {
@@ -48,9 +49,14 @@ export default defineComponent({
       this.isLoading = true
       this.isError = false
       try {
+        const replacer: Record<string, string> = {}
+        if (this.rule.name === '搜索') {
+          replacer.keyword = encodeURIComponent(this.keyword)
+        }
         const { list, pageTotal } = await this.$API.DataCenter.runRule(
           toRaw(this.rule),
-          this.page.index
+          this.page.index,
+          { replacer }
         )
         this.list = list
         this.page.total = pageTotal

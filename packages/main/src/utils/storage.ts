@@ -69,6 +69,9 @@ export async function getRule(
   return new Promise((resolve, reject) => {
     storage.get(key, (error, data) => {
       if (error) return reject(error)
+      if (type === 'comic-book') {
+        parseComicRuleExtends(data as DataCenter.Rule)
+      }
       resolve(data as DataCenter.Rule)
     })
   })
@@ -92,4 +95,20 @@ export async function removeRule(rule: DataCenter.Rule) {
       resolve(true)
     })
   })
+}
+
+// 解析规则中页面继承
+export function parseComicRuleExtends(rule: DataCenter.ComicRule) {
+  const pagesList = ['details', 'chapter', 'search']
+    .map(key => rule[key as keyof DataCenter.ComicRule])
+    .filter(i => i) as DataCenter.RulePageParams[]
+  pagesList.push(...(rule.pages || []))
+
+  for (const page of pagesList) {
+    if (!page.extends) continue
+    const targetPage = pagesList.find(item => item.name === page.extends)
+    if (targetPage) {
+      Object.assign(page, Object.assign({}, targetPage, page))
+    }
+  }
 }
