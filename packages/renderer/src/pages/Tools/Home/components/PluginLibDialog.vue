@@ -23,11 +23,7 @@
             </template>
             <template #avatar>
               <a-avatar shape="square">
-                <component
-                  :is="getIconType(item.icon)"
-                  class="icon"
-                  v-bind="getIconProps(item.icon)"
-                ></component>
+                <app-favicon :icon="item.icon" :size="24" />
               </a-avatar>
             </template>
           </a-list-item-meta>
@@ -102,17 +98,6 @@ export default defineComponent({
   },
 
   methods: {
-    getIconType(icon: string) {
-      return icon.startsWith('icon-') || !icon ? icon : 'AImage'
-    },
-
-    getIconProps(icon: string) {
-      if (this.getIconType(icon) === 'AImage') {
-        return { src: icon, class: 'image-icon', preview: false }
-      }
-      return {}
-    },
-
 
     async fetchDevPluginList() {
       if (!this.$global.env.DEV) return
@@ -220,9 +205,4 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-.plugin-lib-dialog {
-  .image-icon {
-    padding: 48px;
-  }
-}
 </style>

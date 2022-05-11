@@ -2,7 +2,7 @@
   <a-tooltip :content="desc" mini position="bottom">
     <a-card class="tool-card" hoverable :bordered="false" @click="handleCardClick">
       <template #cover>
-        <component :is="iconType" class="icon" v-bind="iconProps"></component>
+        <app-favicon :icon="icon" :size="48" class="m-auto mb-8" />
       </template>
       <div v-if="isPlugin" class="plugin-tag">
         <icon-thunderbolt size="18" />
@@ -33,26 +33,9 @@ export default defineComponent({
     config: { type: Object, default: () => ({}) }
   },
 
-  computed: {
-    iconType() {
-      return this.icon.startsWith('icon-') || !this.icon ? this.icon : 'AImage'
-    },
-
-    iconProps() {
-      if (this.iconType === 'AImage') {
-        return { src: this.icon, class: 'image-icon', preview: false }
-      }
-      return {}
-    }
-  },
-
   methods: {
     handleCardClick() {
       const to = Object.assign({}, this.to)
-      if (this.icon && this.iconType !== 'AImage') {
-        if (!to.query) to.query = {}
-        if (!to.query.icon) to.query.icon = this.icon
-      }
 
       this.$API.Electron.win.openVue(to,
         Object.assign(

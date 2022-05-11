@@ -2,7 +2,7 @@
   <div class="app-container container-separate">
     <app-mini-header>
       <template #title>
-        <component :is="icon" v-if="icon" :size="16" class="mr-4"></component>
+        <app-favicon :icon="icon" :size="16" class="mr-4" />
         <span class="title">{{ mTitle }}</span>
       </template>
     </app-mini-header>
@@ -15,6 +15,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import { ipcOff, ipcOn } from '../utils/electron'
 import AppMiniHeader from './components/AppMiniHeader.vue'
 
 export default defineComponent({
@@ -25,6 +26,7 @@ export default defineComponent({
   data() {
     return {
       title: '',
+      favicon: '',
       titleObserver: null as null | MutationObserver
     }
   },
@@ -32,9 +34,9 @@ export default defineComponent({
     hideBackUp() {
       return this.$route.meta.hideBackUp
     },
-    icon() {
+    icon(): string {
       const icon = (this.$route.query.icon || '') as string
-      return icon.startsWith('icon-') ? icon : ''
+      return icon.startsWith('icon-') ? icon : this.favicon
     },
     mTitle(): string {
       return (
@@ -46,28 +48,32 @@ export default defineComponent({
     }
   },
   created() {
-    this.pageTitleHandler()
+    this.addPageUpdateListener()
   },
   beforeUnmount() {
-    if (this.titleObserver) {
-      this.titleObserver.disconnect()
-      this.titleObserver = null
-    }
+    this.removePageUpdateListener()
   },
   methods: {
-    pageTitleHandler() {
+    pageUpdateListener(event: Event, type: string, data: Record<string, any>) {
+      console.log(type, data)
+      if (type === 'favicon') {
+        const { favicons = [] } = data
+        this.favicon = favicons[0] || ''
+      } else if (type === 'title') {
+        this.title = data.title || ''
+      }
+    },
+
+    addPageUpdateListener() {
       if (!this.$route.meta.hasView) return
-      const node = document.querySelector('title')
-      if (!node) return
+      console.log('ipcOn')
 
-      console.log(node)
+      ipcOn('window-page-updated', this.pageUpdateListener)
+    },
 
-      this.titleObserver = new MutationObserver(mutationsList => {
-        this.title = (mutationsList[0].target as HTMLElement).innerHTML
-        console.log(mutationsList)
-      })
-
-      this.titleObserver.observe(node, { childList: true })
+    removePageUpdateListener() {
+      if (!this.$route.meta.hasView) return
+      ipcOff('window-page-updated', this.pageUpdateListener)
     }
   }
 })

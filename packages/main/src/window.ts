@@ -27,7 +27,6 @@ export function createBuiltInBrowser(data: Record<string, any>): BrowserWindow {
     webPreferences: {
       preload: join(__dirname, '../../preload/dist/index.cjs'),
       contextIsolation: env.MODE !== 'test', // Spectron tests can't work with contextIsolation: true
-      enableRemoteModule: env.MODE === 'test', // Spectron tests can't work with enableRemoteModule: false
       webSecurity: false,
       allowRunningInsecureContent: true
     }
@@ -36,7 +35,23 @@ export function createBuiltInBrowser(data: Record<string, any>): BrowserWindow {
   const pageUrl = getPageUrl('browser', { outlink: data.url })
   newWin.loadURL(pageUrl)
   baseListerner(newWin)
+
+  const view = new BrowserView()
+  view.setBounds({ x: 0, y: 40, width: 800, height: 600 - 40 })
+  view.setAutoResize({ width: true, height: true })
+
   newWin.once('ready-to-show', () => {
+    view.webContents.loadURL(data.url)
+    view.webContents.on('page-title-updated', (e, title) => {
+      console.log(title)
+      newWin.webContents.send('window-page-updated', 'title', { title })
+    })
+    view.webContents.on('page-favicon-updated', (e, favicons) => {
+      console.log(favicons)
+      newWin.webContents.send('window-page-updated', 'favicon', { favicons })
+    })
+    newWindowHandler(view)
+    newWin.setBrowserView(view)
     newWin.show()
     if (env.MODE === 'development') {
       newWin.webContents.openDevTools()
@@ -49,16 +64,6 @@ export function createBuiltInBrowser(data: Record<string, any>): BrowserWindow {
     }
   })
 
-  const view = new BrowserView()
-  newWin.setBrowserView(view)
-  view.setBounds({ x: 0, y: 40, width: 800, height: 600 - 40 })
-  view.setAutoResize({ width: true, height: true })
-  view.webContents.loadURL(data.url)
-  view.webContents.on('page-title-updated', (e, title) => {
-    console.log(title)
-    newWin.webContents.executeJavaScript(`document.title='${title}'`)
-  })
-  newWindowHandler(view)
   return newWin
 }
 
@@ -97,7 +102,6 @@ export function createBrowser(config: NewBrowerConfig): BrowserWindow {
     webPreferences: {
       preload: join(__dirname, '../../preload/dist/index.cjs'),
       contextIsolation: env.MODE !== 'test', // Spectron tests can't work with contextIsolation: true
-      enableRemoteModule: env.MODE === 'test', // Spectron tests can't work with enableRemoteModule: false
       webSecurity: false,
       webviewTag: config.webview,
       allowRunningInsecureContent: true

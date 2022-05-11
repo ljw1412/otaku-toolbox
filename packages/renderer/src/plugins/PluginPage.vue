@@ -2,7 +2,7 @@
   <div class="plugin-page">
     <app-mini-header v-if="!$route.query.hideHeader" :title="mTitle">
       <template #title>
-        <component :is="icon" v-if="icon" :size="16" class="mr-4"></component>
+        <app-favicon :icon="icon" :size="16" class="mr-4" />
         <span class="title">{{ mTitle }}</span>
         <span v-if="version" class="version mx-4">[Ver.{{ version }}]</span>
         <a-tag v-if="isDev" color="orange" size="small">开发版</a-tag>
@@ -51,9 +51,8 @@ export default defineComponent({
     mTitle() {
       return (this.$route.query.title || this.$route.query.name || '') as string
     },
-    icon() {
-      const icon = (this.$route.query.icon || '') as string
-      return icon.startsWith('icon-') ? icon : ''
+    icon(): string {
+      return this.currentPlugin ? this.currentPlugin.icon : ''
     }
   },
 
