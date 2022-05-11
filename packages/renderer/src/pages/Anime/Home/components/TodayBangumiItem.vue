@@ -10,7 +10,7 @@
       :title="bangumi.title"
       :to="{ name: 'AnimeWiki', params: { id: bangumi._id || '0' }, query: { app: 'otakutools' } }"
     >
-      <a-card class="bangumi-card" hoverable :bordered="false">
+      <a-card class="bangumi-card app-card-up" hoverable :bordered="false">
         <template #cover>
           <acg-ratio-div class="skeleton-bg" :ratio="[4, 3]">
             <img v-if="!skeleton" :src="bangumi.coverMin" loading="lazy" />
@@ -74,7 +74,6 @@ export default defineComponent({
     cursor: pointer;
     display: inline-block;
     width: 280px;
-    transition-property: box-shadow, transform;
 
     .cover {
       width: 100%;
@@ -84,10 +83,6 @@ export default defineComponent({
       line-height: 24px;
       height: 24px;
       min-width: 100px;
-    }
-
-    &:hover {
-      transform: translateY(-4px);
     }
   }
 

@@ -1,6 +1,6 @@
 <template>
   <a-tooltip :content="desc" mini position="bottom">
-    <a-card class="tool-card" hoverable :bordered="false" @click="handleCardClick">
+    <a-card class="tool-card app-card" :bordered="false" @click="handleCardClick">
       <template #cover>
         <app-favicon :icon="icon" :size="48" class="m-auto mb-8" />
       </template>
@@ -55,10 +55,6 @@ export default defineComponent({
   height: var(--tool-card-size);
   text-align: center;
   box-shadow: 1px 1px 3px var(--color-fill-3);
-
-  &:hover {
-    box-shadow: 0 4px 10px rgba(var(--app-color-common-rgb), 0.4) !important;
-  }
 
   .arco-card-cover {
     display: flex;

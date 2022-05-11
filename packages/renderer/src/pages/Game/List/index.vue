@@ -3,7 +3,7 @@
     <a-page-header :title="mTitle" :show-back="false" class="game-list-header sticky-t bg-app"></a-page-header>
     <div class="list">
       <div v-for="item of list" :key="item.id" class="game-item">
-        <a-card class="game-card" :bordered="false" hoverable @click="handleCardClick(item)">
+        <a-card class="game-card app-card-up" :bordered="false" @click="handleCardClick(item)">
           <template #cover>
             <acg-ratio-div :ratio="[16, 9]">
               <img :src="item.cover" />

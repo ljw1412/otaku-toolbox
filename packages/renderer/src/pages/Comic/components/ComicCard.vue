@@ -1,8 +1,7 @@
 <template>
   <div class="comic-card-wrap">
     <a-card
-      class="comic-card"
-      hoverable
+      class="comic-card app-card-up"
       :bordered="false"
       :body-style="{ padding: '6px 4px' }"
       @click="handleCardClick"
@@ -72,13 +71,6 @@ export default defineComponent({
 <style lang="scss">
 .comic-card {
   cursor: pointer;
-
-  &.arco-card {
-    transition-property: box-shadow, transform;
-    &:hover {
-      transform: translateY(-4px);
-    }
-  }
 
   .origin-tag {
     position: absolute;

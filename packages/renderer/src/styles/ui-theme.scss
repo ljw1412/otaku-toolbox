@@ -4,6 +4,20 @@
   }
 }
 
+.app-card,
+.app-card-up {
+  transition-property: box-shadow, transform !important;
+  transition-duration: 0.2s !important;
+  transition-timing-function: cubic-bezier(0, 0, 1, 1) !important;
+  &:hover {
+    box-shadow: 0 4px 10px rgb(var(--app-color-common-rgb), 0.4) !important;
+  }
+}
+
+.app-card-up:hover {
+  transform: translateY(-4px);
+}
+
 body[arco-theme='dark'] {
   --acg-fixed-button-color: #ffffff;
   --acg-fixed-button-border: none;

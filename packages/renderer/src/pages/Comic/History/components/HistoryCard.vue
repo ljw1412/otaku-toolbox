@@ -1,7 +1,6 @@
 <template>
   <a-card
-    class="comic-history-card"
-    hoverable
+    class="comic-history-card app-card-up"
     :bordered="false"
     :body-style="{ padding: '4px 8px' }"
     @click="handleCardClick"
@@ -70,12 +69,6 @@ export default defineComponent({
   position: relative;
   cursor: pointer;
   display: flex;
-  &.arco-card {
-    transition-property: box-shadow, transform;
-    &:hover {
-      transform: translateY(-4px);
-    }
-  }
 
   .arco-card-cover {
     width: 30%;

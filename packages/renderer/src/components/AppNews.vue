@@ -32,8 +32,7 @@
         :body-style="{ padding: 0 }"
         :class="{ 'is-skeleton': isSkeleton }"
         data-skeleton-animate
-        hoverable
-        class="news-item"
+        class="news-item app-card-up"
         @click="handleNewsClick(item.url)"
       >
         <div class="news-item-container" :title="item.title">
@@ -47,12 +46,14 @@
           </div>
         </div>
       </a-card>
+      <div class="bottom-blur"></div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, toRaw } from 'vue'
+import { useTimeout } from '@vueuse/core'
 
 export default defineComponent({
   name: 'AppNews',
@@ -63,6 +64,8 @@ export default defineComponent({
     mini: Boolean,
     skeletonCount: { type: Number, default: 2 }
   },
+
+
 
   data() {
     return {
@@ -148,28 +151,26 @@ export default defineComponent({
 
 .app-news {
   .news-list {
+    position: relative;
     display: grid;
     grid-template-columns: 50% 50%;
     grid-column-gap: 16px;
 
     box-sizing: border-box;
-    padding: 0 8px;
-    margin: 0 -16px;
+    padding: 0 20px;
+    margin: 0 -8px;
     width: 100%;
-    padding-top: 4px;
+    padding-top: 8px !important;
+    margin-bottom: -16px;
 
     .news-item {
       cursor: pointer;
       overflow: hidden;
       margin-bottom: 16px;
 
-      &.arco-card {
-        transition-property: box-shadow, transform;
-        &:hover {
-          transform: translateY(-4px);
-          .news-item-container {
-            color: var(--color-text-1);
-          }
+      &.arco-card:hover {
+        .news-item-container {
+          color: var(--color-text-1);
         }
       }
 
@@ -220,6 +221,22 @@ export default defineComponent({
         }
       }
     }
+
+    .bottom-blur {
+      grid-column: 1/3;
+      position: sticky;
+      bottom: 0;
+      left: 0;
+      margin-top: -16px;
+      width: 100%;
+      height: 40px;
+      background: linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0) 0,
+        var(--color-bg-3) 100%
+      );
+      z-index: 1;
+    }
   }
 }
 
@@ -227,7 +244,11 @@ export default defineComponent({
   .app-news {
     .news-list {
       grid-template-columns: repeat(3, 33.33%);
-      margin: 0 -32px;
+      padding: 0 26px;
+      margin: 0 -16px;
+      .bottom-blur {
+        grid-column: 1/4;
+      }
     }
   }
 }
