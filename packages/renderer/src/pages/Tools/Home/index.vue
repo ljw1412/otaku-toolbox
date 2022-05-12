@@ -41,19 +41,19 @@ export default defineComponent({
           icon: 'icon-mind-mapping',
           name: '源管理',
           desc: '对资讯、漫画、字幕等源进行管理程序',
-          to: { name: 'OriginManager' }
+          to: { name: 'OriginManager', query: { icon: 'icon-mind-mapping' } }
         },
         {
           icon: 'icon-live-broadcast',
           name: '直播',
           desc: '观看直播',
-          to: { name: 'AppLive' }
+          to: { name: 'AppLive', query: { icon: 'icon-live-broadcast' } }
         },
         {
           icon: 'icon-find-replace',
           name: 'OCR',
           desc: '对图片中的文字进行识别',
-          to: { name: 'AppOCR' },
+          to: { name: 'AppOCR', query: { icon: 'icon-find-replace' } },
           config: { resizable: true, minWidth: 1280, minHeight: 720 }
         }
       ]
@@ -67,7 +67,7 @@ export default defineComponent({
           ...plugin,
           to: {
             name: 'PluginPage',
-            query: only(plugin, 'name plugin version isDev css icon')
+            query: only(plugin, 'name plugin')
           }
         }
       })

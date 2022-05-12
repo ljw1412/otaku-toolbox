@@ -42,13 +42,16 @@ export default defineComponent({
     currentPlugin() {
       return pluginStore.list.find(item => item.plugin === this.$route.query.plugin)
     },
-    isDev() {
-      return (this.$route.query.isDev || false) as boolean
+    isDev(): boolean {
+      return this.currentPlugin ? (this.currentPlugin.isDev || false) : false
     },
-    version() {
-      return (this.$route.query.version || '') as string
+    version(): string {
+      return this.currentPlugin ? (this.currentPlugin.version + '') : ''
     },
-    mTitle() {
+    mTitle(): string {
+      if (this.currentPlugin) {
+        return this.currentPlugin.name
+      }
       return (this.$route.query.title || this.$route.query.name || '') as string
     },
     icon(): string {
