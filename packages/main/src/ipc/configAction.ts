@@ -17,6 +17,7 @@ function bind(): void {
 
 function unbind(): void {
   ipcMain.removeHandler(channel)
+  console.log(`${channel} 结束监听`)
 }
 
 export default {

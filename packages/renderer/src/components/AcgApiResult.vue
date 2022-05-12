@@ -1,18 +1,10 @@
 <template>
-  <a-result v-if="loading || error || empty"
-    :title="title"
-    :status="status"
-    class="acg-api-result">
-    <template v-if="!error"
-      #icon>
-      <component :is="loading?'icon-loading':'icon-empty'"
-        :style="{fontSize:'40px'}"></component>
+  <a-result v-if="loading || error || empty" :title="title" :status="status" class="acg-api-result">
+    <template v-if="!error" #icon>
+      <component :is="loading ? 'icon-loading' : 'icon-empty'" :style="{ fontSize: '40px' }"></component>
     </template>
     <template #extra>
-      <a-button v-if="error"
-        type="outline"
-        size="small"
-        @click="handleBtnClick">重新连接</a-button>
+      <a-button v-if="error" type="outline" size="small" @click="handleBtnClick">重新连接</a-button>
     </template>
   </a-result>
 </template>
@@ -27,6 +19,8 @@ export default defineComponent({
   name: 'AcgApiResult',
   props: {
     loading: { type: Boolean, default: true },
+    message: String,
+    errorMessage: String,
     error: Boolean,
     empty: Boolean
   },
@@ -46,9 +40,9 @@ export default defineComponent({
 
     title(): string {
       if (this.error) {
-        return errorTitles[this.n2]
+        return this.errorMessage || errorTitles[this.n2]
       } else if (this.loading) {
-        return titles[this.n]
+        return this.message || titles[this.n]
       } else if (this.empty) {
         return '暂无数据'
       }

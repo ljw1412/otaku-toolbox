@@ -1,9 +1,24 @@
 import { session } from 'electron'
 import match from './url-match-patterns'
 
-const ruleMap: Record<string, string> = {
-  '*://*.dmzj.com/*': 'https://www.dmzj.com',
-  '*://*.cdndm5.com/*': 'https://m.dm5.com/m{:cid}/'
+interface FilterRuleMap {
+  types: string[] | '*'
+  referer: string
+}
+
+const ruleMap: Record<string, FilterRuleMap> = {
+  '*://*.dmzj.com/*': {
+    types: ['image'],
+    referer: 'https://www.dmzj.com'
+  },
+  '*://*.cdndm5.com/*': {
+    types: ['image'],
+    referer: 'https://m.dm5.com/m{:cid}/'
+  },
+  '*://*.bilivideo.com/*': {
+    types: '*',
+    referer: 'https://www.bilibili.com/'
+  }
 }
 
 const filter = {
@@ -12,6 +27,7 @@ const filter = {
 
 const paramRegEx = /\{:(\w+)\}+/g
 
+// 匹配referer中的变量 {:param}
 function parseParamsReferer(url: string, referer: string) {
   if (!paramRegEx.test(referer)) return referer
   const mUrl = new URL(url)
@@ -37,10 +53,11 @@ function getFilterRule(url: string) {
 
 session.defaultSession.webRequest.onBeforeSendHeaders(filter, (details, cb) => {
   const { url, requestHeaders, resourceType } = details
-  if (resourceType !== 'image') return cb({})
   const filterRule = getFilterRule(url)
   if (!filterRule) return cb({})
-  const referer = parseParamsReferer(url, ruleMap[filterRule])
+  const { types, referer: targetReferer } = ruleMap[filterRule]
+  if (types !== '*' && !types.includes(resourceType)) return cb({})
+  const referer = parseParamsReferer(url, targetReferer)
   requestHeaders.Referer = referer
   requestHeaders['User-Agent'] =
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.54 Safari/537.36 Edg/95.0.1020.30'

@@ -7,12 +7,11 @@ const fsp = fs.promises
 const BASE_PLUGIN_DIR = join(app.getAppPath(), 'plugins')
 const channel = 'tool-plugin'
 
-function getPluginUrl(pluginName: string, ext = '.js') {
-  return `https://gitee.com/ljw1412/otaku-toolbox-plugins/raw/main/release/plugins/${pluginName}/index${ext}`
-}
+const baseUrl =
+  'https://gitee.com/ljw1412/otaku-toolbox-plugins/raw/main/release'
 
-function getDevPluginUrl(pluginName: string, serve: string) {
-  return `${serve}/plugins/${pluginName}/index.js`
+function getPluginUrl(pluginName: string, ext = '.js') {
+  return `${baseUrl}/plugins/${pluginName}/index${ext}`
 }
 
 function getPluginFilePath(pluginName: string, ext = '.js') {
@@ -59,6 +58,7 @@ function bind(): void {
 
 function unbind(): void {
   ipcMain.removeHandler(channel)
+  console.log(`${channel} 结束监听`)
 }
 
 export default {
