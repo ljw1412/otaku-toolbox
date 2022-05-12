@@ -55,8 +55,11 @@ session.defaultSession.webRequest.onBeforeRequest((details, cb) => {
   const { url } = details
 
   if (url.startsWith('file://') && !url.startsWith('file:///')) {
-    console.log('fix', url)
-    return cb({ redirectURL: url.replace('file:', 'http:') })
+    let protocol = 'http:'
+    if (url.includes('bilibili')) {
+      protocol = 'https:'
+    }
+    return cb({ redirectURL: url.replace('file:', protocol) })
   }
   cb({})
 })

@@ -120,11 +120,16 @@ export default defineComponent({
     },
 
     async fix() {
+      if (!this.currentPlugin) {
+        this.$message.error('插件基本信息获取失败！请在“百宝箱”删除后重新下载！')
+        return
+      }
+
       this.downloading = true
       const { error } = await ipcInvoke(
         'tool-plugin',
         'download',
-        toRaw(this.$route.query)
+        toRaw(this.currentPlugin)
       )
       if (error) {
         this.$message.error(`修复插件失败：${error.message}`)
