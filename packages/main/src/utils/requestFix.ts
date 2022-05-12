@@ -51,8 +51,19 @@ function getFilterRule(url: string) {
   return rule
 }
 
+session.defaultSession.webRequest.onBeforeRequest((details, cb) => {
+  const { url } = details
+
+  if (url.startsWith('file://') && !url.startsWith('file:///')) {
+    console.log('fix', url)
+    return cb({ redirectURL: url.replace('file:', 'http:') })
+  }
+  cb({})
+})
+
 session.defaultSession.webRequest.onBeforeSendHeaders(filter, (details, cb) => {
   const { url, requestHeaders, resourceType } = details
+
   const filterRule = getFilterRule(url)
   if (!filterRule) return cb({})
   const { types, referer: targetReferer } = ruleMap[filterRule]
