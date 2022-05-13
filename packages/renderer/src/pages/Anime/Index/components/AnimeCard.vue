@@ -1,20 +1,15 @@
 <template>
-  <div class="index-anime-item"
-    :class="{'filter-gray': anime.markState.isBan}">
-    <router-link target="_blank"
+  <div class="index-anime-item" :class="{ 'filter-gray': anime.markState.isBan }">
+    <router-link
+      target="_blank"
       :title="anime.title"
-      :to="{name:'AnimeWiki',params:{id:anime._id},query:{app:'otakutools'}}">
-      <a-card class="anime-card"
-        hoverable
-        :bordered="false"
-        :body-style="{padding: '8px 6px'}">
+      :to="{ name: 'AnimeWiki', params: { id: anime._id }, query: { app: 'otakutools' } }"
+    >
+      <a-card class="anime-card" hoverable :bordered="false" :body-style="{ padding: '8px 6px' }">
         <template #cover>
-          <acg-ratio-div :ratio="[3,4]"
-            class="anime-cover">
-            <img :src="cover"
-              loading="lazy">
-            <div v-if="showOnair"
-              class="anime-onair">{{onairStr}}</div>
+          <acg-ratio-div :ratio="[3, 4]" class="anime-cover">
+            <img :src="cover" loading="lazy" />
+            <div v-if="showOnair" class="anime-onair">{{ onairStr }}</div>
           </acg-ratio-div>
         </template>
         <a-card-meta :title="anime.title"></a-card-meta>

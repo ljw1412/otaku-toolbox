@@ -1,30 +1,27 @@
 <template>
-  <div ref="galleryEl"
-    class="acg-gallery">
-    <acg-ratio-div class="gallery-image"
-      :disabled="ratioDisabled"
-      :ratio="ratio">
-      <a-image width="100%"
+  <div ref="galleryEl" class="acg-gallery">
+    <acg-ratio-div class="gallery-image" :disabled="ratioDisabled" :ratio="ratio">
+      <a-image
+        width="100%"
         height="100%"
         show-loader
+        loading="lazy"
         :src="current"
         :preview="false"
-        @click="handleImageClick" />
+        @click="handleImageClick"
+      />
     </acg-ratio-div>
 
-    <div v-show="images.length > 1"
-      ref="thumbnailsWrapEl"
-      class="gallery-thumbnails">
-      <div ref="thumbnailsEl"
-        class="thumbnails"
-        :style="[thumbnailsStyle]">
-        <div v-for="(image,i) of compressCovers"
-          :key="image.origin+i"
-          :class="{active:image.origin === current}"
+    <div v-show="images.length > 1" ref="thumbnailsWrapEl" class="gallery-thumbnails">
+      <div ref="thumbnailsEl" class="thumbnails" :style="[thumbnailsStyle]">
+        <div
+          v-for="(image, i) of compressCovers"
+          :key="image.origin + i"
+          :class="{ active: image.origin === current }"
           class="thumbnail"
-          @click="handleThumbnailClick(image.origin,$event)">
-          <img :src="image.compress"
-            loading="lazy" />
+          @click="handleThumbnailClick(image.origin, $event)"
+        >
+          <img :src="image.compress" loading="lazy" />
         </div>
       </div>
     </div>
@@ -47,7 +44,7 @@ export default defineComponent({
   props: {
     // [宽，长]
     ratio: {
-      type: [Array, null] as PropType<number[] | null>,
+      type: [Array] as PropType<number[]>,
       default: () => [3, 4]
     },
     images: { type: Array as PropType<string[]>, default: () => [] },
@@ -56,7 +53,7 @@ export default defineComponent({
 
   emits: ['change'],
 
-  setup() {
+  setup(props, ctx) {
     const galleryEl = ref()
     const thumbnailsWrapEl = ref()
     const thumbnailsEl = ref()
@@ -67,7 +64,7 @@ export default defineComponent({
       scrollWidth: 0
     })
 
-    watch(isThumbnailsWrapElHover, isHover => {
+    watch(isThumbnailsWrapElHover, (isHover) => {
       if (isHover) {
         thumbnailsView.width = galleryEl.value.clientWidth
         thumbnailsView.scrollWidth = thumbnailsEl.value.scrollWidth
@@ -89,22 +86,22 @@ export default defineComponent({
   },
 
   computed: {
-    ratioDisabled(): boolean {
+    ratioDisabled() {
       return !this.ratio
     },
-    compressCovers(): { compress: string; origin: string }[] {
-      return this.images.map(image => ({
+    compressCovers() {
+      return this.images.map((image) => ({
         compress: compressImage(image),
         origin: image
       }))
     },
-    maxX(): number {
+    maxX() {
       return this.thumbnailsView.scrollWidth - this.thumbnailsView.width
     },
-    isScrollable(): boolean {
+    isScrollable() {
       return this.maxX > 0
     },
-    thumbnailsStyle(): Record<string, string> {
+    thumbnailsStyle() {
       return { 'margin-left': `-${this.thumbnailsView.x}px` }
     }
   },
@@ -125,7 +122,7 @@ export default defineComponent({
       this.$imagePreview(this.current, this.images)
     },
 
-    handleThumbnailClick(image: string, e: PointerEvent) {
+    handleThumbnailClick(image: string, e: MouseEvent) {
       this.current = image
       this.$emit('change', image)
 
@@ -198,7 +195,7 @@ export default defineComponent({
       }
 
       &::before {
-        content: '';
+        content: "";
         position: absolute;
         width: 100%;
         height: 100%;
@@ -227,7 +224,7 @@ export default defineComponent({
     }
 
     &::before {
-      content: '';
+      content: "";
       position: absolute;
       top: 0;
       left: 0;

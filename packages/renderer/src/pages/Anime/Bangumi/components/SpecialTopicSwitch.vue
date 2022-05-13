@@ -24,7 +24,7 @@
                 class="stopic-item-body"
                 :to="{ params: { code: topic.code }, query: { app: 'otakutools' } }"
               >
-                <img :src="topic.cover" />
+                <img :src="topic.cover" loading="lazy" />
                 <span class="stopic-title">{{ topic.name }}</span>
               </router-link>
             </div>

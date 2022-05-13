@@ -1,13 +1,11 @@
 <template>
-  <div class="bangumi-grid-item"
-    :class="{'filter-gray': anime.markState.isBan}">
+  <div class="bangumi-grid-item" :class="{ 'filter-gray': anime.markState.isBan }">
     <acg-ratio-div class="anime-cover">
-      <img :src="cover">
+      <img :src="cover" loading="lazy" />
     </acg-ratio-div>
     <div class="anime-title">{{ anime.title }}</div>
     <div class="anime-airdate">{{ airdate }}</div>
-    <div class="anime-airtime"
-      :class="[`day-${airdayNum}`]">
+    <div class="anime-airtime" :class="[`day-${airdayNum}`]">
       <div class="day">{{ airday }}</div>
       <div class="time">{{ airtime }}</div>
     </div>

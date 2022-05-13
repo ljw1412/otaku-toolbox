@@ -6,7 +6,7 @@
         <a-card class="game-card app-card-up" :bordered="false" @click="handleCardClick(item)">
           <template #cover>
             <acg-ratio-div :ratio="[16, 9]">
-              <img :src="item.cover" />
+              <img :src="item.cover" loading="lazy" />
             </acg-ratio-div>
           </template>
           <a-card-meta :title="item.title"></a-card-meta>
