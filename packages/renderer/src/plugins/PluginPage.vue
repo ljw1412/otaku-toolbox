@@ -12,8 +12,12 @@
     <div v-if="incomplete" class="plugin-error d-flex">
       <a-card :bordered="false" class="mx-auto mt-20" style="width:400px;height:130px">
         <h3>错误</h3>
-        <p class="mb-20">检测到插件文件不完整</p>
-        <a-button :loading="downloading" @click="fix">尝试修复</a-button>
+        <p v-if="!isDev" class="mb-20">检测到插件文件不完整</p>
+        <div v-else>
+          <p class="fs-18 mb-4">插件开发服务未启动！</p>
+          <p>(当前设置的开发服务地址：{{ devUrl }})</p>
+        </div>
+        <a-button v-if="!isDev" :loading="downloading" @click="fix">尝试修复</a-button>
       </a-card>
     </div>
   </div>
@@ -39,6 +43,10 @@ export default defineComponent({
   },
 
   computed: {
+    devUrl() {
+      return pluginStore.devUrl
+    },
+
     currentPlugin() {
       return pluginStore.list.find(item => item.plugin === this.$route.query.plugin)
     },

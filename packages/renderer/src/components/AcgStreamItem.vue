@@ -1,40 +1,41 @@
 <template>
-  <div class="acg-stream-item"
-    :title="title"
-    :class="`mode-${mode}`">
-    <a-link v-if="mode === 'icon'"
+  <div class="acg-stream-item" :title="title" :class="`mode-${mode}`">
+    <a-link
+      v-if="mode === 'icon'"
       :href="url"
       :status="hide ? 'warning' : 'normal'"
-      target="_blank">
-      <img v-if="icon"
-        :src="icon"
-        class="icon" />
-      <span v-else
-        class="name">{{ name }}</span>
-      <div v-if="hide || region"
-        class="badge">{{ regionStr }}</div>
+      target="_blank"
+    >
+      <img v-if="icon" :src="icon" class="icon" />
+      <span v-else class="name">{{ name }}</span>
+      <div v-if="hide || region" class="badge">{{ regionStr }}</div>
     </a-link>
-    <a v-else
-      :href="url"
-      target="_blank">
+    <a v-else :href="url" target="_blank">
       <a-button size="large">
-        <template v-if="icon"
-          #icon>
-          <img :src="icon"
-            class="icon" />
+        <template v-if="icon" #icon>
+          <img :src="icon" class="icon" />
         </template>
-        <span class="region"
-          v-if="regionStr">[{{ regionStr }}]</span>
+        <span class="region" v-if="regionStr">[{{ regionStr }}]</span>
         <span class="name">{{ name }}</span>
       </a-button>
     </a>
-
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { getLogoIcon } from '/@/utils/icons'
+
+const regionMap = {
+  CN: '',
+  港: '港',
+  HK: "港",
+  澳: "澳",
+  MO: "澳",
+  台: "台",
+  TW: "台",
+  JP: '日'
+} as Record<string, any>
 
 export default defineComponent({
   name: 'AcgStreamItem',
@@ -53,10 +54,20 @@ export default defineComponent({
   },
 
   computed: {
+    mRegion() {
+      const list: string[] = []
+      Object.keys(regionMap).forEach(region => {
+        if (this.region.includes(region)) {
+          list.push(regionMap[region])
+        }
+      })
+      return list.join(',')
+    },
+
     title() {
       let title = this.name
-      if (this.region) {
-        title = `[${this.region.replace(/,/g, '')}]` + title
+      if (this.mRegion) {
+        title = `[${this.mRegion.replace(/,/g, '')}]` + title
       }
       if (this.time) {
         title += `@${this.time}`
@@ -68,7 +79,7 @@ export default defineComponent({
     },
 
     regionStr() {
-      return this.hide ? '隐藏' : this.region.replace(/,/g, '')
+      return this.hide ? '隐藏' : this.mRegion.replace(/,/g, '')
     },
 
     icon() {

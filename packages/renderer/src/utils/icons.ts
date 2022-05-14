@@ -1,6 +1,7 @@
 import mGlobal from '/@/global'
 
 const logoIcons = {
+  Acfun: 'acfun.png',
   Baha: 'baha.ico',
   Bangumi: 'bangumi.ico',
   Bilibili: 'bilibili.svg',
@@ -10,8 +11,13 @@ const logoIcons = {
   TV: 'tv.svg',
   IQiyi: 'iqiyi.svg',
   QQVideo: 'qqvideo.svg',
+  Niconico: 'niconico.svg',
   Netflix: 'netflix.svg',
   Viu: 'viu.png',
+  Mgtv: 'mgtv.png',
+  PPTV: 'pptv.svg',
+  Letv: 'letv.svg',
+  Sohu: 'sohu.svg',
   MyTVSuper: 'mytvsuper.png',
   Nowplayer: 'nowplayer.svg'
 }
