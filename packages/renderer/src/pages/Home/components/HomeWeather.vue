@@ -278,7 +278,7 @@ export default defineComponent({
     width: 100%;
     margin-top: 40px;
     border-radius: 50% 50% 4px 4px;
-    background-color: var(--color-bg-3);
+    background-color: var(--color-bg-2);
     box-shadow: 0 1px 1px var(--color-fill-2) inset,
       0 1px 3px var(--color-fill-3);
     box-sizing: border-box;

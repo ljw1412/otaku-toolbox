@@ -38,7 +38,7 @@ body {
   --app-header-bg: var(--app-theme);
   --app-header-center-bg: rgba(233, 233, 233, 0.2);
 
-  --app-color-bg: var(--color-bg-3);
+  --app-color-bg: #fafafa;
   --app-color-text: var(--color-text-1);
   --app-header-color-text: #ffffff;
 
@@ -62,6 +62,8 @@ body[arco-theme='dark'] {
   --app-color-common-rgb: 228, 163, 41;
 
   --app-header-center-bg: rgba(255, 255, 255, 0.05);
+
+  --app-color-bg: var(--color-bg-3);
 
   --skeleton-bg-color: #4b4b4b;
   --skeleton-bg-color-to: #5d5d5d;

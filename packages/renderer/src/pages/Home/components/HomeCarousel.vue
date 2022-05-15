@@ -90,7 +90,7 @@ export default defineComponent({
   position: relative;
   width: 100%;
   height: 100%;
-  background-color: var(--color-fill-1);
+  background-color: var(--color-bg-2);
 
   .is-link {
     cursor: pointer;
@@ -127,12 +127,13 @@ export default defineComponent({
     border-radius: 50%;
 
     &.is-loading {
-      opacity: 0.75;
+      cursor: wait;
+      opacity: 0.5;
     }
   }
 
   &:hover {
-    .carousel-refresh {
+    .carousel-refresh:not(.is-loading) {
       opacity: 0.75;
     }
   }

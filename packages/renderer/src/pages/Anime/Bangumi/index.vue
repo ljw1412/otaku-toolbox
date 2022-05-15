@@ -2,7 +2,9 @@
   <div class="anime-bangumi" :class="{ 'page-container': $route.meta.separate }">
     <div v-show="bangumiList.length" class="anime-bangumi-header mb-20">
       <acg-ratio-div class="cover" :ratio="[4, 3]">
-        <img :src="currentSTopic.cover" />
+        <img
+          :src="currentSTopic.cover || 'http://i0.hdslb.com/bfs/album/8a9094bb72b681a815ddf4b7010d4d356b9b5467.png'"
+        />
       </acg-ratio-div>
 
       <bangumi-filter

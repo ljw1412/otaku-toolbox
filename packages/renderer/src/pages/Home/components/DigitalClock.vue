@@ -1,13 +1,9 @@
 <template>
   <div class="home-digital-clock">
     <div class="digits">
-      <div v-for="i of 8"
-        :key="i"
-        :class="[{'dots':!(i % 3)},time[i-1]]">
+      <div v-for="i of 8" :key="i" :class="[{ 'dots': !(i % 3) }, time[i - 1]]">
         <template v-if="(i % 3)">
-          <span v-for="j of 7"
-            :key="j"
-            :class="`d${j}`"></span>
+          <span v-for="j of 7" :key="j" :class="`d${j}`"></span>
         </template>
       </div>
     </div>
@@ -79,7 +75,7 @@ export default defineComponent({
   user-select: none;
   padding: 16px 0;
   border-radius: 4px;
-  background-color: var(--digital-clock-color-bg);
+  background-color: var(--color-bg-2);
   box-shadow: 0 1px 1px var(--color-fill-2) inset, 0 1px 3px var(--color-fill-3);
   overflow: hidden;
 
@@ -116,7 +112,7 @@ export default defineComponent({
 
       &::before,
       &::after {
-        content: '';
+        content: "";
         position: absolute;
         width: 0;
         height: 0;
@@ -348,7 +344,7 @@ export default defineComponent({
       &::after {
         width: 5px;
         height: 5px;
-        content: '';
+        content: "";
         position: absolute;
         left: 0;
         top: 14px;

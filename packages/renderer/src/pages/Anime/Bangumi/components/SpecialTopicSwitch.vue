@@ -24,7 +24,7 @@
                 class="stopic-item-body"
                 :to="{ params: { code: topic.code }, query: { app: 'otakutools' } }"
               >
-                <img :src="topic.cover" loading="lazy" />
+                <img v-if="topic.cover" :src="topic.cover" loading="lazy" />
                 <span class="stopic-title">{{ topic.name }}</span>
               </router-link>
             </div>
@@ -101,9 +101,8 @@ export default defineComponent({
   width: 100%;
   height: calc(100% - var(--app-header-height));
   z-index: 600;
-  background-color: var(--color-mask-bg);
-  backdrop-filter: blur(5px);
-  will-change: opacity;
+  background-color: rgba(0, 0, 0, 0.8);
+  transform: translateZ(0);
 
   .stopic-list {
     position: absolute;

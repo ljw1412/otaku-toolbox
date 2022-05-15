@@ -1,6 +1,5 @@
 <template>
-  <div class="home-foundation">
-  </div>
+  <div class="home-foundation"></div>
 </template>
 
 <script lang="ts">
@@ -15,5 +14,6 @@ export default defineComponent({
 .home-foundation {
   height: 100%;
   box-shadow: 0 1px 1px var(--color-fill-2) inset, 0 1px 3px var(--color-fill-3);
+  background-color: var(--color-bg-2);
 }
 </style>
