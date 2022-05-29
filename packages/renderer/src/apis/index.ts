@@ -5,6 +5,7 @@ import * as Bangumi from './Bangumi'
 import * as Banner from './Banner'
 import * as SpecialTopic from './SpecialTopic'
 import * as Outside from './Outside'
+import * as Series from './Series'
 
 export default {
   Electron,
@@ -13,5 +14,6 @@ export default {
   Bangumi,
   Banner,
   SpecialTopic,
-  Outside
+  Outside,
+  Series
 }

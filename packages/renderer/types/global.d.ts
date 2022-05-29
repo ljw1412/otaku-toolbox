@@ -256,4 +256,10 @@ declare global {
     showDanmaku: boolean
     danmaku: LiveRoomDanmakuConfig
   }
+
+  interface Series {
+    _id: string
+    title: string
+    bangumis: BangumiBasic[]
+  }
 }

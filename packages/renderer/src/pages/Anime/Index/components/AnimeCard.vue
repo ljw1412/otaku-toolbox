@@ -1,5 +1,5 @@
 <template>
-  <div class="index-anime-item" :class="{ 'filter-gray': anime.markState.isBan }">
+  <div class="index-anime-item" :class="{ 'filter-gray': markState.isBan }">
     <router-link
       target="_blank"
       :title="anime.title"
@@ -19,14 +19,17 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, PropType } from 'vue'
 import { compressImage } from '/@/utils/image'
 
 export default defineComponent({
   name: 'IndexAnimeCard',
 
   props: {
-    anime: { type: Object, default: () => ({}) },
+    anime: {
+      type: Object as PropType<BangumiBasicWithTime | BangumiBasic>,
+      default: () => ({})
+    },
     showOnair: Boolean
   },
 
@@ -34,12 +37,17 @@ export default defineComponent({
     cover() {
       return compressImage(this.anime.coverMin)
     },
-    onair(): FormatedAnimeDatetime {
-      return this.anime.formatOnair[this.hourSystem]
+    onair(): FormatedAnimeDatetime | Record<string, any> {
+      const anime = this.anime as BangumiBasicWithTime
+      if (anime.formatOnair) return {}
+      return anime.formatOnair[this.hourSystem]
     },
     onairStr() {
       if (!this.onair.unix) return '敬请期待'
       return this.onair.fullDateCH + '开播'
+    },
+    markState() {
+      return this.anime.markState || {}
     }
   }
 })

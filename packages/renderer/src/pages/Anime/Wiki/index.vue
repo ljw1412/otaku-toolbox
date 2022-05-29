@@ -2,19 +2,16 @@
   <div class="anime-wiki">
     <!-- <wiki-menu></wiki-menu> -->
     <transition name="fade">
-      <div class="wiki-bg"
-        :key="cover">
-        <img class="bg-image"
-          :src="cover" />
+      <div class="wiki-bg" :key="cover">
+        <img class="bg-image" :src="cover" />
         <div class="mask"></div>
         <!-- <div class="blur"></div> -->
-
       </div>
     </transition>
 
     <div class="wiki-content">
-      <basic-page :data="basic"
-        @image-change="handleImageChange"></basic-page>
+      <basic-page :data="basic" @image-change="handleImageChange"></basic-page>
+      <AnimeSeries :id="id"></AnimeSeries>
     </div>
   </div>
 </template>
@@ -23,17 +20,18 @@
 import { defineComponent } from 'vue'
 import WikiMenu from './components/WikiMenu.vue'
 import BasicPage from './components/BasicPage.vue'
+import AnimeSeries from './components/AnimeSeries.vue'
 
 export default defineComponent({
   name: 'AnimeWiki',
 
-  components: { WikiMenu, BasicPage },
+  components: { BasicPage, AnimeSeries },
 
   props: { id: String },
 
   data() {
     return {
-      basic: {} as BangumiBasic,
+      basic: {} as BangumiBasicWithTime,
       cover: ''
     }
   },
