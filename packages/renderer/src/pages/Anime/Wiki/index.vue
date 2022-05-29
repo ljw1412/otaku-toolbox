@@ -103,6 +103,11 @@ export default defineComponent({
       backdrop-filter: blur(40px);
     }
   }
+
+  .wiki-content {
+    width: var(--basic-page-width);
+    margin: 0 auto;
+  }
 }
 
 @media (max-width: 1199.9px) {

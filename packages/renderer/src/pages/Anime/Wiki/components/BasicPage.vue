@@ -146,8 +146,7 @@ export default defineComponent({
 <style lang="scss">
 .basic-page {
   display: flex;
-  width: var(--basic-page-width);
-  margin: 0 auto;
+  width: 100%;
   padding: 80px 0;
   box-sizing: border-box;
 

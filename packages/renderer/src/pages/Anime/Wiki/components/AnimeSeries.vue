@@ -47,7 +47,7 @@ export default defineComponent({
 
 <style lang="scss">
 .anime-series {
-  --index-anime-item-width: 13.33%;
+  --index-anime-item-width: 16.66%;
   --index-anime-item-gutter: 16px;
 
   .series-bangumi {
@@ -62,19 +62,6 @@ export default defineComponent({
   }
 }
 
-@media (min-width: 1750px) {
-  .anime-series {
-    --index-anime-item-width: 13.33%;
-    width: var(--basic-page-width);
-    margin: auto;
-  }
-}
-@media (max-width: 1599.9px) {
-  .anime-series {
-    --index-anime-item-width: 20%;
-    --index-anime-item-gutter: 12px;
-  }
-}
 @media (max-width: 767.9px) {
   .anime-series {
     --index-anime-item-width: 33.33%;
