@@ -16,6 +16,11 @@
           <a-radio-group v-model="tab" type="button">
             <a-radio v-for="page of rule.pages" :key="page.name" :value="page.name">{{ page.name }}</a-radio>
           </a-radio-group>
+          <a-button title="刷新" :loading="isTabPageLoading" @click="refresh">
+            <template #icon>
+              <icon-refresh />
+            </template>
+          </a-button>
         </a-space>
       </template>
     </a-page-header>
@@ -24,6 +29,8 @@
       v-for="page of loadedTabPageList"
       v-show="page.name === tab"
       :key="page.name"
+      :ref="setItemRef"
+      :name="page.name"
       :rule="page"
       :keyword="searchKeyword"
     ></tab-page>
@@ -45,6 +52,7 @@ export default defineComponent({
   data() {
     return {
       tab: '',
+      tabPageRefs: [] as typeof TabPage[],
       keyword: '',
       searchKeyword: ''
     }
@@ -64,6 +72,14 @@ export default defineComponent({
 
     loadedTabPageList() {
       return this.tabPageList.filter(page => page.loaded)
+    },
+
+    currentTabPageRef() {
+      return this.tabPageRefs.find(item => item.name === this.tab)
+    },
+
+    isTabPageLoading() {
+      return this.currentTabPageRef ? this.currentTabPageRef.isLoading : false
     }
   },
 
@@ -79,7 +95,17 @@ export default defineComponent({
     }
   },
 
+  beforeUpdate() {
+    this.tabPageRefs = []
+  },
+
   methods: {
+    setItemRef(el: any) {
+      if (el) {
+        this.tabPageRefs.push(el)
+      }
+    },
+
     initTab() {
       this.$nextTick(() => {
         this.tabPageList.forEach(page => {
@@ -91,10 +117,17 @@ export default defineComponent({
         }
       })
     },
+
     search() {
       if (this.keyword.trim()) {
         this.searchKeyword = this.keyword
         this.tab = '搜索'
+      }
+    },
+
+    refresh() {
+      if (this.currentTabPageRef) {
+        this.currentTabPageRef.runRule()
       }
     }
   }

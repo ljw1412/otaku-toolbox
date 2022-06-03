@@ -108,6 +108,7 @@ export default defineComponent({
   watch: {
     '$route.path'() {
       this.$nextTick(() => {
+        if (this.$route.name !== 'AnimeBangumi') return
         if (!this.code) {
           this.initCode()
           return

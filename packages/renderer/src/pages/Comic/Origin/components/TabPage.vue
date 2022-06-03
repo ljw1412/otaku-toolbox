@@ -27,6 +27,7 @@ export default defineComponent({
   components: { ComicCard },
 
   props: {
+    name: { type: String, default: '' },
     keyword: { type: String, default: '' },
     rule: { type: Object as PropType<DataCenter.RulePageParams>, default: () => ({}) }
   },
