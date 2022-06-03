@@ -45,6 +45,8 @@ let mainWindow: BrowserWindow | null = null
 
 const createWindow = async () => {
   mainWindow = new BrowserWindow({
+    width: 1280,
+    height: 720,
     minWidth: 1280,
     minHeight: 720,
     show: false, // Use 'ready-to-show' event to show window

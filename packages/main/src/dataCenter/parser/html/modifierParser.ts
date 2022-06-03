@@ -1,4 +1,4 @@
-import { typeOf } from '../utils/object'
+import { typeOf } from '../../../utils/object'
 import { isDebugger } from './parser'
 
 function checkInputType(data: any, type: string) {

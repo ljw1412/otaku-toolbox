@@ -20,8 +20,10 @@ export function createBuiltInBrowser(data: Record<string, any>): BrowserWindow {
   console.log(data)
 
   const newWin = new BrowserWindow({
-    minWidth: 1280,
-    minHeight: 720,
+    width: 1280,
+    height: 720,
+    minWidth: 640,
+    minHeight: 480,
     frame: false,
     show: false,
     webPreferences: {
@@ -37,7 +39,7 @@ export function createBuiltInBrowser(data: Record<string, any>): BrowserWindow {
   baseListerner(newWin)
 
   const view = new BrowserView()
-  view.setBounds({ x: 0, y: 40, width: 800, height: 600 - 40 })
+  view.setBounds({ x: 0, y: 40, width: 1280, height: 720 - 40 })
   view.setAutoResize({ width: true, height: true })
 
   newWin.once('ready-to-show', () => {

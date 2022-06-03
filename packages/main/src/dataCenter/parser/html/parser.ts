@@ -1,7 +1,7 @@
-import request from '../utils/request'
+import request from '../../../utils/request'
 import cheerio, { CheerioAPI, Cheerio, Node } from 'cheerio'
-import Logger from '../utils/logger'
-import modifierParser from './modifierParser'
+import Logger from '../../../utils/logger'
+import modifierParser from '../../parser/html/modifierParser'
 
 export const isDebugger = false
 const logger = {} as typeof Logger
@@ -166,7 +166,7 @@ function parseItemData(
     .get()
 }
 
-async function parseHTML(
+export async function parseHTML(
   rule: DataCenter.RulePageParams,
   options: DataCenter.RunnerOptions
 ) {
@@ -178,14 +178,4 @@ async function parseHTML(
   }
   const list = parseItem($, rule.items, rule.itemData)
   return { url, list, ...globalData }
-}
-
-export default async function ruleRunner(
-  rule: DataCenter.Rule,
-  options: DataCenter.RunnerOptions = { replacer: { page: 1 } }
-) {
-  const { mode = 'html' } = rule
-  if (mode === 'html') {
-    return await parseHTML(rule, options)
-  }
 }

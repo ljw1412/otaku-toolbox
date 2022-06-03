@@ -1,5 +1,5 @@
 import { ipcMain } from 'electron'
-import ruleRunner from './parser'
+import ruleRunner from './parser/index'
 import { getRule, getRuleList, removeRule, setRule } from '../utils/storage'
 
 const channel = 'data-center'
