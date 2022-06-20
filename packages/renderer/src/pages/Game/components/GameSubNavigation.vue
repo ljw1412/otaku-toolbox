@@ -88,13 +88,6 @@ export default defineComponent({
       })
     },
 
-    setCache(item: PageNavigationItem) {
-      const module = this.$route.meta.module as string
-      if (module && item.to && item.to.name) {
-        setNavigationCache(module, item.to)
-      }
-    },
-
     getActiveItem(item: PageNavigationItem) {
       if (item.url || !item.to || !item.to.name) return false
       if (item.to.name === 'GameList') {
@@ -110,7 +103,7 @@ export default defineComponent({
         return
       }
       this.$router.push(item.to)
-      this.setCache(item)
+      setNavigationCache('game', item.to)
     },
 
     openOriginManager() {

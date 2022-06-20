@@ -1,3 +1,4 @@
+import { parseApi } from './api/parser'
 import { parseHTML } from './html/parser'
 
 export default async function ruleRunner(
@@ -7,5 +8,7 @@ export default async function ruleRunner(
   const { mode = 'html' } = rule
   if (mode === 'html') {
     return await parseHTML(rule, options)
+  } else if (mode === 'api') {
+    return await parseApi(rule, options)
   }
 }

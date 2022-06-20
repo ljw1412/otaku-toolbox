@@ -60,7 +60,8 @@ declare namespace DataCenter {
 
   interface RulePageParams {
     url: string
-    mode: 'html' | 'json' | 'js'
+    mode: 'html' | 'api' | 'webview'
+    method?: string
     data?: {
       pageTotal?: string | number
       [key: string]: string

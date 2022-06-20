@@ -1,6 +1,6 @@
 <template>
   <div v-for="series of seriesList" :key="series._id" class="anime-series">
-    <h3 class="series-title">{{ series.title ? (`《${series.title}》系列`) : '关联作品' }}</h3>
+    <h3 class="series-title">关联作品 · {{ series.title }}</h3>
     <div class="series-bangumi">
       <AnimeCard v-for="item of series.bangumis" :key="item._id" :anime="item"></AnimeCard>
     </div>

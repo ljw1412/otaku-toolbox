@@ -1,15 +1,13 @@
 <template>
-  <div class="comic-reader"
-    @click="handleReaderClick">
-    <a-result v-show="error"
-      status="error"
-      title="规则错误"
-      :subtitle="error"></a-result>
-    <image-loader v-for="(url,i) of list"
+  <div class="comic-reader" @click="handleReaderClick">
+    <a-result v-show="error" status="error" title="规则错误" :subtitle="error"></a-result>
+    <image-loader
+      v-for="(url, i) of list"
       :key="i + url"
-      :index="i+1"
+      :index="i + 1"
       :url="url"
-      @visible="handleImageVisible"></image-loader>
+      @visible="handleImageVisible"
+    ></image-loader>
   </div>
 </template>
 
@@ -47,6 +45,16 @@ export default defineComponent({
 
     title() {
       return this.info.title || '漫画阅读器'
+    },
+
+    extraReplacer() {
+      const queryReplacer = this.$route.query.replacer as string
+      if (!queryReplacer) return {}
+      return queryReplacer.split('|').reduce((obj, data) => {
+        const [k, v = ''] = data.split('=')
+        obj[k] = v
+        return obj
+      }, {} as Record<string, string>)
     }
   },
 
@@ -105,7 +113,7 @@ export default defineComponent({
       const history = await window.$db.history.read(this.dbKey)
 
       const { imageOrigin, list } = (await this.runRule(this.chapterRule, 0, {
-        replacer: { path: this.$route.query.path as string }
+        replacer: { path: this.$route.query.path as string, ...this.extraReplacer }
       })) as { imageOrigin?: string; list: string[] }
       this.list = list.map(path =>
         imageOrigin ? `${imageOrigin}${path}` : path

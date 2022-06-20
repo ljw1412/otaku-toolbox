@@ -114,21 +114,17 @@ export default defineComponent({
   },
 
   methods: {
-    setCache(route: RouteLocationRaw) {
-      const module = this.$route.meta.module as string
-      if (module && route) {
-        setNavigationCache(module, route)
-      }
-    },
-
     async messageListener(e: Event, type: string, data: Record<string, any>) {
       if (type === 'origin-updated') {
         if (data.type === 'comic') {
           await comicStore.updateOriginList()
           const currentExists = this.list.find(item => item.namespace === this.$route.params.namespace)
           if (!currentExists) {
-            this.$router.replace({ name: 'ComicHome' })
-            this.setCache({ name: 'ComicHome' })
+            setNavigationCache('comic', { name: 'ComicHome' })
+
+            if (this.$route.name === 'ComicOrigin') {
+              this.$router.replace({ name: 'ComicHome' })
+            }
           }
         }
       }
@@ -136,7 +132,7 @@ export default defineComponent({
 
     navigate(route: RouteLocationRaw) {
       this.$router.replace(route)
-      this.setCache(route)
+      setNavigationCache('comic', route)
     },
 
     openOriginManager() {

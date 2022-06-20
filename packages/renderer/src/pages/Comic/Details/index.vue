@@ -204,11 +204,21 @@ export default defineComponent({
         replacer: { path: this.$route.query.path as string }
       })
       this.loading = false
+      // 提取替换字段相关的参数
+      const replacerParams = Object.keys(data).filter(key => key.startsWith('replacer.'))
+      if (replacerParams.length) {
+        data.replacer = replacerParams.map(key => key.replace('replacer.', '') + '=' + data[key]).join('|')
+      }
       this.info = data
       this.$global.setTitle(data.title)
     },
 
     handleChapterClick(chapter: { name: string; path: string }) {
+      const extraQuery: Record<string, any> = {}
+      if (this.info.replacer) {
+        extraQuery.replacer = this.info.replacer
+      }
+
       this.$API.Electron.win.openVue(
         {
           name: 'ComicReader',
@@ -216,7 +226,8 @@ export default defineComponent({
           query: {
             path: chapter.path,
             name: chapter.name,
-            ppath: this.$route.query.path
+            ppath: this.$route.query.path,
+            ...extraQuery
           }
         },
         { width: 600, height: 900, minWidth: 600, minHeight: 900 }
