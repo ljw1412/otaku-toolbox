@@ -2,7 +2,7 @@
   <div class="home-carousel">
     <a-carousel class="h-100" indicator-type="slider" indicator-position="outer">
       <a-carousel-item
-        v-for="item in list"
+        v-for="item in mList"
         :key="item._id"
         :class="{ 'is-link': item.routeMode }"
         @click="navigate(item)"
@@ -35,7 +35,13 @@ export default defineComponent({
   data() {
     return {
       loading: false,
-      list: [{
+      list: [] as Banner[]
+    }
+  },
+
+  computed: {
+    mList(): Banner[] {
+      return this.list.length ? this.list : [{
         title: '欢迎来到御宅世界',
         desc: 'Welcome To Otaku World',
         bgColor: ''

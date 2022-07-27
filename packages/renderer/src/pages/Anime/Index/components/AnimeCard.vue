@@ -39,7 +39,7 @@ export default defineComponent({
     },
     onair(): FormatedAnimeDatetime | Record<string, any> {
       const anime = this.anime as BangumiBasicWithTime
-      if (anime.formatOnair) return {}
+      if (!anime.formatOnair) return {}
       return anime.formatOnair[this.hourSystem]
     },
     onairStr() {
