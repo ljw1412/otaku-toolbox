@@ -27,7 +27,7 @@ export default defineComponent({
 
   props: {
     anime: {
-      type: Object as PropType<BangumiBasicWithTime | BangumiBasic>,
+      type: Object as PropType<FormatedBangumiBasic | BangumiBasic>,
       default: () => ({})
     },
     showOnair: Boolean
@@ -38,7 +38,7 @@ export default defineComponent({
       return compressImage(this.anime.coverMin)
     },
     onair(): FormatedAnimeDatetime | Record<string, any> {
-      const anime = this.anime as BangumiBasicWithTime
+      const anime = this.anime as FormatedBangumiBasic
       if (!anime.formatOnair) return {}
       return anime.formatOnair[this.hourSystem]
     },

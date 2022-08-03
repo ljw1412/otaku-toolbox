@@ -86,7 +86,7 @@ export default defineComponent({
 
   props: {
     data: {
-      type: Object as PropType<BangumiBasicWithTime>,
+      type: Object as PropType<FormatedBangumiBasic>,
       default: () => ({})
     }
   },

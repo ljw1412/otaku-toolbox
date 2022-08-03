@@ -22,7 +22,7 @@ export default defineComponent({
 
   props: {
     anime: {
-      type: Object as PropType<BangumiBasicWithTime>,
+      type: Object as PropType<FormatedBangumiBasic>,
       default: () => ({})
     }
   },

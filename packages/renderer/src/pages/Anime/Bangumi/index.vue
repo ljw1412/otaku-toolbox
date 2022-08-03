@@ -57,7 +57,7 @@ export default defineComponent({
       groupBy: '',
       filterTagList: [] as Tag[],
       specialTopicList: [] as SpecialTopic[],
-      bangumiList: [] as BangumiBasicWithTime[]
+      bangumiList: [] as FormatedBangumiBasic[]
     }
   },
 
@@ -77,7 +77,7 @@ export default defineComponent({
       return this.bangumiList.filter(item => !item.isSubTagMatched).length
     },
 
-    filterBangumiList(): BangumiBasicWithTime[] {
+    filterBangumiList(): FormatedBangumiBasic[] {
       let list = [...this.bangumiList]
       if (this.groupBy === 'day') {
         list = this.sortByDay(list)
@@ -142,7 +142,7 @@ export default defineComponent({
       }
     },
 
-    sortByDay(bangumiList: BangumiBasicWithTime[]) {
+    sortByDay(bangumiList: FormatedBangumiBasic[]) {
       return bangumiList.sort((a, b) => {
         let aDay = a.formatOnair[this.hourSystem].day
         let bDay = b.formatOnair[this.hourSystem].day
@@ -154,7 +154,7 @@ export default defineComponent({
       })
     },
 
-    sortByOnair(bangumiList: BangumiBasicWithTime[]) {
+    sortByOnair(bangumiList: FormatedBangumiBasic[]) {
       return bangumiList.sort((a, b) => {
         const aOnair = a.onair ? +new Date(a.onair) : Infinity
         const bOnair = b.onair ? +new Date(b.onair) : Infinity
@@ -162,7 +162,7 @@ export default defineComponent({
       })
     },
 
-    filterByDay(filterBangumiList: BangumiBasicWithTime[]) {
+    filterByDay(filterBangumiList: FormatedBangumiBasic[]) {
       const groupList: BangumiBasicGroup[] = []
       filterBangumiList.forEach(item => {
         let day = item.formatOnair[this.hourSystem].day
@@ -179,8 +179,8 @@ export default defineComponent({
       return groupList
     },
 
-    filterByOnair(filterBangumiList: BangumiBasicWithTime[]) {
-      const onairGroup: Record<string, BangumiBasicWithTime[]> = {}
+    filterByOnair(filterBangumiList: FormatedBangumiBasic[]) {
+      const onairGroup: Record<string, FormatedBangumiBasic[]> = {}
       filterBangumiList.forEach(item => {
         const formatOnair = item.formatOnair[this.hourSystem]
         let dateCH =

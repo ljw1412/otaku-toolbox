@@ -120,6 +120,8 @@ declare global {
     title: string
     titleOriginal: string
     titleMore: string[]
+    episodes: number
+    status: number
     tags: Tag[]
     desc: string
     copyright: string
@@ -138,7 +140,8 @@ declare global {
     markState: Record<string, boolean>
   }
 
-  interface BangumiBasicWithTime extends BangumiBasic {
+  interface FormatedBangumiBasic extends BangumiBasic {
+    statusCH: string
     formatOnair: { 24: FormatedAnimeDatetime; 30: FormatedAnimeDatetime }
   }
 

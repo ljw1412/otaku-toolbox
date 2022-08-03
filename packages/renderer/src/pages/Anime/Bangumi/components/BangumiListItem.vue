@@ -1,37 +1,31 @@
 <template>
-  <a-card class="bangumi-list-item"
+  <a-card
+    class="bangumi-list-item"
     :bordered="false"
-    :body-style="{padding:0}"
-    :class="{'filter-gray': anime.markState.isBan}">
+    :body-style="{ padding: 0 }"
+    :class="{ 'filter-gray': anime.markState.isBan }"
+  >
     <template #cover>
-      <div ref="anchor"
-        class="anime-anchor"
-        :id="'anime-'+anime._id"></div>
+      <div ref="anchor" class="anime-anchor" :id="'anime-' + anime._id"></div>
     </template>
     <template #title>
       <a-row>
-        <a-col class="anime-names"
-          :lg="15"
-          :xs="24"
-          :sm="24">
+        <a-col class="anime-names" :lg="15" :xs="24" :sm="24">
           <div class="localized-name">
-            <router-link target="_blank"
-              :to="{name:'AnimeWiki',params:{id:anime._id},query:{app:'otakutools'}}">{{ anime.title }}</router-link>
+            <router-link
+              target="_blank"
+              :to="{ name: 'AnimeWiki', params: { id: anime._id }, query: { app: 'otakutools' } }"
+            >{{ anime.title }}</router-link>
           </div>
-          <div class="original-name">
-            {{ anime.titleOriginal }}
-          </div>
+          <div class="original-name">{{ anime.titleOriginal }}</div>
         </a-col>
-        <a-col class="anime-specs"
-          :lg="9"
-          :xs="24"
-          :sm="24">
-          <a-space size="mini"
-            wrap
-            class="anime-tags">
-            <a-tag v-for="tag of anime.tags"
-              :color="tag.color || 'arcoblue' "
-              :key="tag._id">{{ tag.name }}</a-tag>
+        <a-col class="anime-specs" :lg="9" :xs="24" :sm="24">
+          <a-space size="mini" wrap class="anime-tags">
+            <a-tag
+              v-for="tag of anime.tags"
+              :color="tag.color || 'arcoblue'"
+              :key="tag._id"
+            >{{ tag.name }}</a-tag>
           </a-space>
           <div class="anime-onair">
             <span>{{ onairStr }}</span>
@@ -40,9 +34,7 @@
               <a-typography-text type="warning">跨季放送</a-typography-text>
             </template>
           </div>
-          <div class="btn-push"
-            @click="handlePushBtnClick"
-            :href="'#anime-'+anime._id">
+          <div class="btn-push" @click="handlePushBtnClick" :href="'#anime-' + anime._id">
             <a-button>
               <template #icon>
                 <icon-pushpin />
@@ -53,86 +45,72 @@
       </a-row>
     </template>
     <a-row>
-      <a-col class="anime-gallery"
-        :xl="7"
-        :xs="8"
-        :sm="8">
-        <acg-gallery :images="anime.cover"
-          :default-image="anime.coverMin"></acg-gallery>
+      <a-col class="anime-gallery" :xl="7" :xs="8" :sm="8">
+        <acg-gallery :images="anime.cover" :default-image="anime.coverMin"></acg-gallery>
       </a-col>
-      <a-col :xl="17"
-        :xs="16"
-        :sm="16">
-        <a-row class="anime-info"
-          :gutter="{lg:8}">
+      <a-col :xl="17" :xs="16" :sm="16">
+        <a-row class="anime-info" :gutter="{ lg: 8 }">
           <a-col :lg="12">
-            <div v-if="anime.markState.isBan"
-              class="info-block anime-alert">
+            <div v-if="anime.markState.isBan" class="info-block anime-alert">
               <a-alert type="warning">该动画存在严重争议问题！</a-alert>
             </div>
-            <div v-show="animeTitleMore"
-              class="anime-name-more info-block">
+            <div v-show="animeTitleMore" class="anime-name-more info-block">
               <h4>其它名称</h4>
               <p>{{ animeTitleMore }}</p>
             </div>
-            <div v-show="anime.desc"
-              class="anime-desc info-block">
+            <div v-show="anime.desc" class="anime-desc info-block">
               <h4>故事简介</h4>
               <p v-html="mDesc"></p>
             </div>
-            <div v-show="anime.copyright"
-              class="anime-copyright info-block">
+            <div v-show="anime.copyright" class="anime-copyright info-block">
               <i>{{ anime.copyright }}</i>
             </div>
-            <div v-show="anime.links && anime.links.length"
-              class="anime-links info-block">
+            <div v-show="anime.links && anime.links.length" class="anime-links info-block">
               <h4>相关链接</h4>
               <p>
-                <a-space wrap
-                  size="mini">
-                  <a-link v-for="link of anime.links"
+                <a-space wrap size="mini">
+                  <a-link
+                    v-for="link of anime.links"
                     :key="link.name"
                     :href="link.url"
                     :title="link.message || link.name"
                     class="anime-link"
-                    target="_blank">{{ link.name }}</a-link>
+                    target="_blank"
+                  >{{ link.name }}</a-link>
                 </a-space>
               </p>
             </div>
-            <div v-show="streamingPlatforms && streamingPlatforms.length"
-              class="anime-streaming info-block">
+            <div
+              v-show="streamingPlatforms && streamingPlatforms.length"
+              class="anime-streaming info-block"
+            >
               <h4>网络播放</h4>
               <p>
-                <a-space wrap
-                  size="mini">
-                  <acg-stream-item v-for="link of streamingPlatforms"
+                <a-space wrap size="mini">
+                  <acg-stream-item
+                    v-for="link of streamingPlatforms"
                     :key="link.url"
                     mode="icon"
-                    v-bind="link"></acg-stream-item>
+                    v-bind="link"
+                  ></acg-stream-item>
                 </a-space>
               </p>
             </div>
           </a-col>
           <a-col :lg="12">
-            <div v-show="anime.cast&&anime.cast.length"
-              class="anime-cast info-block">
+            <div v-show="anime.cast && anime.cast.length" class="anime-cast info-block">
               <h4>Cast</h4>
-              <div v-for="person of anime.cast"
-                :key="person.name"
-                class="person">
+              <div v-for="person of anime.cast" :key="person.name" class="person">
                 <span class="type">{{ person.name }}</span>
-                <span> : </span>
+                <span>:</span>
                 <span class="entity">{{ person.entity }}</span>
               </div>
             </div>
-            <div v-show="anime.staff && anime.staff.length"
-              class="anime-staff info-block">
+            <div v-show="anime.staff && anime.staff.length" class="anime-staff info-block">
               <h4>Staff</h4>
-              <div v-for="person of anime.staff"
-                :key="person.name"
-                class="person">
+              <div v-for="person of anime.staff" :key="person.name" class="person">
                 <span class="type">{{ person.name }}</span>
-                <span> : </span>
+                <span>:</span>
                 <span class="entity">{{ person.entity }}</span>
               </div>
             </div>
@@ -153,7 +131,7 @@ export default defineComponent({
 
   props: {
     anime: {
-      type: Object as PropType<BangumiBasicWithTime>,
+      type: Object as PropType<FormatedBangumiBasic>,
       default: () => ({})
     }
   },
@@ -206,7 +184,7 @@ export default defineComponent({
 <style lang="scss">
 .bangumi-list-item {
   &.arco-card {
-    box-shadow: var(--card-box-shadow);
+    box-shadow: 0 0 5px rgba(178, 178, 178, 0.2);
 
     > .arco-card-header {
       position: sticky;
@@ -217,7 +195,7 @@ export default defineComponent({
       z-index: 100;
 
       &::before {
-        content: '';
+        content: "";
         position: absolute;
         top: 0;
         left: 0;

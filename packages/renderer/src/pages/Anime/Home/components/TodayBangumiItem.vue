@@ -38,7 +38,7 @@ export default defineComponent({
     current: String,
     skeleton: Boolean,
     bangumi: {
-      type: Object as PropType<BangumiBasicWithTime>,
+      type: Object as PropType<FormatedBangumiBasic>,
       default: () => ({})
     }
   },

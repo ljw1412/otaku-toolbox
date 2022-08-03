@@ -37,7 +37,7 @@ export default defineComponent({
     return {
       isError: false,
       isLoading: true,
-      bangumiList: [] as BangumiBasicWithTime[]
+      bangumiList: [] as FormatedBangumiBasic[]
     }
   },
 
@@ -50,7 +50,7 @@ export default defineComponent({
       return betterWeekdayName(this.$dayjs(this.$global.now.value).day())
     },
 
-    mBangumiList(): BangumiBasicWithTime[] {
+    mBangumiList(): FormatedBangumiBasic[] {
       if (this.isSkeleton) {
         return new Array(3).fill({ title: '', cover: '', onairList: [{}] })
       }

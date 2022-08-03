@@ -1,6 +1,6 @@
 import API from '/@/utils/api'
 const { apiGet, apiPost, apiDelete, apiPut } = API
-import { computeBangumiTime, computeMark } from '/@/utils/dataFormat'
+import { formatBangumi } from '/@/utils/dataFormat'
 
 const API_BASE = 'special_topic'
 
@@ -17,9 +17,9 @@ export async function listSpecialTopic(type?: string): Promise<SpecialTopic[]> {
  * @param code
  * @returns
  */
-export async function preview(code: string): Promise<BangumiBasicWithTime[]> {
+export async function preview(code: string): Promise<FormatedBangumiBasic[]> {
   const data = (await apiGet(`${API_BASE}/preview`, {
     data: { code }
-  })) as BangumiBasicWithTime[]
-  return data.map(item => computeMark(computeBangumiTime(item)))
+  })) as FormatedBangumiBasic[]
+  return data.map(item => formatBangumi(item))
 }

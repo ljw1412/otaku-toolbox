@@ -1,15 +1,17 @@
 <template>
-  <router-link target="_blank"
+  <router-link
+    target="_blank"
     class="one-day-bangumi"
     :class="direction"
-    :to="{name:'AnimeWiki',params:{id:anime._id},query:{app:'otakutools'}}">
+    :to="{name:'AnimeWiki',params:{id:anime._id},query:{app:'otakutools'}}"
+  >
     <div class="time">{{startDate.time}}</div>
-    <div class="status"
-      :class="{ start: isStart, end: isEnd }">{{ statusStr }}</div>
-    <acg-ratio-div :ratio="direction === 'vertical' ? [1,1]:[3,4]"
-      :class="{'filter-gray': anime.markState.isBan}">
-      <img :src="compressImage(anime.coverMin)"
-        loading="lazy">
+    <div class="status" :class="{ start: isStart, end: isEnd }">{{ statusStr }}</div>
+    <acg-ratio-div
+      :ratio="direction === 'vertical' ? [1,1]:[3,4]"
+      :class="{'filter-gray': anime.markState.isBan}"
+    >
+      <img :src="compressImage(anime.coverMin)" loading="lazy" />
     </acg-ratio-div>
     <div class="title">{{anime.title}}</div>
   </router-link>
@@ -27,7 +29,7 @@ export default defineComponent({
     date: String,
     direction: { type: String, default: 'vertical' },
     anime: {
-      type: Object as PropType<BangumiBasicWithTime>,
+      type: Object as PropType<FormatedBangumiBasic>,
       default: () => ({})
     }
   },

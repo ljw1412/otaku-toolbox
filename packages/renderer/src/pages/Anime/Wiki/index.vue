@@ -31,7 +31,7 @@ export default defineComponent({
 
   data() {
     return {
-      basic: {} as BangumiBasicWithTime,
+      basic: {} as FormatedBangumiBasic,
       cover: ''
     }
   },

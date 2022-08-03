@@ -1,6 +1,6 @@
 import API from '/@/utils/api'
 const { apiGet, apiPost, apiDelete, apiPut } = API
-import { computeBangumiTime, computeMark } from '/@/utils/dataFormat'
+import { formatBangumi } from '/@/utils/dataFormat'
 
 const API_BASE = 'bangumi'
 
@@ -24,9 +24,7 @@ export async function listBangumi(
   const data = (await apiGet(API_BASE, {
     data: { ...page, tags, type, keyword, ...sort }
   })) as { list: BangumiBasic[]; total: number }
-  data.list.forEach(item =>
-    computeMark(computeBangumiTime(item as BangumiBasicWithTime))
-  )
+  data.list.forEach(item => formatBangumi(item as FormatedBangumiBasic))
   return data
 }
 
@@ -37,16 +35,16 @@ export async function listBangumi(
  */
 export async function showBangumi(id: string) {
   const data = await apiGet(`${API_BASE}/${id}`)
-  return computeMark(computeBangumiTime(data))
+  return formatBangumi(data)
 }
 
 /**
  * 获取一周番剧
  * @returns
  */
-export async function listWeekBangumi(): Promise<BangumiBasicWithTime[]> {
-  const data = (await apiGet(`${API_BASE}/week`)) as BangumiBasicWithTime[]
-  data.forEach(item => computeMark(computeBangumiTime(item)))
+export async function listWeekBangumi(): Promise<FormatedBangumiBasic[]> {
+  const data = (await apiGet(`${API_BASE}/week`)) as FormatedBangumiBasic[]
+  data.forEach(item => formatBangumi(item))
   return data
 }
 
@@ -54,10 +52,10 @@ export async function listWeekBangumi(): Promise<BangumiBasicWithTime[]> {
  * 获取一日番剧
  * @returns
  */
-export async function listTodayBangumi(): Promise<BangumiBasicWithTime[]> {
+export async function listTodayBangumi(): Promise<FormatedBangumiBasic[]> {
   const data = (await apiGet(`${API_BASE}/today`, {
     data: { t: +new Date() }
-  })) as BangumiBasicWithTime[]
-  data.forEach(item => computeMark(computeBangumiTime(item)))
+  })) as FormatedBangumiBasic[]
+  data.forEach(item => formatBangumi(item))
   return data
 }

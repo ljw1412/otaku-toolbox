@@ -1,26 +1,25 @@
 <template>
-  <div class="week-bangumi"
-    :data-direction="direction">
+  <div class="week-bangumi" :data-direction="direction">
     <week-bangumi-header :date="now"></week-bangumi-header>
-    <div v-show="!isLoading && !isError"
-      class="bangumi-grid"
-      :data-direction="direction">
-      <one-day-bangumi-list v-for="day of mList.length"
+    <div v-show="!isLoading && !isError" class="bangumi-grid" :data-direction="direction">
+      <one-day-bangumi-list
+        v-for="day of mList.length"
         :key="`day-${day}`"
         :day="day-1"
         :date="weekDateList[day-1]"
         :data="mList[day-1]"
         :direction="direction"
-        :today="today === day-1"></one-day-bangumi-list>
+        :today="today === day-1"
+      ></one-day-bangumi-list>
     </div>
-    <acg-api-result :loading="isLoading"
-      :error="isError"
-      @retry="fetchWeekBangumi"></acg-api-result>
-    <acg-fixed-button title="切换方向"
+    <acg-api-result :loading="isLoading" :error="isError" @retry="fetchWeekBangumi"></acg-api-result>
+    <acg-fixed-button
+      title="切换方向"
       always
       style="font-size: 16px;"
       :bottom="85"
-      @click="handleSwitchModeClick">
+      @click="handleSwitchModeClick"
+    >
       <component :is="isVertical ? 'icon-drag-dot-vertical' : 'icon-drag-dot'"></component>
     </acg-fixed-button>
   </div>
@@ -50,7 +49,7 @@ export default defineComponent({
     return {
       isLoading: true,
       isError: false,
-      bangumiList: [] as BangumiBasicWithTime[]
+      bangumiList: [] as FormatedBangumiBasic[]
     }
   },
 
@@ -78,7 +77,7 @@ export default defineComponent({
     },
 
     mList(): BangumiBasic[][] {
-      const list = [[], [], [], [], [], [], []] as BangumiBasicWithTime[][]
+      const list = [[], [], [], [], [], [], []] as FormatedBangumiBasic[][]
       this.bangumiList.forEach(item => {
         const onairData = item.formatOnair[this.hourSystem]
         if (onairData.day === undefined) return
@@ -148,7 +147,7 @@ export default defineComponent({
     display: flex;
   }
 
-  &[data-direction='horizontal'] {
+  &[data-direction="horizontal"] {
     --week-bangumi-width: 100%;
     padding-bottom: 160px;
 

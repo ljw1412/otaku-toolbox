@@ -1,25 +1,17 @@
 <template>
-  <div class="one-day-bangumi-list"
-    :class="{today}"
-    :data-day="day">
+  <div class="one-day-bangumi-list" :class="{today}" :data-day="day">
     <header class="data-header">
       <section class="data-header-body">
         <div class="en">{{ headerList[day].en }}</div>
         <div class="jp">{{ headerList[day].jp }}曜日</div>
         <div class="cn">{{ headerList[day].cn }}</div>
-        <div v-show="direction !== 'vertical'"
-          class="date">{{ date }}</div>
+        <div v-show="direction !== 'vertical'" class="date">{{ date }}</div>
       </section>
     </header>
     <ul class="data-list">
-      <div v-show="direction === 'vertical'"
-        class="date">{{ date }}</div>
-      <li v-for="anime of data"
-        :key="anime._id"
-        :title="anime.title">
-        <one-day-bangumi :anime="anime"
-          :date="date"
-          :direction="direction"></one-day-bangumi>
+      <div v-show="direction === 'vertical'" class="date">{{ date }}</div>
+      <li v-for="anime of data" :key="anime._id" :title="anime.title">
+        <one-day-bangumi :anime="anime" :date="date" :direction="direction"></one-day-bangumi>
       </li>
     </ul>
   </div>
@@ -41,7 +33,7 @@ export default defineComponent({
     today: Boolean,
     direction: { type: String, default: 'vertical' },
     day: { type: Number, default: 0 },
-    data: { type: Array as PropType<BangumiBasicWithTime[]>, default: () => [] }
+    data: { type: Array as PropType<FormatedBangumiBasic[]>, default: () => [] }
   },
 
   data() {
@@ -60,7 +52,7 @@ export default defineComponent({
 $colors: (0, #d50000) (1, #ff3d00) (2, #ff9100) (3, #00b42a) (4, #0091ea)
   (5, #00bfa5) (6, #6200ea);
 
-@mixin base-pseudo-element($content: '') {
+@mixin base-pseudo-element($content: "") {
   content: $content;
   position: absolute;
   top: 0;
@@ -82,7 +74,7 @@ $colors: (0, #d50000) (1, #ff3d00) (2, #ff9100) (3, #00b42a) (4, #0091ea)
   }
 
   @each $index, $color in $colors {
-    &[data-day='#{$index}'] {
+    &[data-day="#{$index}"] {
       background-color: $color;
       &.today {
         box-shadow: 0 0 10px $color;
@@ -126,7 +118,7 @@ $colors: (0, #d50000) (1, #ff3d00) (2, #ff9100) (3, #00b42a) (4, #0091ea)
 
       &-body {
         &::after {
-          @include base-pseudo-element('今');
+          @include base-pseudo-element("今");
           font-size: 50px;
           text-align: center;
           opacity: 0.25;
@@ -137,7 +129,7 @@ $colors: (0, #d50000) (1, #ff3d00) (2, #ff9100) (3, #00b42a) (4, #0091ea)
   }
 }
 
-[data-direction='vertical'] > .one-day-bangumi-list {
+[data-direction="vertical"] > .one-day-bangumi-list {
   .data-header {
     position: sticky;
     top: 0;
@@ -186,7 +178,7 @@ $colors: (0, #d50000) (1, #ff3d00) (2, #ff9100) (3, #00b42a) (4, #0091ea)
   }
 }
 
-[data-direction='horizontal'] > .one-day-bangumi-list {
+[data-direction="horizontal"] > .one-day-bangumi-list {
   display: flex;
 
   &.today {
