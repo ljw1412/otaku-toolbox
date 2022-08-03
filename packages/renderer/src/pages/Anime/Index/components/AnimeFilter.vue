@@ -1,39 +1,40 @@
 <template>
-  <a-descriptions :data="data"
-    layout="vertical"
-    class="index-anime-filter"
-    :column="1">
+  <a-descriptions :data="data" layout="vertical" class="index-anime-filter" :column="1">
     <template #title>
       <div class="filter-header bg-app">
         <div class="filter-title">
           <div>筛选器</div>
           <div>
-            <a-button v-show="currentKeyword || filterTags.length"
-              @click="reset">重置</a-button>
+            <a-button v-show="currentKeyword || filterTags.length" @click="reset">重置</a-button>
           </div>
         </div>
-        <a-input-search v-model="keyword"
+        <a-input-search
+          v-model="keyword"
           size="large"
           allow-clear
           :max-length="50"
           @search="search(keyword)"
-          @press-enter="search(keyword)"></a-input-search>
-        <anime-filter-status closable
+          @press-enter="search(keyword)"
+        ></a-input-search>
+        <anime-filter-status
+          closable
           :tags="filterTags"
           :keyword="currentKeyword"
           @remove-keyword="search('')"
-          @remove-tag="handleFilterTagRemove"></anime-filter-status>
+          @remove-tag="handleFilterTagRemove"
+        ></anime-filter-status>
       </div>
     </template>
     <template #value="{ value }">
-      <a-space wrap
-        size="mini">
-        <a-tag v-for="tag of value"
+      <a-space wrap size="mini">
+        <a-tag
+          v-for="tag of value"
           checkable
-          :color="tag.group==='type' ? 'green' : 'arcoblue'"
+          :color="tag.group === 'type' ? 'green' : 'arcoblue'"
           :checked="tag.selected"
           :key="tag._id"
-          @check="handleTagCheck(tag,value)">{{tag.name}}</a-tag>
+          @check="handleTagCheck(tag, value)"
+        >{{ tag.name }}</a-tag>
       </a-space>
     </template>
   </a-descriptions>
@@ -41,28 +42,8 @@
 
 <script lang="ts">
 import { defineComponent, PropType, reactive } from 'vue'
+import { statusData, typeData } from '../stores/filterStore'
 import AnimeFilterStatus from './AnimeFilterStatus.vue'
-
-const typeData: Tag[] = reactive([
-  {
-    _id: '',
-    name: '全部',
-    selected: true,
-    group: 'type'
-  },
-  {
-    _id: 'TV',
-    name: '正片',
-    group: 'type',
-    selected: false
-  },
-  {
-    _id: 'Movie',
-    name: '电影',
-    group: 'type',
-    selected: false
-  }
-])
 
 export default defineComponent({
   name: 'IndexAnimeFilter',
@@ -91,13 +72,13 @@ export default defineComponent({
         value: group.tags
       }))
       if (data.length) {
-        data.unshift({ label: '种类', value: typeData })
+        data.unshift({ label: '种类', value: typeData }, { label: '状态', value: statusData })
       }
       return data
     },
 
     allTags(): Tag[] {
-      return typeData.concat(
+      return typeData.concat(statusData,
         this.groupList.reduce((arr, group: TagGroup) => {
           arr.push(...group.tags)
           return arr

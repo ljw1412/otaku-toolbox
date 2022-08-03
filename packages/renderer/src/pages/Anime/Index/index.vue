@@ -1,13 +1,13 @@
 <template>
-  <div class="anime-index"
-    :class="{'is-laptop': isLaptopSize, 'is-mobile': isMobileSize}">
-    <a-drawer v-model:visible="isDisplayFilterDialog"
+  <div class="anime-index" :class="{ 'is-laptop': isLaptopSize, 'is-mobile': isMobileSize }">
+    <a-drawer
+      v-model:visible="isDisplayFilterDialog"
       :closable="false"
       :width="isMobileSize ? '100%' : '320px'"
-      class="anime-filter-drawer">
+      class="anime-filter-drawer"
+    >
       <template #footer>
-        <a-button type="primary"
-          @click="isDisplayFilterDialog = false">确认</a-button>
+        <a-button type="primary" @click="isDisplayFilterDialog = false">确认</a-button>
       </template>
     </a-drawer>
 
@@ -18,82 +18,96 @@
             <template #title>
               <a-space size="mini">
                 <span style="line-height: 1">番剧索引</span>
-                <div v-show="page.total"
-                  style="font-size: 0;"
-                  class="layout-center">
-                  <a-badge :count="page.total"
-                    :max-count="9999" />
+                <div v-show="page.total" style="font-size: 0;" class="layout-center">
+                  <a-badge :count="page.total" :max-count="9999" />
                 </div>
               </a-space>
             </template>
             <template #subtitle>
-              <app-sort-text :active="isDefaultSort"
+              <app-sort-text
+                :active="isDefaultSort"
                 :directions="['']"
                 text="默认排序"
-                @change="handleSortChange('default')"></app-sort-text>
-              <app-sort-text v-model="sort.sortonair"
+                @change="handleSortChange('default')"
+              ></app-sort-text>
+              <app-sort-text
+                v-model="sort.sortonair"
                 :directions="[-1, 1]"
                 text="开播时间"
-                @change="handleSortChange('sortonair')"></app-sort-text>
+                @change="handleSortChange('sortonair')"
+              ></app-sort-text>
             </template>
             <template #extra>
               <a-space size="mini">
-                <a-pagination v-show="!isMobileSize"
+                <a-pagination
+                  v-show="!isMobileSize"
                   v-model:current="page.index"
                   :total="page.total"
                   :page-size="page.size"
                   size="small"
                   hide-on-single-page
-                  @change="handlePageChange" />
+                  @change="handlePageChange"
+                />
 
-                <a-link v-show="isLaptopSize"
+                <a-link
+                  v-show="isLaptopSize"
                   style="line-height: 26px;"
-                  @click="isDisplayFilterDialog = true">
-                  <icon-filter /> 筛选器
+                  @click="isDisplayFilterDialog = true"
+                >
+                  <icon-filter />筛选器
                 </a-link>
               </a-space>
             </template>
           </a-page-header>
-          <anime-filter-status v-if="isLaptopSize"
+          <anime-filter-status
+            v-if="isLaptopSize"
             :keyword="keyword"
             :tags="filterTagList"
             :keyword-close="false"
-            style="padding-left: 4px;"></anime-filter-status>
+            style="padding-left: 4px;"
+          ></anime-filter-status>
         </header>
 
         <div class="anime-index-content">
-          <acg-api-result :loading="loading.bangumi"
+          <acg-api-result
+            :loading="loading.bangumi"
             :error="error.bangumi"
             :empty="!page.total"
-            @retry="fetchBangumiList"></acg-api-result>
-          <anime-card v-for="bangumi of bangumiList"
+            @retry="fetchBangumiList"
+          ></acg-api-result>
+          <anime-card
+            v-for="bangumi of bangumiList"
             :key="bangumi._id"
             :show-onair="!!sort.sortonair"
-            :anime="bangumi"></anime-card>
+            :anime="bangumi"
+          ></anime-card>
         </div>
       </main>
-      <aside class="anime-index-aside"
-        v-show="!isLaptopSize">
-        <teleport to=".anime-filter-drawer .arco-drawer-body"
-          :disabled="!isLaptopSize">
-          <anime-filter :group-list="tagGroupList"
+      <aside class="anime-index-aside" v-show="!isLaptopSize">
+        <teleport to=".anime-filter-drawer .arco-drawer-body" :disabled="!isLaptopSize">
+          <anime-filter
+            :group-list="tagGroupList"
             :current-keyword="keyword"
-            @change="handleFilterChange"></anime-filter>
-          <acg-api-result :loading="loading.filter"
+            @change="handleFilterChange"
+          ></anime-filter>
+          <acg-api-result
+            :loading="loading.filter"
             :error="error.filter"
-            @retry="fetchTagGroupList"></acg-api-result>
+            @retry="fetchTagGroupList"
+          ></acg-api-result>
         </teleport>
       </aside>
     </section>
 
-    <footer v-if="isMobileSize"
-      class="anime-index-footer sticky-b bg-app">
-      <a-pagination v-model:current="page.index"
+    <footer v-if="isMobileSize" class="anime-index-footer sticky-b bg-app">
+      <a-pagination
+        v-model:current="page.index"
         :total="page.total"
         :page-size="page.size"
         :base-size="13"
         size="small"
-        @change="handlePageChange" />
+        @change="handlePageChange"
+      />
     </footer>
   </div>
 </template>
@@ -106,6 +120,7 @@ import AnimeFilterStatus from './components/AnimeFilterStatus.vue'
 import AcgApiResult from '/@/components/AcgApiResult.vue'
 import AppSortText from '/@/components/AppSortText.vue'
 import { typeOf } from '/@/utils/assist'
+import { statusData, typeData } from './stores/filterStore'
 
 export default defineComponent({
   name: 'AnimeIndex',
@@ -139,7 +154,7 @@ export default defineComponent({
 
     filterTagIds(): string {
       return this.filterTagList
-        .filter(tag => tag.group !== 'type')
+        .filter((tag) => tag.group !== 'type' && tag.group !== 'status')
         .map(tag => tag._id)
         .join(',')
     },
@@ -147,6 +162,11 @@ export default defineComponent({
     typeValue(): string {
       const typeTag = this.filterTagList.find(tag => tag.group === 'type')
       return typeTag ? typeTag._id : ''
+    },
+
+    statusValue(): string {
+      const statusTag = this.filterTagList.find((tag) => tag.group === 'status')
+      return statusTag ? statusTag._id : ''
     }
   },
 
@@ -165,7 +185,7 @@ export default defineComponent({
 
   methods: {
     initData() {
-      const { p, tags, keyword = '' } = this.$route.query
+      const { p, tags, keyword = '', status = '', type = '' } = this.$route.query
       this.page.index = parseInt((p as string) || '1')
       if (tags) {
         this.filterTagList = (tags as string)
@@ -173,6 +193,12 @@ export default defineComponent({
           .map(id => ({ _id: id, name: '' }))
       }
       this.keyword = keyword as string
+      if (status) {
+        statusData.forEach(item => { item.selected = item._id === status })
+      }
+      if (type) {
+        typeData.forEach(item => { item.selected = item._id === type })
+      }
     },
 
     setStatus(
@@ -229,6 +255,7 @@ export default defineComponent({
         const { list, total } = await this.$API.Bangumi.listBangumi(
           this.page,
           this.typeValue,
+          this.statusValue,
           this.filterTagIds,
           this.keyword,
           this.sort
@@ -252,6 +279,7 @@ export default defineComponent({
         tags: this.filterTagIds,
         keyword: this.keyword,
         type: this.typeValue,
+        status: this.statusValue,
         ...this.sort
       })
       this.$router.replace({ query })

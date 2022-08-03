@@ -14,6 +14,7 @@ const API_BASE = 'bangumi'
 export async function listBangumi(
   page = { index: 1, size: 20 },
   type: string,
+  status: string,
   tags: string[] | string,
   keyword = '',
   sort: Record<string, string | number> = {}
@@ -22,7 +23,7 @@ export async function listBangumi(
     tags = tags.join(',')
   }
   const data = (await apiGet(API_BASE, {
-    data: { ...page, tags, type, keyword, ...sort }
+    data: { ...page, tags, status, type, keyword, ...sort }
   })) as { list: BangumiBasic[]; total: number }
   data.list.forEach(item => formatBangumi(item as FormatedBangumiBasic))
   return data
