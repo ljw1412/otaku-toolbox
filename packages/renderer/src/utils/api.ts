@@ -60,8 +60,10 @@ function createFetch(method: string) {
             return Promise.reject(new Error(text))
           }
         }
-        const json = resp.json()
-        return json
+        if (init.transform) {
+          return init.transform(resp as Response)
+        }
+        return resp.json()
       })
       .catch(e => {
         if (e.name === 'AbortError') {

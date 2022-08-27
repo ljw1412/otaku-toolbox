@@ -28,6 +28,7 @@ declare global {
   interface MyRequestInit extends RequestInit {
     data?: BodyInit | Record<string, any>
     query?: string | Record<string, any>
+    transform?: (resp: Response) => any
     timeout?: number
   }
 

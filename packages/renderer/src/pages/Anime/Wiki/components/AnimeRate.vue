@@ -7,8 +7,8 @@
     <div class="other-site">
       <a-space size="medium">
         <span v-for="(rating, key) of siteRating" :key="key" :title="rating.name + '评分'">
-          <img :src="rating.icon" />
-          <span>{{ rating.score }}</span>
+          <img class="icon" :src="rating.icon" />
+          <span class="score">{{ rating.score }}</span>
         </span>
       </a-space>
     </div>
@@ -22,7 +22,7 @@ import { getLogoIcon } from '/@/utils/icons'
 interface AnimeRating {
   name: string
   icon: string
-  score: number
+  score?: number
 }
 
 const ratingConfig = {
@@ -34,11 +34,25 @@ const ratingConfig = {
     resultPath: 'result.media.rating'
   },
   bangumi: {
-    url: 'https://api.bgm.tv/v0/subjects/{:id}',
+    url: 'https://api.bgm.tv/v0/subjects/{:id}?token=ckI6NnUj54jpBkoQDpXUYhA7KzeeaEc5S3jQf0td',
     icon: getLogoIcon('Bangumi'),
     name: 'Bangumi 番组计划',
     field: 'bangumi',
     resultPath: 'rating'
+  },
+  douban: {
+    url: 'https://anltv.cn/douban.php/?id={:id}',
+    icon: getLogoIcon('Douban'),
+    name: '豆瓣',
+    field: 'douban',
+    resultPath: 'rating',
+    transform: async (resp: Response) => {
+      const text = await resp.text()
+      const fn = new Function(`return ${text}`)
+      const result = fn()
+      result.rating = { score: result.data.vod_douban_score }
+      return result
+    }
   }
 }
 
@@ -72,7 +86,7 @@ export default defineComponent({
     async fetchOtherSiteRating(config: Record<string, any>, id: string) {
       if (!id) return
       const url = config.url.replace('{:id}', id)
-      const result = await this.apiGet(url)
+      let result = await this.apiGet(url, { transform: config.transform })
       const pathList = config.resultPath.split('.') as string[]
       let data = result
       pathList.forEach(path => {
@@ -99,10 +113,18 @@ export default defineComponent({
   }
 
   .other-site {
-    img {
+    font-size: 16px;
+
+
+    .icon {
       width: 1em;
       height: 1em;
-      margin-right: 4px;
+      margin-right: 6px;
+    }
+
+    .score {
+      font-size: 16px;
+      line-height: 1em;
     }
   }
 }

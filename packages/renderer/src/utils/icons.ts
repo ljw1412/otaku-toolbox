@@ -6,6 +6,7 @@ const logoIcons = {
   Bangumi: 'bangumi.ico',
   Bilibili: 'bilibili.svg',
   Desney: 'desney.svg',
+  Douban: 'douban.ico',
   YouTube: 'youtube.svg',
   YouKu: 'youku.svg',
   TV: 'tv.svg',
