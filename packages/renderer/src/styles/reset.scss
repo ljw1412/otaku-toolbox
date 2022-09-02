@@ -32,8 +32,8 @@ body {
 .app-container .app-main,
 .app-setting,
 .modal-exit-app {
-  border: 1px solid rgba(var(--app-theme-rgb), 0.25);
-  transition: border-color 0.15s;
+  border: 1px solid rgba(var(--app-theme-rgb), 0.2);
+  transition: border-color 0.15s ease-out;
 }
 
 .app-container .app-main {
@@ -44,7 +44,7 @@ body[app-status='focus'] {
   .app-container .app-main,
   .app-setting,
   .modal-exit-app {
-    border-color: rgba(var(--app-theme-rgb), 0.5);
+    border-color: rgba(var(--app-theme-rgb), 0.4);
   }
 }
 

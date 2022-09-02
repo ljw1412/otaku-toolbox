@@ -3,38 +3,22 @@
     <a-page-header :title="title" :class="{ 'sticky-t bg-app': !mini }" :show-back="false">
       <template #subtitle>
         <a-select v-model="origin" style="width: 140px;" size="small" @change="handleOriginChange">
-          <a-option
-            v-for="option of originList"
-            :key="option.namespace"
-            :value="option.namespace"
-            :label="option.name"
-          ></a-option>
+          <a-option v-for="option of originList" :key="option.namespace" :value="option.namespace" :label="option.name">
+          </a-option>
         </a-select>
       </template>
       <template #extra>
         <a-button v-if="mini" :loading="isLoading" @click="fetchNewsData">刷新</a-button>
-        <a-pagination
-          v-else
-          v-model:current="page.index"
-          :total="page.total"
-          :page-size="page.size"
-          @change="handlePageChange"
-        />
+        <a-pagination v-else v-model:current="page.index" :total="page.total" :page-size="page.size"
+          @change="handlePageChange" />
       </template>
     </a-page-header>
 
     <acg-api-result :loading="false" :error="isError" @retry="fetchNewsData"></acg-api-result>
     <div class="news-list">
-      <a-card
-        v-for="item of mNews"
-        :key="item.id"
-        :bordered="false"
-        :body-style="{ padding: 0 }"
-        :class="{ 'is-skeleton': isSkeleton }"
-        data-skeleton-animate
-        class="news-item app-card-up"
-        @click="handleNewsClick(item.url)"
-      >
+      <a-card v-for="item of mNews" :key="item.id" :bordered="false" :body-style="{ padding: 0 }"
+        :class="{ 'is-skeleton': isSkeleton }" data-skeleton-animate class="news-item app-card-up"
+        @click="handleNewsClick(item.url)">
         <div class="news-item-container" :title="item.title">
           <div class="cover skeleton-bg">
             <img v-if="!isSkeleton" :src="item.cover" loading="lazy" />
@@ -53,7 +37,6 @@
 
 <script lang="ts">
 import { defineComponent, toRaw } from 'vue'
-import { useTimeout } from '@vueuse/core'
 
 export default defineComponent({
   name: 'AppNews',
@@ -187,6 +170,7 @@ export default defineComponent({
 
         .cover {
           grid-row: 1/4;
+
           img {
             width: 100%;
             height: 100%;
@@ -212,6 +196,7 @@ export default defineComponent({
         .footer {
           text-align: right;
           padding: 0 8px;
+
           .update-time {
             display: inline-block;
             min-width: 120px;
@@ -230,11 +215,9 @@ export default defineComponent({
       margin-top: -16px;
       width: 100%;
       height: 40px;
-      background: linear-gradient(
-        180deg,
-        rgba(255, 255, 255, 0) 0,
-        var(--color-bg-3) 100%
-      );
+      background: linear-gradient(180deg,
+          rgba(255, 255, 255, 0) 0,
+          var(--app-color-bg) 100%);
       z-index: 1;
     }
   }
@@ -246,6 +229,7 @@ export default defineComponent({
       grid-template-columns: repeat(3, 33.33%);
       padding: 0 26px;
       margin: 0 -16px;
+
       .bottom-blur {
         grid-column: 1/4;
       }

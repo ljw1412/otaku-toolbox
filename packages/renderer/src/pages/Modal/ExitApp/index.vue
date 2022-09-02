@@ -33,6 +33,7 @@ export default defineComponent({
   height: 100%;
   padding: 1px 12px 20px 12px;
   box-sizing: border-box;
+  background-color: var(--color-bg-3);
 
   .buttons {
     position: absolute;

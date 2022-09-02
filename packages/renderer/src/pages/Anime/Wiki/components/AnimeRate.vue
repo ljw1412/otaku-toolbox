@@ -34,7 +34,7 @@ const ratingConfig = {
     resultPath: 'result.media.rating'
   },
   bangumi: {
-    url: 'https://api.bgm.tv/v0/subjects/{:id}?token=ckI6NnUj54jpBkoQDpXUYhA7KzeeaEc5S3jQf0td',
+    url: 'https://api.bgm.tv/v0/subjects/{:id}',
     icon: getLogoIcon('Bangumi'),
     name: 'Bangumi 番组计划',
     field: 'bangumi',
