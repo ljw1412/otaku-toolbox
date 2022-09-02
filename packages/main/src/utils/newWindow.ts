@@ -26,7 +26,9 @@ export default function(browerWindow: BrowserWindow | BrowserView): void {
     (event, url, frameName, disposition) => {
       console.log(url, frameName, disposition)
 
-      if (['foreground-tab', 'new-window'].includes(disposition)) {
+      if (
+        ['foreground-tab', 'background-tab', 'new-window'].includes(disposition)
+      ) {
         // 阻止鼠标点击链接
         event.preventDefault()
 
