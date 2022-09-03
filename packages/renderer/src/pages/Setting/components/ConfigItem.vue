@@ -3,11 +3,9 @@ import { defineComponent, h, PropType } from 'vue'
 import ThemeConfig from './ThemeConfig.vue'
 import Debugger from './Debugger.vue'
 import Proxy from './Proxy.vue'
-import About from './About.vue'
 import { Switch, Button } from '@arco-design/web-vue'
 
 const configComponent: Record<string, any> = {
-  about: About,
   theme: ThemeConfig,
   debugger: Debugger,
   proxy: Proxy

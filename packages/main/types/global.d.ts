@@ -8,8 +8,6 @@ declare global {
   ) => void
 
   namespace NodeJS {
-    interface Global {
-      quickWindows: Record<string, BrowserWindow>
-    }
+    interface Global {}
   }
 }

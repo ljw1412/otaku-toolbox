@@ -6,22 +6,14 @@
       </slot>
     </div>
     <div class="header-right pr-4">
-      <app-controls>
+      <app-controls mini>
         <template v-if="$route.meta.hasView">
-          <div
-            v-if="$route.meta.hasView && $global.config.allowDevTools"
-            title="开发者工具"
-            class="app-control-btn btn-developer-tools"
-            @click="toggleDevTools"
-          >
+          <div v-if="$route.meta.hasView && $global.config.allowDevTools" title="开发者工具"
+            class="app-control-btn btn-developer-tools" @click="toggleDevTools">
             <icon-code-square />
           </div>
-          <div
-            v-if="$route.query.outlink"
-            class="app-control-btn btn-system-browser"
-            title="以系统浏览器方式打开"
-            @click="openSystemBrower"
-          >
+          <div v-if="$route.query.outlink" class="app-control-btn btn-system-browser" title="以系统浏览器方式打开"
+            @click="openSystemBrower">
             <icon-desktop />
           </div>
           <a-divider direction="vertical" />
@@ -65,7 +57,6 @@ export default defineComponent({
   background-color: var(--app-header-bg);
   z-index: 9999999;
 
-  .title {
-  }
+  .title {}
 }
 </style>

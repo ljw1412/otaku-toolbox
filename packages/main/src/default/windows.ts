@@ -16,6 +16,14 @@ const windowConfigs = {
     width: 729,
     height: 540,
     title: '系统设置'
+  },
+  about: {
+    url: getPageUrl('/about'),
+    parent: true,
+    modal: true,
+    width: 480,
+    height: 400,
+    title: '关于'
   }
 } as Record<string, NewBrowerConfig>
 
@@ -30,9 +38,9 @@ function createWindow(config: NewBrowerConfig) {
   })
 }
 
-export function createDefaultWinByTitle(title?: string) {
+export function createDefaultWinByTitle(title?: string, autoShow = false) {
   const config = Object.values(windowConfigs).find(item => item.title === title)
-  return config ? createWindow(config) : null
+  return config ? createWindow({ ...config, autoShow }) : null
 }
 
 export default function(mainWin: BrowserWindow) {

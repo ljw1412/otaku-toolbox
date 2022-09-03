@@ -21,7 +21,6 @@ export default defineComponent({
 
     cancel() {
       this.$API.Electron.win.control('hide')
-
     }
   }
 })
@@ -33,7 +32,7 @@ export default defineComponent({
   height: 100%;
   padding: 1px 12px 20px 12px;
   box-sizing: border-box;
-  background-color: var(--color-bg-3);
+  background-color: var(--color-bg-4);
 
   .buttons {
     position: absolute;

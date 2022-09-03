@@ -95,7 +95,7 @@ const createWindow = async () => {
 
   await mainWindow.loadURL(pageUrl)
 
-  global.quickWindows = createQuickWindows(mainWindow)
+  createQuickWindows(mainWindow)
 }
 
 app.on('second-instance', () => {

@@ -140,7 +140,7 @@ export function createBrowser(config: NewBrowerConfig): BrowserWindow {
  */
 export function getWindowByTitle(title?: string) {
   const allWindows = BrowserWindow.getAllWindows()
-  const win = allWindows.find(win => win.getTitle() === title)
+  const win = allWindows.find(win => win.getTitle() === title) || null
   return win
 }
 
@@ -162,9 +162,8 @@ export function openAppSystemWindow(
     if (win.isMinimized()) win.restore()
     win.focus()
     return win
-  } else {
-    return createDefaultWinByTitle(title)
   }
+  return createDefaultWinByTitle(title, true)
 }
 
 /**

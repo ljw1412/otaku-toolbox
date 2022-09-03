@@ -4,17 +4,17 @@
       <img class="logo m-auto pl-10" height="30" src="/logo-text.svg" />
       <span v-if="$global.env.DEV" class="dev-tip">开发版</span>
     </div>
-    <header-center class="flex-grow-1">
+    <header-center class="flex-grow-1" content-class="layout-lr">
       <app-navigation></app-navigation>
+      <app-user-avatar></app-user-avatar>
     </header-center>
-    <div class="header-right flex-shrink-0 d-flex">
+    <div class="header-right flex-shrink-0 d-flex align-items-center">
       <app-controls class="m-auto mr-10" mode="main">
-        <div class="app-control-btn btn-settings" @click="openSettingsWindow">
-          <icon-settings />
-        </div>
-        <!-- <div class="app-control-btn btn-menu">
-          <icon-more-vertical />
-        </div>-->
+        <app-menu>
+          <div class="app-control-btn btn-menu">
+            <icon-more-vertical />
+          </div>
+        </app-menu>
       </app-controls>
     </div>
   </header>
@@ -23,18 +23,15 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import HeaderCenter from './AppHeaderCenter.vue'
-import AppControls from '../../components/AppControls.vue'
 import AppNavigation from './AppNavigation.vue'
+import AppControls from '../../components/AppControls.vue'
+import AppUserAvatar from './AppUserAvatar.vue'
+import AppMenu from './AppMenu.vue'
 
 export default defineComponent({
   name: 'AppHeader',
-  components: { AppNavigation, HeaderCenter, AppControls },
+  components: { AppNavigation, HeaderCenter, AppControls, AppUserAvatar, AppMenu }
 
-  methods: {
-    openSettingsWindow() {
-      this.$API.Electron.win.openAppSystem('系统设置')
-    }
-  }
 })
 </script>
 
@@ -49,6 +46,8 @@ export default defineComponent({
     position: relative;
     width: 170px;
   }
+
+
 
   .dev-tip {
     position: absolute;

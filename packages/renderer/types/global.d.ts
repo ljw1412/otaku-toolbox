@@ -163,6 +163,14 @@ declare global {
     current: boolean
   }
 
+  interface BaseUserInfo {
+    _id: string
+    avatar: string
+    nickname: string
+    role: string
+    username: string
+  }
+
   interface Banner {
     _id?: string
     // 标题

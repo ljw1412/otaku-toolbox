@@ -6,6 +6,7 @@ import * as Banner from './Banner'
 import * as SpecialTopic from './SpecialTopic'
 import * as Outside from './Outside'
 import * as Series from './Series'
+import * as User from './User'
 
 export default {
   Electron,
@@ -15,5 +16,6 @@ export default {
   Banner,
   SpecialTopic,
   Outside,
-  Series
+  Series,
+  User
 }

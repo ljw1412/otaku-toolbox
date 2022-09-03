@@ -1,19 +1,11 @@
 <template>
-  <div class="app-controls app-no-drag d-flex align-items-center">
+  <div class="app-controls app-no-drag d-flex align-items-center" :class="{ mini }">
     <slot></slot>
-    <div
-      v-if="minimizable && minimizableOfMeta"
-      class="app-control-btn btn-min"
-      @click="windowAction('min')"
-    >
+    <div v-if="minimizable && minimizableOfMeta" class="app-control-btn btn-min" @click="windowAction('min')">
       <icon-minus />
       <!-- <acg-icon name="remove"></acg-icon> -->
     </div>
-    <div
-      v-if="maximizable && maximizableOfMeta"
-      class="app-control-btn btn-max"
-      @click="windowAction('max')"
-    >
+    <div v-if="maximizable && maximizableOfMeta" class="app-control-btn btn-max" @click="windowAction('max')">
       <component :is="isMaximized ? 'icon-shrink' : 'icon-expand'"></component>
       <!-- <acg-icon :name="isMaximized?'copy-outline':'stop-outline'"></acg-icon> -->
     </div>
@@ -32,6 +24,7 @@ import { safeBoolean } from '/@/utils/helper'
 export default defineComponent({
   name: 'AppControls',
   props: {
+    mini: Boolean,
     mode: { type: String, default: 'child' },
     minimizable: { type: Boolean, default: true },
     maximizable: { type: Boolean, default: true }
@@ -79,14 +72,20 @@ export default defineComponent({
 
 <style lang="scss">
 .app-controls {
+  --btn-size: 40px;
   font-size: 18px;
   line-height: 1;
+
+  &.mini {
+    --btn-size: 32px;
+  }
+
   .app-control-btn {
     display: inline-flex;
     justify-content: center;
     align-items: center;
-    width: 32px;
-    height: 32px;
+    width: var(--btn-size);
+    height: var(--btn-size);
     flex-shrink: 0;
     color: #d3d3d3;
     border-radius: 4px;
@@ -96,6 +95,7 @@ export default defineComponent({
       background-color: rgba(255, 255, 255, 0.08);
       color: #ffffff;
     }
+
     &:active {
       background-color: rgba(255, 255, 255, 0.16);
     }
@@ -104,6 +104,7 @@ export default defineComponent({
       &:hover {
         background-color: var(--color-danger-light-4);
       }
+
       &:active {
         background-color: #f95a44;
       }

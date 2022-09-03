@@ -11,32 +11,17 @@
       </a-tabs>
     </a-layout-sider>
 
-    <a-layout-content
-      class="setting-config"
-      :style="{
-        backgroundColor: tabConfig.bgColor,
-        color: tabConfig.color
-      }"
-    >
+    <a-layout-content class="setting-config" :style="{
+      backgroundColor: tabConfig.bgColor,
+      color: tabConfig.color
+    }">
       <a-typography-title :heading="5" style="margin-top: 0; color: inherit;">{{ subTitle }}</a-typography-title>
       <a-form :model="config">
-        <a-form-item
-          v-for="item of options"
-          :key="item.key"
-          :field="item.key"
-          :label="item.label"
-          :help="item.tip"
-          :label-col-props="{ span: 6, offset: 0 }"
-          :wrapper-col-props="{ span: 18, offset: 0 }"
-          v-bind="item.formItemProps"
-        >
-          <config-item
-            v-model="config[item.key]"
-            :value="item.value"
-            :type="item.type"
-            :props="item.props"
-            @change="handleConfigChange(item.key, $event)"
-          ></config-item>
+        <a-form-item v-for="item of options" :key="item.key" :field="item.key" :label="item.label" :help="item.tip"
+          :label-col-props="{ span: 6, offset: 0 }" :wrapper-col-props="{ span: 18, offset: 0 }"
+          v-bind="item.formItemProps">
+          <config-item v-model="config[item.key]" :value="item.value" :type="item.type" :props="item.props"
+            @change="handleConfigChange(item.key, $event)"></config-item>
         </a-form-item>
       </a-form>
     </a-layout-content>
@@ -98,13 +83,13 @@ const tabs: SettingTab[] = [
   },
   { key: 'proxy', title: '代理', options: [{ type: 'proxy' }] },
   { key: 'debugger', title: '调试', options: [{ type: 'debugger' }] },
-  {
-    key: 'about',
-    title: '关于',
-    options: [{ type: 'about' }],
-    color: '#ffffff',
-    bgColor: 'var(--app-theme)'
-  }
+  // {
+  //   key: 'about',
+  //   title: '关于',
+  //   options: [{ type: 'about' }],
+  //   color: '#ffffff',
+  //   bgColor: 'var(--app-theme)'
+  // }
 ]
 
 export default defineComponent({

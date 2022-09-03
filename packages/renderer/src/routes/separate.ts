@@ -3,6 +3,7 @@ import AppErrorPage from '/@/pages/pageError/index.vue'
 import AppSetting from '/@/pages/Setting/index.vue'
 import AppTheme from '/@/pages/Theme/index.vue'
 import AppExit from '/@/pages/Modal/ExitApp/index.vue'
+import AppAbout from '/@/pages/Modal/About/index.vue'
 
 const routes = [
   // 内置浏览器
@@ -14,6 +15,14 @@ const routes = [
   },
   // 退出弹窗
   { path: '/exit-app', name: 'ExitApp', component: AppExit },
+  {
+    path: '/about',
+    name: 'AppAbout',
+    component: AppAbout,
+    meta: {
+      hidable: true
+    }
+  },
   // 系统设置
   {
     path: '/setting',
