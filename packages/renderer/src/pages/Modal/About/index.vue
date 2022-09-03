@@ -2,15 +2,23 @@
   <div class="app-about">
     <header class="app-about-header app-drag">
       <app-close-btn size="mini" fixed="tr" style="top:1px; right:1px;" />
-    </header>
-    <div class="d-inline-block">
       <img class="logo mb-10" height="60" src="/logo-text.svg" />
-      <p class="m-auto" style="width:200px">
-        <a-button long>检查更新</a-button>
+      <p class="mb-8 text-stroke">
+        <span class="mr-12">版本: {{ appVersion }}</span>
+        <a-button class="app-no-drag" size="mini">检查更新</a-button>
       </p>
-      <p class="mt-20">版本: {{ appVersion }}</p>
-      <a-descriptions :data="descData" title="组件版本" class="d-inline-block mt-20" size="small"
-        :align="{ value: 'center' }" :column="1" />
+    </header>
+    <div class="d-inline-block mt-20">
+      <a-descriptions :data="descData" :align="{ value: 'right' }" :column="1" title="组件版本" size="small" />
+    </div>
+    <a-divider style="margin-bottom: 8px" />
+    <div class="layout-lr px-16">
+      <div>开发者:<a-link>灬茫然丶</a-link>
+      </div>
+      <a-button @click="toGithub">
+        <icon-github />
+        Github
+      </a-button>
     </div>
   </div>
 </template>
@@ -70,6 +78,10 @@ export default defineComponent({
       if (match && match.length > 1) {
         this.appVersion = match[1]
       }
+    },
+
+    toGithub() {
+      this.$API.Electron.win.open('https://github.com/ljw1412/otaku-toolbox', { useSystemBrowser: true })
     }
   }
 })
@@ -77,24 +89,23 @@ export default defineComponent({
 
 <style lang="scss">
 .app-about {
+  user-select: none;
   height: 100%;
-  background-color: var(--color-bg-4);
+  text-align: center;
+
+  background-color: rgba(var(--app-theme-rgb), 0.1);
 
   .app-about-header {
     position: relative;
-    height: 40px;
+    padding-top: 30px;
+    padding-bottom: 12px;
+    background-color: rgba(var(--app-theme-rgb), 0.65);
+    color: #ffffff;
   }
 
-  text-align: center;
-
-  text-shadow: 1px 0 1px rgba(0, 0, 0, 0.5),
-  0 1px 1px rgba(0, 0, 0, 0.5),
-  0 -1px 1px rgba(0, 0, 0, 0.5),
-  -1px 0 1px rgba(0, 0, 0, 0.5);
 
   .arco-descriptions {
     * {
-      color: #cccccc !important;
       font-weight: normal;
       font-size: 14px;
     }
