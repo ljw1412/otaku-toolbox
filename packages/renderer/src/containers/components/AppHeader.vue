@@ -40,14 +40,14 @@ export default defineComponent({
   height: var(--app-header-height);
   color: var(--app-header-color-text);
   background-color: var(--app-header-bg);
+  transition: color 0.15s ease-out, background-color 0.2s ease-out;
+  will-change: color, background-color;
 
   .header-left,
   .header-right {
     position: relative;
     width: 170px;
   }
-
-
 
   .dev-tip {
     position: absolute;

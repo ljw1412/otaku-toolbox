@@ -5,6 +5,12 @@
     <template #content>
       <div class="app-menu-panel">
         <a-grid :cols="3" :row-gap="8" :col-gap="8" style="padding: 0 16px;">
+          <a-grid-item @click="handleItemClick('hourSystem')">
+            <acg-ratio-div class="menu-btn" body-class="layout-center flex-column">
+              <div style="line-height: 24px; height: 24px;font-size: 24px;">{{ hourSystem }}</div>
+              <div class="fs-12">时制</div>
+            </acg-ratio-div>
+          </a-grid-item>
           <a-grid-item v-for="btn of btns" :key="btn.action" @click="handleItemClick(btn.action)">
             <acg-ratio-div class="menu-btn" body-class="layout-center flex-column">
               <component :is="btn.icon" size="24"></component>
@@ -45,8 +51,13 @@ export default defineComponent({
         this.$API.Electron.win.openAppSystem('系统设置')
       } else if (action === 'about') {
         this.$API.Electron.win.openAppSystem('关于')
+      } else if (action === 'hourSystem') {
+        this.$global.config.hourSystem = this.hourSystem === 24 ? 30 : 24
       }
-      this.isPopupVisible = false
+
+      if (!['hourSystem'].includes(action)) {
+        this.isPopupVisible = false
+      }
     },
   }
 })

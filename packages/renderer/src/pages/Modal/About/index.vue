@@ -92,8 +92,9 @@ export default defineComponent({
   user-select: none;
   height: 100%;
   text-align: center;
-
   background-color: rgba(var(--app-theme-rgb), 0.1);
+  transition: color 0.15s ease-out, background-color 0.2s ease-out;
+  will-change: color, background-color;
 
   .app-about-header {
     position: relative;
@@ -101,6 +102,8 @@ export default defineComponent({
     padding-bottom: 12px;
     background-color: rgba(var(--app-theme-rgb), 0.65);
     color: #ffffff;
+    transition: color 0.15s ease-out, background-color 0.2s ease-out;
+    will-change: color, background-color;
   }
 
 
