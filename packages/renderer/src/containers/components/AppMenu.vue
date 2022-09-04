@@ -61,7 +61,7 @@ export default defineComponent({
     cursor: pointer;
 
     &:hover {
-      background-color: var(--color-fill-4);
+      background-color: var(--color-fill-2);
     }
   }
 

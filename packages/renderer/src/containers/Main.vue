@@ -1,12 +1,8 @@
 <template>
   <div class="app-container container-main">
     <app-header></app-header>
-    <main
-      id="app-main"
-      class="app-main"
-      :data-module="$route.meta.module || 'other'"
-      :class="{ 'hide-helper': $route.meta.hideHelper }"
-    >
+    <main id="app-main" class="app-main" :data-module="$route.meta.module || 'other'"
+      :class="{ 'hide-helper': $route.meta.hideHelper }">
       <router-view v-slot="{ Component, route }" name="helper">
         <keep-alive>
           <component :is="Component" :key="route.meta.module + 'helper'" />
@@ -15,11 +11,8 @@
       <div :id="moduleMain" v-watch-scroll="$route.name" class="app-main-body" :class="moduleMain">
         <router-view v-slot="{ Component, route }">
           <keep-alive exclude="AppPageError">
-            <component
-              :is="Component"
-              :key="getComponentKey(route)"
-              :class="{ 'page-container': route.meta.pageContainer }"
-            />
+            <component :is="Component" :key="getComponentKey(route)"
+              :class="{ 'page-container': route.meta.pageContainer }" />
           </keep-alive>
         </router-view>
       </div>

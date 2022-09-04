@@ -1,16 +1,28 @@
 :root {
   --skin-cyan: #00bcd4;
+  --skin-cyan-light: #f2fcfd;
   --skin-blue: #2196f3;
+  --skin-blue-light: #f4fafe;
   --skin-dark: #1b1b1b;
+  --skin-dark-light: #f4f4f4;
   --skin-red: #f44336;
+  --skin-red-light: #fef6f5;
   --skin-orange: #eb9a18;
+  --skin-orange-light: #fefaf3;
   --skin-pink: #fb7299;
+  --skin-pink-light: #fff8fa;
   --skin-green: #4caf50;
+  --skin-green-light: #f6fbf6;
   --skin-teal: #009688;
+  --skin-teal-light: #f2faf9;
   --skin-brown: #795548;
+  --skin-brown-light: #f8f7f6;
   --skin-purple: #673ab7;
+  --skin-purple-light: #f7f5fb;
   --skin-indigo: #3f51b5;
+  --skin-indigo-light: #f5f6fb;
   --skin-blue-grey: #607d8b;
+  --skin-blue-grey-light: #f7f9f9;
   --skin-rgb-cyan: 0, 189, 214;
   --skin-rgb-blue: 33, 150, 243;
   --skin-rgb-dark: 27, 27, 27;
@@ -38,7 +50,8 @@ body {
   --app-header-bg: var(--app-theme);
   --app-header-center-bg: rgba(233, 233, 233, 0.2);
 
-  --app-color-bg: #fafafa;
+  --app-color-bg: var(--skin-blue-light);
+  // --app-color-bg: #fafafa;
   --app-color-text: var(--color-text-1);
   --app-header-color-text: #ffffff;
 
@@ -78,49 +91,59 @@ body[arco-theme='dark'] {
 body[arco-theme='cyan'] {
   --app-theme: var(--skin-cyan);
   --app-theme-rgb: var(--skin-rgb-cyan);
+  --app-color-bg: var(--skin-cyan-light);
 }
 
 body[arco-theme='teal'] {
   --app-theme: var(--skin-teal);
   --app-theme-rgb: var(--skin-rgb-teal);
+  --app-color-bg: var(--skin-teal-light);
 }
 
 body[arco-theme='red'] {
   --app-theme: var(--skin-red);
   --app-theme-rgb: var(--skin-rgb-red);
+  --app-color-bg: var(--skin-red-light);
 }
 
 body[arco-theme='orange'] {
   --app-theme: var(--skin-orange);
   --app-theme-rgb: var(--skin-rgb-orange);
+  --app-color-bg: var(--skin-orange-light);
 }
 
 body[arco-theme='pink'] {
   --app-theme: var(--skin-pink);
   --app-theme-rgb: var(--skin-rgb-pink);
+  --app-color-bg: var(--skin-pink-light);
 }
 
 body[arco-theme='green'] {
   --app-theme: var(--skin-green);
   --app-theme-rgb: var(--skin-rgb-green);
+  --app-color-bg: var(--skin-green-light);
 }
 
 body[arco-theme='brown'] {
   --app-theme: var(--skin-brown);
   --app-theme-rgb: var(--skin-rgb-brown);
+  --app-color-bg: var(--skin-brown-light);
 }
 
 body[arco-theme='purple'] {
   --app-theme: var(--skin-purple);
   --app-theme-rgb: var(--skin-rgb-purple);
+  --app-color-bg: var(--skin-purple-light);
 }
 
 body[arco-theme='indigo'] {
   --app-theme: var(--skin-indigo);
   --app-theme-rgb: var(--skin-rgb-indigo);
+  --app-color-bg: var(--skin-indigo-light);
 }
 
 body[arco-theme='blue-grey'] {
   --app-theme: var(--skin-blue-grey);
   --app-theme-rgb: var(--skin-rgb-blue-grey);
+  --app-color-bg: var(--skin-blue-grey-light);
 }
