@@ -2,16 +2,10 @@
   <div v-watch-scroll class="app-home">
     <a-layout class="home-layout">
       <a-layout-sider :width="280" class="mr-12">
-        <a-space
-          direction="vertical"
-          size="medium"
-          class="px-4 sticky-t h-100"
-          style="top: 20px;"
-          fill
-        >
-          <home-weather></home-weather>
-          <digital-clock></digital-clock>
+        <a-space direction="vertical" size="medium" class="px-4 sticky-t h-100" style="top: 20px;" fill>
           <home-user-center></home-user-center>
+          <digital-clock></digital-clock>
+          <home-weather></home-weather>
         </a-space>
       </a-layout-sider>
       <a-layout-content>

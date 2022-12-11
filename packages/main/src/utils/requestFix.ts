@@ -18,6 +18,10 @@ const ruleMap: Record<string, FilterRuleMap> = {
   '*://*.bilivideo.com/*': {
     types: '*',
     referer: 'https://www.bilibili.com/'
+  },
+  '*://*.weather.com.cn/*': {
+    types: '*',
+    referer: 'https://www.weather.com.cn/'
   }
 }
 

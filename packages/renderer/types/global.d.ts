@@ -30,6 +30,7 @@ declare global {
     query?: string | Record<string, any>
     transform?: (resp: Response) => any
     timeout?: number
+    resultType?: 'json' | 'text' | string
   }
 
   interface ThemeItem {

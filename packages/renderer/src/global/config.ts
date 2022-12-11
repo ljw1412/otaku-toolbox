@@ -7,7 +7,7 @@ const defaultConfig = {
   hourSystem: 24,
   allowDevTools: false,
   weekBangumiDirection: 'vertical',
-  weatherCity: ''
+  weather: { city: '', cityId: '' }
 }
 
 const config = useLocalStorage(GLOBAL_CONFIG, defaultConfig, {

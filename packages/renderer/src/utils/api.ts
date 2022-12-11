@@ -15,7 +15,8 @@ function createFetch(method: string) {
     timeout,
     headers: new Headers({
       'Content-Type': 'application/json; charset=utf-8'
-    })
+    }),
+    resultType: 'json'
   } as MyRequestInit
   return function baseFetch(api: string, init: MyRequestInit = {}) {
     const controller = new AbortController()
@@ -62,6 +63,9 @@ function createFetch(method: string) {
         }
         if (init.transform) {
           return init.transform(resp as Response)
+        }
+        if (init.resultType === 'text') {
+          return resp.text()
         }
         return resp.json()
       })
