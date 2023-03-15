@@ -1,9 +1,8 @@
+import { Message } from '@arco-design/web-vue'
 import { toTitleCase } from './string'
 import qs from 'qs'
 
 const timeout = 10 * 1000
-
-console.log(import.meta.env)
 
 const BASE_URL = import.meta.env.VITE_API_SERVER_URL
 // const BASE_URL = location.origin + '/api/'
@@ -13,6 +12,7 @@ function createFetch(method: string) {
     method,
     query: '',
     timeout,
+    silent: true,
     headers: new Headers({
       'Content-Type': 'application/json; charset=utf-8'
     }),
@@ -37,7 +37,7 @@ function createFetch(method: string) {
       if (typeof mConfig.query === 'object') {
         mConfig.query = qs.stringify(mConfig.query)
       }
-      if (!mConfig.query.startsWith('?')) {
+      if (mConfig.query && !mConfig.query.startsWith('?')) {
         mConfig.query = '?' + mConfig.query
       }
     }
@@ -53,13 +53,7 @@ function createFetch(method: string) {
     return fetch(url, mConfig)
       .then(async resp => {
         if (resp.status >= 400) {
-          const text = await resp.text()
-          try {
-            const json = JSON.parse(text)
-            return Promise.reject(json)
-          } catch (error) {
-            return Promise.reject(new Error(text))
-          }
+          return Promise.reject(await resp.json())
         }
         if (init.transform) {
           return init.transform(resp as Response)
@@ -70,13 +64,32 @@ function createFetch(method: string) {
         return resp.json()
       })
       .catch(e => {
+        const apiHeader = `[接口"${api}"]`
+        const configStr = JSON.stringify(mConfig, null, 2)
+        let message = e.message
+        let content: any = ''
+
         if (e.name === 'AbortError') {
-          const configStr = JSON.stringify(mConfig, null, 2)
-          const message = `接口"${api}"请求超时(${mConfig.timeout! / 1000}s)`
-          console.log(
-            `[${message}]\n/************\n${configStr}\n************/`
-          )
+          message = `请求超时(${mConfig.timeout! / 1000}s)`
         }
+        if (e.validate === 'fail' && Array.isArray(e.errors)) {
+          const errMsg = e.errors
+            .map((error: any) => `入参"${error.field}"${error.message}`)
+            .join(',')
+          message = errMsg
+          content = e.errors
+        }
+
+        const finalMessage = `${apiHeader} ${message}`
+        console.groupCollapsed(finalMessage)
+        console.log(configStr)
+        console.log(content)
+        console.groupEnd()
+
+        if (!mConfig.silent && message) {
+          Message.error(finalMessage)
+        }
+
         return Promise.reject(e)
       })
   }

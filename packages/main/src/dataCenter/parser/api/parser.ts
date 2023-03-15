@@ -33,5 +33,5 @@ export async function parseApi(
     }
   }
   console.log(result)
-  return {}
+  return result
 }

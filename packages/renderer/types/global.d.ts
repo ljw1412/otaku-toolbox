@@ -30,6 +30,8 @@ declare global {
     query?: string | Record<string, any>
     transform?: (resp: Response) => any
     timeout?: number
+    // 不显示错误弹窗
+    silent?: boolean
     resultType?: 'json' | 'text' | string
   }
 

@@ -39,5 +39,7 @@ export function globalAdd(key: string, value: any) {
 export default mGlobal
 
 if (mGlobal.env.DEV) {
-  console.log(mGlobal)
+  const titleStyle = 'color: #fadfa3; background: #030307; padding: 0 4px;'
+  console.log('%cenv', titleStyle, import.meta.env)
+  console.log('%cglobal', titleStyle, mGlobal)
 }
