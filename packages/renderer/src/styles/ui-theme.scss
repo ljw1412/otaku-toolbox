@@ -25,7 +25,21 @@ body[arco-theme='dark'] {
 }
 
 @for $i from 1 through 4 {
+  .bg-color-#{$i} {
+    background-color: var(--color-bg-#{$i});
+  }
+}
+
+.bg-app {
+  background-color: var(--app-color-bg);
+}
+
+@for $i from 1 through 4 {
   .color-text-#{$i} {
     color: var(--color-text-#{$i});
   }
+}
+
+.color-text-common {
+  color: var(--app-color-common);
 }
