@@ -81,26 +81,3 @@ h4 {
 h5 {
   font-size: 18px;
 }
-
-.full-modal {
-  .arco-modal-body {
-    padding: 0;
-  }
-}
-
-.sticky-b {
-  position: sticky;
-  bottom: 0;
-  z-index: 100;
-}
-
-.sticky-t {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-}
-
-.bg-app {
-  background-color: var(--app-color-bg);
-  backdrop-filter: blur(5px);
-}

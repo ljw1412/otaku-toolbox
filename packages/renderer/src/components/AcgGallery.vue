@@ -1,6 +1,14 @@
 <template>
-  <div ref="galleryEl" class="acg-gallery">
-    <acg-ratio-div class="gallery-image" :disabled="ratioDisabled" :ratio="ratio">
+  <div
+    ref="galleryEl"
+    class="acg-gallery"
+    :class="{ 'hide-indicator': mini && images.length <= 1 }"
+  >
+    <acg-ratio-div
+      class="gallery-image"
+      :disabled="ratioDisabled"
+      :ratio="ratio"
+    >
       <a-image
         width="100%"
         height="100%"
@@ -8,11 +16,32 @@
         loading="lazy"
         :src="current"
         :preview="false"
+        referrerpolicy="no-referrer"
         @click="handleImageClick"
       />
     </acg-ratio-div>
 
-    <div v-show="images.length > 1" ref="thumbnailsWrapEl" class="gallery-thumbnails">
+    <div
+      v-if="mini"
+      v-show="images.length > 1"
+      class="indicator"
+      @click="handleIndicatorClick"
+    >
+      <div
+        class="indicator-item"
+        :style="{
+          width: 100 / images.length + '%',
+          left: (index * 100) / images.length + '%'
+        }"
+      ></div>
+    </div>
+
+    <div
+      v-else
+      v-show="images.length > 1"
+      ref="thumbnailsWrapEl"
+      class="gallery-thumbnails"
+    >
       <div ref="thumbnailsEl" class="thumbnails" :style="[thumbnailsStyle]">
         <div
           v-for="(image, i) of compressCovers"
@@ -21,7 +50,11 @@
           class="thumbnail"
           @click="handleThumbnailClick(image.origin, $event)"
         >
-          <img :src="image.compress" loading="lazy" />
+          <img
+            :src="image.compress"
+            loading="lazy"
+            referrerpolicy="no-referrer"
+          />
         </div>
       </div>
     </div>
@@ -31,8 +64,11 @@
 <script lang="ts">
 import { defineComponent, PropType, ref, reactive, watch } from 'vue'
 import AcgRatioDiv from './AcgRatioDiv.vue'
-import { compressImage } from '/@/utils/image'
-import { useElementHover, useEventListener } from '@vueuse/core'
+import {
+  useElementHover,
+  useEventListener,
+  usePointerSwipe
+} from '@vueuse/core'
 
 export default defineComponent({
   name: 'AcgGallery',
@@ -47,11 +83,12 @@ export default defineComponent({
       type: [Array] as PropType<number[]>,
       default: () => [3, 4]
     },
+    mini: Boolean,
     images: { type: Array as PropType<string[]>, default: () => [] },
     defaultImage: String
   },
 
-  emits: ['change'],
+  emits: ['image-change'],
 
   setup(props, ctx) {
     const galleryEl = ref()
@@ -64,7 +101,7 @@ export default defineComponent({
       scrollWidth: 0
     })
 
-    watch(isThumbnailsWrapElHover, (isHover) => {
+    watch(isThumbnailsWrapElHover, isHover => {
       if (isHover) {
         thumbnailsView.width = galleryEl.value.clientWidth
         thumbnailsView.scrollWidth = thumbnailsEl.value.scrollWidth
@@ -81,17 +118,22 @@ export default defineComponent({
 
   data() {
     return {
-      current: ''
+      current: '',
+      isSwiping: false
     }
   },
 
   computed: {
+    index() {
+      return this.images.findIndex(item => item === this.current)
+    },
+
     ratioDisabled() {
       return !this.ratio
     },
     compressCovers() {
-      return this.images.map((image) => ({
-        compress: compressImage(image),
+      return this.images.map(image => ({
+        compress: this.compressImage(image, 'mini'),
         origin: image
       }))
     },
@@ -109,6 +151,26 @@ export default defineComponent({
   mounted() {
     this.initData()
     useEventListener(this.thumbnailsWrapEl, 'wheel', this.wheelLinstener)
+    usePointerSwipe(this.galleryEl, {
+      threshold: 30,
+      onSwipe: (e: PointerEvent) => {
+        this.isSwiping = true
+      },
+      onSwipeEnd: (e, direction) => {
+        console.log(e, direction)
+        if (this.images.length > 1) {
+          const dIndex = direction === 'LEFT' || direction === 'UP' ? 1 : -1
+          const i =
+            (this.index + dIndex + this.images.length) % this.images.length
+          const image = this.images[i]
+          this.current = image
+          this.$emit('image-change', image)
+        }
+        setTimeout(() => {
+          this.isSwiping = false
+        }, 0)
+      }
+    })
   },
 
   methods: {
@@ -119,12 +181,25 @@ export default defineComponent({
     },
 
     handleImageClick() {
-      this.$imagePreview(this.current, this.images)
+      if (!this.isSwiping) {
+        this.$global.dialog.imagePreview(this.current, this.images)
+      }
+    },
+
+    handleIndicatorClick(event: MouseEvent) {
+      event.preventDefault()
+      const x = event.offsetX
+      const width = (event.currentTarget as HTMLElement).clientWidth
+      if (event.target === event.currentTarget) {
+        const index = Math.floor((x / width) * this.images.length)
+        this.current = this.images[index]
+        this.$emit('image-change', this.images[index])
+      }
     },
 
     handleThumbnailClick(image: string, e: MouseEvent) {
       this.current = image
-      this.$emit('change', image)
+      this.$emit('image-change', image)
 
       const target = e.target as HTMLElement
       const centerX = (this.thumbnailsView.width - target.offsetWidth) / 2
@@ -166,6 +241,26 @@ export default defineComponent({
     object-fit: cover;
   }
 
+  .indicator {
+    position: relative;
+    width: 50%;
+    height: 6px;
+    margin-top: 6px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: rgba(var(--gray-4), 0.5);
+    border-radius: 4px;
+    cursor: pointer;
+
+    .indicator-item {
+      position: absolute;
+      height: 100%;
+      background-color: rgba(var(--gray-4), 1);
+      border-radius: 6px;
+      transition: left 0.3s;
+    }
+  }
+
   .gallery-thumbnails {
     position: relative;
     height: var(--thumbnail-size);
@@ -195,7 +290,7 @@ export default defineComponent({
       }
 
       &::before {
-        content: "";
+        content: '';
         position: absolute;
         width: 100%;
         height: 100%;
@@ -205,6 +300,7 @@ export default defineComponent({
 
       &.active {
         opacity: 1;
+
         &::before {
           border-color: var(--app-color-common);
           z-index: 1;
@@ -212,6 +308,7 @@ export default defineComponent({
       }
     }
   }
+
   .thumbnails-scroll-bar {
     position: relative;
     height: 7px;
@@ -224,7 +321,7 @@ export default defineComponent({
     }
 
     &::before {
-      content: "";
+      content: '';
       position: absolute;
       top: 0;
       left: 0;

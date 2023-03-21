@@ -1,10 +1,12 @@
 <template>
   <div class="bangumi-grid">
-    <acg-area-header title="新番导览"></acg-area-header>
-    <bangumi-grid-group v-for="(group,index) of animeGroupList"
+    <acg-area-header title="新番导览"> </acg-area-header>
+    <bangumi-grid-group
+      v-for="(group, index) of animeGroupList"
       :key="index"
       :title="group.title"
-      :animes="group.list"></bangumi-grid-group>
+      :animes="group.list"
+    ></bangumi-grid-group>
   </div>
 </template>
 

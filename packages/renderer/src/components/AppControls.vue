@@ -1,17 +1,25 @@
 <template>
-  <div class="app-controls app-no-drag d-flex align-items-center" :class="{ mini }">
+  <div
+    class="app-controls app-no-drag d-flex align-items-center"
+    :class="{ mini }"
+  >
     <slot></slot>
-    <div v-if="minimizable && minimizableOfMeta" class="app-control-btn btn-min" @click="windowAction('min')">
+    <div
+      v-if="minimizable && minimizableOfMeta"
+      class="app-control-btn btn-min"
+      @click="windowAction('min')"
+    >
       <icon-minus />
-      <!-- <acg-icon name="remove"></acg-icon> -->
     </div>
-    <div v-if="maximizable && maximizableOfMeta" class="app-control-btn btn-max" @click="windowAction('max')">
+    <div
+      v-if="maximizable && maximizableOfMeta"
+      class="app-control-btn btn-max"
+      @click="windowAction('max')"
+    >
       <component :is="isMaximized ? 'icon-shrink' : 'icon-expand'"></component>
-      <!-- <acg-icon :name="isMaximized?'copy-outline':'stop-outline'"></acg-icon> -->
     </div>
     <div class="app-control-btn btn-close" @click="windowAction('close')">
       <icon-close />
-      <!-- <acg-icon name="close"></acg-icon> -->
     </div>
   </div>
 </template>

@@ -18,7 +18,7 @@ function createFetch(method: string) {
     }),
     resultType: 'json'
   } as MyRequestInit
-  return function baseFetch(api: string, init: MyRequestInit = {}) {
+  return function baseFetch<T = any>(api: string, init: MyRequestInit = {}) {
     const controller = new AbortController()
     const signal = controller.signal
 
@@ -51,7 +51,7 @@ function createFetch(method: string) {
     }, config.timeout)
 
     return fetch(url, mConfig)
-      .then(async resp => {
+      .then<T>(async resp => {
         if (resp.status >= 400) {
           return Promise.reject(await resp.json())
         }
@@ -95,17 +95,16 @@ function createFetch(method: string) {
   }
 }
 
-const methods = ['GET', 'POST', 'PUT', 'DELETE']
+type APIRequestKeys = 'apiGet' | 'apiPost' | 'apiPut' | 'apiDelete'
+type APIRequest = {
+  [key in APIRequestKeys]: MyFetch
+}
 
+const methods = ['GET', 'POST', 'PUT', 'DELETE']
 const fetchMethods = methods.reduce((obj, item) => {
-  const key = `api${toTitleCase(item)}`
+  const key = `api${toTitleCase(item)}` as APIRequestKeys
   obj[key] = createFetch(item)
   return obj
-}, {} as Record<string, MyFetch>)
+}, {} as APIRequest)
 
-export default fetchMethods as {
-  apiGet: MyFetch
-  apiPost: MyFetch
-  apiPut: MyFetch
-  apiDelete: MyFetch
-}
+export default fetchMethods

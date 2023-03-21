@@ -1,13 +1,16 @@
-import { useLocalStorage, get } from '@vueuse/core'
+import { useLocalStorage, toReactive } from '@vueuse/core'
 
 const GLOBAL_CONFIG = 'GLOBAL_CONFIG'
 
 const defaultConfig = {
+  theme: '',
+  themeBefore: '',
   timeZone: 8,
   hourSystem: 24,
   allowDevTools: false,
   weekBangumiDirection: 'vertical',
-  weather: { city: '', cityId: '' }
+  weather: { city: '', cityId: '' },
+  bangumi: { newOpenTrailer: true }
 }
 
 const config = useLocalStorage(GLOBAL_CONFIG, defaultConfig, {
@@ -29,4 +32,6 @@ const config = useLocalStorage(GLOBAL_CONFIG, defaultConfig, {
   }
 })
 
-export default get(config) as typeof defaultConfig
+export const configRef = config
+
+export default toReactive(config) as typeof defaultConfig

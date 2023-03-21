@@ -1,17 +1,24 @@
 <template>
-  <acg-fixed-button
-    v-show="list.length"
-    ref="btn"
-    title="专题切换"
-    always
-    :bottom="90"
-    @click="isDisplaySwitch = !isDisplaySwitch"
-  >
-    <acg-icon name="repeat-outline" :size="20"></acg-icon>
-  </acg-fixed-button>
+  <a-tooltip content="专题切换" position="right" mini>
+    <acg-fixed-button
+      v-show="list.length"
+      ref="btn"
+      title="专题切换"
+      always
+      :bottom="90"
+      @click="isDisplaySwitch = !isDisplaySwitch"
+    >
+      <icon-apps :size="20" />
+    </acg-fixed-button>
+  </a-tooltip>
+
   <teleport to="body">
     <transition name="fade">
-      <div v-show="isDisplaySwitch" class="stopic-switch-picker" @click="isDisplaySwitch = false">
+      <div
+        v-show="isDisplaySwitch"
+        class="stopic-switch-picker"
+        @click="isDisplaySwitch = false"
+      >
         <div class="stopic-list">
           <acg-ratio-div
             v-for="topic of list"
@@ -22,10 +29,24 @@
             <div class="stopic-item" :class="{ active: topic.code === code }">
               <router-link
                 class="stopic-item-body"
-                :to="{ params: { code: topic.code }, query: { app: 'otakutools' } }"
+                :to="{
+                  params: { code: topic.code },
+                  query: { app: 'otakutools' }
+                }"
               >
-                <img v-if="topic.cover" :src="topic.cover" loading="lazy" />
+                <img
+                  v-if="topic.cover"
+                  :src="compressImage(topic.cover)"
+                  loading="lazy"
+                  referrerpolicy="no-referrer"
+                />
                 <span class="stopic-title">{{ topic.name }}</span>
+                <span class="status-collecting">
+                  <span v-if="topic.collecting"> <icon-tool />整理中</span>
+                  <span v-else-if="!topic.cover">
+                    <icon-exclamation-circle />就是封面没做
+                  </span>
+                </span>
               </router-link>
             </div>
           </acg-ratio-div>
@@ -53,7 +74,9 @@ export default defineComponent({
   watch: {
     isDisplaySwitch(val: boolean) {
       if (val) {
-        const activeEl = document.querySelector('.stopic-switch-picker .stopic-item.active')
+        const activeEl = document.querySelector(
+          '.stopic-switch-picker .stopic-item.active'
+        )
         if (activeEl) {
           this.$nextTick(() => {
             activeEl.scrollIntoView()
@@ -97,9 +120,9 @@ export default defineComponent({
 
   position: fixed;
   left: 0;
-  top: var(--app-header-height);
+  top: 0;
   width: 100%;
-  height: calc(100% - var(--app-header-height));
+  height: 100%;
   z-index: 600;
   background-color: rgba(0, 0, 0, 0.8);
   transform: translateZ(0);
@@ -129,16 +152,16 @@ export default defineComponent({
       height: 100%;
       padding: var(--stopic-item-padding);
       transition: padding 0.3s ease-in-out;
-      will-change: padding;
+      animation: scale-in 0.3s ease-in backwards;
 
       img {
         opacity: 0.5;
         transition: opacity 0.3s ease-in;
-        will-change: opacity;
       }
 
       &:hover {
         padding: 0;
+
         img {
           opacity: 1;
         }
@@ -148,9 +171,11 @@ export default defineComponent({
         .stopic-item-body {
           border-color: var(--app-color-common);
         }
+
         img {
           opacity: 1;
         }
+
         .stopic-title {
           color: var(--app-color-common);
         }
@@ -179,7 +204,14 @@ export default defineComponent({
         -1px 0 2px #000000;
       font-weight: bold;
       transition: font-size 0.2s;
-      will-change: font-size;
+    }
+
+    .status-collecting {
+      position: absolute;
+      right: 2px;
+      bottom: 2px;
+      font-size: 14px;
+      color: var(--color-warning-light-4);
     }
   }
 }

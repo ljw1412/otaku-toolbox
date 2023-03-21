@@ -1,9 +1,11 @@
 <template>
   <a-card
+    ref="cardRef"
     class="bangumi-list-item"
     :bordered="false"
     :body-style="{ padding: 0 }"
     :class="{ 'filter-gray': anime.markState.isBan }"
+    :data-loaded="isLoaded"
   >
     <template #cover>
       <div ref="anchor" class="anime-anchor" :id="'anime-' + anime._id"></div>
@@ -14,27 +16,46 @@
           <div class="localized-name">
             <router-link
               target="_blank"
-              :to="{ name: 'AnimeWiki', params: { id: anime._id }, query: { app: 'otakutools' } }"
-            >{{ anime.title }}</router-link>
+              :to="{
+                name: 'BangumiDetail',
+                params: { id: anime._id },
+                query: { app: 'otakutools' }
+              }"
+            >
+              {{ anime.title }}
+            </router-link>
           </div>
           <div class="original-name">{{ anime.titleOriginal }}</div>
         </a-col>
         <a-col class="anime-specs" :lg="9" :xs="24" :sm="24">
-          <a-space size="mini" wrap class="anime-tags">
+          <a-space size="mini" class="anime-tags">
             <a-tag
               v-for="tag of anime.tags"
               :color="tag.color || 'arcoblue'"
+              :size="isMobileSize ? 'small' : undefined"
               :key="tag._id"
-            >{{ tag.name }}</a-tag>
+              >{{ tag.name }}</a-tag
+            >
           </a-space>
           <div class="anime-onair">
             <span>{{ onairStr }}</span>
-            <template v-if="anime.isSubTagMatched">
+            <template
+              v-if="anime.isSubTagMatched || anime.markState.isPostpone"
+            >
               <a-divider direction="vertical" />
-              <a-typography-text type="warning">跨季放送</a-typography-text>
+              <a-typography-text
+                :type="anime.markState.isPostpone ? 'warning' : 'primary'"
+                >{{
+                  anime.markState.isPostpone ? '延期放送' : '跨季放送'
+                }}</a-typography-text
+              >
             </template>
           </div>
-          <div class="btn-push" @click="handlePushBtnClick" :href="'#anime-' + anime._id">
+          <div
+            class="btn-push"
+            :href="'#anime-' + anime._id"
+            @click="handlePushBtnClick"
+          >
             <a-button>
               <template #icon>
                 <icon-pushpin />
@@ -44,16 +65,24 @@
         </a-col>
       </a-row>
     </template>
-    <a-row>
+    <a-row class="bangumi-info">
       <a-col class="anime-gallery" :xl="7" :xs="8" :sm="8">
-        <acg-gallery :images="anime.cover" :default-image="anime.coverMin"></acg-gallery>
+        <acg-gallery
+          :images="anime.cover"
+          :default-image="anime.coverMin"
+        ></acg-gallery>
       </a-col>
       <a-col :xl="17" :xs="16" :sm="16">
         <a-row class="anime-info" :gutter="{ lg: 8 }">
-          <a-col :lg="12">
+          <a-col :span="24" style="margin-bottom: 4px">
             <div v-if="anime.markState.isBan" class="info-block anime-alert">
               <a-alert type="warning">该动画存在严重争议问题！</a-alert>
             </div>
+            <a-alert v-if="(anime.tips || '').trim()" type="warning">
+              <div v-html="mTips"></div>
+            </a-alert>
+          </a-col>
+          <a-col :lg="12">
             <div v-show="animeTitleMore" class="anime-name-more info-block">
               <h4>其它名称</h4>
               <p>{{ animeTitleMore }}</p>
@@ -65,7 +94,10 @@
             <div v-show="anime.copyright" class="anime-copyright info-block">
               <i>{{ anime.copyright }}</i>
             </div>
-            <div v-show="anime.links && anime.links.length" class="anime-links info-block">
+            <div
+              v-show="anime.links && anime.links.length"
+              class="anime-links info-block"
+            >
               <h4>相关链接</h4>
               <p>
                 <a-space wrap size="mini">
@@ -76,12 +108,23 @@
                     :title="link.message || link.name"
                     class="anime-link"
                     target="_blank"
-                  >{{ link.name }}</a-link>
+                    @click="handleLinkClick($event, link)"
+                  >
+                    <img
+                      v-if="link.type === 'trailer' && getLinkFrom(link)"
+                      :src="getLogoIcon(getLinkFrom(link))"
+                      style="width: 14px; height: 14px; margin-right: 2px"
+                    />
+                    {{ link.name }}
+                  </a-link>
                 </a-space>
               </p>
             </div>
             <div
-              v-show="streamingPlatforms && streamingPlatforms.length"
+              v-show="
+                isSecretMode ||
+                (streamingPlatforms && streamingPlatforms.length)
+              "
               class="anime-streaming info-block"
             >
               <h4>网络播放</h4>
@@ -92,23 +135,47 @@
                     :key="link.url"
                     mode="icon"
                     v-bind="link"
-                  ></acg-stream-item>
+                  >
+                  </acg-stream-item>
+                  <acg-stream-item
+                    v-if="isSecretMode"
+                    mode="icon"
+                    from="DMHY"
+                    name="动漫花园"
+                    region="资源"
+                    :url="`https://share.dmhy.org/topics/list?keyword=${anime.title}`"
+                  >
+                  </acg-stream-item>
                 </a-space>
               </p>
             </div>
           </a-col>
           <a-col :lg="12">
-            <div v-show="anime.cast && anime.cast.length" class="anime-cast info-block">
+            <div
+              v-show="anime.cast && anime.cast.length"
+              class="anime-cast info-block"
+            >
               <h4>Cast</h4>
-              <div v-for="person of anime.cast" :key="person.name" class="person">
+              <div
+                v-for="person of anime.cast"
+                :key="person.name"
+                class="person"
+              >
                 <span class="type">{{ person.name }}</span>
                 <span>:</span>
                 <span class="entity">{{ person.entity }}</span>
               </div>
             </div>
-            <div v-show="anime.staff && anime.staff.length" class="anime-staff info-block">
+            <div
+              v-show="anime.staff && anime.staff.length"
+              class="anime-staff info-block"
+            >
               <h4>Staff</h4>
-              <div v-for="person of anime.staff" :key="person.name" class="person">
+              <div
+                v-for="person of anime.staff"
+                :key="person.name"
+                class="person"
+              >
                 <span class="type">{{ person.name }}</span>
                 <span>:</span>
                 <span class="entity">{{ person.entity }}</span>
@@ -122,8 +189,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue'
-import { contra } from '/@/utils/contra'
+import { defineComponent, ref, PropType } from 'vue'
+import { useIntersectionObserver } from '@vueuse/core'
+import type { CardInstance } from '@arco-design/web-vue'
 import { onairMessage } from '/@/utils/dataFormat'
 
 export default defineComponent({
@@ -136,6 +204,34 @@ export default defineComponent({
     }
   },
 
+  setup() {
+    const isLoaded = ref(false)
+    const cardRef = ref<CardInstance>()
+
+    try {
+      const { isSupported, stop } = useIntersectionObserver(
+        cardRef,
+        ([{ isIntersecting }], observerElement) => {
+          if (isIntersecting) {
+            isLoaded.value = true
+            stop()
+          }
+        }
+      )
+
+      if (!isSupported.value) {
+        isLoaded.value = true
+      }
+    } catch (error) {
+      isLoaded.value = true
+      console.groupCollapsed('[ListItem] 懒加载监听失败，改用正常加载模式！')
+      console.error(error)
+      console.groupEnd()
+    }
+
+    return { isLoaded, cardRef }
+  },
+
   computed: {
     animeTitleMore(): string {
       return (this.anime.titleMore || []).join('、')
@@ -143,12 +239,16 @@ export default defineComponent({
 
     streamingPlatforms(): BangumiStreaming[] {
       if (!Array.isArray(this.anime.streamingPlatforms)) return []
-      if (contra.flag) return this.anime.streamingPlatforms
-      return this.anime.streamingPlatforms.filter(item => !item.hide)
+      if (this.isSecretMode) return this.anime.streamingPlatforms
+      return this.anime.streamingPlatforms.filter((item) => !item.hide)
     },
 
     mDesc(): string {
       return (this.anime.desc || '').replace(/\n/g, '<br />')
+    },
+
+    mTips() {
+      return (this.anime.tips || '').replace(/\n/g, '<br />')
     },
 
     onair(): FormatedAnimeDatetime {
@@ -161,6 +261,12 @@ export default defineComponent({
   },
 
   methods: {
+    getLinkFrom(link: BangumiLink) {
+      if (link.url.includes('.bilibili.com')) return 'Bilibili'
+      if (link.url.includes('.youtube.com')) return 'YouTube'
+      return
+    },
+
     getTitle(link: BangumiStreaming) {
       let title = link.name
       if (link.region) {
@@ -171,10 +277,32 @@ export default defineComponent({
       }
       return title
     },
+
     handlePushBtnClick() {
       const anchor = this.$refs.anchor as HTMLElement
       if (anchor) {
         anchor.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      }
+    },
+
+    appendAutoPlay(url: string, autoplay = '0') {
+      return (url += (url.includes('?') ? '&' : '?') + 'autoplay=' + autoplay)
+    },
+
+    handleLinkClick(ev: MouseEvent, link: BangumiLink) {
+      if (link.type === 'trailer') {
+        ev.preventDefault()
+        let { url } = link
+        if (this.$global.config.bangumi.newOpenTrailer) {
+          url = this.appendAutoPlay(url, '1')
+          if (url.includes('.bilibili.com')) {
+            const [, search] = url.split('?')
+            url = `https://www.bilibili.com/blackboard/html5player.html?${search}`
+          }
+          window.open(url, '_blank')
+          return
+        }
+        this.$global.dialog.showIframePlayer(link.url, { name: link.name })
       }
     }
   }
@@ -183,6 +311,17 @@ export default defineComponent({
 
 <style lang="scss">
 .bangumi-list-item {
+  margin-left: var(--list-item-margin-x);
+  margin-right: var(--list-item-margin-x);
+
+  &[data-loaded~='false'] .bangumi-info > * {
+    display: none;
+  }
+
+  .bangumi-info {
+    min-height: var(--list-item-content-min-height);
+  }
+
   &.arco-card {
     box-shadow: 0 0 5px rgba(178, 178, 178, 0.2);
 
@@ -195,7 +334,7 @@ export default defineComponent({
       z-index: 100;
 
       &::before {
-        content: "";
+        content: '';
         position: absolute;
         top: 0;
         left: 0;
@@ -216,6 +355,10 @@ export default defineComponent({
         line-height: 20px;
         font-weight: 400;
       }
+
+      .anime-onair {
+        font-size: var(--anime-onair-fs, 15px);
+      }
     }
 
     > .arco-card-cover {
@@ -232,6 +375,7 @@ export default defineComponent({
 
   .anime-specs {
     position: relative;
+    padding-top: 2px;
 
     .btn-push {
       position: absolute;
@@ -250,7 +394,7 @@ export default defineComponent({
       --thumbnail-size: var(--list-item-gallery-item-size, 64);
 
       position: sticky;
-      top: var(--list-item-header-height);
+      top: calc(var(--list-item-header-height) + var(--app-header-height));
 
       .gallery-image {
         width: 100%;
@@ -275,50 +419,15 @@ export default defineComponent({
       padding: 4px 0;
     }
 
-    a.anime-link {
-      position: relative;
-      text-align: center;
-      > .link-icon {
-        display: block;
-        width: var(--list-item-link-icon-size);
-        height: var(--list-item-link-icon-size);
-        margin: 0 auto;
-        object-fit: contain;
-      }
-
-      > .link-name {
-        display: flex;
-        height: var(--list-item-link-icon-size);
-        justify-items: center;
-        align-items: center;
-      }
-
-      .badge {
-        position: absolute;
-        left: 0;
-        top: 0;
-        font-size: 12px;
-        line-height: 16px;
-        padding: 0 2px;
-        color: #ffffff;
-        background-color: rgb(var(--danger-6));
-        box-shadow: 0 0 0 1px var(--color-bg-2);
-      }
-
-      > span {
-        flex-shrink: 0;
-      }
-
-      &.arco-link-status-warning {
-        .badge {
-          background-color: rgb(var(--warning-6));
-        }
-      }
-    }
-
     .info-block {
       margin-bottom: 6px;
       font-size: var(--list-item-info-font-size);
+    }
+
+    .anime-desc {
+      > p {
+        line-height: 1.5em;
+      }
     }
 
     .anime-name-more,

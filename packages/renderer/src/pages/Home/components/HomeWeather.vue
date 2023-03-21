@@ -22,7 +22,7 @@
       </div>
 
       <div class="optional layout-lr">
-        <span class="update-time color-text-3">{{ weather.time }}更新</span>
+        <span class="update-time text-color-3">{{ weather.time }}更新</span>
         <icon-refresh class="refresh" size="16px" @click="iniWeather" />
       </div>
     </a-spin>

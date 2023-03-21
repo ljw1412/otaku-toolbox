@@ -1,0 +1,37 @@
+{
+  "-2": {
+    "status": -2,
+    "name": "抛弃",
+    "text": "已抛弃",
+    "color": "#f54e4e",
+    "btnStatus": "danger"
+  },
+  "-1": {
+    "status": -1,
+    "name": "搁置",
+    "text": "已搁置",
+    "color": "#9256f3",
+    "btnStatus": "stop"
+  },
+  "0": {
+    "status": 0,
+    "name": "想看",
+    "text": "想看中",
+    "color": "#ff8d1f",
+    "btnStatus": "warning"
+  },
+  "1": {
+    "status": 1,
+    "name": "在看",
+    "text": "正在看",
+    "color": "#02a9ff",
+    "btnStatus": "watching"
+  },
+  "2": {
+    "status": 2,
+    "name": "看过",
+    "text": "已看过",
+    "color": "#1db440",
+    "btnStatus": "success"
+  }
+}

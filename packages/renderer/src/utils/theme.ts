@@ -1,7 +1,5 @@
-import { reactive } from 'vue'
-import { ipcSend } from './electron'
-
-const STORE_KEY = 'APP_THEME'
+import { reactive, watch } from 'vue'
+import { configRef as config } from '../global/config'
 
 export const themes = [
   { name: '蓝色', value: '', type: 'light', variable: '--skin-blue' },
@@ -23,28 +21,33 @@ export const themes = [
   { name: '黑暗', value: 'dark', type: 'dark', variable: '--skin-dark' }
 ]
 
-const themeData = reactive({ current: '', themes })
+const themeData = reactive({ current: config.value.theme, themes })
 
 const themeHelper: ThemeHelper = {
   themes,
   data: themeData,
   init(): void {
     this.update(this.get())
+    watch(
+      () => config.value.theme,
+      () => this.update(this.get())
+    )
   },
   // 获取本地存储的主题名称
   get(): string {
-    return localStorage.getItem(STORE_KEY) || ''
+    return config.value.theme || ''
   },
   // 更新UI并保存主题名称到本地存储
   set(value = ''): void {
-    this.update(value)
-    localStorage.setItem(STORE_KEY, value)
-    ipcSend('window.message', 'theme-updated')
+    if (config.value.theme !== value) {
+      config.value.themeBefore = this.data.current
+    }
+    config.value.theme = value
+    this.data.current = value
   },
   // 更新UI
   update(value = '') {
     document.body.setAttribute('arco-theme', value)
-    this.data.current = value
   }
 }
 

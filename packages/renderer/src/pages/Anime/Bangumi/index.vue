@@ -1,12 +1,21 @@
 <template>
-  <div class="anime-bangumi" :class="{ 'page-container': $route.meta.separate }">
-    <div v-show="bangumiList.length" class="anime-bangumi-header mb-20">
+  <div
+    class="anime-bangumi"
+    :class="{ 'page-container': $route.meta.separate }"
+  >
+    <div
+      v-show="bangumiList.length"
+      class="anime-bangumi-header"
+      :class="{ 'mb-20': !currentSTopic.collecting }"
+    >
       <acg-ratio-div class="cover" :ratio="[4, 3]">
         <img
-          :src="currentSTopic.cover || 'http://i0.hdslb.com/bfs/album/8a9094bb72b681a815ddf4b7010d4d356b9b5467.png'"
+          v-if="currentSTopic.cover"
+          :src="currentSTopic.cover"
+          referrerpolicy="no-referrer"
         />
+        <div v-else class="not-stopic-cover">假装有封面</div>
       </acg-ratio-div>
-
       <bangumi-filter
         :animes="bangumiList"
         @change="handleFilterChange"
@@ -20,15 +29,48 @@
         </template>
       </bangumi-filter>
     </div>
-    <template v-if="code && !isLoading">
-      <bangumi-grid :anime-group-list="bangumiGroupList" class="mb-20"></bangumi-grid>
-      <bangumi-list :animes="filterBangumiList" class="mb-20"></bangumi-list>
-    </template>
-    <div v-else>
-      <acg-api-result :error="isError" @retry="retry"></acg-api-result>
+
+    <a-alert
+      v-if="bangumiList.length && currentSTopic.collecting"
+      type="warning"
+      class="status-collecting mb-20"
+      title="收集整理中！"
+    >
+      本专题表正处于收集整理的状态。
+      <br />
+      可能会看到数据不完整，作品封面图未上传等各种问题。
+    </a-alert>
+
+    <div class="anime-bangumi-body">
+      <template v-if="code && !isLoading">
+        <template v-if="bangumiList.length">
+          <bangumi-grid
+            :anime-group-list="bangumiGroupList"
+            class="mb-20"
+          ></bangumi-grid>
+          <bangumi-quick-list
+            :animes="filterBangumiList"
+            class="mb-20"
+          ></bangumi-quick-list>
+        </template>
+        <template v-else>
+          <a-result
+            :title="title"
+            status="404"
+            subtitle="这还只是个<新建文件夹>"
+          ></a-result>
+        </template>
+      </template>
+      <div v-else>
+        <acg-api-result :error="isError" @retry="retry"></acg-api-result>
+      </div>
     </div>
 
-    <special-topic-switch :code="code" :list="specialTopicList"></special-topic-switch>
+    <bangumi-index :animes="filterBangumiList"></bangumi-index>
+    <special-topic-switch
+      :code="code"
+      :list="specialTopicList"
+    ></special-topic-switch>
   </div>
 </template>
 
@@ -37,6 +79,7 @@ import { defineComponent } from 'vue'
 import BangumiFilter from './components/BangumiFilter.vue'
 import BangumiGrid from './components/BangumiGrid.vue'
 import BangumiList from './components/BangumiList.vue'
+import BangumiIndex from './components/BangumiIndex.vue'
 import SpecialTopicSwitch from './components/SpecialTopicSwitch.vue'
 import { betterWeekdayName } from '/@/utils/date'
 
@@ -45,7 +88,13 @@ const nowYear = new Date().getFullYear() + ''
 export default defineComponent({
   name: 'AnimeBangumi',
 
-  components: { BangumiFilter, BangumiGrid, BangumiList, SpecialTopicSwitch },
+  components: {
+    BangumiFilter,
+    BangumiGrid,
+    BangumiIndex,
+    BangumiQuickList: BangumiList,
+    SpecialTopicSwitch
+  },
 
   props: { code: String },
 
@@ -53,7 +102,6 @@ export default defineComponent({
     return {
       isLoading: true,
       isError: false,
-      isDisplaySwitch: false,
       groupBy: '',
       filterTagList: [] as Tag[],
       specialTopicList: [] as SpecialTopic[],
@@ -63,9 +111,13 @@ export default defineComponent({
 
   computed: {
     currentSTopic() {
-      return this.specialTopicList.find(
-        (item) => item.code === this.code
-      ) || { cover: '', name: '' }
+      return (
+        this.specialTopicList.find((item) => item.code === this.code) ||
+        ({
+          cover: '',
+          name: ''
+        } as SpecialTopic)
+      )
     },
 
     title(): string {
@@ -74,7 +126,7 @@ export default defineComponent({
     },
 
     total() {
-      return this.bangumiList.filter(item => !item.isSubTagMatched).length
+      return this.bangumiList.filter((item) => !item.isSubTagMatched).length
     },
 
     filterBangumiList(): FormatedBangumiBasic[] {
@@ -85,17 +137,17 @@ export default defineComponent({
         list = this.sortByOnair(list)
       }
       if (!this.filterTagList.length) return list
-      const filterTagIdList = this.filterTagList.map(tag => tag._id)
-      return list.filter(bangumi => {
+      const filterTagIdList = this.filterTagList.map((tag) => tag._id)
+      return list.filter((bangumi) => {
         let i = 0
-        bangumi.tags.forEach(tag => {
+        bangumi.tags.forEach((tag) => {
           if (filterTagIdList.includes(tag._id)) i++
         })
         return i === filterTagIdList.length
       })
     },
 
-    bangumiGroupList(): BangumiBasicGroup[] {
+    bangumiGroupList() {
       if (this.groupBy === 'day') {
         return this.filterByDay(this.filterBangumiList)
       } else if (this.groupBy === 'onair') {
@@ -114,6 +166,7 @@ export default defineComponent({
           return
         }
         this.fetchBangumiByCode()
+        // setNavigationCache(module, item.to)
       })
     }
   },
@@ -133,7 +186,7 @@ export default defineComponent({
     initCode() {
       if (!this.code && this.specialTopicList.length) {
         const { code } =
-          this.specialTopicList.find(item => item.current) ||
+          this.specialTopicList.find((item) => item.current) ||
           this.specialTopicList[0]
 
         this.$router.replace({
@@ -164,30 +217,30 @@ export default defineComponent({
 
     filterByDay(filterBangumiList: FormatedBangumiBasic[]) {
       const groupList: BangumiBasicGroup[] = []
-      filterBangumiList.forEach(item => {
+      filterBangumiList.forEach((item) => {
         let day = item.formatOnair[this.hourSystem].day
         if (day === undefined) day = 7
         if (!groupList[day]) {
           groupList[day] = {
-            title: day < 7 ? betterWeekdayName(day) : '暂未定档',
+            title: day < 7 ? betterWeekdayName(day) : '首播未定',
             list: [item]
           }
         } else {
           groupList[day].list.push(item)
         }
       })
-      return groupList
+      return groupList.filter((i) => i)
     },
 
     filterByOnair(filterBangumiList: FormatedBangumiBasic[]) {
       const onairGroup: Record<string, FormatedBangumiBasic[]> = {}
-      filterBangumiList.forEach(item => {
+      filterBangumiList.forEach((item) => {
         const formatOnair = item.formatOnair[this.hourSystem]
         let dateCH =
           nowYear === formatOnair.years
             ? formatOnair.dateCH
             : formatOnair.fullDateCH
-        if (dateCH === undefined) dateCH = '暂未定档'
+        if (dateCH === undefined) dateCH = '首播未定'
         if (item.isSubTagMatched) dateCH = '跨季放送'
         if (!onairGroup[dateCH]) {
           onairGroup[dateCH] = [item]
@@ -195,7 +248,7 @@ export default defineComponent({
           onairGroup[dateCH].push(item)
         }
       })
-      return Object.keys(onairGroup).map(key => ({
+      return Object.keys(onairGroup).map((key) => ({
         title: key,
         list: onairGroup[key]
       }))
@@ -213,14 +266,6 @@ export default defineComponent({
           return onairA > onairB ? 1 : -1
         })
         this.isLoading = false
-        // if (location.hash) {
-        //   this.$nextTick(() => {
-        //     const el = document.querySelector(location.hash)
-        //     this.$nextTick(() => {
-        //       if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
-        //     })
-        //   })
-        // }
       } catch (error) {
         this.isError = true
       }
@@ -228,10 +273,11 @@ export default defineComponent({
 
     async fetchSpecialTopicList() {
       try {
-        this.specialTopicList = await this.$API.SpecialTopic.listSpecialTopic(
-          'TV'
-        )
-
+        const { list } = await this.$API.SpecialTopic.listSpecialTopic('TV', {
+          index: 1,
+          size: 1000
+        })
+        this.specialTopicList = list
         this.initCode()
       } catch (error) {
         this.isError = true
@@ -260,8 +306,10 @@ export default defineComponent({
 
 <style lang="scss">
 .anime-bangumi {
-  --grid-item-size: 156px;
+  --page-title-font-size: 32px;
+  --list-item-margin-x: 0;
   --list-item-header-height: 60px;
+  --list-item-content-min-height: 575px;
   --list-item-info-font-size: 16px;
   --list-item-info-min-font-size: 13px;
   --list-item-gallery-item-size: 80px;
@@ -276,6 +324,17 @@ export default defineComponent({
       flex-grow: 1;
     }
 
+    .not-stopic-cover {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 36px;
+      font-weight: bold;
+      opacity: 0.5;
+      user-select: none;
+    }
+
     .bangumi-filter {
       width: 60%;
       box-sizing: border-box;
@@ -285,7 +344,7 @@ export default defineComponent({
 
   .page-title {
     margin: 16px 0;
-    font-size: 32px;
+    font-size: var(--page-title-font-size);
     padding-left: 8px;
   }
 
@@ -295,7 +354,7 @@ export default defineComponent({
 
   .acg-area-header {
     .left::before {
-      content: "";
+      content: '';
       width: 4px;
       height: 18px;
       margin-top: 3px;
@@ -307,12 +366,14 @@ export default defineComponent({
 
 @media (min-width: 1750px) {
   .anime-bangumi {
-    --grid-item-size: 164px;
+    --list-item-margin-x: 6px;
+    --list-item-content-min-height: 660px;
   }
 }
 
 @media (max-width: 1599.9px) {
   .anime-bangumi {
+    --list-item-content-min-height: 450px;
     --list-item-info-font-size: 14px;
     --list-item-info-min-font-size: 12px;
     --list-item-gallery-item-size: 64px;

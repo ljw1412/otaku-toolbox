@@ -2,15 +2,21 @@
   <a-card class="bangumi-filter" :bordered="false">
     <slot name="header"></slot>
 
-    <div style="margin-bottom: -4px;">
+    <div style="margin-bottom: -4px">
       <a-space wrap size="mini" class="filter-group">
         <span class="filter-title">分组：</span>
-        <a-radio-group v-model="groupBy" type="button" size="small" @change="handleGroupByChange">
+        <a-radio-group
+          v-model="groupBy"
+          type="button"
+          size="small"
+          @change="handleGroupByChange"
+        >
           <a-radio
             v-for="group of groupList"
             :key="group.value"
             :value="group.value"
-          >{{ group.label }}</a-radio>
+            >{{ group.label }}</a-radio
+          >
         </a-radio-group>
       </a-space>
 
@@ -31,7 +37,9 @@
             @check="handleTagCheck(tag, tagGroup)"
           >
             <span>{{ tag.name }}</span>
-            <template v-if="tagCount[tag._id] !== undefined">({{ tagCount[tag._id] }})</template>
+            <template v-if="tagCount[tag._id]"
+              >({{ tagCount[tag._id] }})</template
+            >
           </a-tag>
         </template>
       </a-space>
@@ -45,11 +53,11 @@ import { defineComponent, PropType } from 'vue'
 export default defineComponent({
   name: 'AnimeBangumiFilter',
 
+  emits: ['change', 'group-by-change'],
+
   props: {
     animes: { type: Array as PropType<BangumiBasic[]>, default: () => [] }
   },
-
-  emits: ['change', 'group-by-change'],
 
   data() {
     return {
@@ -66,16 +74,16 @@ export default defineComponent({
   computed: {
     selectedTagList(): Tag[] {
       let list: Tag[] = []
-      this.tagGroupList.forEach(tagGroup => {
+      this.tagGroupList.forEach((tagGroup) => {
         if (tagGroup.tags[0].selected) return
-        list = list.concat(tagGroup.tags.filter(tag => tag.selected))
+        list = list.concat(tagGroup.tags.filter((tag) => tag.selected))
       })
       return list
     },
     tagCount() {
       const countObj: Record<string, any> = {}
-      this.animes.forEach(anime => {
-        anime.tags.forEach(tag => {
+      this.animes.forEach((anime) => {
+        anime.tags.forEach((tag) => {
           if (!countObj[tag._id]) {
             countObj[tag._id] = 1
           } else {
@@ -87,17 +95,6 @@ export default defineComponent({
     }
   },
 
-  watch: {
-    animes() {
-      this.tagGroupList.forEach(item => {
-        item.tags.forEach(tag => {
-          tag.selected = true
-        })
-      })
-      this.$emit('change', this.selectedTagList)
-    }
-  },
-
   mounted() {
     this.fetchTagGroupList()
   },
@@ -105,10 +102,10 @@ export default defineComponent({
   methods: {
     async fetchTagGroupList() {
       const data: TagGroup[] = await this.$API.Tag.listTagGroup(true)
-      this.tagGroupList = data.filter(tagGroup => tagGroup.tags.length)
-      this.tagGroupList.forEach(item => {
+      this.tagGroupList = data.filter((tagGroup) => tagGroup.tags.length)
+      this.tagGroupList.forEach((item) => {
         item.tags.unshift({ _id: 'all', name: '全部' })
-        item.tags.forEach(tag => {
+        item.tags.forEach((tag) => {
           tag.selected = true
         })
       })
@@ -119,10 +116,21 @@ export default defineComponent({
     },
 
     handleTagCheck(tag: Tag, tagGroup: TagGroup) {
-      tagGroup.tags.forEach(t => {
+      tagGroup.tags.forEach((t) => {
         t.selected = tag._id === 'all'
       })
       tag.selected = true
+      this.$emit('change', this.selectedTagList)
+    }
+  },
+
+  watch: {
+    animes() {
+      this.tagGroupList.forEach((item) => {
+        item.tags.forEach((tag) => {
+          tag.selected = true
+        })
+      })
       this.$emit('change', this.selectedTagList)
     }
   }
@@ -135,6 +143,7 @@ export default defineComponent({
   .arco-space {
     display: flex;
   }
+
   .filter-group:not(:last-child) {
     margin-bottom: 8px;
   }

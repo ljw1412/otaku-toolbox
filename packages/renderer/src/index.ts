@@ -9,8 +9,6 @@ import AppInject from '/@/inject'
 import ApiFetch from '/@/utils/api'
 import API from '/@/apis/index'
 import mGlobal from './global/index'
-import { initContra } from '/@/utils/contra'
-import { imagePreview } from '/@/utils/image'
 
 import dayjs from './dayjs'
 import './IDB/index'
@@ -20,16 +18,15 @@ import themeHelper from '/@/utils/theme'
 import '/@/styles/index.scss'
 import '@arco-design/web-vue/dist/arco.css'
 
+mGlobal.contra.initContra()
 themeHelper.init()
 window.$theme = themeHelper
-initContra()
 
 const app = createApp(App)
 
 Object.assign(app.config.globalProperties, ApiFetch, {
   $theme: themeHelper,
   $dayjs: dayjs,
-  $imagePreview: imagePreview,
   $API: API,
   $global: mGlobal
 })

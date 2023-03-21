@@ -7,6 +7,14 @@ import * as SpecialTopic from './SpecialTopic'
 import * as Outside from './Outside'
 import * as Series from './Series'
 import * as User from './User'
+import * as Episode from './Episode'
+import * as Favourite from './Favourite'
+import * as Character from './Character'
+import * as Review from './Review'
+import * as WeChat from './WeChat'
+import * as WatchRecord from './WatchRecord'
+import * as Gift from './Gift'
+import * as News from './News'
 
 export default {
   Electron,
@@ -17,5 +25,13 @@ export default {
   SpecialTopic,
   Outside,
   Series,
-  User
+  User,
+  Episode,
+  Favourite,
+  Character,
+  Review,
+  WeChat,
+  WatchRecord,
+  Gift,
+  News
 }

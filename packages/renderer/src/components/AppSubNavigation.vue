@@ -16,14 +16,18 @@
       <div v-if="!$slots.right" class="navigation-right">
         <slot name="right">
           <div class="navigation-helper">
-            <div v-for="item of rightLinks" :key="item.name" class="helper-item">
+            <div
+              v-for="item of rightLinks"
+              :key="item.name"
+              class="helper-item"
+            >
               <span @click="open(item)">{{ item.name }}</span>
             </div>
           </div>
           <a-input-search
             v-if="hasSearch"
             v-model="text"
-            style="width: 200px;"
+            style="width: 200px"
             size="small"
             allow-clear
             @press-enter="$emit('search', text)"
@@ -173,7 +177,7 @@ export default defineComponent({
         }
 
         &:not(:first-child)::before {
-          content: "|";
+          content: '|';
           padding: 10px;
           opacity: 0.5;
         }

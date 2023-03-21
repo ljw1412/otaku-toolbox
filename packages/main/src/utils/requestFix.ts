@@ -3,7 +3,8 @@ import match from './url-match-patterns'
 
 interface FilterRuleMap {
   types: string[] | '*'
-  referer: string
+  referer?: string
+  origin?: string
 }
 
 const ruleMap: Record<string, FilterRuleMap> = {
@@ -35,8 +36,8 @@ const paramRegEx = /\{:(\w+)\}+/g
 function parseParamsReferer(url: string, referer: string) {
   if (!paramRegEx.test(referer)) return referer
   const mUrl = new URL(url)
-  const paramNames = Array.from(referer.matchAll(/\{:(\w+)\}+/g), m => m[1])
-  paramNames.forEach(item => {
+  const paramNames = Array.from(referer.matchAll(/\{:(\w+)\}+/g), (m) => m[1])
+  paramNames.forEach((item) => {
     if (item) {
       const paramValue = mUrl.searchParams.get(item)
       if (paramValue) referer = referer.replace(`{:${item}}`, paramValue)
@@ -51,7 +52,7 @@ function parseParamsReferer(url: string, referer: string) {
 }
 
 function getFilterRule(url: string) {
-  const rule = filter.urls.find(rule => match(rule, url))
+  const rule = filter.urls.find((rule) => match(rule, url))
   return rule
 }
 
@@ -73,10 +74,16 @@ session.defaultSession.webRequest.onBeforeSendHeaders(filter, (details, cb) => {
 
   const filterRule = getFilterRule(url)
   if (!filterRule) return cb({})
-  const { types, referer: targetReferer } = ruleMap[filterRule]
+  const { types, referer: targetReferer, origin } = ruleMap[filterRule]
   if (types !== '*' && !types.includes(resourceType)) return cb({})
-  const referer = parseParamsReferer(url, targetReferer)
-  requestHeaders.Referer = referer
+  if (targetReferer) {
+    const referer = parseParamsReferer(url, targetReferer)
+    requestHeaders.Referer = referer
+  }
+  if (origin) {
+    requestHeaders.Origin = origin
+  }
+
   requestHeaders['User-Agent'] =
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.54 Safari/537.36 Edg/95.0.1020.30'
   cb({ requestHeaders })

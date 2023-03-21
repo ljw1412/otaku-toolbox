@@ -3,12 +3,10 @@
     <acg-area-header>
       <template #left>
         <h3 class="title">一周放送</h3>
-        <a-badge :text="gmt"
-          style="font-size: 0;" />
+        <a-badge :text="gmt" style="font-size: 0" />
       </template>
       <template #right>
-        <span style="text-align: right;"
-          v-html="dayDate"></span>
+        <span style="text-align: right" v-html="dayDate"></span>
       </template>
     </acg-area-header>
   </header>
@@ -23,7 +21,7 @@ export default defineComponent({
   props: { date: { type: Date, default: () => new Date() } },
 
   computed: {
-    gmt(): string {
+    gmt() {
       const timezoneOffset = -this.date.getTimezoneOffset() / 60
       return `GMT${timezoneOffset < 0 ? '' : '+'}${timezoneOffset}`
     },

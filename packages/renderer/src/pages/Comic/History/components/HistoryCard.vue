@@ -7,17 +7,25 @@
   >
     <template #cover>
       <acg-ratio-div :ratio="[3, 4]">
-        <img :src="history.cover" loading="lazy" :class="{ 'filter-gray': !originName }" />
+        <img
+          :src="history.cover"
+          loading="lazy"
+          :class="{ 'filter-gray': !originName }"
+        />
       </acg-ratio-div>
     </template>
 
-    <h5 class="title multi-text-truncate color-text-1" data-line="2">{{ history.title }}</h5>
+    <h5 class="title multi-text-truncate text-color-1" data-line="2">
+      {{ history.title }}
+    </h5>
     <div class="description mt-8">
       <div>看到{{ history.name }} 第{{ history.index }}页</div>
       <div class="mt-4">{{ historyTime }}</div>
     </div>
     <div class="origin-tag text-right">
-      <a-tag :color="originName ? 'green' : 'red'">{{ originName || '源不存在' }}</a-tag>
+      <a-tag :color="originName ? 'green' : 'red'">{{
+        originName || '源不存在'
+      }}</a-tag>
     </div>
   </a-card>
 </template>

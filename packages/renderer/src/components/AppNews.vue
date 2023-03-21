@@ -1,30 +1,62 @@
 <template>
   <div class="app-news">
-    <a-page-header :title="title" :class="{ 'sticky-t bg-app': !mini }" :show-back="false">
+    <a-page-header
+      :title="title"
+      :class="{ 'sticky-t bg-app': !mini }"
+      :show-back="false"
+    >
       <template #subtitle>
-        <a-select v-model="origin" style="width: 140px;" size="small" @change="handleOriginChange">
-          <a-option v-for="option of originList" :key="option.namespace" :value="option.namespace" :label="option.name">
+        <a-select
+          v-model="origin"
+          style="width: 140px;"
+          size="small"
+          @change="handleOriginChange"
+        >
+          <a-option
+            v-for="option of originList"
+            :key="option.namespace"
+            :value="option.namespace"
+            :label="option.name"
+          >
           </a-option>
         </a-select>
       </template>
       <template #extra>
-        <a-button v-if="mini" :loading="isLoading" @click="fetchNewsData">刷新</a-button>
-        <a-pagination v-else v-model:current="page.index" :total="page.total" :page-size="page.size"
-          @change="handlePageChange" />
+        <a-button v-if="mini" :loading="isLoading" @click="fetchNewsData"
+          >刷新</a-button
+        >
+        <a-pagination
+          v-else
+          v-model:current="page.index"
+          :total="page.total"
+          :page-size="page.size"
+          @change="handlePageChange"
+        />
       </template>
     </a-page-header>
 
-    <acg-api-result :loading="false" :error="isError" @retry="fetchNewsData"></acg-api-result>
+    <acg-api-result
+      :loading="false"
+      :error="isError"
+      @retry="fetchNewsData"
+    ></acg-api-result>
     <div class="news-list">
-      <a-card v-for="item of mNews" :key="item.id" :bordered="false" :body-style="{ padding: 0 }"
-        :class="{ 'is-skeleton': isSkeleton }" data-skeleton-animate class="news-item app-card-up"
-        @click="handleNewsClick(item.url)">
+      <a-card
+        v-for="item of mNews"
+        :key="item.id"
+        :bordered="false"
+        :body-style="{ padding: 0 }"
+        :class="{ 'is-skeleton': isSkeleton }"
+        data-skeleton-animate
+        class="news-item app-card-up"
+        @click="handleNewsClick(item.url)"
+      >
         <div class="news-item-container" :title="item.title">
           <div class="cover skeleton-bg">
             <img v-if="!isSkeleton" :src="item.cover" loading="lazy" />
           </div>
           <div class="title text-truncate skeleton-bg">{{ item.title }}</div>
-          <div class="content skeleton-bg" :ellipsis="{ rows: 3 }">{{ item.desc }}</div>
+          <div class="content skeleton-bg">{{ item.desc }}</div>
           <div class="footer">
             <div class="update-time skeleton-bg">{{ item.updateTime }}</div>
           </div>
@@ -47,8 +79,6 @@ export default defineComponent({
     mini: Boolean,
     skeletonCount: { type: Number, default: 2 }
   },
-
-
 
   data() {
     return {
@@ -130,7 +160,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-@import "../styles/scss/index";
+@import '../styles/scss/index';
 
 .app-news {
   .news-list {
@@ -215,9 +245,11 @@ export default defineComponent({
       margin-top: -16px;
       width: 100%;
       height: 40px;
-      background: linear-gradient(180deg,
-          rgba(255, 255, 255, 0) 0,
-          var(--app-color-bg) 100%);
+      background: linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0) 0,
+        var(--app-color-bg) 100%
+      );
       z-index: 1;
     }
   }

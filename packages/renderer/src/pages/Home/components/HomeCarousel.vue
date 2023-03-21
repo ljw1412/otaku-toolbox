@@ -1,6 +1,10 @@
 <template>
   <div class="home-carousel">
-    <a-carousel class="h-100" indicator-type="slider" indicator-position="outer">
+    <a-carousel
+      class="h-100"
+      indicator-type="slider"
+      indicator-position="outer"
+    >
       <a-carousel-item
         v-for="item in mList"
         :key="item._id"
@@ -41,11 +45,15 @@ export default defineComponent({
 
   computed: {
     mList(): Banner[] {
-      return this.list.length ? this.list : [{
-        title: '欢迎来到御宅世界',
-        desc: 'Welcome To Otaku World',
-        bgColor: ''
-      }] as Banner[]
+      return this.list.length
+        ? this.list
+        : ([
+            {
+              title: '欢迎来到御宅世界',
+              desc: 'Welcome To Otaku World',
+              bgColor: ''
+            }
+          ] as Banner[])
     }
   },
 
@@ -57,10 +65,13 @@ export default defineComponent({
     async fetchList() {
       this.loading = true
       try {
-        const { list, total } = await this.$API.Banner.listBanner({ index: 1, size: 8 })
-        list.forEach(item => {
+        const { list, total } = await this.$API.Banner.listBanner({
+          index: 1,
+          size: 8
+        })
+        list.forEach((item) => {
           if (item.vueRoute && item.vueRoute.name === 'Wiki') {
-            item.vueRoute.name = 'AnimeWiki'
+            item.vueRoute.name = 'BangumiDetail'
           }
         })
         this.list = list

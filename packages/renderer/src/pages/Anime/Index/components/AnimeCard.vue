@@ -3,9 +3,18 @@
     <router-link
       target="_blank"
       :title="anime.title"
-      :to="{ name: 'AnimeWiki', params: { id: anime._id }, query: { app: 'otakutools' } }"
+      :to="{
+        name: 'BangumiDetail',
+        params: { id: anime._id },
+        query: { app: 'otakutools' }
+      }"
     >
-      <a-card class="anime-card" hoverable :bordered="false" :body-style="{ padding: '8px 6px' }">
+      <a-card
+        class="anime-card"
+        hoverable
+        :bordered="false"
+        :body-style="{ padding: '8px 6px' }"
+      >
         <template #cover>
           <acg-ratio-div :ratio="[3, 4]" class="anime-cover">
             <img :src="cover" loading="lazy" />

@@ -1,10 +1,12 @@
 <template>
   <transition name="acg-fade">
-    <div v-show="visibility"
+    <div
+      v-show="visibility"
       class="acg-fixed-button"
       :class="{ 'is-transparent': transparent }"
-      :style="{right: right + 'px',bottom: bottom + 'px'}"
-      @click="onClick">
+      :style="{ right: right + 'px', bottom: bottom + 'px' }"
+      @click="onClick"
+    >
       <slot></slot>
     </div>
   </transition>
@@ -93,7 +95,7 @@ export default defineComponent({
   transition: transform 0.15s;
   box-sizing: border-box;
   color: var(--acg-fixed-button-color);
-  z-index: 2000;
+  z-index: 400;
 
   &:not(.is-transparent) {
     border: var(--acg-fixed-button-border);

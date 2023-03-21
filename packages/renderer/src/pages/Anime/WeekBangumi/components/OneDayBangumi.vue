@@ -3,29 +3,44 @@
     target="_blank"
     class="one-day-bangumi"
     :class="direction"
-    :to="{name:'AnimeWiki',params:{id:anime._id},query:{app:'otakutools'}}"
+    :to="{
+      name: 'BangumiDetail',
+      params: { id: anime._id },
+      query: { app: 'otakutools' }
+    }"
   >
-    <div class="time">{{startDate.time}}</div>
-    <div class="status" :class="{ start: isStart, end: isEnd }">{{ statusStr }}</div>
     <acg-ratio-div
-      :ratio="direction === 'vertical' ? [1,1]:[3,4]"
-      :class="{'filter-gray': anime.markState.isBan}"
+      :ratio="direction === 'vertical' ? [1, 1] : [3, 4]"
+      :class="{ 'filter-gray': anime.markState.isBan }"
     >
-      <img :src="compressImage(anime.coverMin)" loading="lazy" />
+      <div
+        class="bangumi-content"
+        :style="{ 'animation-delay': `${0.05 * index}s` }"
+      >
+        <div class="time">{{ startDate.time }}</div>
+        <div class="status" :class="{ start: isStart, end: isEnd }">
+          {{ statusStr }}
+        </div>
+        <img
+          :src="compressImage(anime.coverMin, 'small')"
+          loading="lazy"
+          referrerpolicy="no-referrer"
+        />
+        <div class="title">{{ anime.title }}</div>
+      </div>
     </acg-ratio-div>
-    <div class="title">{{anime.title}}</div>
   </router-link>
 </template>
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
 import { formatUnixTime } from '/@/utils/date'
-import { compressImage } from '/@/utils/image'
 
 export default defineComponent({
   name: 'OneDayBangumi',
 
   props: {
+    index: { type: Number, default: 0 },
     date: String,
     direction: { type: String, default: 'vertical' },
     anime: {
@@ -61,10 +76,6 @@ export default defineComponent({
       if (this.isEnd) return 'END'
       return ''
     }
-  },
-
-  methods: {
-    compressImage
   }
 })
 </script>
@@ -74,6 +85,12 @@ export default defineComponent({
   position: relative;
   display: block;
   overflow: hidden;
+
+  .bangumi-content {
+    width: 100%;
+    height: 100%;
+    animation: scale-in 0.15s ease-in backwards;
+  }
 
   .time {
     position: absolute;
@@ -100,6 +117,7 @@ export default defineComponent({
     &.end {
       background: rgb(var(--red-4));
     }
+
     &.start {
       background: rgb(var(--green-4));
     }

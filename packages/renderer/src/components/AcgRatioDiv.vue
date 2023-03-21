@@ -30,19 +30,17 @@ export default defineComponent({
       defaultSlot
     )
 
-    return [
-      h(
-        'div',
-        {
-          ...this.$attrs,
-          class: normalizeClass(['acg-ratio-div', this.$attrs.class]),
-          style: normalizeStyle(this.$attrs.style)
-        },
-        h('div', { style: normalizeStyle(this.style) }, [
-          this.disabled ? defaultSlot : children
-        ])
-      )
-    ]
+    return h(
+      'div',
+      {
+        ...this.$attrs,
+        class: normalizeClass(['acg-ratio-div', this.$attrs.class]),
+        style: normalizeStyle(this.$attrs.style)
+      },
+      h('div', { style: normalizeStyle(this.style) }, [
+        this.disabled ? defaultSlot : children
+      ])
+    )
   }
 })
 </script>

@@ -6,10 +6,15 @@ const API_BASE = 'special_topic'
 
 /**
  * 获取特殊专题列表
+ * @param type 类型 TV Moive OVA SP 等
+ * @param page
  * @returns
  */
-export async function listSpecialTopic(type?: string): Promise<SpecialTopic[]> {
-  return apiGet(API_BASE, { data: { type } })
+export async function listSpecialTopic(
+  type?: string,
+  page: { index: number; size: number } = { index: 1, size: 1000 }
+): Promise<{ list: SpecialTopic[]; total: number }> {
+  return apiGet(API_BASE, { data: { type, ...page } })
 }
 
 /**

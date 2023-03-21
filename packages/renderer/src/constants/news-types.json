@@ -1,0 +1,6 @@
+{
+  "anime": { "name": "动画", "color": "orangered" },
+  "comic": { "name": "漫画", "color": "lime" },
+  "game": { "name": "游戏", "color": "blue" },
+  "novel": { "name": "小说", "color": "pinkpurple" }
+}

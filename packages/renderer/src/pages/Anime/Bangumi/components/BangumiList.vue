@@ -1,10 +1,12 @@
 <template>
   <div class="bangumi-list">
-    <acg-area-header title="新番简讯"></acg-area-header>
+    <acg-area-header title="新番简讯"> </acg-area-header>
     <div class="anime-list">
-      <bangumi-list-item v-for="anime of animes"
+      <bangumi-list-item
+        v-for="anime of animes"
         :key="anime._id"
-        :anime="anime"></bangumi-list-item>
+        :anime="anime"
+      ></bangumi-list-item>
     </div>
   </div>
 </template>
@@ -19,7 +21,10 @@ export default defineComponent({
   components: { BangumiListItem },
 
   props: {
-    animes: { type: Array as PropType<BangumiBasic[]>, default: () => [] }
+    animes: {
+      type: Array as PropType<FormatedBangumiBasic[]>,
+      default: () => []
+    }
   }
 })
 </script>

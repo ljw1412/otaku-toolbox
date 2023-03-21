@@ -30,18 +30,25 @@ import AppMenu from './AppMenu.vue'
 
 export default defineComponent({
   name: 'AppHeader',
-  components: { AppNavigation, HeaderCenter, AppControls, AppUserAvatar, AppMenu }
-
+  components: {
+    AppNavigation,
+    HeaderCenter,
+    AppControls,
+    AppUserAvatar,
+    AppMenu
+  }
 })
 </script>
 
 <style lang="scss">
 .app-header {
+  position: relative;
   height: var(--app-header-height);
   color: var(--app-header-color-text);
   background-color: var(--app-header-bg);
   transition: color 0.15s ease-out, background-color 0.2s ease-out;
   will-change: color, background-color;
+  z-index: 5000;
 
   .header-left,
   .header-right {

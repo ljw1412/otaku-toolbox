@@ -23,7 +23,7 @@ declare global {
     }
   }
 
-  type MyFetch = (api: string, init?: MyRequestInit) => Promise<any>
+  type MyFetch = <T = any>(api: string, init?: MyRequestInit) => Promise<T>
 
   interface MyRequestInit extends RequestInit {
     data?: BodyInit | Record<string, any>
@@ -33,6 +33,17 @@ declare global {
     // 不显示错误弹窗
     silent?: boolean
     resultType?: 'json' | 'text' | string
+  }
+
+  declare namespace Common {
+    interface Page {
+      index: number
+      size: number
+    }
+
+    interface PageWithTotal extends Page {
+      total: number
+    }
   }
 
   interface ThemeItem {
@@ -72,6 +83,9 @@ declare global {
     _id?: string
     name: string
     url: string
+    type?: string
+    icon?: string
+    from?: string
     message?: string
   }
 
@@ -80,12 +94,6 @@ declare global {
     from: string
     time: string
     region: string
-  }
-
-  interface BangumiPerson {
-    _id?: string
-    entity: string
-    name: string
   }
 
   interface FormatedAnimeDatetime {
@@ -124,9 +132,12 @@ declare global {
     title: string
     titleOriginal: string
     titleMore: string[]
+    type: string
+    typeInSeries: string
     episodes: number
     status: number
     tags: Tag[]
+    tips: string
     desc: string
     copyright: string
     links: BangumiLink[]
@@ -139,31 +150,34 @@ declare global {
     endTime: number | Date | string
     day: number
     isSubTagMatched?: boolean
-    ratingSite: Record<string, any>
     mark: string[]
-    markState: Record<string, boolean>
+    rating: { score: number; count: number }
+    ratingSite: Record<string, any>
   }
 
   interface FormatedBangumiBasic extends BangumiBasic {
     statusCH: string
     formatOnair: { 24: FormatedAnimeDatetime; 30: FormatedAnimeDatetime }
+    markState: Record<string, boolean>
   }
 
   interface BangumiBasicGroup {
     title?: string
-    list: BangumiBasic[]
+    list: FormatedBangumiBasic[]
   }
 
   interface SpecialTopic {
     _id?: string
     name: string
+    current: boolean
     type: string
     code: string
     cover: string
     tags: Tag[]
+    collecting: boolean
+
     isEdit: boolean
     isAdd: boolean
-    current: boolean
   }
 
   interface BaseUserInfo {
@@ -172,6 +186,14 @@ declare global {
     nickname: string
     role: string
     username: string
+    email: string
+    experience: number
+    points: number
+    level: number
+    nextLevelExp: number
+    regtime: string
+    lastLoginDateTime: string
+    services: { wechat: boolean }
   }
 
   interface Banner {
@@ -201,80 +223,145 @@ declare global {
     bgColor?: string
   }
 
-  interface ProxyItem {
-    key: string
-    name: string
-    host: string
-    port: string
-    type: 'HTTP' | 'SOCKS5'
-    username?: string
-    password?: string
-  }
-
-  interface ComicItem {
-    id?: string
-    key?: string
-    title: string
-    cover: string
-    origin?: string
-    list?: { name: string; path: string }[]
-    pageOption?: Record<string, any>
-  }
-
-  interface ComicHistory {
-    key: string
-    index: number
-    path: string
-    ppath: string
-    name: string
-    namespace?: string
-    title?: string
-    cover?: string
-    time: Date
-  }
-
-  interface BaseLiveInfo {
-    uid: number
-    room_id: number
-  }
-
-  interface LiveMonitor {
-    id: number | string
-    name: string
-    mode: number
-    roomList: LiveInfo[]
-    roomConfigList: LiveRoomConfig[]
-  }
-
-  interface LiveInfo extends BaseLiveInfo {
-    uname: string
-    short_id: number
-    live_status: number
-    face: string
-    cover_from_user: string
-    keyframe: string
-  }
-
-  interface LiveRoomDanmakuConfig {
-    aside: boolean
-    showBoard: boolean
-    bg: string
-    opacity: number
-    blur: number
-    x: number
-    y: number
-  }
-
-  interface LiveRoomConfig {
-    qn: number
-    volume: number
-    showDanmaku: boolean
-    danmaku: LiveRoomDanmakuConfig
-  }
-
   interface Series {
     _id: string
     title: string
     bangumis: BangumiBasic[]
+  }
+
+  interface MediaReviewItems {
+    art: number
+    sound: number
+    story: number
+    characters: number
+  }
+
+  interface MediaReview {
+    _id?: string
+    user: BaseUserInfo
+    score: number
+    items: MediaReviewItems
+    content: string
+    createTime?: string
+    lastUpdateTime?: string
+  }
+
+  interface EpisodeResource {
+    _id?: string
+    url: string
+    name: string
+    from: string
+    type: string
+    createTime: string
+  }
+
+  interface BaseComment {
+    _id?: string
+    user: BaseUserInfo
+    content: string
+    date: string
+  }
+
+  interface WithRelativeTime {
+    relativeTime: string
+  }
+
+  interface EpisodeComment extends BaseComment, WithRelativeTime {}
+
+  interface EpisodeReview extends BaseComment, WithRelativeTime {
+    score: number
+  }
+
+  interface Episode {
+    _id: string
+    ep: number
+    title: string
+    oTitle: string
+    desc: string
+    airDate: string | Date
+    comments: EpisodeComment[]
+    reviews: EpisodeReview[]
+    resources: EpisodeResource[]
+    userReview?: EpisodeReview
+    state: { comment: number; review: number; score: number }
+  }
+
+  interface EpisodesInfo {
+    totalCount: number
+    episodeList: Episode[]
+  }
+
+  interface Favourite {
+    user?: string
+    bangumi: BangumiBasic
+    status?: number
+    progress?: number
+    createTime?: string | Date
+    lastUpdateTime?: string | Date
+  }
+
+  interface WatchRecord {
+    _id: string
+    user: { _id: string; avatar: string; nickname: string }
+    bangumi: { _id: string; title: string; coverMin: string }
+    type: string
+    status: number
+    progress: number
+    createTime: string | Date
+  }
+
+  interface Character {
+    _id: string
+    bangumi: string
+    name: string
+    oname: string
+    images: {
+      origin: string
+      large: string
+      grid: string
+    }
+    desc: string
+    isMain: boolean
+    cv: { _id: string; name: string; note: string }[]
+    info: { _id: string; key: string; value: string; important: boolean }[]
+    order: number
+    bgmtvId?: number
+  }
+
+  interface Gift {
+    _id?: string
+    name: string
+    mode: string
+    code: string
+    enabled: boolean
+    createTime: Date | string
+    expireTo: Date | string
+    type: string
+    number: number
+    total: number
+    remained: number
+    limitLevel: number
+  }
+
+  interface GiftRecord {
+    _id: string
+    gift: Gift
+    user: BaseUserInfo
+    datetime: Date | string
+  }
+
+  interface News {
+    _id: string
+    mode: 'self' | 'out'
+    type: 'anime' | 'comic' | 'game' | 'novel' | string
+    title: string
+    cover: string
+    oid: string
+    from: string
+    fromName: string
+    url: string
+    content: string
+    datetime: Date | string
+    author: BaseUserInfo
   }
 }

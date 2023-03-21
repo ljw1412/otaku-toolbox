@@ -16,7 +16,11 @@
         :bangumi="bangumi"
         :skeleton="isSkeleton"
       ></today-bangumi-item>
-      <acg-api-result :loading="false" :error="isError" @retry="fetchTodayBangumiList"></acg-api-result>
+      <acg-api-result
+        :loading="false"
+        :error="isError"
+        @retry="fetchTodayBangumiList"
+      ></acg-api-result>
     </div>
   </div>
 </template>
@@ -35,6 +39,7 @@ export default defineComponent({
 
   data() {
     return {
+      day: new Date().getDay(),
       isError: false,
       isLoading: true,
       bangumiList: [] as FormatedBangumiBasic[]
@@ -54,14 +59,18 @@ export default defineComponent({
       if (this.isSkeleton) {
         return new Array(3).fill({ title: '', cover: '', onairList: [{}] })
       }
-      return this.bangumiList
+      return this.bangumiList.filter(
+        (item) =>
+          item.formatOnair[24].day === this.day ||
+          item.formatOnair[this.hourSystem].day === this.day
+      )
     },
 
     nearestBangumiId(): string {
       const now = this.$dayjs(this.$global.now.value)
       let nearBangumiId = this.bangumiList.length ? this.bangumiList[0]._id : ''
       let minDiff = Infinity
-      this.bangumiList.forEach(item => {
+      this.bangumiList.forEach((item) => {
         const onair = item.formatOnair[this.hourSystem]
         if (onair.time) {
           const diff = this.$dayjs(onair.time, 'HH:mm').diff(now)
@@ -111,7 +120,9 @@ export default defineComponent({
       this.isLoading = true
       this.bangumiList = []
       try {
-        this.bangumiList = await this.$API.Bangumi.listTodayBangumi()
+        this.bangumiList = await this.$API.Bangumi.listDayBangumi({
+          withNextDay: true
+        })
         this.isLoading = false
         this.scrollToNextBangumi()
       } catch (error) {

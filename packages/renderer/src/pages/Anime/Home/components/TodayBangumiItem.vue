@@ -8,7 +8,11 @@
     <router-link
       target="_blank"
       :title="bangumi.title"
-      :to="{ name: 'AnimeWiki', params: { id: bangumi._id || '0' }, query: { app: 'otakutools' } }"
+      :to="{
+        name: 'BangumiDetail',
+        params: { id: bangumi._id || '0' },
+        query: { app: 'otakutools' }
+      }"
     >
       <a-card class="bangumi-card app-card-up" hoverable :bordered="false">
         <template #cover>
@@ -19,7 +23,9 @@
         <a-card-meta>
           <template #title>
             <a-space size="mini">
-              <a-tag class="skeleton-bg">{{ onair.time || '??:??' }}</a-tag>
+              <a-tag class="skeleton-bg">
+                {{ getTime(bangumi.formatOnair) || '??:??' }}
+              </a-tag>
               <div class="title skeleton-bg">{{ bangumi.title }}</div>
             </a-space>
           </template>
@@ -35,7 +41,6 @@ import { defineComponent, PropType } from 'vue'
 export default defineComponent({
   name: 'TodayBangumiItem',
   props: {
-    current: String,
     skeleton: Boolean,
     bangumi: {
       type: Object as PropType<FormatedBangumiBasic>,
@@ -43,16 +48,18 @@ export default defineComponent({
     }
   },
 
-  computed: {
-    onair(): FormatedAnimeDatetime | Record<string, any> {
-      if (!this.bangumi.formatOnair) {
-        return {}
-      }
-      return this.bangumi.formatOnair[this.hourSystem]
-    }
-  },
-
   methods: {
+    getTime(formatOnair: Record<24 | 30, FormatedAnimeDatetime>) {
+      if (!formatOnair) return
+      const { time, day } = formatOnair[this.hourSystem]
+
+      if (day !== new Date().getDay() && time >= '24:00') {
+        return '昨' + time
+      }
+
+      return time
+    },
+
     handleOnairClick(url?: string) {
       if (url) window.open(url, '_blank')
     }

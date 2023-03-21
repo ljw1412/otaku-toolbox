@@ -5,6 +5,13 @@ import AppTheme from '/@/pages/Theme/index.vue'
 import AppExit from '/@/pages/Modal/ExitApp/index.vue'
 import AppAbout from '/@/pages/Modal/About/index.vue'
 
+const Detail = () => import('/@/pages/Anime/Detail/index.vue')
+const DetailOverview = () => import('/@/pages/Anime/Detail/Overview.vue')
+const DetailCharacters = () => import('/@/pages/Anime/Detail/Characters.vue')
+const DetailStaff = () => import('/@/pages/Anime/Detail/Staff.vue')
+const DetailReviews = () => import('/@/pages/Anime/Detail/Reviews.vue')
+const DetailSocial = () => import('/@/pages/Anime/Detail/Social.vue')
+
 const routes = [
   // 内置浏览器
   {
@@ -90,11 +97,47 @@ const routes = [
         meta: { title: '新番表' }
       },
       {
-        path: '/anime/wiki/:id',
-        name: 'AnimeWiki',
+        path: '/detail/:id',
+        name: 'BangumiDetail',
         props: true,
-        component: () => import('/@/pages/Anime/Wiki/index.vue'),
-        meta: { title: '番剧百科' }
+        component: Detail,
+        meta: {
+          title: '作品详情',
+          pageContainer: false,
+          transparentHeader: true
+        },
+        children: [
+          {
+            path: '',
+            name: 'DetailOverview',
+            component: DetailOverview,
+            meta: { title: '概览' }
+          },
+          {
+            path: 'characters',
+            name: 'DetailCharacters',
+            component: DetailCharacters,
+            meta: { title: '角色' }
+          },
+          {
+            path: 'staff',
+            name: 'DetailStaff',
+            component: DetailStaff,
+            meta: { title: '制作人员' }
+          },
+          {
+            path: 'reviews',
+            name: 'DetailReviews',
+            component: DetailReviews,
+            meta: { title: '统计' }
+          },
+          {
+            path: 'social',
+            name: 'DetailSocial',
+            component: DetailSocial,
+            meta: { title: '讨论' }
+          }
+        ]
       },
       {
         path: '/comic/reader/:namespace',

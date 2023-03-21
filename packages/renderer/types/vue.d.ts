@@ -19,14 +19,19 @@ declare module '@vue/runtime-core' {
         error: boolean
       }
     }
-    $imagePreview: (current: string, srcList: string[]) => void
     $message: typeof Message
     $modal: typeof Modal
 
     // global mixin
     isLaptopSize: boolean
     isMobileSize: boolean
+    isSecretMode: boolean
     hourSystem: 24 | 30
+    isLogined: boolean
+    user: BaseUserInfo
+    getLogoIcon: typeof getLogoIcon
+    compressImage: typeof compressImage
+    formatDateTime: (date: string | Date, formater?: string) => string
   }
 }
 

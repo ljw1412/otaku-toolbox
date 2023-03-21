@@ -13,6 +13,7 @@
     "sourceType": "module"
   },
   "rules": {
+    "no-empty": "off",
     "no-undef": "off",
     "vue/max-attributes-per-line": "off",
     "vue/html-closing-bracket-newline": "off",
@@ -20,7 +21,10 @@
     "vue/html-self-closing": "off",
     "vue/singleline-html-element-content-newline": "off",
     "vue/multiline-html-element-content-newline": "off",
+    "vue/order-in-components": "off",
+    "vue/no-mutating-props": "warn",
 
-    "vue/no-mutating-props": "warn"
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "@typescript-eslint/no-unused-vars": "off"
   }
 }

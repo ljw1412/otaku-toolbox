@@ -1,26 +1,34 @@
 <template>
   <div class="week-bangumi" :data-direction="direction">
     <week-bangumi-header :date="now"></week-bangumi-header>
-    <div v-show="!isLoading && !isError" class="bangumi-grid" :data-direction="direction">
+    <div class="bangumi-grid" :data-direction="direction">
       <one-day-bangumi-list
         v-for="day of mList.length"
         :key="`day-${day}`"
-        :day="day-1"
-        :date="weekDateList[day-1]"
-        :data="mList[day-1]"
+        :day="day - 1"
+        :date="weekDateList[day - 1]"
+        :data="mList[day - 1]"
         :direction="direction"
-        :today="today === day-1"
+        :today="today === day - 1"
       ></one-day-bangumi-list>
+      <acg-api-result
+        :loading="isLoading"
+        :error="isError"
+        class="layout-center-px"
+        @retry="fetchWeekBangumi"
+      ></acg-api-result>
     </div>
-    <acg-api-result :loading="isLoading" :error="isError" @retry="fetchWeekBangumi"></acg-api-result>
+
     <acg-fixed-button
       title="切换方向"
       always
-      style="font-size: 16px;"
+      style="font-size: 16px"
       :bottom="85"
       @click="handleSwitchModeClick"
     >
-      <component :is="isVertical ? 'icon-drag-dot-vertical' : 'icon-drag-dot'"></component>
+      <component
+        :is="isVertical ? 'icon-drag-dot-vertical' : 'icon-drag-dot'"
+      ></component>
     </acg-fixed-button>
   </div>
 </template>
@@ -76,15 +84,15 @@ export default defineComponent({
       return this.direction === 'vertical'
     },
 
-    mList(): BangumiBasic[][] {
+    mList(): FormatedBangumiBasic[][] {
       const list = [[], [], [], [], [], [], []] as FormatedBangumiBasic[][]
-      this.bangumiList.forEach(item => {
+      this.bangumiList.forEach((item) => {
         const onairData = item.formatOnair[this.hourSystem]
         if (onairData.day === undefined) return
         list[onairData.day].push(item)
       })
 
-      return list.map(item =>
+      return list.map((item) =>
         item.sort((a, b) => {
           const aTime = a.formatOnair[this.hourSystem].time
           const bTime = b.formatOnair[this.hourSystem].time
@@ -144,10 +152,15 @@ export default defineComponent({
   margin: 0 auto;
 
   .bangumi-grid {
+    position: relative;
     display: flex;
   }
 
-  &[data-direction="horizontal"] {
+  .acg-api-result {
+    top: 100px;
+  }
+
+  &[data-direction='horizontal'] {
     --week-bangumi-width: 100%;
     padding-bottom: 160px;
 

@@ -25,7 +25,7 @@ export async function listBangumi(
   const data = (await apiGet(API_BASE, {
     data: { ...page, tags, status, type, keyword, ...sort }
   })) as { list: BangumiBasic[]; total: number }
-  data.list.forEach(item => formatBangumi(item as FormatedBangumiBasic))
+  data.list.forEach((item) => formatBangumi(item as FormatedBangumiBasic))
   return data
 }
 
@@ -34,8 +34,21 @@ export async function listBangumi(
  * @param id
  * @returns
  */
-export async function showBangumi(id: string) {
-  const data = await apiGet(`${API_BASE}/${id}`)
+export async function showBangumi(
+  id: string,
+  opts: { mode?: 'simple'; fields?: string } = {}
+) {
+  const data = await apiGet(`${API_BASE}/${id}`, { data: opts })
+  return formatBangumi(data)
+}
+
+/**
+ * 随机获取一部番剧的基本信息
+ * @param id
+ * @returns
+ */
+export async function random(onlyid?: boolean) {
+  const data = await apiGet(`${API_BASE}/random`, { data: { onlyid } })
   return formatBangumi(data)
 }
 
@@ -44,19 +57,23 @@ export async function showBangumi(id: string) {
  * @returns
  */
 export async function listWeekBangumi(): Promise<FormatedBangumiBasic[]> {
-  const data = (await apiGet(`${API_BASE}/week`)) as FormatedBangumiBasic[]
-  data.forEach(item => formatBangumi(item))
-  return data
+  const data = await apiGet<BangumiBasic[]>(`${API_BASE}/week`)
+  data.forEach((item) => formatBangumi(item))
+  return data as FormatedBangumiBasic[]
 }
 
 /**
- * 获取一日番剧
+ * 获取一天番剧(可以额外附加明天)
+ * @param opts
+ * @param opts.withNextDay 是否包含第二天的
  * @returns
  */
-export async function listTodayBangumi(): Promise<FormatedBangumiBasic[]> {
-  const data = (await apiGet(`${API_BASE}/today`, {
-    data: { t: +new Date() }
-  })) as FormatedBangumiBasic[]
-  data.forEach(item => formatBangumi(item))
-  return data
+export async function listDayBangumi(
+  opts: { withNextDay?: boolean } = {}
+): Promise<FormatedBangumiBasic[]> {
+  const result = await apiGet<BangumiBasic[]>(`${API_BASE}/today`, {
+    data: { t: +new Date(), ...opts }
+  })
+  result.forEach((item) => formatBangumi(item))
+  return result as FormatedBangumiBasic[]
 }

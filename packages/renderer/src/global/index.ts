@@ -11,6 +11,9 @@ import {
   now
 } from './assist'
 
+import contra from './contra'
+import * as dialog from './dialog'
+
 const props = {
   constants,
   title,
@@ -22,7 +25,9 @@ const props = {
   env: import.meta.env,
   errorStore,
   setTitle,
-  now
+  now,
+  contra,
+  dialog
 }
 
 type GlobalProps = typeof props
@@ -36,10 +41,10 @@ export function globalAdd(key: string, value: any) {
   mGlobal[key as keyof typeof mGlobal] = value
 }
 
-export default mGlobal
-
 if (mGlobal.env.DEV) {
   const titleStyle = 'color: #fadfa3; background: #030307; padding: 0 4px;'
   console.log('%cenv', titleStyle, import.meta.env)
   console.log('%cglobal', titleStyle, mGlobal)
 }
+
+export default mGlobal

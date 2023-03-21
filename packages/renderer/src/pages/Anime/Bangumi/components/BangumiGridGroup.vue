@@ -1,13 +1,16 @@
 <template>
   <div class="bangumi-grid-group">
-    <h4 v-if="title">{{title}}</h4>
-    <a-space wrap
-      class="anime-grid">
-      <bangumi-grid-item v-for="anime of animes"
-        :key="anime.title"
-        :anime="anime"
-        @click="handleBangumiClick(anime)"></bangumi-grid-item>
-    </a-space>
+    <h4 v-if="title">{{ title }}</h4>
+    <a-grid
+      :cols="{ xs: 3, sm: 4, md: 5, lg: 6, xl: 7, xxl: 9 }"
+      :col-gap="8"
+      :row-gap="8"
+      class="anime-grid"
+    >
+      <a-grid-item v-for="anime of animes" :key="anime._id">
+        <bangumi-grid-item :anime="anime"></bangumi-grid-item>
+      </a-grid-item>
+    </a-grid>
   </div>
 </template>
 
@@ -22,15 +25,9 @@ export default defineComponent({
 
   props: {
     title: String,
-    animes: { type: Array as PropType<BangumiBasic[]>, default: () => [] }
-  },
-
-  methods: {
-    handleBangumiClick(anime: BangumiBasic) {
-      const el = document.querySelector(`#anime-${anime._id}`)
-      if (el) {
-        el.scrollIntoView({ behavior: 'smooth', block: 'start' })
-      }
+    animes: {
+      type: Array as PropType<FormatedBangumiBasic[]>,
+      default: () => []
     }
   }
 })
@@ -40,6 +37,14 @@ export default defineComponent({
 .bangumi-grid-group {
   h4 {
     padding: 6px 4px;
+  }
+}
+
+@media (min-width: 1750px) {
+  .bangumi-grid-group {
+    > .arco-grid {
+      grid-template-columns: repeat(10, minmax(0px, 1fr)) !important;
+    }
   }
 }
 </style>

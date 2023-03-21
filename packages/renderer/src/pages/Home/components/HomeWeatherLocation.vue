@@ -21,7 +21,7 @@
     <template #footer>
       <div class="layout-lr w-100">
         <div>
-          当前城市：<span class="color-text-common">{{ current }}</span>
+          当前城市：<span class="text-color-common">{{ current }}</span>
         </div>
         <a-space>
           <a-button @click="mVisible = false">取消</a-button>
@@ -68,17 +68,17 @@ export default defineComponent({
     options() {
       if (this.tab === 'china') {
         const provinces = this.cities.china
-        return Object.keys(provinces).map(key => {
+        return Object.keys(provinces).map((key) => {
           const cities = provinces[key]
           return {
             label: key,
             value: `0-${key}`,
-            children: Object.keys(cities).map(city => {
+            children: Object.keys(cities).map((city) => {
               const districts = cities[city]
               return {
                 label: city,
                 value: `1-${city}`,
-                children: Object.keys(districts).map(district => {
+                children: Object.keys(districts).map((district) => {
                   return {
                     label: district,
                     value: JSON.stringify(districts[district])
@@ -90,12 +90,12 @@ export default defineComponent({
         })
       } else {
         const countries = this.cities.external
-        return Object.keys(countries).map(country => {
+        return Object.keys(countries).map((country) => {
           const cities = countries[country]
           return {
             label: country.replace('（所属国家不一致，经纬度却一致）', ''),
             value: `0-${country}`,
-            children: Object.keys(cities).map(city => {
+            children: Object.keys(cities).map((city) => {
               return {
                 label: city,
                 value: JSON.stringify({ AREAID: cities[city], NAMECN: city })

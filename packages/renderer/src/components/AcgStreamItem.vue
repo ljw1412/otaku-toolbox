@@ -1,40 +1,53 @@
 <template>
-  <div class="acg-stream-item" :title="title" :class="`mode-${mode}`">
+  <div class="acg-stream-item" :title="title" :class="{ block: longButton }">
     <a-link
       v-if="mode === 'icon'"
       :href="url"
       :status="hide ? 'warning' : 'normal'"
       target="_blank"
     >
-      <img v-if="icon" :src="icon" class="icon" />
+      <img
+        v-if="mIcon"
+        :src="mIcon"
+        class="icon"
+        referrerpolicy="no-referrer"
+      />
       <span v-else class="name">{{ name }}</span>
       <div v-if="hide || region" class="badge">{{ regionStr }}</div>
     </a-link>
     <a v-else :href="url" target="_blank">
-      <a-button size="large">
-        <template v-if="icon" #icon>
-          <img :src="icon" class="icon" />
+      <a-button :size="size" :long="longButton" v-bind="buttonProps">
+        <template v-if="icon || mIcon" #icon>
+          <img
+            v-if="mIcon"
+            :src="mIcon"
+            class="icon"
+            referrerpolicy="no-referrer"
+          />
+          <component :is="icon" v-else class="icon"></component>
         </template>
-        <span class="region" v-if="regionStr">[{{ regionStr }}]</span>
         <span class="name">{{ name }}</span>
+        <span v-if="regionStr" class="region">[{{ regionStr }}]</span>
       </a-button>
     </a>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, PropType } from 'vue'
 import { getLogoIcon } from '/@/utils/icons'
 
 const regionMap = {
   CN: '',
   港: '港',
-  HK: "港",
-  澳: "澳",
-  MO: "澳",
-  台: "台",
-  TW: "台",
-  JP: '日'
+  HK: '港',
+  澳: '澳',
+  MO: '澳',
+  台: '台',
+  TW: '台',
+  JP: '日',
+  海外: '海外',
+  资源: '资源'
 } as Record<string, any>
 
 export default defineComponent({
@@ -46,17 +59,27 @@ export default defineComponent({
     _id: String,
     name: String,
     hide: Boolean,
+    icon: { type: String, default: '' },
     from: { type: String, default: '' },
     url: String,
     time: String,
     region: { type: String, default: '' },
-    message: String
+    message: String,
+    size: {
+      type: String as PropType<'large' | 'small' | 'mini' | 'medium'>,
+      default: 'large'
+    },
+    longButton: Boolean,
+    buttonProps: {
+      type: Object as PropType<Record<string, any>>,
+      default: () => ({})
+    }
   },
 
   computed: {
     mRegion() {
       const list: string[] = []
-      Object.keys(regionMap).forEach(region => {
+      Object.keys(regionMap).forEach((region) => {
         if (this.region.includes(region)) {
           list.push(regionMap[region])
         }
@@ -82,7 +105,7 @@ export default defineComponent({
       return this.hide ? '隐藏' : this.mRegion.replace(/,/g, '')
     },
 
-    icon() {
+    mIcon() {
       return getLogoIcon(this.from)
     }
   }
@@ -92,6 +115,10 @@ export default defineComponent({
 <style lang="scss">
 .acg-stream-item {
   display: inline-flex;
+
+  &.block {
+    display: block;
+  }
 
   .arco-link {
     position: relative;
@@ -129,12 +156,14 @@ export default defineComponent({
     padding: 0 8px;
 
     .icon {
-      width: 1.8em;
-      height: 1.8em;
-      vertical-align: -0.5em;
+      width: 1.4em;
+      height: 1.4em;
+      vertical-align: -0.3em;
     }
 
     .region {
+      margin-left: 2px;
+      font-size: 12px;
       color: rgb(var(--danger-6));
     }
   }
