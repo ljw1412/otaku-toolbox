@@ -48,6 +48,7 @@
     "lint-staged": "^11.0.0",
     "sass": "^1.34.1",
     "spectron": "^15.0.0",
+    "terser": "^5.16.6",
     "typescript": "^4.3.2",
     "vite": "^4.1.4",
     "vite-plugin-externals": "^0.6.2",
