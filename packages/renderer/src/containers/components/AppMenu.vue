@@ -1,27 +1,53 @@
 <template>
-  <a-popover v-model:popup-visible="isPopupVisible" position="bottom" trigger="click" :arrow="false"
-    :arrow-style="{ display: 'none' }" :content-style="{ border: 'none', padding: '8px 0', boxSizing: 'boreder-box' }">
+  <a-popover
+    v-model:popup-visible="isPopupVisible"
+    position="bottom"
+    trigger="click"
+    :arrow="false"
+    :arrow-style="{ display: 'none' }"
+    :content-style="{
+      border: 'none',
+      padding: '8px 0',
+      boxSizing: 'border-box'
+    }"
+  >
     <slot></slot>
     <template #content>
       <div class="app-menu-panel">
-        <a-grid :cols="3" :row-gap="8" :col-gap="8" style="padding: 0 16px;">
+        <a-grid :cols="3" :row-gap="8" :col-gap="8" style="padding: 0 16px">
           <a-grid-item @click="handleItemClick('hourSystem')">
-            <acg-ratio-div class="menu-btn" body-class="layout-center flex-column">
-              <div style="line-height: 24px; height: 24px;font-size: 24px;">{{ hourSystem }}</div>
+            <acg-ratio-div
+              class="menu-btn"
+              body-class="layout-center flex-column"
+            >
+              <div style="line-height: 24px; height: 24px; font-size: 24px">
+                {{ hourSystem }}
+              </div>
               <div class="fs-12">时制</div>
             </acg-ratio-div>
           </a-grid-item>
-          <a-grid-item v-for="btn of btns" :key="btn.action" @click="handleItemClick(btn.action)">
-            <acg-ratio-div class="menu-btn" body-class="layout-center flex-column">
+          <a-grid-item
+            v-for="btn of btns"
+            :key="btn.action"
+            @click="handleItemClick(btn.action)"
+          >
+            <acg-ratio-div
+              class="menu-btn"
+              body-class="layout-center flex-column"
+            >
               <component :is="btn.icon" size="24"></component>
               <div class="fs-12">{{ btn.name }}</div>
             </acg-ratio-div>
           </a-grid-item>
         </a-grid>
-        <a-divider style="margin: 8px 0;" />
+        <a-divider style="margin: 8px 0" />
         <a-list class="action-list" :bordered="false">
-          <a-list-item v-for="item of items" :key="item.action" class="action-list-item"
-            @click="handleItemClick(item.action)">
+          <a-list-item
+            v-for="item of items"
+            :key="item.action"
+            class="action-list-item"
+            @click="handleItemClick(item.action)"
+          >
             <component :is="item.icon" size="16"></component>
             <span class="fs-14 ml-8">{{ item.name }}</span>
           </a-list-item>
@@ -41,7 +67,7 @@ export default defineComponent({
     return {
       isPopupVisible: false,
       btns: [{ name: '设置', icon: 'icon-settings', action: 'setting' }],
-      items: [{ name: '关于', icon: 'icon-settings', action: 'about' }]
+      items: [{ name: '关于', icon: 'icon-info-circle-fill', action: 'about' }]
     }
   },
 
@@ -58,7 +84,7 @@ export default defineComponent({
       if (!['hourSystem'].includes(action)) {
         this.isPopupVisible = false
       }
-    },
+    }
   }
 })
 </script>

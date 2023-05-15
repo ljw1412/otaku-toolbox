@@ -1,18 +1,24 @@
 <template>
   <div class="home-user-center">
     <div class="user-info layout-lr px-12">
-      <a-avatar class="flex-shrink-0 mr-16" :size="52">
-        <span>{{ username }}</span>
+      <a-avatar class="flex-shrink-0 mr-16" :size="52" style="overflow: hidden">
+        <img v-if="isLogined" alt="avatar" :src="user.avatar" />
+        <span v-else>游客</span>
       </a-avatar>
       <div class="flex-grow-1">
-        <div class="fs-16 lh-26">{{ username }}</div>
+        <div class="fs-16 lh-26">{{ user.nickname || '游客' }}</div>
         <div>
           <a-tag size="small">LV.0</a-tag>
         </div>
       </div>
     </div>
     <div class="user-action d-flex">
-      <acg-ratio-div v-for="i of 4" :key="i" :ratio="[1, 1]" class="action-item w-25 flex-shrink-0"></acg-ratio-div>
+      <acg-ratio-div
+        v-for="i of 4"
+        :key="i"
+        :ratio="[1, 1]"
+        class="action-item w-25 flex-shrink-0"
+      ></acg-ratio-div>
     </div>
   </div>
 </template>
@@ -24,9 +30,7 @@ export default defineComponent({
   name: 'HomeUserCenter',
 
   data() {
-    return {
-      username: '游客'
-    }
+    return {}
   }
 })
 </script>

@@ -4,6 +4,7 @@ import AppSetting from '/@/pages/Setting/index.vue'
 import AppTheme from '/@/pages/Theme/index.vue'
 import AppExit from '/@/pages/Modal/ExitApp/index.vue'
 import AppAbout from '/@/pages/Modal/About/index.vue'
+import AppLogin from '/@/pages/Modal/Login/index.vue'
 
 const Detail = () => import('/@/pages/Anime/Detail/index.vue')
 const DetailOverview = () => import('/@/pages/Anime/Detail/Overview.vue')
@@ -39,6 +40,19 @@ const routes = [
     meta: {
       separate: true,
       title: '系统设置',
+      hideBackUp: true,
+      minimizable: false,
+      maximizable: false,
+      hidable: true
+    }
+  },
+  {
+    path: '/login',
+    name: 'AppLogin',
+    component: AppLogin,
+    meta: {
+      separate: true,
+      title: '登录',
       hideBackUp: true,
       minimizable: false,
       maximizable: false,

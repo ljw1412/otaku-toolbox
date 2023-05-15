@@ -11,6 +11,12 @@ const windowConfigs = {
     height: 150,
     title: '退出程序'
   },
+  login: {
+    url: getPageUrl('/login'),
+    width: 540,
+    height: 330,
+    title: '登录'
+  },
   setting: {
     url: getPageUrl('/setting'),
     width: 729,
@@ -39,11 +45,13 @@ function createWindow(config: NewBrowerConfig) {
 }
 
 export function createDefaultWinByTitle(title?: string, autoShow = false) {
-  const config = Object.values(windowConfigs).find(item => item.title === title)
+  const config = Object.values(windowConfigs).find(
+    (item) => item.title === title
+  )
   return config ? createWindow({ ...config, autoShow }) : null
 }
 
-export default function(mainWin: BrowserWindow) {
+export default function (mainWin: BrowserWindow) {
   return Object.keys(windowConfigs).reduce((obj, key) => {
     const config = windowConfigs[key]
     if (config.parent) {

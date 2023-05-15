@@ -1,7 +1,16 @@
 <template>
-  <a-popover v-model:popup-visible="mPopupVisible" position="br">
-    <a-avatar class="app-user-avatar cursor-pointer app-no-drag mr-10" :size="36">
-      <img v-if="isLogin" alt="avatar" :src="user.avatar" />
+  <a-popover
+    v-model:popup-visible="mPopupVisible"
+    position="br"
+    :disabled="!isLogined"
+  >
+    <a-avatar
+      class="app-user-avatar cursor-pointer app-no-drag mr-10"
+      :size="36"
+      style="overflow: hidden"
+      @click="handleAvatarClick"
+    >
+      <img v-if="isLogined" alt="avatar" :src="user.avatar" />
       <span v-else>登录</span>
     </a-avatar>
     <template #content>
@@ -23,20 +32,28 @@ export default defineComponent({
   },
 
   computed: {
-    user() {
-      return this.$global.user.current
-    },
+    // user(): BaseUserInfo {
+    //   return this.$global.user.current
+    // },
 
-    isLogin() {
-      return this.$global.user.isLogin
-    },
+    // isLogin() {
+    //   return this.$global.user.isLogined
+    // },
 
     mPopupVisible: {
       get() {
-        return this.isLogin && this.isPopupVisible
+        return this.isLogined && this.isPopupVisible
       },
       set(val: boolean) {
         this.isPopupVisible = val
+      }
+    }
+  },
+
+  methods: {
+    handleAvatarClick() {
+      if (!this.isLogined) {
+        this.$API.Electron.win.openAppSystem('登录')
       }
     }
   }

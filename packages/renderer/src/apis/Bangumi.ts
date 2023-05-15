@@ -47,7 +47,7 @@ export async function showBangumi(
  * @param id
  * @returns
  */
-export async function random(onlyid?: boolean) {
+export async function randomOne(onlyid?: boolean) {
   const data = await apiGet(`${API_BASE}/random`, { data: { onlyid } })
   return formatBangumi(data)
 }
