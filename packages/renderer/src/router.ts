@@ -9,6 +9,7 @@ import MainRoutes from '/@/routes/main'
 import SeparateRoutes from '/@/routes/separate'
 import PluginRoutes from '/@/plugins/route'
 import mGlobal, { globalAdd } from '/@/global'
+import * as logger from '/@/utils/logger'
 
 const routes = [
   { path: '/', redirect: { name: 'AppHome' } },
@@ -21,6 +22,8 @@ const router = createRouter({
   routes,
   history: createWebHashHistory()
 })
+
+export default router
 
 router.beforeEach((to, from, next) => {
   const routeName = to.name as string
@@ -46,18 +49,13 @@ router.beforeEach((to, from, next) => {
 
 if (import.meta.env.MODE === 'development') {
   router.afterEach((to, from) => {
-    const tofrom = ['[To]', to, '\n[From]', from]
-    console.groupCollapsed(
-      '%c[CurrentRoute]',
-      'color: #168cff;',
-      window.location.href
-    )
-    console.log(...tofrom)
-    console.groupEnd()
+    const tofrom = [
+      ['[To]', to],
+      ['[From]', from]
+    ]
+    logger.message('CurrentRoute', window.location.href, ...tofrom)
   })
 }
-
-export default router
 
 globalAdd('router', router)
 

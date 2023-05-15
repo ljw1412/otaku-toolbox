@@ -11,6 +11,7 @@ const DetailCharacters = () => import('/@/pages/Anime/Detail/Characters.vue')
 const DetailStaff = () => import('/@/pages/Anime/Detail/Staff.vue')
 const DetailReviews = () => import('/@/pages/Anime/Detail/Reviews.vue')
 const DetailSocial = () => import('/@/pages/Anime/Detail/Social.vue')
+const VideoWatch = () => import('/@/pages/Anime/Watch/index.vue')
 
 const routes = [
   // 内置浏览器
@@ -138,6 +139,13 @@ const routes = [
             meta: { title: '讨论' }
           }
         ]
+      },
+      {
+        path: '/watch/:id?',
+        component: VideoWatch,
+        name: 'VideoWatch',
+        props: true,
+        meta: { title: '视频播放', pageContainer: false, footer: false }
       },
       {
         path: '/comic/reader/:namespace',

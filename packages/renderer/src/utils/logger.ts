@@ -1,23 +1,44 @@
+// 调试时需要添加Blackboxing，以确保行数正确。
 const baseStyles = 'font-size:12px;padding:1px 10px;font-weight:700;'
+
+function createStyle(p: 'left' | 'right', bgcolor = '', color = '') {
+  const styleList = [
+    baseStyles,
+    `background-color:${bgcolor}`,
+    `color:${color}`
+  ]
+  styleList.push(
+    'border-radius:' + (p === 'left' ? '5px 0 0 5px' : '0 5px 5px 0')
+  )
+  return styleList.join(';')
+}
 
 export const baseLog = (
   type: string,
-  bgcolor?: string,
+  bgcolor = '#409EFF',
   color = '#fff',
   bgcolor2 = '#666',
   color2 = '#fff'
-) => (info: string, message: any = '', ...data: any[]) => {
-  const leftStyles = `${baseStyles};background-color:${bgcolor};border-radius:5px 0 0 5px;color:${color}`
-  const rightStyles = `${baseStyles};background-color:${bgcolor2};border-radius:0 5px 5px 0;color:${color2}`
-  if (!data.length) {
-    console.log(`%c${type}%c${info}`, leftStyles, rightStyles, message)
-    return
+) => {
+  const leftStyles = createStyle('left', bgcolor, color)
+  const rightStyles = createStyle('right', bgcolor2, color2)
+  return function (info: string, message: any = '', ...data: any[]) {
+    const title = `%c${type}%c${info}`
+    const base = [title, leftStyles, rightStyles, message]
+    if (data.filter((i) => i).length < 2) {
+      console.log(...base, ...data)
+      return
+    }
+    console.group(...base)
+    data.forEach((item) => {
+      if (Array.isArray(item)) {
+        console.log(...item)
+        return
+      }
+      console.log(item)
+    })
+    console.groupEnd()
   }
-  console.group(`%c${type}%c${info}`, leftStyles, rightStyles, message)
-  data.forEach(item => {
-    console.log(item)
-  })
-  console.groupEnd()
 }
 
 export const message = baseLog('message', '#409EFF')

@@ -126,7 +126,7 @@
             :to="{
               name: 'VideoWatch',
               params: { id: $route.params.id },
-              query: { ep: episodeId, route: item._id }
+              query: { ep: episodeId, route: item._id, app: 'otakutools' }
             }"
             target="_blank"
           >

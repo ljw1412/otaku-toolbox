@@ -8,7 +8,7 @@ import qs from 'qs'
 export async function openExternal(url: string) {
   const HTTP_REGEXP = /^https?:\/\//
   // 非http协议不打开，防止出现自定义协议等导致的安全问题
-  if (!HTTP_REGEXP) {
+  if (!HTTP_REGEXP.test(url)) {
     return false
   }
   try {
@@ -20,8 +20,8 @@ export async function openExternal(url: string) {
   }
 }
 
-export default function(browerWindow: BrowserWindow | BrowserView): void {
-  browerWindow.webContents.setWindowOpenHandler(datails => {
+export default function (browerWindow: BrowserWindow | BrowserView): void {
+  browerWindow.webContents.setWindowOpenHandler((datails) => {
     const {
       url: oUrl,
       frameName,

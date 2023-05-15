@@ -30,6 +30,7 @@
   },
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^13.1.3",
+    "@types/dplayer": "^1.25.2",
     "@types/electron-devtools-installer": "^2.2.0",
     "@types/electron-json-storage": "^4.5.0",
     "@types/glob": "^7.2.0",

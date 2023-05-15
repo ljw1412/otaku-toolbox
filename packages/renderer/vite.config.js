@@ -6,6 +6,7 @@ import { builtinModules } from 'module'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { loadAndSetEnv } from '../../scripts/loadAndSetEnv.mjs'
+import { viteExternalsPlugin } from 'vite-plugin-externals'
 
 const PACKAGE_ROOT = __dirname
 
@@ -37,7 +38,7 @@ export default defineConfig({
       '/@UI/': join(PACKAGE_ROOT, 'UI') + '/'
     }
   },
-  plugins: [vue()],
+  plugins: [vue(), viteExternalsPlugin({ dplayer: 'DPlayer' })],
   base: '',
   server: {
     fsServe: {

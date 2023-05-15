@@ -422,6 +422,11 @@
   dependencies:
     "@types/ms" "*"
 
+"@types/dplayer@^1.25.2":
+  version "1.25.2"
+  resolved "https://registry.yarnpkg.com/@types/dplayer/-/dplayer-1.25.2.tgz#2155a9ca4daf419deaa6bba8d10d29bad6a10cb8"
+  integrity sha512-bkTVZkK3Vi7N7eX2FUBnqKhCjTaeRLkhvY8H6zolatbSTtjPPdxyUzhE3C29sIBYRRq1kQHSduFgCHKg5VF3Jw==
+
 "@types/electron-devtools-installer@^2.2.0":
   version "2.2.0"
   resolved "https://registry.nlark.com/@types/electron-devtools-installer/download/@types/electron-devtools-installer-2.2.0.tgz?cache=0&sync_timestamp=1621240923710&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40types%2Felectron-devtools-installer%2Fdownload%2F%40types%2Felectron-devtools-installer-2.2.0.tgz#32ee4ebbe99b3daf9847a6d2097dc00b5de94f10"

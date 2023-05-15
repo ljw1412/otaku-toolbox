@@ -38,7 +38,7 @@ if (env.MODE === 'development') {
         }
       })
     )
-    .catch(e => console.error('Failed install extension:', e))
+    .catch((e) => console.error('Failed install extension:', e))
 }
 
 let mainWindow: BrowserWindow | null = null
@@ -80,7 +80,7 @@ const createWindow = async () => {
   })
 
   mainWindow.on('closed', () => {
-    BrowserWindow.getAllWindows().forEach(win => {
+    BrowserWindow.getAllWindows().forEach((win) => {
       win.close()
     })
   })
@@ -119,7 +119,7 @@ app.whenReady().then(() => import('./utils/requestFix'))
 app
   .whenReady()
   .then(createWindow)
-  .catch(e => console.error('Failed create window:', e))
+  .catch((e) => console.error('Failed create window:', e))
 
 // Auto-updates
 if (env.PROD) {
@@ -127,5 +127,5 @@ if (env.PROD) {
     .whenReady()
     .then(() => import('electron-updater'))
     .then(({ autoUpdater }) => autoUpdater.checkForUpdatesAndNotify())
-    .catch(e => console.error('Failed check updates:', e))
+    .catch((e) => console.error('Failed check updates:', e))
 }

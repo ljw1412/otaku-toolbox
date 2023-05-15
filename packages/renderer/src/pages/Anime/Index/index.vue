@@ -1,5 +1,8 @@
 <template>
-  <div class="anime-index" :class="{ 'is-laptop': isLaptopSize, 'is-mobile': isMobileSize }">
+  <div
+    class="anime-index"
+    :class="{ 'is-laptop': isLaptopSize, 'is-mobile': isMobileSize }"
+  >
     <a-drawer
       v-model:visible="isDisplayFilterDialog"
       :closable="false"
@@ -7,7 +10,9 @@
       class="anime-filter-drawer"
     >
       <template #footer>
-        <a-button type="primary" @click="isDisplayFilterDialog = false">确认</a-button>
+        <a-button type="primary" @click="isDisplayFilterDialog = false"
+          >确认</a-button
+        >
       </template>
     </a-drawer>
 
@@ -18,7 +23,11 @@
             <template #title>
               <a-space size="mini">
                 <span style="line-height: 1">番剧索引</span>
-                <div v-show="page.total" style="font-size: 0;" class="layout-center">
+                <div
+                  v-show="page.total"
+                  style="font-size: 0"
+                  class="layout-center"
+                >
                   <a-badge :count="page.total" :max-count="9999" />
                 </div>
               </a-space>
@@ -51,7 +60,7 @@
 
                 <a-link
                   v-show="isLaptopSize"
-                  style="line-height: 26px;"
+                  style="line-height: 26px"
                   @click="isDisplayFilterDialog = true"
                 >
                   <icon-filter />筛选器
@@ -64,7 +73,7 @@
             :keyword="keyword"
             :tags="filterTagList"
             :keyword-close="false"
-            style="padding-left: 4px;"
+            style="padding-left: 4px"
           ></anime-filter-status>
         </header>
 
@@ -84,18 +93,16 @@
         </div>
       </main>
       <aside class="anime-index-aside" v-show="!isLaptopSize">
-        <teleport to=".anime-filter-drawer .arco-drawer-body" :disabled="!isLaptopSize">
-          <anime-filter
-            :group-list="tagGroupList"
-            :current-keyword="keyword"
-            @change="handleFilterChange"
-          ></anime-filter>
-          <acg-api-result
-            :loading="loading.filter"
-            :error="error.filter"
-            @retry="fetchTagGroupList"
-          ></acg-api-result>
-        </teleport>
+        <anime-filter
+          :group-list="tagGroupList"
+          :current-keyword="keyword"
+          @change="handleFilterChange"
+        ></anime-filter>
+        <acg-api-result
+          :loading="loading.filter"
+          :error="error.filter"
+          @retry="fetchTagGroupList"
+        ></acg-api-result>
       </aside>
     </section>
 
@@ -149,18 +156,18 @@ export default defineComponent({
 
   computed: {
     isDefaultSort(): boolean {
-      return Object.values(this.sort).every(item => !item)
+      return Object.values(this.sort).every((item) => !item)
     },
 
     filterTagIds(): string {
       return this.filterTagList
         .filter((tag) => tag.group !== 'type' && tag.group !== 'status')
-        .map(tag => tag._id)
+        .map((tag) => tag._id)
         .join(',')
     },
 
     typeValue(): string {
-      const typeTag = this.filterTagList.find(tag => tag.group === 'type')
+      const typeTag = this.filterTagList.find((tag) => tag.group === 'type')
       return typeTag ? typeTag._id : ''
     },
 
@@ -185,19 +192,29 @@ export default defineComponent({
 
   methods: {
     initData() {
-      const { p, tags, keyword = '', status = '', type = '' } = this.$route.query
+      const {
+        p,
+        tags,
+        keyword = '',
+        status = '',
+        type = ''
+      } = this.$route.query
       this.page.index = parseInt((p as string) || '1')
       if (tags) {
         this.filterTagList = (tags as string)
           .split(',')
-          .map(id => ({ _id: id, name: '' }))
+          .map((id) => ({ _id: id, name: '' }))
       }
       this.keyword = keyword as string
       if (status) {
-        statusData.forEach(item => { item.selected = item._id === status })
+        statusData.forEach((item) => {
+          item.selected = item._id === status
+        })
       }
       if (type) {
-        typeData.forEach(item => { item.selected = item._id === type })
+        typeData.forEach((item) => {
+          item.selected = item._id === type
+        })
       }
     },
 
@@ -221,11 +238,11 @@ export default defineComponent({
       this.setStatus('filter', 'reset')
       try {
         const list = await this.$API.Tag.listTagGroup()
-        list.forEach(group => {
+        list.forEach((group) => {
           let hasSelected = false
-          group.tags.forEach(tag => {
+          group.tags.forEach((tag) => {
             const index = this.filterTagList.findIndex(
-              item => item._id === tag._id
+              (item) => item._id === tag._id
             )
             tag.selected = !!~index
             if (tag.selected) {
@@ -287,7 +304,7 @@ export default defineComponent({
 
     handleSortChange(name: string) {
       if (name === 'default') {
-        Object.keys(this.sort).forEach(key => {
+        Object.keys(this.sort).forEach((key) => {
           this.sort[key] = ''
         })
       }
