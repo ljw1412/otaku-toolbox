@@ -1,5 +1,6 @@
 import { Message } from '@arco-design/web-vue'
 import { toTitleCase } from './string'
+import { currentUser } from '/@/global/user'
 import qs from 'qs'
 
 const timeout = 10 * 1000
@@ -13,9 +14,9 @@ function createFetch(method: string) {
     query: '',
     timeout,
     silent: true,
-    headers: new Headers({
+    headers: {
       'Content-Type': 'application/json; charset=utf-8'
-    }),
+    },
     resultType: 'json'
   } as MyRequestInit
   return function baseFetch<T = any>(api: string, init: MyRequestInit = {}) {
@@ -23,6 +24,13 @@ function createFetch(method: string) {
     const signal = controller.signal
 
     const mConfig = Object.assign({ signal }, config, init)
+    if (currentUser.value.token) {
+      if (!mConfig.headers) {
+        mConfig.headers = {}
+      }
+      Object.assign(mConfig.headers, { auth: currentUser.value.token })
+    }
+
     // 对传入的data进行处理
     if (init.data) {
       if (method === 'GET') {
@@ -51,7 +59,7 @@ function createFetch(method: string) {
     }, config.timeout)
 
     return fetch(url, mConfig)
-      .then<T>(async resp => {
+      .then<T>(async (resp) => {
         if (resp.status >= 400) {
           return Promise.reject(await resp.json())
         }
@@ -63,7 +71,7 @@ function createFetch(method: string) {
         }
         return resp.json()
       })
-      .catch(e => {
+      .catch((e) => {
         const apiHeader = `[接口"${api}"]`
         const configStr = JSON.stringify(mConfig, null, 2)
         let message = e.message

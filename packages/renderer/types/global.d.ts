@@ -33,6 +33,7 @@ declare global {
     // 不显示错误弹窗
     silent?: boolean
     resultType?: 'json' | 'text' | string
+    // headers?: Record<string, string>
   }
 
   declare namespace Common {
@@ -192,6 +193,7 @@ declare global {
     level: number
     nextLevelExp: number
     regtime: string
+    token: string
     lastLoginDateTime: string
     services: { wechat: boolean }
   }

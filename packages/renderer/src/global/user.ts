@@ -3,7 +3,6 @@ import { reactive, computed, ComputedRef, UnwrapNestedRefs, watch } from 'vue'
 import API from '../apis'
 
 interface UserStore {
-  token: string
   isDisplayLoginDialog: boolean
   isLoaded: boolean
   isLogined: ComputedRef<boolean>
@@ -11,7 +10,7 @@ interface UserStore {
   fetchCurrentUser: () => Promise<void>
 }
 
-export const currentUser = useLocalStorage('APP_USER', {})
+export const currentUser = useLocalStorage('APP_USER', {} as BaseUserInfo)
 
 const store = reactive({
   isDisplayLoginDialog: false,
@@ -21,7 +20,7 @@ const store = reactive({
 }) as UnwrapNestedRefs<UserStore>
 
 store.fetchCurrentUser = async () => {
-  if (document.cookie.includes('token=')) {
+  if (currentUser.value.token) {
     const user = await API.User.whoami()
     store.current = user
   }
