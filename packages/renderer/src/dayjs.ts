@@ -3,6 +3,7 @@ import isoWeek from 'dayjs/plugin/isoWeek'
 import toObject from 'dayjs/plugin/toObject'
 import customParseFormat from 'dayjs/plugin/CustomParseFormat'
 import updateLocale from 'dayjs/plugin/updateLocale'
+import relativeTime from 'dayjs/plugin/relativeTime'
 import 'dayjs/locale/zh-cn'
 
 dayjs.locale('zh-cn')
@@ -10,6 +11,8 @@ dayjs.extend(isoWeek)
 dayjs.extend(toObject)
 dayjs.extend(customParseFormat)
 dayjs.extend(updateLocale)
+dayjs.extend(relativeTime)
+
 dayjs.updateLocale('zh-cn', { weekStart: 0 })
 
 window.$dayjs = dayjs
