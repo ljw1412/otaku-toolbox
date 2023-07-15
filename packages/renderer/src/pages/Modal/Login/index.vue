@@ -96,6 +96,7 @@
 </template>
 
 <script lang="ts">
+import { FormInstance } from '@arco-design/web-vue'
 import { defineComponent, ref } from 'vue'
 import { currentUser } from '/@/global/user'
 
@@ -103,7 +104,7 @@ export default defineComponent({
   name: 'AppLoginModal',
 
   setup() {
-    const formRef = ref<HTMLElement>()
+    const formRef = ref<FormInstance>()
     const usernameRef = ref<HTMLElement>()
     const passwordRef = ref<HTMLElement>()
     return { formRef, usernameRef, passwordRef }
@@ -126,6 +127,7 @@ export default defineComponent({
       this.logining = false
       this.form.username = ''
       this.form.password = ''
+      this.formRef!.clearValidate()
       this.randomBangumi()
     },
 
@@ -151,8 +153,7 @@ export default defineComponent({
     },
 
     async login() {
-      // @ts-ignore
-      const errors = await this.formRef.validate()
+      const errors = await this.formRef!.validate()
       if (errors) return
 
       this.logining = true
