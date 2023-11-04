@@ -16,10 +16,13 @@
                 v-if="item.isDev"
                 color="orange"
                 size="small"
-                style="vertical-align: bottom;"
+                style="vertical-align: bottom"
                 class="mr-4"
-              >开发版</a-tag>
-              <span class="d-inline-block">{{ item.name }} ({{ item.plugin }}@{{ item.version }})</span>
+                >开发版</a-tag
+              >
+              <span class="d-inline-block"
+                >{{ item.name }} ({{ item.plugin }}@{{ item.version }})</span
+              >
             </template>
             <template #avatar>
               <a-avatar shape="square">
@@ -29,14 +32,22 @@
           </a-list-item-meta>
           <template #actions>
             <a-button-group>
-              <a-button v-if="!item.isAdded" type="primary" @click="addPlugin(item)">添加</a-button>
+              <a-button
+                v-if="!item.isAdded"
+                type="primary"
+                @click="addPlugin(item)"
+                >添加</a-button
+              >
               <template v-else>
                 <a-button
                   type="primary"
                   :disabled="!item.isNeedUpdate"
                   @click="updatePlugin(item)"
-                >更新</a-button>
-                <a-button status="danger" @click="removePlugin(item)">删除</a-button>
+                  >更新</a-button
+                >
+                <a-button status="danger" @click="removePlugin(item)"
+                  >删除</a-button
+                >
               </template>
             </a-button-group>
           </template>
@@ -98,7 +109,6 @@ export default defineComponent({
   },
 
   methods: {
-
     async fetchDevPluginList() {
       if (!this.$global.env.DEV) return
       try {
@@ -107,9 +117,9 @@ export default defineComponent({
           `${pluginStore.devUrl}/plugins/list.json`
         )
 
-        list.forEach(plugin => {
+        list.forEach((plugin) => {
           const item = pluginStore.list.find(
-            item => item.plugin === plugin.plugin
+            (item) => item.plugin === plugin.plugin
           )
           plugin.isAdded = !!item
           plugin.isNeedUpdate = item && item.version < plugin.version
@@ -128,9 +138,9 @@ export default defineComponent({
         'https://gitee.com/ljw1412/otaku-toolbox-plugins/raw/main/release/plugins/list.json'
       )
 
-      list.forEach(plugin => {
+      list.forEach((plugin) => {
         const item = pluginStore.list.find(
-          item => item.plugin === plugin.plugin
+          (item) => item.plugin === plugin.plugin
         )
         plugin.isAdded = !!item
         plugin.isNeedUpdate = item && item.version < plugin.version
@@ -184,7 +194,7 @@ export default defineComponent({
       await this.checkPluginWin(plugin)
       const data = await ipcInvoke('tool-plugin', 'update', toRaw(plugin))
       const index = pluginStore.list.findIndex(
-        item => item.plugin === plugin.plugin
+        (item) => item.plugin === plugin.plugin
       )
       plugin.order = pluginStore.list[index].order
       pluginStore.list.splice(index, 1, this.formatPluginInfo(plugin))
@@ -195,7 +205,7 @@ export default defineComponent({
       await this.checkPluginWin(plugin)
       const data = await ipcInvoke('tool-plugin', 'remove', toRaw(plugin))
       const index = pluginStore.list.findIndex(
-        item => item.plugin === plugin.plugin
+        (item) => item.plugin === plugin.plugin
       )
       pluginStore.list.splice(index, 1)
       plugin.isAdded = false
@@ -204,5 +214,4 @@ export default defineComponent({
 })
 </script>
 
-<style lang="scss">
-</style>
+<style lang="scss"></style>

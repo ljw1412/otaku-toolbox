@@ -20,10 +20,13 @@ const store = reactive({
 }) as UnwrapNestedRefs<UserStore>
 
 store.fetchCurrentUser = async () => {
-  if (currentUser.value.token) {
-    const user = await API.User.whoami()
-    store.current = user
-  }
+  try {
+    if (currentUser.value.token) {
+      const user = await API.User.whoami()
+      store.current = user
+    }
+  } catch (error) {}
+
   store.isLoaded = true
 }
 
