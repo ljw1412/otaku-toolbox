@@ -38,7 +38,16 @@ export default defineConfig({
       '/@UI/': join(PACKAGE_ROOT, 'UI') + '/'
     }
   },
-  plugins: [vue(), viteExternalsPlugin({ dplayer: 'DPlayer' })],
+  plugins: [
+    vue({
+      template: {
+        compilerOptions: {
+          isCustomElement: (tag) => ['webview'].includes(tag)
+        }
+      }
+    }),
+    viteExternalsPlugin({ dplayer: 'DPlayer' })
+  ],
   base: '',
   server: {
     fsServe: {

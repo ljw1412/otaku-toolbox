@@ -121,7 +121,7 @@ export default defineComponent({
       this.bangumiList = []
       try {
         this.bangumiList = await this.$API.Bangumi.listDayBangumi({
-          withNextDay: true
+          show30: true
         })
         this.isLoading = false
         this.scrollToNextBangumi()

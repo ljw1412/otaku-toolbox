@@ -5,7 +5,7 @@ import modifierParser from '../../parser/html/modifierParser'
 
 export const isDebugger = false
 const logger = {} as typeof Logger
-Object.keys(Logger).forEach(key => {
+Object.keys(Logger).forEach((key) => {
   const state = key as keyof typeof Logger
   logger[state] = (tag: string, ...data: any[]) => {
     if (isDebugger) {
@@ -24,7 +24,7 @@ const _headers = {
 function parseUrl(url: string, replacer: DataCenter.Replacer = { page: 1 }) {
   let newUrl = url
   if (!replacer.page) replacer.page = 1
-  Object.keys(replacer).forEach(key => {
+  Object.keys(replacer).forEach((key) => {
     newUrl = newUrl.replace(`{:${key}}`, replacer[key] + '')
   })
   logger.info('[parseUrl]', `规则:${url}`, `结果:${newUrl}`)
@@ -33,11 +33,9 @@ function parseUrl(url: string, replacer: DataCenter.Replacer = { page: 1 }) {
 
 // 加载网页并解析为cheerio对象
 async function loadUrl(url: string) {
-  const resp = await request
-    .get(url)
-    .timeout(_timeout)
-    .set(_headers)
+  const resp = await request.get(url).timeout(_timeout).set(_headers)
   const $ = cheerio.load(resp.text)
+  if (isDebugger) console.log(resp.text)
   logger.info('[loadUrl]', $('head > title').text())
   return $
 }

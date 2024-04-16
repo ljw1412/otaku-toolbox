@@ -65,11 +65,11 @@ export async function listWeekBangumi(): Promise<FormatedBangumiBasic[]> {
 /**
  * 获取一天番剧(可以额外附加明天)
  * @param opts
- * @param opts.withNextDay 是否包含第二天的
+ * @param opts.show30 是否包含第二天的
  * @returns
  */
 export async function listDayBangumi(
-  opts: { withNextDay?: boolean } = {}
+  opts: { show30?: boolean } = {}
 ): Promise<FormatedBangumiBasic[]> {
   const result = await apiGet<BangumiBasic[]>(`${API_BASE}/today`, {
     data: { t: +new Date(), ...opts }

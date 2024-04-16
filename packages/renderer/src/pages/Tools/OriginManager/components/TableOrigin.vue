@@ -9,10 +9,39 @@
       :pagination="false"
     >
       <template #columns>
-        <a-table-column title="名称" data-index="name" :width="160"></a-table-column>
-        <a-table-column title="命名空间" data-index="namespace" :width="120"></a-table-column>
-        <a-table-column title="版本" data-index="version" :width="160"></a-table-column>
-        <a-table-column title="类型" data-index="type" :width="140"></a-table-column>
+        <a-table-column
+          title="名称"
+          data-index="name"
+          :width="160"
+        ></a-table-column>
+        <a-table-column
+          title="命名空间"
+          data-index="namespace"
+          :width="120"
+        ></a-table-column>
+        <a-table-column title="版本" data-index="version" :width="160">
+          <template #cell="{ record }">
+            <span
+              class="version"
+              :class="{
+                old: record.version > -1 && record.version < record.version_new
+              }"
+            >
+              {{ record.version }}
+            </span>
+            <template
+              v-if="record.version > -1 && record.version < record.version_new"
+            >
+              <span> → </span>
+              <span> {{ record.version_new }} </span>
+            </template>
+          </template>
+        </a-table-column>
+        <a-table-column
+          title="类型"
+          data-index="type"
+          :width="140"
+        ></a-table-column>
         <a-table-column title="网址" data-index="url"></a-table-column>
         <a-table-column title="操作">
           <template #cell="{ record }">
@@ -23,11 +52,22 @@
                 size="small"
                 :loading="record.downloading"
                 @click="handleDownload(record)"
-              >{{ record.version === -1 ? '添加' : '更新' }}</a-button>
+                >{{ record.version === -1 ? '添加' : '更新' }}</a-button
+              >
               <span v-if="record.version === -999">开发中……</span>
               <template v-if="record.version > -1">
-                <a-button size="small" :disabled="notEdit" @click="handleAction('edit', record)">编辑</a-button>
-                <a-button status="danger" size="small" @click="handleAction('reomve', record)">删除</a-button>
+                <a-button
+                  size="small"
+                  :disabled="notEdit"
+                  @click="handleAction('edit', record)"
+                  >编辑</a-button
+                >
+                <a-button
+                  status="danger"
+                  size="small"
+                  @click="handleAction('reomve', record)"
+                  >删除</a-button
+                >
               </template>
             </a-button-group>
           </template>
@@ -65,7 +105,9 @@ export default defineComponent({
         this.$message.error('获取源规则地址失败！')
         return
       }
-      const ruleItem = this.data.find(rule => rule.namespace === item.namespace)
+      const ruleItem = this.data.find(
+        (rule) => rule.namespace === item.namespace
+      )
       if (!ruleItem) return
       ruleItem.downloading = true
       try {
@@ -79,10 +121,17 @@ export default defineComponent({
       }
       ruleItem.downloading = false
     }
-
   }
 })
 </script>
 
 <style lang="scss">
+.origin-manager-table {
+  .version {
+    &.old {
+      text-decoration: line-through;
+      color: var(--color-text-2);
+    }
+  }
+}
 </style>
